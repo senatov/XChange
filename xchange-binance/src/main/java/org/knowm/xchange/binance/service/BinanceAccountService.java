@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.knowm.xchange.currency.Currency.getInstance;
 import static org.knowm.xchange.dto.account.FundingRecord.Type.DEPOSIT;
 import static org.knowm.xchange.dto.account.FundingRecord.Type.INTERNAL_DEPOSIT;
 import static org.knowm.xchange.dto.account.FundingRecord.Type.INTERNAL_WITHDRAWAL;
@@ -221,7 +222,7 @@ public class BinanceAccountService extends BinanceAccountServiceRaw implements A
 												w.getAddress(),
 												w.getAddressTag(),
 												BinanceAdapters.toDate(w.getApplyTime()),
-												Currency.getInstance(w.getCoin()),
+												getInstance(w.getCoin()),
 												w.getAmount(),
 												w.getId(),
 												w.getTxId(),
@@ -239,7 +240,7 @@ public class BinanceAccountService extends BinanceAccountServiceRaw implements A
 												d.getAddress(),
 												d.getAddressTag(),
 												new Date(d.getInsertTime()),
-												Currency.getInstance(d.getCoin()),
+												getInstance(d.getCoin()),
 												d.getAmount(),
 												null,
 												d.getTxId(),
@@ -257,7 +258,7 @@ public class BinanceAccountService extends BinanceAccountServiceRaw implements A
 												null,
 												null,
 												new Date(a.getDivTime()),
-												Currency.getInstance(a.getAsset()),
+												getInstance(a.getAsset()),
 												a.getAmount(),
 												null,
 												String.valueOf(a.getTranId()),
@@ -275,7 +276,7 @@ public class BinanceAccountService extends BinanceAccountServiceRaw implements A
 										new FundingRecord.Builder()
 												.setAddress(finalEmail)
 												.setDate(new Date(a.getTime()))
-												.setCurrency(Currency.getInstance(a.getAsset()))
+												.setCurrency(getInstance(a.getAsset()))
 												.setAmount(a.getQty())
 												.setType(INTERNAL_WITHDRAWAL)
 												.setStatus(transferHistoryStatus(a.getStatus()))
@@ -289,7 +290,7 @@ public class BinanceAccountService extends BinanceAccountServiceRaw implements A
 										new FundingRecord.Builder()
 												.setAddress(a.getEmail())
 												.setDate(new Date(a.getTime()))
-												.setCurrency(Currency.getInstance(a.getAsset()))
+												.setCurrency(getInstance(a.getAsset()))
 												.setAmount(a.getQty())
 												.setType(
 														a.getType().equals(1)

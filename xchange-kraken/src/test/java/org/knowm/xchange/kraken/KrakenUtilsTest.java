@@ -2,7 +2,6 @@ package org.knowm.xchange.kraken;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.Order.OrderType;
@@ -21,6 +20,10 @@ import java.io.InputStream;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.knowm.xchange.currency.Currency.BTC;
+import static org.knowm.xchange.currency.Currency.EUR;
+import static org.knowm.xchange.currency.Currency.USD;
+import static org.knowm.xchange.currency.Currency.XBT;
 
 public class KrakenUtilsTest {
 
@@ -42,8 +45,8 @@ public class KrakenUtilsTest {
 		assertThat(orders.getOpenOrders().get(0).getId()).isEqualTo("OU5JPQ-OIDTK-QIGIGI");
 		assertThat(orders.getOpenOrders().get(0).getLimitPrice()).isEqualTo("1000.000");
 		assertThat(orders.getOpenOrders().get(0).getOriginalAmount()).isEqualTo("0.01000000");
-		assertThat(orders.getOpenOrders().get(0).getInstrument().getBase()).isEqualTo(Currency.XBT);
-		assertThat(orders.getOpenOrders().get(0).getInstrument().getCounter()).isEqualTo(Currency.EUR);
+		assertThat(orders.getOpenOrders().get(0).getInstrument().getBase()).isEqualTo(XBT);
+		assertThat(orders.getOpenOrders().get(0).getInstrument().getCounter()).isEqualTo(EUR);
 		assertThat(orders.getOpenOrders().get(0).getType()).isEqualTo(Order.OrderType.BID);
 	}
 
@@ -61,22 +64,22 @@ public class KrakenUtilsTest {
 		assertThat(trade0.getId()).isEqualTo("TY5BYV-WJUQF-XPYEYD-2");
 		assertThat(trade0.getPrice()).isEqualTo("32.07562");
 		assertThat(trade0.getOriginalAmount()).isEqualTo("0.50000000");
-		assertThat(trade0.getInstrument().getBase()).isEqualTo(Currency.BTC);
-		assertThat(trade0.getInstrument().getCounter()).isEqualTo(Currency.USD);
+		assertThat(trade0.getInstrument().getBase()).isEqualTo(BTC);
+		assertThat(trade0.getInstrument().getCounter()).isEqualTo(USD);
 		assertThat(trade0.getType()).isEqualTo(OrderType.ASK);
 		assertThat(trade0.getFeeAmount()).isEqualTo("0.03208");
-		assertThat(trade0.getFeeCurrency()).isEqualTo(Currency.USD);
+		assertThat(trade0.getFeeCurrency()).isEqualTo(USD);
 		assertThat(((KrakenUserTrade) trade0).getCost()).isEqualTo("16.03781");
 		UserTrade trade1 = userTrades.getUserTrades().get(1);
 		assertThat(trade1).isInstanceOf(KrakenUserTrade.class);
 		assertThat(trade1.getId()).isEqualTo("TY5BYV-WJUQF-XPYEYD-3");
 		assertThat(trade1.getPrice()).isEqualTo("32.07562");
 		assertThat(trade1.getOriginalAmount()).isEqualTo("0.50000000");
-		assertThat(trade1.getInstrument().getBase()).isEqualTo(Currency.BTC);
-		assertThat(trade1.getInstrument().getCounter()).isEqualTo(Currency.USD);
+		assertThat(trade1.getInstrument().getBase()).isEqualTo(BTC);
+		assertThat(trade1.getInstrument().getCounter()).isEqualTo(USD);
 		assertThat(trade1.getType()).isEqualTo(OrderType.ASK);
 		assertThat(trade1.getFeeAmount()).isEqualTo("0.03208");
-		assertThat(trade1.getFeeCurrency()).isEqualTo(Currency.USD);
+		assertThat(trade1.getFeeCurrency()).isEqualTo(USD);
 		assertThat(((KrakenUserTrade) trade1).getCost()).isEqualTo("16.03781");
 	}
 

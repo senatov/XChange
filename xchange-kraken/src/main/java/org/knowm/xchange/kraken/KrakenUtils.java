@@ -12,6 +12,7 @@ import org.knowm.xchange.kraken.dto.trade.KrakenTrade;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.knowm.xchange.currency.Currency.*;
 import static org.knowm.xchange.kraken.KrakenAdapters.adaptCurrencyPair;
 
 /**
@@ -63,7 +64,7 @@ public class KrakenUtils {
 
 	public static Currency translateKrakenCurrencyCode(String currencyIn) {
 		if (discontinuedCurrencies.containsKey(currencyIn)) {
-			return Currency.getInstance(discontinuedCurrencies.get(currencyIn));
+			return getInstance(discontinuedCurrencies.get(currencyIn));
 		}
 		Currency currencyOut = assetsMap.get(currencyIn);
 		if (currencyOut == null) {
@@ -75,8 +76,8 @@ public class KrakenUtils {
 	public static void setKrakenAssets(Map<String, KrakenAsset> assetSource) {
 		if (assetsMap.isEmpty()) {
 			for (Map.Entry<String, KrakenAsset> entry : assetSource.entrySet()) {
-				assetsMap.put(entry.getKey(), Currency.getInstance(entry.getValue().altName()));
-				assetsMapReverse.put(Currency.getInstance(entry.getValue().altName()), entry.getKey());
+				assetsMap.put(entry.getKey(), getInstance(entry.getValue().altName()));
+				assetsMapReverse.put(getInstance(entry.getValue().altName()), entry.getKey());
 			}
 		}
 	}
@@ -87,21 +88,18 @@ public class KrakenUtils {
 			// kraken can give short pairs back from open orders ?
 			if (currencyPairIn.length() >= 5 && !currencyPairIn.contains(".")) {
 				int firstCurrencyLength = currencyPairIn.length() - 3;
-				Currency base = Currency.getInstance(currencyPairIn.substring(0, firstCurrencyLength));
+				Currency base = getInstance(currencyPairIn.substring(0, firstCurrencyLength));
 				if (base.getCommonlyUsedCurrency() != null) {
 					base = base.getCommonlyUsedCurrency();
 				}
 				Currency counter =
-						Currency.getInstance(
+						getInstance(
 								currencyPairIn.substring(firstCurrencyLength));
 				if (counter.getCommonlyUsedCurrency() != null) {
 					counter = counter.getCommonlyUsedCurrency();
 				}
 				pair = new CurrencyPair(base, counter);
 			}
-			//      else if(currencyPairIn.length() == 5){
-			//
-			//      }
 		}
 		return pair;
 	}

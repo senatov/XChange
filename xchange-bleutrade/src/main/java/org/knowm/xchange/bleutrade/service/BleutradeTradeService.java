@@ -1,8 +1,5 @@
 package org.knowm.xchange.bleutrade.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bleutrade.BleutradeAdapters;
 import org.knowm.xchange.bleutrade.dto.trade.BluetradeExecutedTrade;
@@ -21,76 +18,73 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 import si.mazi.rescu.IRestProxyFactory;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BleutradeTradeService extends BleutradeTradeServiceRaw implements TradeService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public BleutradeTradeService(Exchange exchange, IRestProxyFactory restProxyFactory) {
+	/**
+	 * Constructor
+	 */
+	public BleutradeTradeService(Exchange exchange, IRestProxyFactory restProxyFactory) {
+		super(exchange, restProxyFactory);
+	}
 
-    super(exchange, restProxyFactory);
-  }
+	@Override
+	public OpenOrders getOpenOrders() throws IOException {
+		return getOpenOrders(createOpenOrdersParams());
+	}
 
-  @Override
-  public OpenOrders getOpenOrders() throws IOException {
-    return getOpenOrders(createOpenOrdersParams());
-  }
+	@Override
+	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+		return BleutradeAdapters.adaptBleutradeOpenOrders(getBleutradeOpenOrders());
+	}
 
-  @Override
-  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-    return BleutradeAdapters.adaptBleutradeOpenOrders(getBleutradeOpenOrders());
-  }
+	@Override
+	public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
+		throw new NotAvailableFromExchangeException();
+	}
 
-  @Override
-  public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
+	@Override
+	public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+		if (limitOrder.getType() == OrderType.BID) {
+			return buyLimit(limitOrder);
+		} else {
+			return sellLimit(limitOrder);
+		}
+	}
 
-    throw new NotAvailableFromExchangeException();
-  }
+	@Override
+	public boolean cancelOrder(String orderId) throws IOException {
+		return cancel(orderId);
+	}
 
-  @Override
-  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+	@Override
+	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+		if (orderParams instanceof CancelOrderByIdParams) {
+			return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
+		} else {
+			return false;
+		}
+	}
 
-    if (limitOrder.getType() == OrderType.BID) {
-      return buyLimit(limitOrder);
-    } else {
-      return sellLimit(limitOrder);
-    }
-  }
+	@Override
+	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+		List<UserTrade> trades = new ArrayList<>();
+		for (BluetradeExecutedTrade trade : getTrades(params)) {
+			trades.add(BleutradeAdapters.adaptUserTrade(trade));
+		}
+		return new UserTrades(trades, Trades.TradeSortType.SortByTimestamp);
+	}
 
-  @Override
-  public boolean cancelOrder(String orderId) throws IOException {
+	@Override
+	public TradeHistoryParams createTradeHistoryParams() {
+		throw new NotAvailableFromExchangeException();
+	}
 
-    return cancel(orderId);
-  }
-
-  @Override
-  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-    if (orderParams instanceof CancelOrderByIdParams) {
-      return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
-    } else {
-      return false;
-    }
-  }
-
-  @Override
-  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-    List<UserTrade> trades = new ArrayList<>();
-    for (BluetradeExecutedTrade trade : getTrades(params)) {
-      trades.add(BleutradeAdapters.adaptUserTrade(trade));
-    }
-    return new UserTrades(trades, Trades.TradeSortType.SortByTimestamp);
-  }
-
-  @Override
-  public TradeHistoryParams createTradeHistoryParams() {
-
-    throw new NotAvailableFromExchangeException();
-  }
-
-  @Override
-  public OpenOrdersParams createOpenOrdersParams() {
-    return null;
-  }
+	@Override
+	public OpenOrdersParams createOpenOrdersParams() {
+		return null;
+	}
 }

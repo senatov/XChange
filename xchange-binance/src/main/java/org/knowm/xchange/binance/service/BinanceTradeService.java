@@ -122,13 +122,6 @@ public class BinanceTradeService extends BinanceTradeServiceRaw implements Trade
 		return placeOrderAllProducts(type, limitOrder, limitOrder.getLimitPrice(), null, null, null, null, tif);
 	}
 
-	private Optional<TimeInForce> timeInForceFromOrder(Order order) {
-		return order.getOrderFlags().stream()
-				.filter(flag -> flag instanceof TimeInForce)
-				.map(flag -> (TimeInForce) flag)
-				.findFirst();
-	}
-
 	@Override
 	public boolean cancelOrder(String orderId) {
 		throw new ExchangeException("You need to provide the currency pair to cancel an order.");
@@ -258,6 +251,13 @@ public class BinanceTradeService extends BinanceTradeServiceRaw implements Trade
 	@Override
 	public Class getRequiredOrderQueryParamClass() {
 		return OrderQueryParamInstrument.class;
+	}
+
+	private Optional<TimeInForce> timeInForceFromOrder(Order order) {
+		return order.getOrderFlags().stream()
+				.filter(flag -> flag instanceof TimeInForce)
+				.map(flag -> (TimeInForce) flag)
+				.findFirst();
 	}
 
 	private String placeOrderAllProducts(
