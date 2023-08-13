@@ -7,18 +7,18 @@ import java.util.List;
 
 public class OpenPositions implements Serializable {
 
-  private final List<OpenPosition> openPositions;
+	private final List<OpenPosition> openPositions;
 
-  public OpenPositions(@JsonProperty("openPositions") List<OpenPosition> openPositions) {
-    this.openPositions = openPositions;
-  }
+	public OpenPositions(@JsonProperty("openPositions") List<OpenPosition> openPositions) {
+		this.openPositions = openPositions;
+	}
 
-  public List<OpenPosition> getOpenPositions() {
-    return openPositions;
-  }
+	public List<OpenPosition> getOpenPositions() {
+		return openPositions;
+	}
 
-  @Override
-  public String toString() {
-    return "OpenPositions{" + "openPositions=" + openPositions + '}';
-  }
+	@Override
+	public String toString() {
+		return "OpenPositions{" + "openPositions=" + openPositions + '}';
+	}
 }

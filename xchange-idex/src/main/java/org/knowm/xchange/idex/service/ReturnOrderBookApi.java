@@ -1,9 +1,9 @@
 package org.knowm.xchange.idex.service;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import org.knowm.xchange.idex.annotations.Api;
 import org.knowm.xchange.idex.annotations.ApiOperation;
 import org.knowm.xchange.idex.annotations.ApiResponse;
@@ -17,14 +17,14 @@ import org.knowm.xchange.idex.dto.ReturnOrderBookResponse;
 @Produces("application/json")
 public interface ReturnOrderBookApi {
 
-  @POST
-  @Consumes("application/json")
-  @Produces("application/json")
-  @ApiOperation(
-      value =
-          "Returns the orderbook for a given market, or returns an object of the entire orderbook keyed by\\ market if the market parameter is omitted.",
-      notes = "",
-      tags = "market")
-  @ApiResponses(@ApiResponse(code = 200, message = "", response = ReturnOrderBookResponse.class))
-  ReturnOrderBookResponse orderBook(OrderBookReq orderBookReq);
+	@POST
+	@Consumes("application/json")
+	@Produces("application/json")
+	@ApiOperation(
+			value =
+					"Returns the orderbook for a given market, or returns an object of the entire orderbook keyed by\\ market if the market parameter is omitted.",
+			notes = "",
+			tags = "market")
+	@ApiResponses(@ApiResponse(code = 200, message = "", response = ReturnOrderBookResponse.class))
+	ReturnOrderBookResponse orderBook(OrderBookReq orderBookReq);
 }

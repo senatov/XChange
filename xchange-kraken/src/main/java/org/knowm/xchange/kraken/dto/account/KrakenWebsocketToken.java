@@ -2,36 +2,26 @@ package org.knowm.xchange.kraken.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class KrakenWebsocketToken {
+public record KrakenWebsocketToken(@JsonProperty("token") String token, @JsonProperty("expires") int expiresInSeconds) {
 
-  @JsonProperty("token")
-  private final String token;
+	@Override
+	public String token() {
+		return token;
+	}
 
-  @JsonProperty("expires")
-  private final int expiresInSeconds;
+	@Override
+	public int expiresInSeconds() {
+		return expiresInSeconds;
+	}
 
-  public KrakenWebsocketToken(
-      @JsonProperty("token") String token, @JsonProperty("expires") int expiresInSeconds) {
-    this.token = token;
-    this.expiresInSeconds = expiresInSeconds;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public int getExpiresInSeconds() {
-    return expiresInSeconds;
-  }
-
-  @Override
-  public String toString() {
-    return "KrakenWebsocketToken{"
-        + "token='"
-        + token
-        + '\''
-        + ", expiresInSeconds="
-        + expiresInSeconds
-        + '}';
-  }
+	@Override
+	public String toString() {
+		return "KrakenWebsocketToken{"
+				+ "token='"
+				+ token
+				+ '\''
+				+ ", expiresInSeconds="
+				+ expiresInSeconds
+				+ '}';
+	}
 }

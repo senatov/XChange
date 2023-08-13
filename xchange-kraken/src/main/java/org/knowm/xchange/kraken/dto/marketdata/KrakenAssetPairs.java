@@ -2,22 +2,13 @@ package org.knowm.xchange.kraken.dto.marketdata;
 
 import java.util.Map;
 
-public class KrakenAssetPairs {
+public record KrakenAssetPairs(Map<String, KrakenAssetPair> assetPairMap) {
 
-  private final Map<String, KrakenAssetPair> assetPairMap;
+	/**
+	 * Constructor
+	 */
+	public KrakenAssetPairs {
+	}
 
-  /**
-   * Constructor
-   *
-   * @param assetPairMap
-   */
-  public KrakenAssetPairs(Map<String, KrakenAssetPair> assetPairMap) {
 
-    this.assetPairMap = assetPairMap;
-  }
-
-  public Map<String, KrakenAssetPair> getAssetPairMap() {
-
-    return assetPairMap;
-  }
 }

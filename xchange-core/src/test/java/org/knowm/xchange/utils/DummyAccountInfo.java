@@ -1,39 +1,35 @@
 package org.knowm.xchange.utils;
 
-/** A mutable AccountInfo class used for HttpTemplate testing. */
+/**
+ * A mutable AccountInfo class used for HttpTemplate testing.
+ */
 public class DummyAccountInfo {
 
-  String username;
-  String currency;
-  int amount_int;
+	String username;
+	String currency;
+	int amount_int;
 
-  public String getUsername() {
+	public String getUsername() {
+		return username;
+	}
 
-    return username;
-  }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-  public void setUsername(String username) {
+	public String getCurrency() {
+		return currency;
+	}
 
-    this.username = username;
-  }
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
-  public String getCurrency() {
+	public int getAmount_int() {
+		return amount_int;
+	}
 
-    return currency;
-  }
-
-  public void setCurrency(String currency) {
-
-    this.currency = currency;
-  }
-
-  public int getAmount_int() {
-
-    return amount_int;
-  }
-
-  public void setAmount_int(int amount_int) {
-
-    this.amount_int = amount_int;
-  }
+	public void setAmount_int(int amount_int) {
+		this.amount_int = amount_int;
+	}
 }

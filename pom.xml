@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <prerequisites>
-        <maven>3.0</maven>
+        <maven>3.9.4</maven>
     </prerequisites>
 
     <groupId>org.knowm.xchange</groupId>
     <artifactId>xchange-parent</artifactId>
-    <version>5.1.1-SNAPSHOT</version>
+    <version>5.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>XChange</name>
@@ -31,27 +31,25 @@
         <compilerArgs>--enable-preview</compilerArgs>
         <downloadJavadocs>true</downloadJavadocs>
         <downloadSources>true</downloadSources>
+        <failOnNoGitDirectory>false</failOnNoGitDirectory>
+        <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
-        <version.java>17</version.java>
-        <failOnNoGitDirectory>false</failOnNoGitDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.assertj>3.23.1</version.assertj>
-        <version.commons.lang3>3.12.0</version.commons.lang3>
-        <version.fasterxml>2.14.1</version.fasterxml>
-        <version.github.mmazi>2.1.0</version.github.mmazi>
-
-        <version.junit>4.13.2</version.junit>
-        <version.lombok>1.18.22</version.lombok>
-        <version.knowm.xchart>3.8.2</version.knowm.xchart>
-        <version.qos.logback>1.4.5</version.qos.logback>
-        <version.reflections>0.10.2</version.reflections>
-        <version.resilience4j>1.7.0</version.resilience4j>
-        <version.slf4j>2.0.6</version.slf4j>
-        <version.crypto>5.0.0</version.crypto>
-        <version.java-jwt>3.19.2</version.java-jwt>
         <skipIntegrationTests>true</skipIntegrationTests>
+        <version.assertj>3.24.2</version.assertj>
+        <version.commons.lang3>3.12.0</version.commons.lang3>
+        <version.crypto>5.0.0</version.crypto>
+        <version.fasterxml>2.14.1</version.fasterxml>
+        <version.java-jwt>3.19.2</version.java-jwt>
+        <version.java>17</version.java>
+        <version.junit>4.13.2</version.junit>
+        <version.knowm.xchart>3.8.4</version.knowm.xchart>
+        <version.lombok>1.18.28</version.lombok>
+        <version.qos.logback>1.4.8</version.qos.logback>
+        <version.reflections>0.10.2</version.reflections>
+        <version.resilience4j>2.1.0</version.resilience4j>
+        <version.slf4j>2.0.7</version.slf4j>
     </properties>
 
     <developers>
@@ -63,7 +61,7 @@
     <licenses>
         <license>
             <name>MIT</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
             <distribution>repo</distribution>
             <comments>All source code is under the MIT license.</comments>
         </license>
@@ -96,6 +94,7 @@
     </scm>
 
     <modules>
+        <module>xchange-ascendex</module>
         <module>xchange-bankera</module>
         <module>xchange-bibox</module>
         <module>xchange-binance</module>
@@ -108,7 +107,6 @@
         <module>xchange-bitfinex</module>
         <module>xchange-bitflyer</module>
         <module>xchange-bithumb</module>
-        <module>xchange-ascendex</module>
         <module>xchange-bitmex</module>
         <module>xchange-bitso</module>
         <module>xchange-bitstamp</module>
@@ -129,26 +127,26 @@
         <module>xchange-coincheck</module>
         <module>xchange-coindeal</module>
         <module>xchange-coindirect</module>
-        <module>xchange-coinjar</module>
         <module>xchange-coinegg</module>
         <module>xchange-coinex</module>
-        <module>xchange-coinone</module>
         <module>xchange-coinfloor</module>
         <module>xchange-coingi</module>
+        <module>xchange-coinjar</module>
         <module>xchange-coinmarketcap</module>
         <module>xchange-coinmate</module>
+        <module>xchange-coinone</module>
         <module>xchange-core</module>
-        <module>xchange-krakenfutures</module>
         <module>xchange-cryptowatch</module>
         <module>xchange-deribit</module>
         <module>xchange-dvchain</module>
         <module>xchange-dydx</module>
-        <module>xchange-exmo</module>
+        <module>xchange-enigma</module>
         <module>xchange-examples</module>
+        <module>xchange-exmo</module>
         <module>xchange-ftx</module>
         <module>xchange-gateio</module>
-        <module>xchange-globitex</module>
         <module>xchange-gemini</module>
+        <module>xchange-globitex</module>
         <module>xchange-hitbtc</module>
         <module>xchange-huobi</module>
         <module>xchange-idex</module>
@@ -157,10 +155,11 @@
         <module>xchange-koineks</module>
         <module>xchange-koinim</module>
         <module>xchange-kraken</module>
+        <module>xchange-krakenfutures</module>
         <module>xchange-kucoin</module>
         <module>xchange-kuna</module>
-        <module>xchange-lgo</module>
         <module>xchange-latoken</module>
+        <module>xchange-lgo</module>
         <module>xchange-livecoin</module>
         <module>xchange-luno</module>
         <module>xchange-lykke</module>
@@ -176,16 +175,6 @@
         <module>xchange-ripple</module>
         <module>xchange-serum</module>
         <module>xchange-simulated</module>
-        <module>xchange-therock</module>
-        <module>xchange-tradeogre</module>
-        <module>xchange-truefx</module>
-        <module>xchange-upbit</module>
-        <module>xchange-vaultoro</module>
-        <module>xchange-yobit</module>
-        <module>xchange-zaif</module>
-        <module>xchange-enigma</module>
-
-
         <module>xchange-stream-bankera</module>
         <module>xchange-stream-binance</module>
         <module>xchange-stream-bitfinex</module>
@@ -195,17 +184,19 @@
         <module>xchange-stream-btcmarkets</module>
         <module>xchange-stream-cexio</module>
         <module>xchange-stream-coinbasepro</module>
+        <module>xchange-stream-coincheck</module>
         <module>xchange-stream-coinjar</module>
         <module>xchange-stream-coinmate</module>
         <module>xchange-stream-core</module>
         <module>xchange-stream-dydx</module>
         <module>xchange-stream-ftx</module>
         <module>xchange-stream-gateio</module>
-        <module>xchange-stream-gemini</module>
         <module>xchange-stream-gemini-v2</module>
+        <module>xchange-stream-gemini</module>
         <module>xchange-stream-hitbtc</module>
         <module>xchange-stream-huobi</module>
         <module>xchange-stream-kraken</module>
+        <module>xchange-stream-krakenfutures</module>
         <module>xchange-stream-lgo</module>
         <module>xchange-stream-okcoin</module>
         <module>xchange-stream-okex</module>
@@ -214,8 +205,13 @@
         <module>xchange-stream-service-core</module>
         <module>xchange-stream-service-netty</module>
         <module>xchange-stream-service-pubnub</module>
-        <module>xchange-stream-coincheck</module>
-        <module>xchange-stream-krakenfutures</module>
+        <module>xchange-therock</module>
+        <module>xchange-tradeogre</module>
+        <module>xchange-truefx</module>
+        <module>xchange-upbit</module>
+        <module>xchange-vaultoro</module>
+        <module>xchange-yobit</module>
+        <module>xchange-zaif</module>
     </modules>
 
     <ciManagement>
@@ -277,7 +273,7 @@
             <dependency>
                 <groupId>com.github.mmazi</groupId>
                 <artifactId>rescu</artifactId>
-                <version>${version.github.mmazi}</version>
+                <version>3.0</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-codec</groupId>
@@ -394,7 +390,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.1.86.Final</version>
+                <version>4.1.92.Final</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -453,6 +449,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>

@@ -2,24 +2,18 @@ package org.knowm.xchange.kraken.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Withdraw {
-  /*
-   * refid = reference id *
-   */
+public record Withdraw(String refid) {
+	/*
+	 * refid = reference id *
+	 */
 
-  private final String refid;
+	public Withdraw(@JsonProperty("refid") String refid) {
+		this.refid = refid;
+	}
 
-  public Withdraw(@JsonProperty("refid") String refid) {
-    super();
-    this.refid = refid;
-  }
 
-  public String getRefid() {
-    return refid;
-  }
-
-  @Override
-  public String toString() {
-    return "Withdraw [refid=" + refid + "]";
-  }
+	@Override
+	public String toString() {
+		return "Withdraw [refid=" + refid + "]";
+	}
 }
