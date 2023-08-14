@@ -6,60 +6,64 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"Order_ID", "status"})
 public class VaultoroCancelOrderData {
 
-  @JsonProperty("Order_ID")
-  private String OrderID;
+	@JsonProperty("Order_ID")
+	private String OrderID;
 
-  @JsonProperty("status")
-  private String status;
+	@JsonProperty("status")
+	private String status;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  /** @return The OrderID */
-  @JsonProperty("Order_ID")
-  public String getOrderID() {
+	/**
+	 * @return The OrderID
+	 */
+	@JsonProperty("Order_ID")
+	public String getOrderID() {
+		return OrderID;
+	}
 
-    return OrderID;
-  }
+	/**
+	 * @param OrderID The Order_ID
+	 */
+	@JsonProperty("Order_ID")
+	public void setOrderID(String OrderID) {
+		this.OrderID = OrderID;
+	}
 
-  /** @param OrderID The Order_ID */
-  @JsonProperty("Order_ID")
-  public void setOrderID(String OrderID) {
+	/**
+	 * @return The status
+	 */
+	@JsonProperty("status")
+	public String getStatus() {
+		return status;
+	}
 
-    this.OrderID = OrderID;
-  }
+	/**
+	 * @param status The status
+	 */
+	@JsonProperty("status")
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-  /** @return The status */
-  @JsonProperty("status")
-  public String getStatus() {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    return status;
-  }
-
-  /** @param status The status */
-  @JsonProperty("status")
-  public void setStatus(String status) {
-
-    this.status = status;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 }

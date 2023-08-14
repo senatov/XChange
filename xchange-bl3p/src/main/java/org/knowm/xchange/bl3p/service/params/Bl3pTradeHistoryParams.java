@@ -6,74 +6,73 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamPaging;
 
 public class Bl3pTradeHistoryParams implements TradeHistoryParamCurrency, TradeHistoryParamPaging {
 
-  public enum TransactionType {
-    TRADE,
-    FEE,
-    DEPOSIT,
-    WITHDRAW;
+	private Currency currency;
+	private int pageLength;
+	private int pageNumber;
+	private TransactionType type;
+	public Bl3pTradeHistoryParams(Currency currency, TransactionType type) {
+		this(currency, type, 1);
+	}
 
-    @Override
-    public String toString() {
-      return super.toString().toLowerCase();
-    }
-  }
+	public Bl3pTradeHistoryParams(Currency currency, TransactionType type, int pageNumber) {
+		this(currency, type, pageNumber, 50);
+	}
 
-  private Currency currency;
-  private int pageLength;
-  private int pageNumber;
-  private TransactionType type;
+	public Bl3pTradeHistoryParams(
+			Currency currency, TransactionType type, int pageNumber, int pageLength) {
+		this.currency = currency;
+		this.type = type;
+		this.pageNumber = pageNumber;
+		this.pageLength = pageLength;
+	}
 
-  public Bl3pTradeHistoryParams(Currency currency, TransactionType type) {
-    this(currency, type, 1);
-  }
+	@Override
+	public Currency getCurrency() {
+		return currency;
+	}
 
-  public Bl3pTradeHistoryParams(Currency currency, TransactionType type, int pageNumber) {
-    this(currency, type, pageNumber, 50);
-  }
+	@Override
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
 
-  public Bl3pTradeHistoryParams(
-      Currency currency, TransactionType type, int pageNumber, int pageLength) {
-    this.currency = currency;
-    this.type = type;
-    this.pageNumber = pageNumber;
-    this.pageLength = pageLength;
-  }
+	@Override
+	public Integer getPageLength() {
+		return pageLength;
+	}
 
-  @Override
-  public Currency getCurrency() {
-    return currency;
-  }
+	@Override
+	public void setPageLength(Integer pageLength) {
+		this.pageLength = pageLength;
+	}
 
-  @Override
-  public void setCurrency(Currency currency) {
-    this.currency = currency;
-  }
+	@Override
+	public Integer getPageNumber() {
+		return pageNumber;
+	}
 
-  @Override
-  public Integer getPageLength() {
-    return pageLength;
-  }
+	@Override
+	public void setPageNumber(Integer pageNumber) {
+		this.pageNumber = pageNumber;
+	}
 
-  @Override
-  public void setPageLength(Integer pageLength) {
-    this.pageLength = pageLength;
-  }
+	public TransactionType getType() {
+		return type;
+	}
 
-  @Override
-  public Integer getPageNumber() {
-    return pageNumber;
-  }
+	public void setType(TransactionType type) {
+		this.type = type;
+	}
 
-  @Override
-  public void setPageNumber(Integer pageNumber) {
-    this.pageNumber = pageNumber;
-  }
+	public enum TransactionType {
+		TRADE,
+		FEE,
+		DEPOSIT,
+		WITHDRAW;
 
-  public TransactionType getType() {
-    return type;
-  }
-
-  public void setType(TransactionType type) {
-    this.type = type;
-  }
+		@Override
+		public String toString() {
+			return super.toString().toLowerCase();
+		}
+	}
 }

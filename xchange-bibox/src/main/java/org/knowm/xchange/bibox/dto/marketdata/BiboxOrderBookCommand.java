@@ -4,7 +4,7 @@ import org.knowm.xchange.bibox.dto.BiboxCommand;
 
 public class BiboxOrderBookCommand extends BiboxCommand<BiboxOrderBookCommandBody> {
 
-  public BiboxOrderBookCommand(String pair, Integer size) {
-    super("api/depth", new BiboxOrderBookCommandBody(pair, size));
-  }
+	public BiboxOrderBookCommand(String pair, Integer size) {
+		super("api/depth", new BiboxOrderBookCommandBody(pair, size));
+	}
 }

@@ -10,25 +10,24 @@ import org.knowm.xchange.service.BaseExchangeService;
 import org.knowm.xchange.service.BaseService;
 
 public class DVChainBaseService extends BaseExchangeService implements BaseService {
-  protected final DVChain dvChain;
-  protected final String authToken;
+	protected final DVChain dvChain;
+	protected final String authToken;
 
-  protected DVChainBaseService(Exchange exchange) {
+	protected DVChainBaseService(Exchange exchange) {
+		super(exchange);
+		dvChain =
+				ExchangeRestProxyBuilder.forInterface(DVChain.class, exchange.getExchangeSpecification())
+						.build();
+		authToken = exchange.getExchangeSpecification().getSecretKey();
+	}
 
-    super(exchange);
-    dvChain =
-        ExchangeRestProxyBuilder.forInterface(DVChain.class, exchange.getExchangeSpecification())
-            .build();
-    authToken = exchange.getExchangeSpecification().getSecretKey();
-  }
-
-  protected ExchangeException handleException(DVChainException exception) {
-    if (exception.getMessage().contains("Internal server error")) {
-      return new InternalServerException(exception);
-    } else if (exception.getMessage().contains("An unknown error")) {
-      return new InternalServerException(exception);
-    } else {
-      return new ExchangeException(exception);
-    }
-  }
+	protected ExchangeException handleException(DVChainException exception) {
+		if (exception.getMessage().contains("Internal server error")) {
+			return new InternalServerException(exception);
+		} else if (exception.getMessage().contains("An unknown error")) {
+			return new InternalServerException(exception);
+		} else {
+			return new ExchangeException(exception);
+		}
+	}
 }

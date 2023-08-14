@@ -1,11 +1,11 @@
 package org.knowm.xchange.latoken.dto.exchangeinfo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 /**
  * Response schema:
- *
  * <pre>
  * {
  * 	"currencyId": 102,
@@ -21,107 +21,87 @@ import java.math.BigDecimal;
  */
 public class LatokenCurrency {
 
-  private final long currencyId;
-  private final String symbol;
-  private final String name;
-  private final int precision;
-  private final String type;
-  private final BigDecimal fee;
+	private final long currencyId;
+	private final String symbol;
+	private final String name;
+	private final int precision;
+	private final String type;
+	private final BigDecimal fee;
 
-  /**
-   * C'tor
-   *
-   * @param currencyId
-   * @param symbol
-   * @param name
-   * @param precision
-   * @param type
-   * @param fee
-   */
-  public LatokenCurrency(
-      @JsonProperty("currencyId") long currencyId,
-      @JsonProperty("symbol") String symbol,
-      @JsonProperty("name") String name,
-      @JsonProperty("precission") int precision,
-      @JsonProperty("type") String type,
-      @JsonProperty("fee") BigDecimal fee) {
+	/**
+	 * C'tor
+	 */
+	public LatokenCurrency(
+			@JsonProperty("currencyId") long currencyId,
+			@JsonProperty("symbol") String symbol,
+			@JsonProperty("name") String name,
+			@JsonProperty("precission") int precision,
+			@JsonProperty("type") String type,
+			@JsonProperty("fee") BigDecimal fee) {
+		this.currencyId = currencyId;
+		this.symbol = symbol;
+		this.name = name;
+		this.precision = precision;
+		this.type = type;
+		this.fee = fee;
+	}
 
-    this.currencyId = currencyId;
-    this.symbol = symbol;
-    this.name = name;
-    this.precision = precision;
-    this.type = type;
-    this.fee = fee;
-  }
+	/**
+	 * ID of currency
+	 */
+	public long getCurrencyId() {
+		return currencyId;
+	}
 
-  /**
-   * ID of currency
-   *
-   * @return
-   */
-  public long getCurrencyId() {
-    return currencyId;
-  }
+	/**
+	 * Symbol of currency
+	 */
+	public String getSymbol() {
+		return symbol;
+	}
 
-  /**
-   * Symbol of currency
-   *
-   * @return
-   */
-  public String getSymbol() {
-    return symbol;
-  }
+	/**
+	 * Name of currency
+	 */
+	public String getName() {
+		return name;
+	}
 
-  /**
-   * Name of currency
-   *
-   * @return
-   */
-  public String getName() {
-    return name;
-  }
+	/**
+	 * Precision of currency
+	 */
+	public int getPrecision() {
+		return precision;
+	}
 
-  /**
-   * Precision of currency
-   *
-   * @return
-   */
-  public int getPrecision() {
-    return precision;
-  }
+	/**
+	 * Type of currency (e.g. "ERC20")
+	 */
+	public String getType() {
+		return type;
+	}
 
-  /**
-   * Type of currency (e.g. "ERC20")
-   *
-   * @return
-   */
-  public String getType() {
-    return type;
-  }
+	/**
+	 * Transaction fee for currency
+	 */
+	public BigDecimal getFee() {
+		return fee;
+	}
 
-  /**
-   * Transaction fee for currency
-   *
-   * @return
-   */
-  public BigDecimal getFee() {
-    return fee;
-  }
-
-  @Override
-  public String toString() {
-    return "LatokenCurrency [currencyId = "
-        + currencyId
-        + ", symbol = "
-        + symbol
-        + ", name = "
-        + name
-        + ", precision = "
-        + precision
-        + ", type = "
-        + type
-        + ", fee = "
-        + fee
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "LatokenCurrency [currencyId = "
+				+ currencyId
+				+ ", symbol = "
+				+ symbol
+				+ ", name = "
+				+ name
+				+ ", precision = "
+				+ precision
+				+ ", type = "
+				+ type
+				+ ", fee = "
+				+ fee
+				+ "]";
+	}
 }

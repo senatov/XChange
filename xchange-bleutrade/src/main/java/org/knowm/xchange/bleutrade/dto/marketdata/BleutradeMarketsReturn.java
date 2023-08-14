@@ -7,104 +7,111 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"success", "message", "result"})
 public class BleutradeMarketsReturn {
 
-  @JsonProperty("success")
-  private Boolean success;
+	@JsonProperty("success")
+	private Boolean success;
 
-  @JsonProperty("message")
-  private String message;
+	@JsonProperty("message")
+	private String message;
 
-  @JsonProperty("result")
-  private List<BleutradeMarket> result = new ArrayList<BleutradeMarket>();
+	@JsonProperty("result")
+	private List<BleutradeMarket> result = new ArrayList<BleutradeMarket>();
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  @JsonCreator
-  public BleutradeMarketsReturn() {
-    // default c-tor for jackson
-  }
+	@JsonCreator
+	public BleutradeMarketsReturn() {
+		// default c-tor for jackson
+	}
 
-  /** C-tor for testing */
-  public BleutradeMarketsReturn(List<BleutradeMarket> markets) {
-    result = markets;
-    success = true;
-  }
+	/**
+	 * C-tor for testing
+	 */
+	public BleutradeMarketsReturn(List<BleutradeMarket> markets) {
+		result = markets;
+		success = true;
+	}
 
-  /** @return The success */
-  @JsonProperty("success")
-  public Boolean getSuccess() {
+	/**
+	 * @return The success
+	 */
+	@JsonProperty("success")
+	public Boolean getSuccess() {
+		return success;
+	}
 
-    return success;
-  }
+	/**
+	 * @param success The success
+	 */
+	@JsonProperty("success")
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
 
-  /** @param success The success */
-  @JsonProperty("success")
-  public void setSuccess(Boolean success) {
+	/**
+	 * @return The message
+	 */
+	@JsonProperty("message")
+	public String getMessage() {
+		return message;
+	}
 
-    this.success = success;
-  }
+	/**
+	 * @param message The message
+	 */
+	@JsonProperty("message")
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-  /** @return The message */
-  @JsonProperty("message")
-  public String getMessage() {
+	/**
+	 * @return The result
+	 */
+	@JsonProperty("result")
+	public List<BleutradeMarket> getResult() {
+		return result;
+	}
 
-    return message;
-  }
+	/**
+	 * @param result The result
+	 */
+	@JsonProperty("result")
+	public void setResult(List<BleutradeMarket> result) {
+		this.result = result;
+	}
 
-  /** @param message The message */
-  @JsonProperty("message")
-  public void setMessage(String message) {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    this.message = message;
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 
-  /** @return The result */
-  @JsonProperty("result")
-  public List<BleutradeMarket> getResult() {
-
-    return result;
-  }
-
-  /** @param result The result */
-  @JsonProperty("result")
-  public void setResult(List<BleutradeMarket> result) {
-
-    this.result = result;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
-
-  @Override
-  public String toString() {
-
-    return "BleutradeMarketsReturn [success="
-        + success
-        + ", message="
-        + message
-        + ", result="
-        + result
-        + ", additionalProperties="
-        + additionalProperties
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "BleutradeMarketsReturn [success="
+				+ success
+				+ ", message="
+				+ message
+				+ ", result="
+				+ result
+				+ ", additionalProperties="
+				+ additionalProperties
+				+ "]";
+	}
 }

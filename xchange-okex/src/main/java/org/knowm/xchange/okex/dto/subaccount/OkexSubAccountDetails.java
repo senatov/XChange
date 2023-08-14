@@ -6,21 +6,21 @@ import lombok.Getter;
 @Getter
 public class OkexSubAccountDetails {
 
-  @JsonProperty("enable")
-  private String enable;
+	@JsonProperty("enable")
+	private String enable;
 
-  @JsonProperty("subAcct")
-  private String subAcct;
+	@JsonProperty("subAcct")
+	private String subAcct;
 
-  @JsonProperty("label")
-  private String label;
+	@JsonProperty("label")
+	private String label;
 
-  @JsonProperty("mobile")
-  private String mobile;
+	@JsonProperty("mobile")
+	private String mobile;
 
-  @JsonProperty("gAuth")
-  private String gAuth;
+	@JsonProperty("gAuth")
+	private String gAuth;
 
-  @JsonProperty("ts")
-  private String ts;
+	@JsonProperty("ts")
+	private String ts;
 }

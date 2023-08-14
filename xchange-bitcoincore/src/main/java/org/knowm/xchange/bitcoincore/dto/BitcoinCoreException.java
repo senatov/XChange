@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BitcoinCoreException extends RuntimeException {
 
-  private final String error;
+	private final String error;
 
-  public BitcoinCoreException(@JsonProperty("error") String error) {
-    this.error = error;
-  }
+	public BitcoinCoreException(@JsonProperty("error") String error) {
+		this.error = error;
+	}
 
-  @Override
-  public String getMessage() {
-    return error;
-  }
+	@Override
+	public String getMessage() {
+		return error;
+	}
 }

@@ -1,9 +1,10 @@
 package org.knowm.xchange.ripple.dto.account;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import org.knowm.xchange.ripple.dto.RippleException;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+
 public interface ITransferFeeSource {
-  BigDecimal getTransferFeeRate(String address) throws RippleException, IOException;
+	BigDecimal getTransferFeeRate(String address) throws RippleException, IOException;
 }

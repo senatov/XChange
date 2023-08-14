@@ -17,37 +17,37 @@ import static org.knowm.xchange.utils.DigestUtils.bytesToHex;
 
 public class BybitDigest extends BaseParamsDigest {
 
-    private static final String SIGNATURE = "sign";
+	private static final String SIGNATURE = "sign";
 
-    public BybitDigest(String secretKeyBase64) {
-        super(secretKeyBase64, HMAC_SHA_256);
-    }
+	public BybitDigest(String secretKeyBase64) {
+		super(secretKeyBase64, HMAC_SHA_256);
+	}
 
-    public static ParamsDigest createInstance(String secretKeyBase64) {
-        return new BybitDigest(secretKeyBase64);
-    }
+	public static ParamsDigest createInstance(String secretKeyBase64) {
+		return new BybitDigest(secretKeyBase64);
+	}
 
-    @Override
-    public String digestParams(RestInvocation restInvocation) {
-        Params p = Params.of();
-        Map<String, String> params = getInputParams(restInvocation);
-        params.remove(SIGNATURE);
-        Map<String, String> sortedParams = new TreeMap<>(params);
-        sortedParams.forEach(p::add);
-        String input = p.asQueryString();
-        Mac mac = getMac();
-        mac.update(input.getBytes(StandardCharsets.UTF_8));
-        return bytesToHex(mac.doFinal());
-    }
+	@Override
+	public String digestParams(RestInvocation restInvocation) {
+		Params p = Params.of();
+		Map<String, String> params = getInputParams(restInvocation);
+		params.remove(SIGNATURE);
+		Map<String, String> sortedParams = new TreeMap<>(params);
+		sortedParams.forEach(p::add);
+		String input = p.asQueryString();
+		Mac mac = getMac();
+		mac.update(input.getBytes(StandardCharsets.UTF_8));
+		return bytesToHex(mac.doFinal());
+	}
 
-    private Map<String, String> getInputParams(RestInvocation restInvocation) {
-        if ("GET".equals(restInvocation.getHttpMethod())) {
-            return restInvocation.getParamsMap().get(QueryParam.class).asHttpHeaders();
-        }
-        if ("POST".equals(restInvocation.getHttpMethod())) {
-            return restInvocation.getParamsMap().get(FormParam.class).asHttpHeaders();
-        }
-        throw new NotYetImplementedForExchangeException("Only GET and POST are supported in digest");
-    }
+	private Map<String, String> getInputParams(RestInvocation restInvocation) {
+		if ("GET".equals(restInvocation.getHttpMethod())) {
+			return restInvocation.getParamsMap().get(QueryParam.class).asHttpHeaders();
+		}
+		if ("POST".equals(restInvocation.getHttpMethod())) {
+			return restInvocation.getParamsMap().get(FormParam.class).asHttpHeaders();
+		}
+		throw new NotYetImplementedForExchangeException("Only GET and POST are supported in digest");
+	}
 
 }

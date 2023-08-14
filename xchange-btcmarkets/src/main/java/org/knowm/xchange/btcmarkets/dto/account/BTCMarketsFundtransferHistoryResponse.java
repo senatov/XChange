@@ -1,62 +1,62 @@
 package org.knowm.xchange.btcmarkets.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import org.knowm.xchange.btcmarkets.dto.BTCMarketsBaseResponse;
 
+import java.util.List;
+
 public class BTCMarketsFundtransferHistoryResponse extends BTCMarketsBaseResponse {
-  public static class Paging {
-    private String newer;
-    private String older;
+	private List<BTCMarketsFundtransfer> fundTransfers;
+	private Paging paging;
+	public BTCMarketsFundtransferHistoryResponse(
+			@JsonProperty("success") Boolean success,
+			@JsonProperty("errorMessage") String errorMessage,
+			@JsonProperty("errorCode") Integer errorCode,
+			@JsonProperty("fundTransfers") List<BTCMarketsFundtransfer> fundTransfers,
+			@JsonProperty("paging") Paging paging) {
+		super(success, errorMessage, errorCode);
+		this.fundTransfers = fundTransfers;
+		this.paging = paging;
+	}
 
-    public Paging(@JsonProperty("newer") String newer, @JsonProperty("older") String older) {
-      this.newer = newer;
-      this.older = older;
-    }
+	public List<BTCMarketsFundtransfer> getFundTransfers() {
+		return fundTransfers;
+	}
 
-    @Override
-    public String toString() {
-      return "Paging{" + "newer='" + newer + '\'' + ", older='" + older + '\'' + '}';
-    }
-  }
+	public void setFundTransfers(List<BTCMarketsFundtransfer> fundTransfers) {
+		this.fundTransfers = fundTransfers;
+	}
 
-  private List<BTCMarketsFundtransfer> fundTransfers;
-  private Paging paging;
+	public Paging getPaging() {
+		return paging;
+	}
 
-  public BTCMarketsFundtransferHistoryResponse(
-      @JsonProperty("success") Boolean success,
-      @JsonProperty("errorMessage") String errorMessage,
-      @JsonProperty("errorCode") Integer errorCode,
-      @JsonProperty("fundTransfers") List<BTCMarketsFundtransfer> fundTransfers,
-      @JsonProperty("paging") Paging paging) {
-    super(success, errorMessage, errorCode);
-    this.fundTransfers = fundTransfers;
-    this.paging = paging;
-  }
+	public void setPaging(Paging paging) {
+		this.paging = paging;
+	}
 
-  public List<BTCMarketsFundtransfer> getFundTransfers() {
-    return fundTransfers;
-  }
+	@Override
+	public String toString() {
+		return "BTCMarketsFundtransferHistoryResponse{"
+				+ "fundTransfers="
+				+ fundTransfers
+				+ ", paging="
+				+ paging
+				+ '}';
+	}
 
-  public void setFundTransfers(List<BTCMarketsFundtransfer> fundTransfers) {
-    this.fundTransfers = fundTransfers;
-  }
+	public static class Paging {
+		private final String newer;
+		private final String older;
 
-  public Paging getPaging() {
-    return paging;
-  }
+		public Paging(@JsonProperty("newer") String newer, @JsonProperty("older") String older) {
+			this.newer = newer;
+			this.older = older;
+		}
 
-  public void setPaging(Paging paging) {
-    this.paging = paging;
-  }
-
-  @Override
-  public String toString() {
-    return "BTCMarketsFundtransferHistoryResponse{"
-        + "fundTransfers="
-        + fundTransfers
-        + ", paging="
-        + paging
-        + '}';
-  }
+		@Override
+		public String toString() {
+			return "Paging{" + "newer='" + newer + '\'' + ", older='" + older + '\'' + '}';
+		}
+	}
 }

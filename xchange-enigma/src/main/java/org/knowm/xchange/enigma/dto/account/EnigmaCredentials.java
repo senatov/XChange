@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class EnigmaCredentials {
-  @JsonProperty("username")
-  private String username;
+	@JsonProperty("username")
+	private String username;
 
-  @JsonProperty("password")
-  private String password;
+	@JsonProperty("password")
+	private String password;
 }

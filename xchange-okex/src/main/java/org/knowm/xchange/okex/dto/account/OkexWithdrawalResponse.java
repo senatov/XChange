@@ -5,23 +5,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/** https://www.okx.com/docs-v5/en/#rest-api-funding-withdrawal */
+/**
+ * https://www.okx.com/docs-v5/en/#rest-api-funding-withdrawal
+ */
 @Getter
 @NoArgsConstructor
 @ToString
 public class OkexWithdrawalResponse {
-    @JsonProperty("ccy")
-    private String currency;
+	@JsonProperty("ccy")
+	private String currency;
 
-    @JsonProperty("amt")
-    private String amount;
+	@JsonProperty("amt")
+	private String amount;
 
-    @JsonProperty("chain")
-    private String chain;
+	@JsonProperty("chain")
+	private String chain;
 
-    @JsonProperty("clientId")
-    private String clientId;
+	@JsonProperty("clientId")
+	private String clientId;
 
-    @JsonProperty("wdId")
-    private String withdrawalId;
+	@JsonProperty("wdId")
+	private String withdrawalId;
 }

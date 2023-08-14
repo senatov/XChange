@@ -1,8 +1,5 @@
 package org.knowm.xchange.bankera.service;
 
-import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Date;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -24,87 +21,82 @@ import org.knowm.xchange.service.trade.params.orders.DefaultOpenOrdersParamCurre
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Date;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TradeServiceIntegration {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
-  private static String orderId;
-  private static TradeService tradeService;
+	private static String orderId;
+	private static TradeService tradeService;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  @BeforeClass
-  public static void init() {
-    Exchange exchange = ExchangeUtils.createExchangeFromProperties();
-    tradeService = exchange.getTradeService();
-  }
+	@BeforeClass
+	public static void init() {
+		Exchange exchange = ExchangeUtils.createExchangeFromProperties();
+		tradeService = exchange.getTradeService();
+	}
 
-  @Test
-  public void testAcreateLimitOrderTest() throws Exception {
+	@Test
+	public void testAcreateLimitOrderTest() throws Exception {
+		LimitOrder limitOrder =
+				new LimitOrder(
+						Order.OrderType.BID,
+						BigDecimal.valueOf(0.01),
+						CurrencyPair.ETH_BTC,
+						"",
+						new Date(),
+						BigDecimal.valueOf(0.000001));
+		String createdOrderId = tradeService.placeLimitOrder(limitOrder);
+		Assert.assertNotNull(createdOrderId);
+		orderId = createdOrderId;
+		logger.info("Response: {}", orderId);
+	}
 
-    LimitOrder limitOrder =
-        new LimitOrder(
-            Order.OrderType.BID,
-            BigDecimal.valueOf(0.01),
-            CurrencyPair.ETH_BTC,
-            "",
-            new Date(),
-            BigDecimal.valueOf(0.000001));
-    String createdOrderId = tradeService.placeLimitOrder(limitOrder);
-    Assert.assertNotNull(createdOrderId);
-    orderId = createdOrderId;
-    logger.info("Response: {}", orderId);
-  }
+	@Test
+	public void testBcreateMarketOrderTest() throws Exception {
+		MarketOrder marketOrder =
+				new MarketOrder(
+						Order.OrderType.ASK, BigDecimal.valueOf(0.01), CurrencyPair.ETH_BTC, "", new Date());
+		Assert.assertNotNull(tradeService.placeMarketOrder(marketOrder));
+	}
 
-  @Test
-  public void testBcreateMarketOrderTest() throws Exception {
+	@Test
+	public void testCgetOpenOrdersByMarketTest() throws Exception {
+		DefaultOpenOrdersParamCurrencyPair currencyPair = new DefaultOpenOrdersParamCurrencyPair();
+		currencyPair.setCurrencyPair(CurrencyPair.ETH_BTC);
+		OpenOrders openOrders = tradeService.getOpenOrders(currencyPair);
+		logger.info("Response: {}", openOrders);
+	}
 
-    MarketOrder marketOrder =
-        new MarketOrder(
-            Order.OrderType.ASK, BigDecimal.valueOf(0.01), CurrencyPair.ETH_BTC, "", new Date());
+	@Test
+	public void testDgetAllOpenOrdersTest() throws Exception {
+		OpenOrders openOrders = tradeService.getOpenOrders();
+		logger.info("Response: {}", openOrders);
+	}
 
-    Assert.assertNotNull(tradeService.placeMarketOrder(marketOrder));
-  }
+	@Test
+	public void testFcancelOrderTest() throws Exception {
+		Assert.assertTrue(tradeService.cancelOrder(orderId));
+	}
 
-  @Test
-  public void testCgetOpenOrdersByMarketTest() throws Exception {
+	@Test(expected = NotYetImplementedForExchangeException.class)
+	public void testGcancelAllOrdersTest() throws Exception {
+		Assert.assertTrue(tradeService.cancelOrder(new DefaultCancelOrderParamId()));
+	}
 
-    DefaultOpenOrdersParamCurrencyPair currencyPair = new DefaultOpenOrdersParamCurrencyPair();
-    currencyPair.setCurrencyPair(CurrencyPair.ETH_BTC);
-    OpenOrders openOrders = tradeService.getOpenOrders(currencyPair);
-    logger.info("Response: {}", openOrders);
-  }
+	@Test
+	public void testEgetUserOrder() throws Exception {
+		Collection<Order> orders = tradeService.getOrder(orderId);
+		logger.info("Response: {}", orders);
+	}
 
-  @Test
-  public void testDgetAllOpenOrdersTest() throws Exception {
-
-    OpenOrders openOrders = tradeService.getOpenOrders();
-    logger.info("Response: {}", openOrders);
-  }
-
-  @Test
-  public void testFcancelOrderTest() throws Exception {
-
-    Assert.assertTrue(tradeService.cancelOrder(this.orderId));
-  }
-
-  @Test(expected = NotYetImplementedForExchangeException.class)
-  public void testGcancelAllOrdersTest() throws Exception {
-
-    Assert.assertTrue(tradeService.cancelOrder(new DefaultCancelOrderParamId()));
-  }
-
-  @Test
-  public void testEgetUserOrder() throws Exception {
-
-    Collection<Order> orders = tradeService.getOrder(this.orderId);
-    logger.info("Response: {}", orders);
-  }
-
-  @Test
-  public void testHgetUserTrades() throws Exception {
-
-    DefaultTradeHistoryParamCurrencyPair currencyPair = new DefaultTradeHistoryParamCurrencyPair();
-    currencyPair.setCurrencyPair(CurrencyPair.ETH_BTC);
-    UserTrades trades = tradeService.getTradeHistory(currencyPair);
-    logger.info("Response: {}", trades.getUserTrades());
-  }
+	@Test
+	public void testHgetUserTrades() throws Exception {
+		DefaultTradeHistoryParamCurrencyPair currencyPair = new DefaultTradeHistoryParamCurrencyPair();
+		currencyPair.setCurrencyPair(CurrencyPair.ETH_BTC);
+		UserTrades trades = tradeService.getTradeHistory(currencyPair);
+		logger.info("Response: {}", trades.getUserTrades());
+	}
 }

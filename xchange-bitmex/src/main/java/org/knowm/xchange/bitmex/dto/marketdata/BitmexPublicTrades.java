@@ -5,27 +5,23 @@ import java.util.List;
 // @JsonDeserialize(using = BitmexTradesDeserializer.class)
 public class BitmexPublicTrades {
 
-  private final List<BitmexPublicTrade> trades;
-  // private final long last;
+	private final List<BitmexPublicTrade> trades;
+	// private final long last;
 
-  public BitmexPublicTrades(List<BitmexPublicTrade> trades) {
+	public BitmexPublicTrades(List<BitmexPublicTrade> trades) {
+		this.trades = trades;
+	}
 
-    this.trades = trades;
-  }
+	public long getLast() {
+		return 0;
+	}
 
-  public long getLast() {
+	public List<BitmexPublicTrade> getTrades() {
+		return trades;
+	}
 
-    return 0;
-  }
-
-  public List<BitmexPublicTrade> getTrades() {
-
-    return trades;
-  }
-
-  @Override
-  public String toString() {
-
-    return "BitmexTrades [trades=" + trades + ", last=" + 0 + "]";
-  }
+	@Override
+	public String toString() {
+		return "BitmexTrades [trades=" + trades + ", last=" + 0 + "]";
+	}
 }

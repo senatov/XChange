@@ -11,28 +11,28 @@ import org.knowm.xchange.service.BaseService;
 
 public class BitcoindeBaseService extends BaseExchangeService implements BaseService {
 
-  protected final Bitcoinde bitcoinde;
-  protected final String apiKey;
-  protected final BitcoindeDigest signatureCreator;
+	protected final Bitcoinde bitcoinde;
+	protected final String apiKey;
+	protected final BitcoindeDigest signatureCreator;
 
-  /** Constructor */
-  protected BitcoindeBaseService(Exchange exchange) {
+	/**
+	 * Constructor
+	 */
+	protected BitcoindeBaseService(Exchange exchange) {
+		super(exchange);
+		this.bitcoinde =
+				ExchangeRestProxyBuilder.forInterface(Bitcoinde.class, exchange.getExchangeSpecification())
+						.build();
+		this.apiKey = exchange.getExchangeSpecification().getApiKey();
+		this.signatureCreator =
+				BitcoindeDigest.createInstance(exchange.getExchangeSpecification().getSecretKey(), apiKey);
+	}
 
-    super(exchange);
-    this.bitcoinde =
-        ExchangeRestProxyBuilder.forInterface(Bitcoinde.class, exchange.getExchangeSpecification())
-            .build();
-    this.apiKey = exchange.getExchangeSpecification().getApiKey();
-    this.signatureCreator =
-        BitcoindeDigest.createInstance(exchange.getExchangeSpecification().getSecretKey(), apiKey);
-  }
-
-  protected RuntimeException handleError(BitcoindeException exception) {
-
-    if (exception.getMessage().contains("Insufficient credits")) {
-      return new RateLimitExceededException(exception);
-    } else {
-      return new ExchangeException(exception.getMessage(), exception);
-    }
-  }
+	protected RuntimeException handleError(BitcoindeException exception) {
+		if (exception.getMessage().contains("Insufficient credits")) {
+			return new RateLimitExceededException(exception);
+		} else {
+			return new ExchangeException(exception.getMessage(), exception);
+		}
+	}
 }

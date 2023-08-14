@@ -1,9 +1,10 @@
 package org.knowm.xchange.hitbtc.v2.dto;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.trade.LimitOrder;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * This class was originally written in order to support an order ID provided by the client, that
@@ -14,78 +15,78 @@ import org.knowm.xchange.dto.trade.LimitOrder;
  */
 public class HitbtcLimitOrder extends LimitOrder {
 
-  public HitbtcLimitOrder(
-      OrderType type,
-      BigDecimal originalAmount,
-      CurrencyPair currencyPair,
-      String id,
-      Date timestamp,
-      BigDecimal limitPrice,
-      String clientOrderId) {
-    super(
-        type,
-        originalAmount,
-        currencyPair,
-        id,
-        timestamp,
-        limitPrice,
-        null,
-        null,
-        null,
-        null,
-        clientOrderId);
-  }
+	public HitbtcLimitOrder(
+			OrderType type,
+			BigDecimal originalAmount,
+			CurrencyPair currencyPair,
+			String id,
+			Date timestamp,
+			BigDecimal limitPrice,
+			String clientOrderId) {
+		super(
+				type,
+				originalAmount,
+				currencyPair,
+				id,
+				timestamp,
+				limitPrice,
+				null,
+				null,
+				null,
+				null,
+				clientOrderId);
+	}
 
-  public HitbtcLimitOrder(
-      OrderType type,
-      BigDecimal originalAmount,
-      BigDecimal cumulativeAmount,
-      CurrencyPair currencyPair,
-      String id,
-      Date timestamp,
-      BigDecimal limitPrice,
-      String clientOrderId) {
-    super(
-        type,
-        originalAmount,
-        currencyPair,
-        id,
-        timestamp,
-        limitPrice,
-        null,
-        cumulativeAmount,
-        null,
-        null,
-        clientOrderId);
-  }
+	public HitbtcLimitOrder(
+			OrderType type,
+			BigDecimal originalAmount,
+			BigDecimal cumulativeAmount,
+			CurrencyPair currencyPair,
+			String id,
+			Date timestamp,
+			BigDecimal limitPrice,
+			String clientOrderId) {
+		super(
+				type,
+				originalAmount,
+				currencyPair,
+				id,
+				timestamp,
+				limitPrice,
+				null,
+				cumulativeAmount,
+				null,
+				null,
+				clientOrderId);
+	}
 
-  public HitbtcLimitOrder(
-      OrderType type,
-      BigDecimal originalAmount,
-      CurrencyPair currencyPair,
-      String id,
-      Date timestamp,
-      BigDecimal limitPrice,
-      BigDecimal averagePrice,
-      BigDecimal cumulativeAmount,
-      BigDecimal fee,
-      OrderStatus status,
-      String clientOrderId) {
-    super(
-        type,
-        originalAmount,
-        currencyPair,
-        id,
-        timestamp,
-        limitPrice,
-        averagePrice,
-        cumulativeAmount,
-        fee,
-        status,
-        clientOrderId);
-  }
+	public HitbtcLimitOrder(
+			OrderType type,
+			BigDecimal originalAmount,
+			CurrencyPair currencyPair,
+			String id,
+			Date timestamp,
+			BigDecimal limitPrice,
+			BigDecimal averagePrice,
+			BigDecimal cumulativeAmount,
+			BigDecimal fee,
+			OrderStatus status,
+			String clientOrderId) {
+		super(
+				type,
+				originalAmount,
+				currencyPair,
+				id,
+				timestamp,
+				limitPrice,
+				averagePrice,
+				cumulativeAmount,
+				fee,
+				status,
+				clientOrderId);
+	}
 
-  public String getClientOrderId() {
-    return getUserReference();
-  }
+	public String getClientOrderId() {
+		return getUserReference();
+	}
 }

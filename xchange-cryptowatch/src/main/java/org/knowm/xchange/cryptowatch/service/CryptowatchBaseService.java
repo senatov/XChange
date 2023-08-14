@@ -9,15 +9,15 @@ import org.knowm.xchange.service.BaseService;
 
 public class CryptowatchBaseService extends BaseExchangeService implements BaseService {
 
-  protected Cryptowatch cryptowatch;
+	protected Cryptowatch cryptowatch;
 
-  public CryptowatchBaseService(Exchange exchange) {
-    super(exchange);
-    ClientConfigCustomizer clientConfigCustomizer = config -> config.setIgnoreHttpErrorCodes(true);
-    cryptowatch =
-        ExchangeRestProxyBuilder.forInterface(
-                Cryptowatch.class, exchange.getExchangeSpecification())
-            .clientConfigCustomizer(clientConfigCustomizer)
-            .build();
-  }
+	public CryptowatchBaseService(Exchange exchange) {
+		super(exchange);
+		ClientConfigCustomizer clientConfigCustomizer = config -> config.setIgnoreHttpErrorCodes(true);
+		cryptowatch =
+				ExchangeRestProxyBuilder.forInterface(
+								Cryptowatch.class, exchange.getExchangeSpecification())
+						.clientConfigCustomizer(clientConfigCustomizer)
+						.build();
+	}
 }

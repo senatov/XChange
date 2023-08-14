@@ -14,26 +14,26 @@ import org.knowm.xchange.kuna.service.KunaTradeService;
  */
 public class KunaExchange extends BaseExchange implements Exchange {
 
-  public static final String KUNA_URL = "https://kuna.io/api/";
-  public static final String KUNA_HOST = "kuna.io";
-  public static final int KUNA_PORT = 80;
+	public static final String KUNA_URL = "https://kuna.io/api/";
+	public static final String KUNA_HOST = "kuna.io";
+	public static final int KUNA_PORT = 80;
 
-  @Override
-  protected void initServices() {
-    this.marketDataService = new KunaMarketDataService(this);
-    this.accountService = new KunaAccountService(this);
-    this.tradeService = new KunaTradeService(this);
-  }
+	@Override
+	protected void initServices() {
+		this.marketDataService = new KunaMarketDataService(this);
+		this.accountService = new KunaAccountService(this);
+		this.tradeService = new KunaTradeService(this);
+	}
 
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-    exchangeSpecification.setSslUri(KUNA_URL);
-    exchangeSpecification.setHost(KUNA_HOST);
-    exchangeSpecification.setPort(KUNA_PORT);
-    exchangeSpecification.setExchangeName("Kuna");
-    exchangeSpecification.setExchangeDescription(
-        "Kuna is the ukrainian crypto currency exchange platform.");
-    return exchangeSpecification;
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+		exchangeSpecification.setSslUri(KUNA_URL);
+		exchangeSpecification.setHost(KUNA_HOST);
+		exchangeSpecification.setPort(KUNA_PORT);
+		exchangeSpecification.setExchangeName("Kuna");
+		exchangeSpecification.setExchangeDescription(
+				"Kuna is the ukrainian crypto currency exchange platform.");
+		return exchangeSpecification;
+	}
 }

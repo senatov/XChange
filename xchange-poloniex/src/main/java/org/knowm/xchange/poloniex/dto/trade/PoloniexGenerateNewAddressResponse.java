@@ -5,22 +5,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PoloniexGenerateNewAddressResponse {
 
-  private boolean success;
+	private final boolean success;
 
-  private String address;
+	private final String address;
 
-  @JsonCreator
-  public PoloniexGenerateNewAddressResponse(
-      @JsonProperty("success") Boolean success, @JsonProperty("response") String address) {
-    this.success = success;
-    this.address = address;
-  }
+	@JsonCreator
+	public PoloniexGenerateNewAddressResponse(
+			@JsonProperty("success") Boolean success, @JsonProperty("response") String address) {
+		this.success = success;
+		this.address = address;
+	}
 
-  public boolean success() {
-    return success;
-  }
+	public boolean success() {
+		return success;
+	}
 
-  public String getAddress() {
-    return address;
-  }
+	public String getAddress() {
+		return address;
+	}
 }

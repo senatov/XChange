@@ -6,20 +6,17 @@ import org.knowm.xchange.coindirect.CoindirectExchange;
 
 public class CoindirectDemoUtils {
 
-  public static Exchange createExchange() {
-    Exchange exchange;
-
-    String apiKey = null; /* Set your keys here */
-    String apiSecret = null;
-
-    if (apiKey != null && apiSecret != null) {
-      exchange =
-          ExchangeFactory.INSTANCE.createExchange(CoindirectExchange.class, apiKey, apiSecret);
-    } else {
-      exchange = ExchangeFactory.INSTANCE.createExchange(CoindirectExchange.class);
-    }
-
-    /** substitute this with an exchange with your credentials to test authenticated services */
-    return exchange;
-  }
+	public static Exchange createExchange() {
+		Exchange exchange;
+		String apiKey = null; /* Set your keys here */
+		String apiSecret = null;
+		if (apiKey != null && apiSecret != null) {
+			exchange =
+					ExchangeFactory.INSTANCE.createExchange(CoindirectExchange.class, apiKey, apiSecret);
+		} else {
+			exchange = ExchangeFactory.INSTANCE.createExchange(CoindirectExchange.class);
+		}
+		/** substitute this with an exchange with your credentials to test authenticated services */
+		return exchange;
+	}
 }

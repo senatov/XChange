@@ -9,63 +9,63 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class OkexBillDetails {
-  @JsonProperty("instType")
-  String instType;
+	@JsonProperty("instType")
+	String instType;
 
-  @JsonProperty("billId")
-  String billId;
+	@JsonProperty("billId")
+	String billId;
 
-  @JsonProperty("type")
-  String billType;
+	@JsonProperty("type")
+	String billType;
 
-  @JsonProperty("subType")
-  String billSubType;
+	@JsonProperty("subType")
+	String billSubType;
 
-  @JsonProperty("ts")
-  String timestamp;
+	@JsonProperty("ts")
+	String timestamp;
 
-  @JsonProperty("balChg")
-  String accountBalanceChange;
+	@JsonProperty("balChg")
+	String accountBalanceChange;
 
-  @JsonProperty("posBalChg")
-  String positionBalanceChange;
+	@JsonProperty("posBalChg")
+	String positionBalanceChange;
 
-  @JsonProperty("bal")
-  String accountBalance;
+	@JsonProperty("bal")
+	String accountBalance;
 
-  @JsonProperty("posBal")
-  String positionBalance;
+	@JsonProperty("posBal")
+	String positionBalance;
 
-  @JsonProperty("sz")
-  String quantity;
+	@JsonProperty("sz")
+	String quantity;
 
-  @JsonProperty("ccy")
-  String currency;
+	@JsonProperty("ccy")
+	String currency;
 
-  @JsonProperty("pnl")
-  String pnl;
+	@JsonProperty("pnl")
+	String pnl;
 
-  @JsonProperty("fee")
-  String fee;
+	@JsonProperty("fee")
+	String fee;
 
-  @JsonProperty("mgnMode")
-  String marginMode;
+	@JsonProperty("mgnMode")
+	String marginMode;
 
-  @JsonProperty("instId")
-  String instId;
+	@JsonProperty("instId")
+	String instId;
 
-  @JsonProperty("ordId")
-  String orderId;
+	@JsonProperty("ordId")
+	String orderId;
 
-  @JsonProperty("execType")
-  String execType;
+	@JsonProperty("execType")
+	String execType;
 
-  @JsonProperty("from")
-  String fromAccount;
+	@JsonProperty("from")
+	String fromAccount;
 
-  @JsonProperty("to")
-  String toAccount;
+	@JsonProperty("to")
+	String toAccount;
 
-  @JsonProperty("notes")
-  String notes;
+	@JsonProperty("notes")
+	String notes;
 }

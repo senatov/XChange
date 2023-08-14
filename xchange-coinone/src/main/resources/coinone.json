@@ -36,7 +36,6 @@
       "min_amount": 0.01,
       "price_scale": 0
     }
-
   },
   "currencies": {},
   "private_rate_limits": [

@@ -10,16 +10,13 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
 
 public class BitzTradesFetchIntegration {
 
-  @Test
-  public void tradesFetchTest() throws Exception {
-
-    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitZExchange.class);
-    MarketDataService marketDataService = exchange.getMarketDataService();
-    Trades trades = marketDataService.getTrades(new CurrencyPair("LTC", "BTC"));
-
-    // Verify Not Null Values
-    // assertThat(trades).isNotNull();
-
-    // TODO: Logical Verification Of Values
-  }
+	@Test
+	public void tradesFetchTest() throws Exception {
+		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitZExchange.class);
+		MarketDataService marketDataService = exchange.getMarketDataService();
+		Trades trades = marketDataService.getTrades(new CurrencyPair("LTC", "BTC"));
+		// Verify Not Null Values
+		// assertThat(trades).isNotNull();
+		// TODO: Logical Verification Of Values
+	}
 }

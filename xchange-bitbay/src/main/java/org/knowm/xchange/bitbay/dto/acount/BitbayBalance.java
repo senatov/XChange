@@ -1,28 +1,31 @@
 package org.knowm.xchange.bitbay.dto.acount;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
-/** @author Z. Dolezal */
+/**
+ * @author Z. Dolezal
+ */
 public class BitbayBalance {
-  private final BigDecimal available;
-  private final BigDecimal locked;
+	private final BigDecimal available;
+	private final BigDecimal locked;
 
-  /**
-   * available : amount of available money/cryptocurrency locked : amount of locked
-   * money/cryptocurrency
-   */
-  public BitbayBalance(
-      @JsonProperty("available") BigDecimal available, @JsonProperty("locked") BigDecimal locked) {
-    this.available = available;
-    this.locked = locked;
-  }
+	/**
+	 * available : amount of available money/cryptocurrency locked : amount of locked
+	 * money/cryptocurrency
+	 */
+	public BitbayBalance(
+			@JsonProperty("available") BigDecimal available, @JsonProperty("locked") BigDecimal locked) {
+		this.available = available;
+		this.locked = locked;
+	}
 
-  public BigDecimal getAvailable() {
-    return available;
-  }
+	public BigDecimal getAvailable() {
+		return available;
+	}
 
-  public BigDecimal getLocked() {
-    return locked;
-  }
+	public BigDecimal getLocked() {
+		return locked;
+	}
 }

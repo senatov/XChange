@@ -5,15 +5,15 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 public class CoinbaseProException extends HttpStatusExceptionSupport {
 
-  private final String message;
+	private final String message;
 
-  public CoinbaseProException(@JsonProperty("message") String message) {
-    super(message);
-    this.message = message;
-  }
+	public CoinbaseProException(@JsonProperty("message") String message) {
+		super(message);
+		this.message = message;
+	}
 
-  @Override
-  public String getMessage() {
-    return message;
-  }
+	@Override
+	public String getMessage() {
+		return message;
+	}
 }

@@ -1,7 +1,5 @@
 package org.knowm.xchange.mercadobitcoin.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.AccountInfo;
@@ -11,47 +9,46 @@ import org.knowm.xchange.service.account.AccountService;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 
-/** @author Felipe Micaroni Lalli */
+import java.io.IOException;
+import java.math.BigDecimal;
+
+/**
+ * @author Felipe Micaroni Lalli
+ */
 public class MercadoBitcoinAccountService extends MercadoBitcoinAccountServiceRaw
-    implements AccountService {
+		implements AccountService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public MercadoBitcoinAccountService(Exchange exchange) {
+	/**
+	 * Constructor
+	 */
+	public MercadoBitcoinAccountService(Exchange exchange) {
+		super(exchange);
+	}
 
-    super(exchange);
-  }
+	@Override
+	public AccountInfo getAccountInfo() throws IOException {
+		return MercadoBitcoinAdapters.adaptAccountInfo(
+				getMercadoBitcoinAccountInfo(), exchange.getExchangeSpecification().getUserName());
+	}
 
-  @Override
-  public AccountInfo getAccountInfo() throws IOException {
+	@Override
+	public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+			throws IOException {
+		throw new NotAvailableFromExchangeException();
+	}
 
-    return MercadoBitcoinAdapters.adaptAccountInfo(
-        getMercadoBitcoinAccountInfo(), exchange.getExchangeSpecification().getUserName());
-  }
+	@Override
+	public String withdrawFunds(WithdrawFundsParams params) throws IOException {
+		throw new NotAvailableFromExchangeException();
+	}
 
-  @Override
-  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
-      throws IOException {
+	@Override
+	public String requestDepositAddress(Currency currency, String... arguments) throws IOException {
+		throw new NotAvailableFromExchangeException();
+	}
 
-    throw new NotAvailableFromExchangeException();
-  }
-
-  @Override
-  public String withdrawFunds(WithdrawFundsParams params) throws IOException {
-    throw new NotAvailableFromExchangeException();
-  }
-
-  @Override
-  public String requestDepositAddress(Currency currency, String... arguments) throws IOException {
-
-    throw new NotAvailableFromExchangeException();
-  }
-
-  @Override
-  public TradeHistoryParams createFundingHistoryParams() {
-    throw new NotAvailableFromExchangeException();
-  }
+	@Override
+	public TradeHistoryParams createFundingHistoryParams() {
+		throw new NotAvailableFromExchangeException();
+	}
 }

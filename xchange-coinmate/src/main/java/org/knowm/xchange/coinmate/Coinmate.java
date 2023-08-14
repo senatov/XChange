@@ -23,52 +23,59 @@
  */
 package org.knowm.xchange.coinmate;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import org.knowm.xchange.coinmate.dto.marketdata.CoinmateOrderBook;
 import org.knowm.xchange.coinmate.dto.marketdata.CoinmateQuickRate;
 import org.knowm.xchange.coinmate.dto.marketdata.CoinmateTicker;
 import org.knowm.xchange.coinmate.dto.marketdata.CoinmateTransactions;
 import org.knowm.xchange.dto.meta.ExchangeMetaData;
 
-/** @author Martin Stachon */
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.math.BigDecimal;
+
+/**
+ * @author Martin Stachon
+ */
 @Path("api")
 @Produces(MediaType.APPLICATION_JSON)
 public interface Coinmate {
 
-  @GET
-  @Path("ticker")
-  CoinmateTicker getTicker(@QueryParam("currencyPair") String currencyPair) throws IOException;
+	@GET
+	@Path("ticker")
+	CoinmateTicker getTicker(@QueryParam("currencyPair") String currencyPair) throws IOException;
 
-  @GET
-  @Path("orderBook")
-  CoinmateOrderBook getOrderBook(
-      @QueryParam("currencyPair") String currencyPair,
-      @QueryParam("groupByPriceLimit") boolean groupByPriceLimit)
-      throws IOException;
+	@GET
+	@Path("orderBook")
+	CoinmateOrderBook getOrderBook(
+			@QueryParam("currencyPair") String currencyPair,
+			@QueryParam("groupByPriceLimit") boolean groupByPriceLimit)
+			throws IOException;
 
-  @GET
-  @Path("transactions")
-  CoinmateTransactions getTransactions(
-      @QueryParam("minutesIntoHistory") int minutesIntoHistory,
-      @QueryParam("currencyPair") String currencyPair)
-      throws IOException;
+	@GET
+	@Path("transactions")
+	CoinmateTransactions getTransactions(
+			@QueryParam("minutesIntoHistory") int minutesIntoHistory,
+			@QueryParam("currencyPair") String currencyPair)
+			throws IOException;
 
-  @GET
-  @Path("xchange")
-  ExchangeMetaData getMetadata() throws IOException;
+	@GET
+	@Path("xchange")
+	ExchangeMetaData getMetadata() throws IOException;
 
-  @GET
-  @Path("buyQuickRate")
-  CoinmateQuickRate getBuyQuickRate(
-      @FormParam("total") BigDecimal total,
-      @FormParam("currencyPair") String currencyPair) throws IOException;
+	@GET
+	@Path("buyQuickRate")
+	CoinmateQuickRate getBuyQuickRate(
+			@FormParam("total") BigDecimal total,
+			@FormParam("currencyPair") String currencyPair) throws IOException;
 
-  @GET
-  @Path("sellQuickRate")
-  CoinmateQuickRate getSellQuickRate(
-      @FormParam("amount") BigDecimal amount,
-      @FormParam("currencyPair") String currencyPair) throws IOException;
+	@GET
+	@Path("sellQuickRate")
+	CoinmateQuickRate getSellQuickRate(
+			@FormParam("amount") BigDecimal amount,
+			@FormParam("currencyPair") String currencyPair) throws IOException;
 }

@@ -1,9 +1,5 @@
 package org.knowm.xchange.vaultoro.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.OrderBook;
@@ -15,63 +11,56 @@ import org.knowm.xchange.vaultoro.dto.marketdata.VaultoroOrder;
 import org.knowm.xchange.vaultoro.dto.marketdata.VaultoroOrderBook;
 import org.knowm.xchange.vaultoro.dto.marketdata.VaultoroTrade;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Implementation of the market data service for Bittrex
- *
  * <ul>
  *   <li>Provides access to various market data values
  * </ul>
  */
 public class VaultoroMarketDataService extends VaultoroMarketDataServiceRaw
-    implements MarketDataService {
+		implements MarketDataService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public VaultoroMarketDataService(Exchange exchange) {
+	/**
+	 * Constructor
+	 */
+	public VaultoroMarketDataService(Exchange exchange) {
+		super(exchange);
+	}
 
-    super(exchange);
-  }
+	@Override
+	public List<CurrencyPair> getExchangeSymbols() throws IOException {
+		return super.getExchangeSymbols();
+	}
 
-  @Override
-  public List<CurrencyPair> getExchangeSymbols() throws IOException {
+	@Override
+	public Ticker getTicker(CurrencyPair arg0, Object... arg1) throws IOException {
+		BigDecimal latest = super.getLast(arg0);
+		return VaultoroAdapters.adaptVaultoroLatest(latest);
+	}
 
-    return super.getExchangeSymbols();
-  }
+	@Override
+	public OrderBook getOrderBook(CurrencyPair arg0, Object... arg1) throws IOException {
+		List<VaultoroOrderBook> vaultoroOrderBooks = super.getVaultoroOrderBook(arg0);
+		List<VaultoroOrder> asks = new ArrayList<>();
+		List<VaultoroOrder> bids = new ArrayList<>();
+		for (VaultoroOrderBook vaultoroOrderBook : vaultoroOrderBooks) {
+			asks.addAll(vaultoroOrderBook.getSells());
+			bids.addAll(vaultoroOrderBook.getBuys());
+		}
+		VaultoroOrderBook vaultoroOrderBook = new VaultoroOrderBook();
+		vaultoroOrderBook.setB(bids);
+		vaultoroOrderBook.setS(asks);
+		return VaultoroAdapters.adaptVaultoroOrderBook(vaultoroOrderBook, arg0);
+	}
 
-  @Override
-  public OrderBook getOrderBook(CurrencyPair arg0, Object... arg1) throws IOException {
-
-    List<VaultoroOrderBook> vaultoroOrderBooks = super.getVaultoroOrderBook(arg0);
-
-    List<VaultoroOrder> asks = new ArrayList<>();
-    List<VaultoroOrder> bids = new ArrayList<>();
-
-    for (VaultoroOrderBook vaultoroOrderBook : vaultoroOrderBooks) {
-      asks.addAll(vaultoroOrderBook.getSells());
-      bids.addAll(vaultoroOrderBook.getBuys());
-    }
-
-    VaultoroOrderBook vaultoroOrderBook = new VaultoroOrderBook();
-    vaultoroOrderBook.setB(bids);
-    vaultoroOrderBook.setS(asks);
-
-    return VaultoroAdapters.adaptVaultoroOrderBook(vaultoroOrderBook, arg0);
-  }
-
-  @Override
-  public Ticker getTicker(CurrencyPair arg0, Object... arg1) throws IOException {
-
-    BigDecimal latest = super.getLast(arg0);
-    return VaultoroAdapters.adaptVaultoroLatest(latest);
-  }
-
-  @Override
-  public Trades getTrades(CurrencyPair arg0, Object... arg1) throws IOException {
-
-    List<VaultoroTrade> vaultoroTrades = super.getVaultoroTrades(arg0);
-    return VaultoroAdapters.adaptVaultoroTransactions(vaultoroTrades, arg0);
-  }
+	@Override
+	public Trades getTrades(CurrencyPair arg0, Object... arg1) throws IOException {
+		List<VaultoroTrade> vaultoroTrades = super.getVaultoroTrades(arg0);
+		return VaultoroAdapters.adaptVaultoroTransactions(vaultoroTrades, arg0);
+	}
 }

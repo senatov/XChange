@@ -24,17 +24,19 @@
 package org.knowm.xchange.coinmate.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import org.knowm.xchange.coinmate.dto.CoinmateBaseResponse;
 
-/** @author Martin Stachon */
+import java.util.ArrayList;
+
+/**
+ * @author Martin Stachon
+ */
 public class CoinmateDepositAddresses extends CoinmateBaseResponse<ArrayList<String>> {
 
-  public CoinmateDepositAddresses(
-      @JsonProperty("error") boolean error,
-      @JsonProperty("errorMessage") String errorMessage,
-      @JsonProperty("data") ArrayList<String> data) {
-
-    super(error, errorMessage, data);
-  }
+	public CoinmateDepositAddresses(
+			@JsonProperty("error") boolean error,
+			@JsonProperty("errorMessage") String errorMessage,
+			@JsonProperty("data") ArrayList<String> data) {
+		super(error, errorMessage, data);
+	}
 }

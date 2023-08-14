@@ -9,18 +9,18 @@ import si.mazi.rescu.ParamsDigest;
 
 public class CoindealBaseService extends BaseExchangeService implements BaseService {
 
-  protected CoindealAuthenticated coindeal;
-  protected ParamsDigest basicAuthentication;
+	protected CoindealAuthenticated coindeal;
+	protected ParamsDigest basicAuthentication;
 
-  public CoindealBaseService(Exchange exchange) {
-    super(exchange);
-    coindeal =
-        ExchangeRestProxyBuilder.forInterface(
-                CoindealAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-    basicAuthentication =
-        CoindealDigest.createInstance(
-            exchange.getExchangeSpecification().getSecretKey(),
-            exchange.getExchangeSpecification().getApiKey());
-  }
+	public CoindealBaseService(Exchange exchange) {
+		super(exchange);
+		coindeal =
+				ExchangeRestProxyBuilder.forInterface(
+								CoindealAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+		basicAuthentication =
+				CoindealDigest.createInstance(
+						exchange.getExchangeSpecification().getSecretKey(),
+						exchange.getExchangeSpecification().getApiKey());
+	}
 }

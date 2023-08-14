@@ -7,14 +7,15 @@ import org.knowm.xchange.service.trade.TradeService;
  * TradeService#getOrder(org.knowm.xchange.service.trade.params.orders.OrderQueryParams...)}.
  * Exchanges should have their own implementation of this interface if querying an order requires
  * information additional to orderId
- *
  * <ul>
  *   <li>{@link OpenOrdersParamCurrencyPair}.
  * </ul>
  */
 public interface OrderQueryParams {
-  String getOrderId();
+	String getOrderId();
 
-  /** Sets the orderId */
-  void setOrderId(String orderId);
+	/**
+	 * Sets the orderId
+	 */
+	void setOrderId(String orderId);
 }

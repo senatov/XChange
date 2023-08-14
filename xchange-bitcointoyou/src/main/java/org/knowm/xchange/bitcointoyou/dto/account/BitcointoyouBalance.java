@@ -3,10 +3,11 @@ package org.knowm.xchange.bitcointoyou.dto.account;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
 
 /**
  * @author Danilo Guimaraes
@@ -17,92 +18,82 @@ import javax.annotation.Generated;
 @JsonPropertyOrder({"success", "oReturn", "error", "date", "timestamp"})
 public class BitcointoyouBalance {
 
-  @JsonProperty("success")
-  private String success;
+	@JsonProperty("success")
+	private String success;
 
-  @JsonProperty("oReturn")
-  private List<Map<String, BigDecimal>> oReturn;
+	@JsonProperty("oReturn")
+	private List<Map<String, BigDecimal>> oReturn;
 
-  @JsonProperty("error")
-  private String error;
+	@JsonProperty("error")
+	private String error;
 
-  @JsonProperty("date")
-  private String date;
+	@JsonProperty("date")
+	private String date;
 
-  @JsonProperty("timestamp")
-  private String timestamp;
+	@JsonProperty("timestamp")
+	private String timestamp;
 
-  @JsonProperty("success")
-  public String getSuccess() {
+	@JsonProperty("success")
+	public String getSuccess() {
+		return success;
+	}
 
-    return success;
-  }
+	@JsonProperty("success")
+	public void setAvailable(String success) {
+		this.success = success;
+	}
 
-  @JsonProperty("success")
-  public void setAvailable(String success) {
+	@JsonProperty("oReturn")
+	public List<Map<String, BigDecimal>> getoReturn() {
+		return oReturn;
+	}
 
-    this.success = success;
-  }
+	@JsonProperty("oReturn")
+	public void setoReturn(List<Map<String, BigDecimal>> oReturn) {
+		this.oReturn = oReturn;
+	}
 
-  @JsonProperty("oReturn")
-  public List<Map<String, BigDecimal>> getoReturn() {
+	@JsonProperty("error")
+	public String getError() {
+		return error;
+	}
 
-    return oReturn;
-  }
+	@JsonProperty("error")
+	public void setError(String error) {
+		this.error = error;
+	}
 
-  @JsonProperty("oReturn")
-  public void setoReturn(List<Map<String, BigDecimal>> oReturn) {
+	@JsonProperty("date")
+	public String getDate() {
+		return date;
+	}
 
-    this.oReturn = oReturn;
-  }
+	@JsonProperty("date")
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-  @JsonProperty("error")
-  public String getError() {
+	@JsonProperty("timestamp")
+	public String getTimestamp() {
+		return timestamp;
+	}
 
-    return error;
-  }
+	@JsonProperty("timestamp")
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
 
-  @JsonProperty("error")
-  public void setError(String error) {
-
-    this.error = error;
-  }
-
-  @JsonProperty("date")
-  public String getDate() {
-
-    return date;
-  }
-
-  @JsonProperty("date")
-  public void setDate(String date) {
-
-    this.date = date;
-  }
-
-  @JsonProperty("timestamp")
-  public String getTimestamp() {
-
-    return timestamp;
-  }
-
-  @JsonProperty("timestamp")
-  public void setTimestamp(String timestamp) {
-
-    this.timestamp = timestamp;
-  }
-
-  @Override
-  public String toString() {
-    return "BitcointoyouBalance["
-        + "success="
-        + success
-        + ", oReturn="
-        + oReturn
-        + ", date="
-        + date
-        + ", timestamp="
-        + timestamp
-        + ']';
-  }
+	@Override
+	public String toString() {
+		return "BitcointoyouBalance["
+				+ "success="
+				+ success
+				+ ", oReturn="
+				+ oReturn
+				+ ", date="
+				+ date
+				+ ", timestamp="
+				+ timestamp
+				+ ']';
+	}
 }

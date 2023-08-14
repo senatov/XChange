@@ -14,9 +14,9 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainMarketDataOrder {
 
-    @JsonProperty("px")
-    private final BigDecimal price;
-    @JsonProperty("qty")
-    private final BigDecimal quantity;
-    private final Long num;
+	@JsonProperty("px")
+	private final BigDecimal price;
+	@JsonProperty("qty")
+	private final BigDecimal quantity;
+	private final Long num;
 }

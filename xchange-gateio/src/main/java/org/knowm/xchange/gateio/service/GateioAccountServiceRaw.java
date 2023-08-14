@@ -1,8 +1,5 @@
 package org.knowm.xchange.gateio.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.exceptions.ExchangeException;
@@ -11,66 +8,66 @@ import org.knowm.xchange.gateio.dto.account.GateioDepositAddress;
 import org.knowm.xchange.gateio.dto.account.GateioDepositsWithdrawals;
 import org.knowm.xchange.gateio.dto.account.GateioFunds;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
+
 public class GateioAccountServiceRaw extends GateioBaseService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public GateioAccountServiceRaw(Exchange exchange) {
+	/**
+	 * Constructor
+	 */
+	public GateioAccountServiceRaw(Exchange exchange) {
+		super(exchange);
+	}
 
-    super(exchange);
-  }
+	public GateioFunds getGateioAccountInfo() throws IOException {
+		GateioFunds gateioFunds =
+				bter.getFunds(exchange.getExchangeSpecification().getApiKey(), signatureCreator);
+		return handleResponse(gateioFunds);
+	}
 
-  public GateioFunds getGateioAccountInfo() throws IOException {
+	public GateioDepositAddress getGateioDepositAddress(Currency currency) throws IOException {
+		GateioDepositAddress depositAddress =
+				bter.getDepositAddress(
+						exchange.getExchangeSpecification().getApiKey(),
+						signatureCreator,
+						currency.getCurrencyCode());
+		return depositAddress;
+	}
 
-    GateioFunds gateioFunds =
-        bter.getFunds(exchange.getExchangeSpecification().getApiKey(), signatureCreator);
-    return handleResponse(gateioFunds);
-  }
+	public String withdraw(
+			Currency currency, BigDecimal amount, String baseAddress, String addressTag)
+			throws IOException {
+		String withdrawAddress = baseAddress;
+		if (addressTag != null && addressTag.length() > 0) {
+			withdrawAddress = withdrawAddress + " " + addressTag;
+		}
+		return withdraw(currency.getCurrencyCode(), amount, withdrawAddress);
+	}
 
-  public GateioDepositAddress getGateioDepositAddress(Currency currency) throws IOException {
-    GateioDepositAddress depositAddress =
-        bter.getDepositAddress(
-            exchange.getExchangeSpecification().getApiKey(),
-            signatureCreator,
-            currency.getCurrencyCode());
-    return depositAddress;
-  }
+	public String withdraw(String currency, BigDecimal amount, String address) throws IOException {
+		GateioBaseResponse withdraw =
+				bter.withdraw(
+						exchange.getExchangeSpecification().getApiKey(),
+						signatureCreator,
+						currency,
+						amount,
+						address);
+		if (!withdraw.isResult()) {
+			throw new ExchangeException(withdraw.getMessage());
+		}
+		// unfortunatelly gate.io does not return any id for the withdrawal
+		return null;
+	}
 
-  public String withdraw(
-      Currency currency, BigDecimal amount, String baseAddress, String addressTag)
-      throws IOException {
-    String withdrawAddress = baseAddress;
-    if (addressTag != null && addressTag.length() > 0) {
-      withdrawAddress = withdrawAddress + " " + addressTag;
-    }
-    return withdraw(currency.getCurrencyCode(), amount, withdrawAddress);
-  }
-
-  public GateioDepositsWithdrawals getDepositsWithdrawals(Date start, Date end) throws IOException {
-    GateioDepositsWithdrawals gateioDepositsWithdrawals =
-        bter.getDepositsWithdrawals(
-            exchange.getExchangeSpecification().getApiKey(),
-            signatureCreator,
-            start == null ? null : start.getTime() / 1000,
-            end == null ? null : end.getTime() / 1000);
-    return handleResponse(gateioDepositsWithdrawals);
-  }
-
-  public String withdraw(String currency, BigDecimal amount, String address) throws IOException {
-    GateioBaseResponse withdraw =
-        bter.withdraw(
-            exchange.getExchangeSpecification().getApiKey(),
-            signatureCreator,
-            currency,
-            amount,
-            address);
-    if (!withdraw.isResult()) {
-      throw new ExchangeException(withdraw.getMessage());
-    }
-    // unfortunatelly gate.io does not return any id for the withdrawal
-    return null;
-  }
+	public GateioDepositsWithdrawals getDepositsWithdrawals(Date start, Date end) throws IOException {
+		GateioDepositsWithdrawals gateioDepositsWithdrawals =
+				bter.getDepositsWithdrawals(
+						exchange.getExchangeSpecification().getApiKey(),
+						signatureCreator,
+						start == null ? null : start.getTime() / 1000,
+						end == null ? null : end.getTime() / 1000);
+		return handleResponse(gateioDepositsWithdrawals);
+	}
 }

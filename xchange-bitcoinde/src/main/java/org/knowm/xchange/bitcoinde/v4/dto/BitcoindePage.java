@@ -9,13 +9,13 @@ import lombok.Value;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindePage {
 
-  Integer current;
-  Integer last;
+	Integer current;
+	Integer last;
 
-  @JsonCreator
-  public BitcoindePage(
-      @JsonProperty("current") Integer current, @JsonProperty("last") Integer last) {
-    this.current = current;
-    this.last = last;
-  }
+	@JsonCreator
+	public BitcoindePage(
+			@JsonProperty("current") Integer current, @JsonProperty("last") Integer last) {
+		this.current = current;
+		this.last = last;
+	}
 }

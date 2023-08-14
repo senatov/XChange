@@ -15,11 +15,11 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainWithdrawal {
 
-    private final String withdrawalId;
-    private final BigDecimal amount;
-    private final BigDecimal fee;
-    private final Currency currency;
-    private final String beneficiary;
-    private final String state;
-    private final Date timestamp;
+	private final String withdrawalId;
+	private final BigDecimal amount;
+	private final BigDecimal fee;
+	private final Currency currency;
+	private final String beneficiary;
+	private final String state;
+	private final Date timestamp;
 }

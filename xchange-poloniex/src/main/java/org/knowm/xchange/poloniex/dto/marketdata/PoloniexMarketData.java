@@ -6,166 +6,153 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-  "last",
-  "lowestAsk",
-  "highestBid",
-  "percentChange",
-  "baseVolume",
-  "quoteVolume"
+		"last",
+		"lowestAsk",
+		"highestBid",
+		"percentChange",
+		"baseVolume",
+		"quoteVolume"
 })
 public class PoloniexMarketData {
 
-  @JsonProperty("high24hr")
-  private BigDecimal high24hr;
+	@JsonProperty("high24hr")
+	private BigDecimal high24hr;
 
-  @JsonProperty("low24hr")
-  private BigDecimal low24hr;
+	@JsonProperty("low24hr")
+	private BigDecimal low24hr;
 
-  @JsonProperty("last")
-  private BigDecimal last;
+	@JsonProperty("last")
+	private BigDecimal last;
 
-  @JsonProperty("lowestAsk")
-  private BigDecimal lowestAsk;
+	@JsonProperty("lowestAsk")
+	private BigDecimal lowestAsk;
 
-  @JsonProperty("highestBid")
-  private BigDecimal highestBid;
+	@JsonProperty("highestBid")
+	private BigDecimal highestBid;
 
-  @JsonProperty("percentChange")
-  private BigDecimal percentChange;
+	@JsonProperty("percentChange")
+	private BigDecimal percentChange;
 
-  @JsonProperty("baseVolume")
-  private BigDecimal baseVolume;
+	@JsonProperty("baseVolume")
+	private BigDecimal baseVolume;
 
-  @JsonProperty("quoteVolume")
-  private BigDecimal quoteVolume;
+	@JsonProperty("quoteVolume")
+	private BigDecimal quoteVolume;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  public BigDecimal getHigh24hr() {
-    return high24hr;
-  }
+	public BigDecimal getHigh24hr() {
+		return high24hr;
+	}
 
-  public void setHigh24hr(BigDecimal high24hr) {
-    this.high24hr = high24hr;
-  }
+	public void setHigh24hr(BigDecimal high24hr) {
+		this.high24hr = high24hr;
+	}
 
-  public BigDecimal getLow24hr() {
-    return low24hr;
-  }
+	public BigDecimal getLow24hr() {
+		return low24hr;
+	}
 
-  public void setLow24hr(BigDecimal low24hr) {
-    this.low24hr = low24hr;
-  }
+	public void setLow24hr(BigDecimal low24hr) {
+		this.low24hr = low24hr;
+	}
 
-  @JsonProperty("last")
-  public BigDecimal getLast() {
+	@JsonProperty("last")
+	public BigDecimal getLast() {
+		return last;
+	}
 
-    return last;
-  }
+	@JsonProperty("last")
+	public void setLast(BigDecimal last) {
+		this.last = last;
+	}
 
-  @JsonProperty("last")
-  public void setLast(BigDecimal last) {
+	@JsonProperty("lowestAsk")
+	public BigDecimal getLowestAsk() {
+		return lowestAsk;
+	}
 
-    this.last = last;
-  }
+	@JsonProperty("lowestAsk")
+	public void setLowestAsk(BigDecimal lowestAsk) {
+		this.lowestAsk = lowestAsk;
+	}
 
-  @JsonProperty("lowestAsk")
-  public BigDecimal getLowestAsk() {
+	@JsonProperty("highestBid")
+	public BigDecimal getHighestBid() {
+		return highestBid;
+	}
 
-    return lowestAsk;
-  }
+	@JsonProperty("highestBid")
+	public void setHighestBid(BigDecimal highestBid) {
+		this.highestBid = highestBid;
+	}
 
-  @JsonProperty("lowestAsk")
-  public void setLowestAsk(BigDecimal lowestAsk) {
+	@JsonProperty("percentChange")
+	public BigDecimal getPercentChange() {
+		return percentChange;
+	}
 
-    this.lowestAsk = lowestAsk;
-  }
+	@JsonProperty("percentChange")
+	public void setPercentChange(BigDecimal percentChange) {
+		this.percentChange = percentChange;
+	}
 
-  @JsonProperty("highestBid")
-  public BigDecimal getHighestBid() {
+	@JsonProperty("baseVolume")
+	public BigDecimal getBaseVolume() {
+		return baseVolume;
+	}
 
-    return highestBid;
-  }
+	@JsonProperty("baseVolume")
+	public void setBaseVolume(BigDecimal baseVolume) {
+		this.baseVolume = baseVolume;
+	}
 
-  @JsonProperty("highestBid")
-  public void setHighestBid(BigDecimal highestBid) {
+	@JsonProperty("quoteVolume")
+	public BigDecimal getQuoteVolume() {
+		return quoteVolume;
+	}
 
-    this.highestBid = highestBid;
-  }
+	@JsonProperty("quoteVolume")
+	public void setQuoteVolume(BigDecimal quoteVolume) {
+		this.quoteVolume = quoteVolume;
+	}
 
-  @JsonProperty("percentChange")
-  public BigDecimal getPercentChange() {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    return percentChange;
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 
-  @JsonProperty("percentChange")
-  public void setPercentChange(BigDecimal percentChange) {
-
-    this.percentChange = percentChange;
-  }
-
-  @JsonProperty("baseVolume")
-  public BigDecimal getBaseVolume() {
-
-    return baseVolume;
-  }
-
-  @JsonProperty("baseVolume")
-  public void setBaseVolume(BigDecimal baseVolume) {
-
-    this.baseVolume = baseVolume;
-  }
-
-  @JsonProperty("quoteVolume")
-  public BigDecimal getQuoteVolume() {
-
-    return quoteVolume;
-  }
-
-  @JsonProperty("quoteVolume")
-  public void setQuoteVolume(BigDecimal quoteVolume) {
-
-    this.quoteVolume = quoteVolume;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
-
-  @Override
-  public String toString() {
-
-    return "PoloniexMarketData [last="
-        + last
-        + ", lowestAsk="
-        + lowestAsk
-        + ", highestBid="
-        + highestBid
-        + ", percentChange="
-        + percentChange
-        + ", baseVolume="
-        + baseVolume
-        + ", quoteVolume="
-        + quoteVolume
-        + ", additionalProperties="
-        + additionalProperties
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "PoloniexMarketData [last="
+				+ last
+				+ ", lowestAsk="
+				+ lowestAsk
+				+ ", highestBid="
+				+ highestBid
+				+ ", percentChange="
+				+ percentChange
+				+ ", baseVolume="
+				+ baseVolume
+				+ ", quoteVolume="
+				+ quoteVolume
+				+ ", additionalProperties="
+				+ additionalProperties
+				+ "]";
+	}
 }

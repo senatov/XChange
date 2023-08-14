@@ -10,34 +10,28 @@ import si.mazi.rescu.ParamsDigest;
 
 public class PaymiumBaseService extends BaseExchangeService implements BaseService {
 
-  protected final Paymium paymium;
+	protected final Paymium paymium;
 
-  protected final PaymiumAuthenticated paymiumAuthenticated;
+	protected final PaymiumAuthenticated paymiumAuthenticated;
 
-  protected final String apiKey;
+	protected final String apiKey;
 
-  protected final ParamsDigest signatureCreator;
+	protected final ParamsDigest signatureCreator;
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  protected PaymiumBaseService(Exchange exchange) {
-
-    super(exchange);
-
-    this.paymium =
-        ExchangeRestProxyBuilder.forInterface(Paymium.class, exchange.getExchangeSpecification())
-            .build();
-
-    this.paymiumAuthenticated =
-        ExchangeRestProxyBuilder.forInterface(
-                PaymiumAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-
-    this.apiKey = exchange.getExchangeSpecification().getApiKey();
-    this.signatureCreator =
-        PaymiumDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-  }
+	/**
+	 * Constructor
+	 */
+	protected PaymiumBaseService(Exchange exchange) {
+		super(exchange);
+		this.paymium =
+				ExchangeRestProxyBuilder.forInterface(Paymium.class, exchange.getExchangeSpecification())
+						.build();
+		this.paymiumAuthenticated =
+				ExchangeRestProxyBuilder.forInterface(
+								PaymiumAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+		this.apiKey = exchange.getExchangeSpecification().getApiKey();
+		this.signatureCreator =
+				PaymiumDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+	}
 }

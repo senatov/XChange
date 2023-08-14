@@ -40,7 +40,6 @@
       "price_scale": 8,
       "min_amount": 0.001
     }
-
   },
   "currencies": {
     "BCH": {

@@ -7,10 +7,10 @@ import org.knowm.xchange.bittrex.BittrexConstants;
 @AllArgsConstructor
 @Getter
 public enum Type {
-  LIMIT(BittrexConstants.LIMIT),
-  MARKET(BittrexConstants.MARKET),
-  CEILING_LIMIT(BittrexConstants.CEILING_LIMIT),
-  CEILING_MARKET(BittrexConstants.CEILING_MARKET);
+	LIMIT(BittrexConstants.LIMIT),
+	MARKET(BittrexConstants.MARKET),
+	CEILING_LIMIT(BittrexConstants.CEILING_LIMIT),
+	CEILING_MARKET(BittrexConstants.CEILING_MARKET);
 
-  private final String type;
+	private final String type;
 }

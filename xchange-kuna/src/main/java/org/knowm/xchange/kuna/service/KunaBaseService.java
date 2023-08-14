@@ -7,33 +7,33 @@ import org.knowm.xchange.kuna.KunaAuthenticated;
 import org.knowm.xchange.service.BaseExchangeService;
 import org.knowm.xchange.service.BaseService;
 
-/** @author Dat Bui */
+/**
+ * @author Dat Bui
+ */
 public class KunaBaseService extends BaseExchangeService implements BaseService {
 
-  private final Kuna kuna;
-  private final KunaAuthenticated kunaAuthenticated;
+	private final Kuna kuna;
+	private final KunaAuthenticated kunaAuthenticated;
 
-  /**
-   * Constructor.
-   *
-   * @param exchange
-   */
-  protected KunaBaseService(Exchange exchange) {
-    super(exchange);
-    kuna =
-        ExchangeRestProxyBuilder.forInterface(Kuna.class, exchange.getExchangeSpecification())
-            .build();
-    kunaAuthenticated =
-        ExchangeRestProxyBuilder.forInterface(
-                KunaAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-  }
+	/**
+	 * Constructor.
+	 */
+	protected KunaBaseService(Exchange exchange) {
+		super(exchange);
+		kuna =
+				ExchangeRestProxyBuilder.forInterface(Kuna.class, exchange.getExchangeSpecification())
+						.build();
+		kunaAuthenticated =
+				ExchangeRestProxyBuilder.forInterface(
+								KunaAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+	}
 
-  protected Kuna getKuna() {
-    return kuna;
-  }
+	protected Kuna getKuna() {
+		return kuna;
+	}
 
-  protected KunaAuthenticated getKunaAuthenticated() {
-    return kunaAuthenticated;
-  }
+	protected KunaAuthenticated getKunaAuthenticated() {
+		return kunaAuthenticated;
+	}
 }

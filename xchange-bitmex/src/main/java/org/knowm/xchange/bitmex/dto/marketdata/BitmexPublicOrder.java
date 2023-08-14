@@ -1,67 +1,61 @@
 package org.knowm.xchange.bitmex.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
 import org.knowm.xchange.bitmex.dto.trade.BitmexSide;
+
+import java.math.BigDecimal;
 
 public class BitmexPublicOrder {
 
-  private final BigDecimal price;
-  private final BigDecimal size;
-  private final String symbol;
-  private final BigDecimal id;
-  private final BitmexSide side;
+	private final BigDecimal price;
+	private final BigDecimal size;
+	private final String symbol;
+	private final BigDecimal id;
+	private final BitmexSide side;
 
-  public BitmexPublicOrder(
-      @JsonProperty("price") BigDecimal price,
-      @JsonProperty("id") BigDecimal id,
-      @JsonProperty("size") BigDecimal size,
-      @JsonProperty("side") BitmexSide side,
-      @JsonProperty("symbol") String symbol) {
+	public BitmexPublicOrder(
+			@JsonProperty("price") BigDecimal price,
+			@JsonProperty("id") BigDecimal id,
+			@JsonProperty("size") BigDecimal size,
+			@JsonProperty("side") BitmexSide side,
+			@JsonProperty("symbol") String symbol) {
+		this.symbol = symbol;
+		this.id = id;
+		this.side = side;
+		this.size = size;
+		this.price = price;
+	}
 
-    this.symbol = symbol;
-    this.id = id;
-    this.side = side;
-    this.size = size;
-    this.price = price;
-  }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-  public BigDecimal getPrice() {
+	public BigDecimal getVolume() {
+		return size;
+	}
 
-    return price;
-  }
+	public BitmexSide getSide() {
+		return side;
+	}
 
-  public BigDecimal getVolume() {
+	public BigDecimal getId() {
+		return id;
+	}
 
-    return size;
-  }
+	public String getSymbol() {
+		return symbol;
+	}
 
-  public BitmexSide getSide() {
-
-    return side;
-  }
-
-  public BigDecimal getId() {
-
-    return id;
-  }
-
-  public String getSymbol() {
-
-    return symbol;
-  }
-
-  @Override
-  public String toString() {
-
-    return "BitmexOrder [price="
-        + price
-        + ", volume="
-        + size
-        + ", symbol="
-        + symbol
-        + ", side="
-        + side
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "BitmexOrder [price="
+				+ price
+				+ ", volume="
+				+ size
+				+ ", symbol="
+				+ symbol
+				+ ", side="
+				+ side
+				+ "]";
+	}
 }

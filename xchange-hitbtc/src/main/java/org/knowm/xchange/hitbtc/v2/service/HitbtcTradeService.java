@@ -1,9 +1,5 @@
 package org.knowm.xchange.hitbtc.v2.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
@@ -27,115 +23,114 @@ import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 import org.knowm.xchange.service.trade.params.orders.OrderQueryParamCurrencyPair;
 import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class HitbtcTradeService extends HitbtcTradeServiceRaw implements TradeService {
 
-  public HitbtcTradeService(Exchange exchange) {
-    super(exchange);
-  }
+	public HitbtcTradeService(Exchange exchange) {
+		super(exchange);
+	}
 
-  @Override
-  public OpenOrders getOpenOrders() throws IOException {
-    return getOpenOrders(createOpenOrdersParams());
-  }
+	@Override
+	public OpenOrders getOpenOrders() throws IOException {
+		return getOpenOrders(createOpenOrdersParams());
+	}
 
-  @Override
-  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-    List<HitbtcOrder> openOrdersRaw = getOpenOrdersRaw();
-    return HitbtcAdapters.adaptOpenOrders(openOrdersRaw);
-  }
+	@Override
+	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+		List<HitbtcOrder> openOrdersRaw = getOpenOrdersRaw();
+		return HitbtcAdapters.adaptOpenOrders(openOrdersRaw);
+	}
 
-  @Override
-  public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
-    return placeMarketOrderRaw(marketOrder).id;
-  }
+	@Override
+	public Class[] getRequiredCancelOrderParamClasses() {
+		return new Class[]{CancelOrderByUserReferenceParams.class};
+	}
 
-  @Override
-  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
-    return placeLimitOrderRaw(limitOrder).id;
-  }
+	@Override
+	public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
+		return placeMarketOrderRaw(marketOrder).id;
+	}
 
-  /**
-   * @param orderParams - {@link CancelOrderParams} of type {@link CancelOrderByUserReferenceParams}
-   */
-  @Override
-  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-    if (orderParams instanceof CancelOrderByUserReferenceParams) {
-      String clientOrderId = ((CancelOrderByUserReferenceParams) orderParams).getUserReference();
-      HitbtcOrder cancelOrderRaw = cancelOrderRaw(clientOrderId);
-      return "canceled".equals(cancelOrderRaw.status);
-    } else {
-      throw new ExchangeException(
-          "Need userReference for cancelling orders. Use CancelOrderByUserReferenceParams.");
-    }
-  }
+	@Override
+	public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+		return placeLimitOrderRaw(limitOrder).id;
+	}
 
-  @Override
-  public Class[] getRequiredCancelOrderParamClasses() {
-    return new Class[] {CancelOrderByUserReferenceParams.class};
-  }
+	/**
+	 * @param orderParams - {@link CancelOrderParams} of type {@link CancelOrderByUserReferenceParams}
+	 */
+	@Override
+	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+		if (orderParams instanceof CancelOrderByUserReferenceParams) {
+			String clientOrderId = ((CancelOrderByUserReferenceParams) orderParams).getUserReference();
+			HitbtcOrder cancelOrderRaw = cancelOrderRaw(clientOrderId);
+			return "canceled".equals(cancelOrderRaw.status);
+		} else {
+			throw new ExchangeException(
+					"Need userReference for cancelling orders. Use CancelOrderByUserReferenceParams.");
+		}
+	}
 
-  /** Required parameters: {@link TradeHistoryParamPaging} {@link TradeHistoryParamCurrencyPair} */
-  @Override
-  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+	/**
+	 * Required parameters: {@link TradeHistoryParamPaging} {@link TradeHistoryParamCurrencyPair}
+	 */
+	@Override
+	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+		Integer limit = 1000;
+		long offset = 0;
+		if (params instanceof TradeHistoryParamLimit) {
+			limit = ((TradeHistoryParamLimit) params).getLimit();
+		}
+		if (params instanceof TradeHistoryParamOffset tradeHistoryParamOffset) {
+			offset = tradeHistoryParamOffset.getOffset();
+		}
+		String symbol = null;
+		if (params instanceof TradeHistoryParamCurrencyPair) {
+			CurrencyPair pair = ((TradeHistoryParamCurrencyPair) params).getCurrencyPair();
+			symbol = HitbtcAdapters.adaptCurrencyPair(pair);
+		}
+		List<HitbtcOwnTrade> tradeHistoryRaw = getTradeHistoryRaw(symbol, limit, offset);
+		return HitbtcAdapters.adaptTradeHistory(tradeHistoryRaw);
+	}
 
-    Integer limit = 1000;
-    long offset = 0;
+	@Override
+	public TradeHistoryParams createTradeHistoryParams() {
+		return new HitbtcTradeHistoryParams(null, 100, 0L);
+	}
 
-    if (params instanceof TradeHistoryParamLimit) {
-      limit = ((TradeHistoryParamLimit) params).getLimit();
-    }
+	@Override
+	public OpenOrdersParams createOpenOrdersParams() {
+		return null;
+	}
 
-    if (params instanceof TradeHistoryParamOffset) {
-      TradeHistoryParamOffset tradeHistoryParamOffset = (TradeHistoryParamOffset) params;
-      offset = tradeHistoryParamOffset.getOffset();
-    }
+	@Override
+	public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
+		if (orderQueryParams == null) {
+			return new ArrayList<>();
+		}
+		Collection<Order> orders = new ArrayList<>();
+		for (OrderQueryParams param : orderQueryParams) {
+			if (!(param instanceof OrderQueryParamCurrencyPair)) {
+				throw new ExchangeException(
+						"Parameters must be an instance of OrderQueryParamCurrencyPair");
+			}
+			HitbtcOrder rawOrder =
+					getHitbtcOrder(
+							HitbtcAdapters.adaptCurrencyPair(
+									((OrderQueryParamCurrencyPair) param).getCurrencyPair()),
+							param.getOrderId());
+			if (rawOrder != null)
+				orders.add(HitbtcAdapters.adaptOrder(rawOrder));
+		}
+		return orders;
+	}
 
-    String symbol = null;
-    if (params instanceof TradeHistoryParamCurrencyPair) {
-      CurrencyPair pair = ((TradeHistoryParamCurrencyPair) params).getCurrencyPair();
-      symbol = HitbtcAdapters.adaptCurrencyPair(pair);
-    }
-
-    List<HitbtcOwnTrade> tradeHistoryRaw = getTradeHistoryRaw(symbol, limit, offset);
-    return HitbtcAdapters.adaptTradeHistory(tradeHistoryRaw);
-  }
-
-  @Override
-  public TradeHistoryParams createTradeHistoryParams() {
-    return new HitbtcTradeHistoryParams(null, 100, 0L);
-  }
-
-  @Override
-  public OpenOrdersParams createOpenOrdersParams() {
-    return null;
-  }
-
-  @Override
-  public Class getRequiredOrderQueryParamClass() {
-    return OrderQueryParamCurrencyPair.class;
-  }
-
-  @Override
-  public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
-    if (orderQueryParams == null) {
-      return new ArrayList<>();
-    }
-
-    Collection<Order> orders = new ArrayList<>();
-    for (OrderQueryParams param : orderQueryParams) {
-      if (!(param instanceof OrderQueryParamCurrencyPair)) {
-        throw new ExchangeException(
-            "Parameters must be an instance of OrderQueryParamCurrencyPair");
-      }
-      HitbtcOrder rawOrder =
-          getHitbtcOrder(
-              HitbtcAdapters.adaptCurrencyPair(
-                  ((OrderQueryParamCurrencyPair) param).getCurrencyPair()),
-              param.getOrderId());
-
-      if (rawOrder != null) orders.add(HitbtcAdapters.adaptOrder(rawOrder));
-    }
-
-    return orders;
-  }
+	@Override
+	public Class getRequiredOrderQueryParamClass() {
+		return OrderQueryParamCurrencyPair.class;
+	}
 }

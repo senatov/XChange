@@ -1,7 +1,5 @@
 package org.knowm.xchange.bankera.service;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowm.xchange.Exchange;
@@ -15,44 +13,42 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.junit.Assert.assertNotNull;
+
 public class MarketDataServiceIntegration {
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
-  private static MarketDataService marketDataService;
+	private static MarketDataService marketDataService;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  @BeforeClass
-  public static void init() {
+	@BeforeClass
+	public static void init() {
+		Exchange exchange = ExchangeUtils.createExchangeFromProperties();
+		marketDataService = exchange.getMarketDataService();
+	}
 
-    Exchange exchange = ExchangeUtils.createExchangeFromProperties();
-    marketDataService = exchange.getMarketDataService();
-  }
+	@Test
+	public void getTickerTest() throws Exception {
+		Ticker ticker = marketDataService.getTicker(CurrencyPair.ETH_BTC);
+		assertNotNull(ticker);
+		logger.info("Response: {}", ticker);
+	}
 
-  @Test
-  public void getTickerTest() throws Exception {
+	@Test(expected = ExchangeException.class)
+	public void getTickerInvalidMarketTest() throws Exception {
+		marketDataService.getTicker(CurrencyPair.ADA_BNB);
+	}
 
-    Ticker ticker = marketDataService.getTicker(CurrencyPair.ETH_BTC);
-    assertNotNull(ticker);
-    logger.info("Response: {}", ticker);
-  }
+	@Test
+	public void getOrderBookTest() throws Exception {
+		OrderBook orderBook = marketDataService.getOrderBook(CurrencyPair.BNK_USDT);
+		assertNotNull(orderBook);
+		logger.info("Response: {}", orderBook);
+	}
 
-  @Test(expected = ExchangeException.class)
-  public void getTickerInvalidMarketTest() throws Exception {
-    marketDataService.getTicker(CurrencyPair.ADA_BNB);
-  }
-
-  @Test
-  public void getOrderBookTest() throws Exception {
-
-    OrderBook orderBook = marketDataService.getOrderBook(CurrencyPair.BNK_USDT);
-    assertNotNull(orderBook);
-    logger.info("Response: {}", orderBook);
-  }
-
-  @Test
-  public void getTradesTest() throws Exception {
-
-    Trades trades = marketDataService.getTrades(CurrencyPair.ETH_BTC);
-    assertNotNull(trades);
-    logger.info("Response: {}", trades);
-  }
+	@Test
+	public void getTradesTest() throws Exception {
+		Trades trades = marketDataService.getTrades(CurrencyPair.ETH_BTC);
+		assertNotNull(trades);
+		logger.info("Response: {}", trades);
+	}
 }

@@ -4,20 +4,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BitfinexCancelAllOrdersRequest {
 
-  @JsonProperty("request")
-  protected String request;
+	@JsonProperty("request")
+	protected String request;
 
-  @JsonProperty("nonce")
-  protected String nonce;
+	@JsonProperty("nonce")
+	protected String nonce;
 
-  /**
-   * Constructor
-   *
-   * @param nonce
-   */
-  public BitfinexCancelAllOrdersRequest(String nonce) {
-
-    this.request = "/v1/order/cancel/all";
-    this.nonce = nonce;
-  }
+	/**
+	 * Constructor
+	 */
+	public BitfinexCancelAllOrdersRequest(String nonce) {
+		this.request = "/v1/order/cancel/all";
+		this.nonce = nonce;
+	}
 }

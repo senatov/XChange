@@ -14,16 +14,16 @@ import org.knowm.xchange.bitcoinde.v4.dto.BitcoindeResponse;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindeOrderbookWrapper extends BitcoindeResponse {
 
-  BitcoindeOrder[] bitcoindeOrders;
+	BitcoindeOrder[] bitcoindeOrders;
 
-  @JsonCreator
-  public BitcoindeOrderbookWrapper(
-      @JsonProperty("orders") BitcoindeOrder[] bitcoindeOrders,
-      @JsonProperty("credits") Integer credits,
-      @JsonProperty("errors") BitcoindeError[] errors,
-      @JsonProperty("maintenance") BitcoindeMaintenance maintenance,
-      @JsonProperty("nonce") Long nonce) {
-    super(credits, errors, maintenance, nonce);
-    this.bitcoindeOrders = bitcoindeOrders;
-  }
+	@JsonCreator
+	public BitcoindeOrderbookWrapper(
+			@JsonProperty("orders") BitcoindeOrder[] bitcoindeOrders,
+			@JsonProperty("credits") Integer credits,
+			@JsonProperty("errors") BitcoindeError[] errors,
+			@JsonProperty("maintenance") BitcoindeMaintenance maintenance,
+			@JsonProperty("nonce") Long nonce) {
+		super(credits, errors, maintenance, nonce);
+		this.bitcoindeOrders = bitcoindeOrders;
+	}
 }

@@ -1,6 +1,5 @@
 package org.knowm.xchange.yobit;
 
-import java.io.IOException;
 import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
@@ -12,37 +11,39 @@ import org.knowm.xchange.yobit.service.YoBitMarketDataServiceRaw;
 import org.knowm.xchange.yobit.service.YoBitTradeService;
 import si.mazi.rescu.SynchronizedValueFactory;
 
+import java.io.IOException;
+
 public class YoBitExchange extends BaseExchange implements Exchange {
 
-  private SynchronizedValueFactory<Long> nonceFactory =
-      new AtomicLongIncrementalTime2014NonceFactory();
+	private final SynchronizedValueFactory<Long> nonceFactory =
+			new AtomicLongIncrementalTime2014NonceFactory();
 
-  @Override
-  public SynchronizedValueFactory<Long> getNonceFactory() {
-    return nonceFactory;
-  }
+	@Override
+	public SynchronizedValueFactory<Long> getNonceFactory() {
+		return nonceFactory;
+	}
 
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-    exchangeSpecification.setSslUri("https://yobit.net");
-    exchangeSpecification.setHost("yobit.net");
-    exchangeSpecification.setPort(80);
-    exchangeSpecification.setExchangeName("YoBit");
-    exchangeSpecification.setExchangeDescription("YoBit.Net - Ethereum (ETH) Exchange");
-    return exchangeSpecification;
-  }
+	@Override
+	protected void initServices() {
+		this.marketDataService = new YoBitMarketDataService(this);
+		this.accountService = new YoBitAccountService(this);
+		this.tradeService = new YoBitTradeService(this);
+	}
 
-  @Override
-  protected void initServices() {
-    this.marketDataService = new YoBitMarketDataService(this);
-    this.accountService = new YoBitAccountService(this);
-    this.tradeService = new YoBitTradeService(this);
-  }
+	@Override
+	public void remoteInit() throws IOException {
+		YoBitInfo products = ((YoBitMarketDataServiceRaw) marketDataService).getProducts();
+		exchangeMetaData = YoBitAdapters.adaptToExchangeMetaData(exchangeMetaData, products);
+	}
 
-  @Override
-  public void remoteInit() throws IOException {
-    YoBitInfo products = ((YoBitMarketDataServiceRaw) marketDataService).getProducts();
-    exchangeMetaData = YoBitAdapters.adaptToExchangeMetaData(exchangeMetaData, products);
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+		exchangeSpecification.setSslUri("https://yobit.net");
+		exchangeSpecification.setHost("yobit.net");
+		exchangeSpecification.setPort(80);
+		exchangeSpecification.setExchangeName("YoBit");
+		exchangeSpecification.setExchangeDescription("YoBit.Net - Ethereum (ETH) Exchange");
+		return exchangeSpecification;
+	}
 }

@@ -1,28 +1,25 @@
 package org.knowm.xchange.examples.okcoin.marketdata;
 
-import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.okcoin.OkCoinExchange;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
+import java.io.IOException;
+
 public class OkCoinCurrencyPairsDemo {
 
-  public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
+		ExchangeSpecification exSpec = new ExchangeSpecification(OkCoinExchange.class);
+		// flag to set Use_Intl (USD) or China (default)
+		exSpec.setExchangeSpecificParametersItem("Use_Intl", true);
+		Exchange okcoinExchange = ExchangeFactory.INSTANCE.createExchange(exSpec);
+		generic(okcoinExchange);
+	}
 
-    ExchangeSpecification exSpec = new ExchangeSpecification(OkCoinExchange.class);
-
-    // flag to set Use_Intl (USD) or China (default)
-    exSpec.setExchangeSpecificParametersItem("Use_Intl", true);
-    Exchange okcoinExchange = ExchangeFactory.INSTANCE.createExchange(exSpec);
-
-    generic(okcoinExchange);
-  }
-
-  private static void generic(Exchange okcoinExchange) throws IOException {
-
-    // Interested in the public market data feed (no authentication)
-    MarketDataService marketDataService = okcoinExchange.getMarketDataService();
-  }
+	private static void generic(Exchange okcoinExchange) throws IOException {
+		// Interested in the public market data feed (no authentication)
+		MarketDataService marketDataService = okcoinExchange.getMarketDataService();
+	}
 }

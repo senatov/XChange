@@ -1,7 +1,6 @@
 {
   "success": "1",
-  "oReturn":
-  {
+  "oReturn": {
     "asset": "BTC",
     "currency": "BRL",
     "id": "67233",

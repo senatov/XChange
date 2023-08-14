@@ -10,16 +10,16 @@ import lombok.ToString;
 @ToString
 public class CryptowatchAssetPair {
 
-  private final String symbol;
-  private final CryptowatchAsset base;
-  private final CryptowatchAsset quote;
+	private final String symbol;
+	private final CryptowatchAsset base;
+	private final CryptowatchAsset quote;
 
-  public CryptowatchAssetPair(
-      @JsonProperty("symbol") String symbol,
-      @JsonProperty("base") CryptowatchAsset base,
-      @JsonProperty("quote") CryptowatchAsset quote) {
-    this.symbol = symbol;
-    this.base = base;
-    this.quote = quote;
-  }
+	public CryptowatchAssetPair(
+			@JsonProperty("symbol") String symbol,
+			@JsonProperty("base") CryptowatchAsset base,
+			@JsonProperty("quote") CryptowatchAsset quote) {
+		this.symbol = symbol;
+		this.base = base;
+		this.quote = quote;
+	}
 }

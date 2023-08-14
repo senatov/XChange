@@ -15,6 +15,16 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
+import org.apache.commons.lang3.StringUtils;
+import org.knowm.xchange.bitfinex.service.BitfinexAdapters;
+import org.knowm.xchange.bitfinex.v1.BitfinexDigest;
+import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.utils.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import si.mazi.rescu.SynchronizedValueFactory;
+
+import javax.crypto.Mac;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -27,354 +37,339 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import javax.crypto.Mac;
-import org.apache.commons.lang3.StringUtils;
-import org.knowm.xchange.bitfinex.service.BitfinexAdapters;
-import org.knowm.xchange.bitfinex.v1.BitfinexDigest;
-import org.knowm.xchange.exceptions.ExchangeException;
-import org.knowm.xchange.utils.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import si.mazi.rescu.SynchronizedValueFactory;
 
-/** Created by Lukas Zaoralek on 7.11.17. */
+/**
+ * Created by Lukas Zaoralek on 7.11.17.
+ */
 public class BitfinexStreamingService extends JsonNettyStreamingService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BitfinexStreamingService.class);
+	static final String CHANNEL_USER_POSITIONS = "userPositions";
+	static final String CHANNEL_USER_BALANCE_UPDATES = "userBalanceUpdates";
+	static final String CHANNEL_USER_BALANCES = "userBalances";
+	static final String CHANNEL_USER_ORDER_UPDATES = "userOrderUpdates";
+	static final String CHANNEL_USER_ORDERS = "userOrders";
+	static final String CHANNEL_USER_TRADES = "userTrades";
+	static final String CHANNEL_USER_PRE_TRADES = "userPreTrades";
+	private static final Logger LOG = LoggerFactory.getLogger(BitfinexStreamingService.class);
+	private static final String INFO = "info";
+	private static final String ERROR = "error";
+	private static final String CHANNEL_ID = "chanId";
+	private static final String SUBSCRIBED = "subscribed";
+	private static final String UNSUBSCRIBED = "unsubscribed";
+	private static final String ERROR_CODE = "code";
+	private static final String AUTH = "auth";
+	private static final String STATUS = "status";
+	private static final String MESSAGE = "msg";
+	private static final String EVENT = "event";
+	private static final String VERSION = "version";
 
-  static final String CHANNEL_USER_POSITIONS = "userPositions";
-  static final String CHANNEL_USER_BALANCE_UPDATES = "userBalanceUpdates";
-  static final String CHANNEL_USER_BALANCES = "userBalances";
-  static final String CHANNEL_USER_ORDER_UPDATES = "userOrderUpdates";
-  static final String CHANNEL_USER_ORDERS = "userOrders";
-  static final String CHANNEL_USER_TRADES = "userTrades";
-  static final String CHANNEL_USER_PRE_TRADES = "userPreTrades";
+	private static final int CALCULATION_BATCH_SIZE = 8;
+	private static final List<String> WALLETS = Arrays.asList("exchange", "margin", "funding");
+	private static final int SUBSCRIPTION_FAILED = 10300;
+	private static final int SUBSCRIPTION_DUP = 10301;
+	private final PublishSubject<BitfinexWebSocketAuthPreTrade> subjectPreTrade =
+			PublishSubject.create();
+	private final PublishSubject<BitfinexWebSocketAuthTrade> subjectTrade = PublishSubject.create();
+	private final PublishSubject<BitfinexWebSocketAuthOrder> subjectOrder = PublishSubject.create();
+	private final PublishSubject<BitfinexWebSocketAuthBalance> subjectBalance =
+			PublishSubject.create();
+	private final Map<String, String> subscribedChannels = new ConcurrentHashMap<>();
+	private final SynchronizedValueFactory<Long> nonceFactory;
+	private final BlockingQueue<String> calculationQueue = new LinkedBlockingQueue<>();
+	private String apiKey;
+	private String apiSecret;
+	private Disposable calculator;
 
-  private static final String INFO = "info";
-  private static final String ERROR = "error";
-  private static final String CHANNEL_ID = "chanId";
-  private static final String SUBSCRIBED = "subscribed";
-  private static final String UNSUBSCRIBED = "unsubscribed";
-  private static final String ERROR_CODE = "code";
-  private static final String AUTH = "auth";
-  private static final String STATUS = "status";
-  private static final String MESSAGE = "msg";
-  private static final String EVENT = "event";
-  private static final String VERSION = "version";
+	public BitfinexStreamingService(String apiUrl, SynchronizedValueFactory<Long> nonceFactory) {
+		super(apiUrl, Integer.MAX_VALUE, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_RETRY_DURATION, 30);
+		this.nonceFactory = nonceFactory;
+	}
 
-  private static final int CALCULATION_BATCH_SIZE = 8;
-  private static final List<String> WALLETS = Arrays.asList("exchange", "margin", "funding");
+	public BitfinexStreamingService(
+			String apiUrl,
+			SynchronizedValueFactory<Long> nonceFactory,
+			int maxFramePayloadLength,
+			Duration connectionTimeout,
+			Duration retryDuration,
+			int idleTimeoutSeconds) {
+		super(apiUrl, maxFramePayloadLength, connectionTimeout, retryDuration, idleTimeoutSeconds);
+		this.nonceFactory = nonceFactory;
+	}
 
-  private final PublishSubject<BitfinexWebSocketAuthPreTrade> subjectPreTrade =
-      PublishSubject.create();
-  private final PublishSubject<BitfinexWebSocketAuthTrade> subjectTrade = PublishSubject.create();
-  private final PublishSubject<BitfinexWebSocketAuthOrder> subjectOrder = PublishSubject.create();
-  private final PublishSubject<BitfinexWebSocketAuthBalance> subjectBalance =
-      PublishSubject.create();
+	@Override
+	public Completable connect() {
+		return super.connect()
+				.doOnComplete(
+						() ->
+								this.calculator =
+										Observable.interval(1, TimeUnit.SECONDS).subscribe(x -> requestCalcs()));
+	}
 
-  private static final int SUBSCRIPTION_FAILED = 10300;
-  private static final int SUBSCRIPTION_DUP = 10301;
+	/**
+	 * Bitfinex generally doesn't supply calculated data, such as the available amount in a balance,
+	 * unless this is specifically requested. You have to send a message down the socket requesting
+	 * the full information. However, this is rate limited to 8 calculations a second and 30 per
+	 * batch, so we queue up requests and dispatch them in batches of 8, once a second. See {@link
+	 * #scheduleCalculatedBalanceFetch(String)}.
+	 * <p>Details: https://docs.bitfinex.com/v2/docs/changelog#section--calc-input-message
+	 */
+	private void requestCalcs() {
+		Set<String> currencies = new HashSet<>();
+		do {
+			String nextRequest = calculationQueue.poll();
+			if (nextRequest == null)
+				break;
+			if (currencies.size() >= CALCULATION_BATCH_SIZE)
+				break;
+			currencies.add(nextRequest);
+		} while (true);
+		if (currencies.isEmpty())
+			return;
+		Object[] subscriptions =
+				currencies.stream()
+						.map(BitfinexAdapters::adaptBitfinexCurrency)
+						.flatMap(
+								currency -> WALLETS.stream().map(wallet -> "wallet_" + wallet + "_" + currency))
+						.map(calcName -> new String[]{calcName})
+						.toArray();
+		Object[] message = new Object[]{0, "calc", null, subscriptions};
+		LOG.debug("Requesting full calculated balances for: {} in {}", currencies, WALLETS);
+		sendObjectMessage(message);
+	}
 
-  private String apiKey;
-  private String apiSecret;
+	@Override
+	public Completable disconnect() {
+		if (calculator != null)
+			calculator.dispose();
+		return super.disconnect();
+	}
 
-  private final Map<String, String> subscribedChannels = new ConcurrentHashMap<>();
-  private final SynchronizedValueFactory<Long> nonceFactory;
+	@Override
+	protected String getChannelNameFromMessage(JsonNode message) throws IOException {
+		String chanId = null;
+		if (message.has(CHANNEL_ID)) {
+			chanId = message.get(CHANNEL_ID).asText();
+		} else {
+			JsonNode jsonNode = message.get(0);
+			if (jsonNode != null) {
+				chanId = message.get(0).asText();
+			}
+		}
+		if (chanId == null)
+			throw new IOException("Can't find CHANNEL_ID value in socket message: " + message);
+		String subscribedChannel = subscribedChannels.get(chanId);
+		if (subscribedChannel != null)
+			return subscribedChannel;
+		return chanId; // In case bitfinex adds new channels, just fallback to the name in the message
+	}
 
-  private final BlockingQueue<String> calculationQueue = new LinkedBlockingQueue<>();
-  private Disposable calculator;
+	@Override
+	public String getSubscribeMessage(String channelName, Object... args) throws IOException {
+		BitfinexWebSocketSubscriptionMessage subscribeMessage = null;
+		if (args.length == 1) {
+			subscribeMessage = new BitfinexWebSocketSubscriptionMessage(channelName, (String) args[0]);
+		} else if (args.length == 3) {
+			subscribeMessage =
+					new BitfinexWebSocketSubscriptionMessage(
+							channelName, (String) args[0], (String) args[1], (String) args[2]);
+		}
+		if (subscribeMessage == null)
+			throw new IOException("SubscribeMessage: Insufficient arguments");
+		return objectMapper.writeValueAsString(subscribeMessage);
+	}
 
-  public BitfinexStreamingService(String apiUrl, SynchronizedValueFactory<Long> nonceFactory) {
-    super(apiUrl, Integer.MAX_VALUE, DEFAULT_CONNECTION_TIMEOUT, DEFAULT_RETRY_DURATION, 30);
-    this.nonceFactory = nonceFactory;
-  }
+	@Override
+	public String getUnsubscribeMessage(String channelName, Object... args) throws IOException {
+		String channelId = null;
+		for (Map.Entry<String, String> entry : subscribedChannels.entrySet()) {
+			if (entry.getValue().equals(channelName)) {
+				channelId = entry.getKey();
+				break;
+			}
+		}
+		if (channelId == null)
+			throw new IOException("Can't find channel unique name");
+		return objectMapper.writeValueAsString(new BitfinexWebSocketUnSubscriptionMessage(channelId));
+	}
 
-  public BitfinexStreamingService(
-      String apiUrl,
-      SynchronizedValueFactory<Long> nonceFactory,
-      int maxFramePayloadLength,
-      Duration connectionTimeout,
-      Duration retryDuration,
-      int idleTimeoutSeconds) {
-    super(apiUrl, maxFramePayloadLength, connectionTimeout, retryDuration, idleTimeoutSeconds);
-    this.nonceFactory = nonceFactory;
-  }
+	@Override
+	public String getSubscriptionUniqueId(String channelName, Object... args) {
+		if (args.length > 0) {
+			return channelName + "-" + args[0].toString();
+		} else {
+			return channelName;
+		}
+	}
 
-  @Override
-  public Completable connect() {
-    return super.connect()
-        .doOnComplete(
-            () ->
-                this.calculator =
-                    Observable.interval(1, TimeUnit.SECONDS).subscribe(x -> requestCalcs()));
-  }
+	@Override
+	protected void handleMessage(JsonNode message) {
+		if (message.isArray()) {
+			String type = message.get(1).asText();
+			if ("hb".equals(type)) {
+				return;
+			}
+		}
+		JsonNode event = message.get(EVENT);
+		if (event != null) {
+			switch (event.textValue()) {
+				case INFO:
+					JsonNode version = message.get(VERSION);
+					if (version != null) {
+						LOG.debug("Bitfinex websocket API version: {}.", version.intValue());
+					}
+					if (isAuthenticated())
+						auth();
+					break;
+				case AUTH:
+					final String status = message.get(STATUS).textValue();
+					if (BitfinexAuthRequestStatus.FAILED.name().equals(status)) {
+						LOG.error("Authentication error: {}", message.get(MESSAGE));
+					}
+					if (BitfinexAuthRequestStatus.OK.name().equals(status)) {
+						LOG.info("Authenticated successfully");
+					}
+					break;
+				case SUBSCRIBED: {
+					String channel = message.get("channel").asText();
+					String symbol = message.get("symbol").asText();
+					String channelId = message.get(CHANNEL_ID).asText();
+					try {
+						String subscriptionUniqueId = getSubscriptionUniqueId(channel, symbol);
+						subscribedChannels.put(channelId, subscriptionUniqueId);
+						LOG.debug("Register channel {}: {}", subscriptionUniqueId, channelId);
+					} catch (Exception e) {
+						LOG.error(e.getMessage());
+					}
+					break;
+				}
+				case UNSUBSCRIBED: {
+					String channelId = message.get(CHANNEL_ID).asText();
+					subscribedChannels.remove(channelId);
+					break;
+				}
+				case ERROR:
+					final int code = message.get(ERROR_CODE).asInt();
+					switch (code) {
+						case SUBSCRIPTION_FAILED:
+							LOG.error("Error with message: " + message.get("symbol") + " " + message.get("msg"));
+							return;
+						case SUBSCRIPTION_DUP:
+							LOG.warn("Already subscribed: " + message);
+							return;
+					}
+					super.handleError(message, new ExchangeException("Error code: " + code));
+					break;
+			}
+		} else {
+			try {
+				if ("0".equals(getChannelNameFromMessage(message))
+						&& message.isArray()
+						&& message.size() == 3) {
+					processAuthenticatedMessage(message);
+					return;
+				}
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to get channel name from message", e);
+			}
+			super.handleMessage(message);
+		}
+	}
 
-  @Override
-  public Completable disconnect() {
-    if (calculator != null) calculator.dispose();
-    return super.disconnect();
-  }
+	@Override
+	protected WebSocketClientExtensionHandler getWebSocketClientExtensionHandler() {
+		return null;
+	}
 
-  @Override
-  protected WebSocketClientExtensionHandler getWebSocketClientExtensionHandler() {
-    return null;
-  }
+	private void processAuthenticatedMessage(JsonNode message) {
+		String type = message.get(1).asText();
+		JsonNode object = message.get(2);
+		switch (type) {
+			case "te":
+				BitfinexWebSocketAuthPreTrade preTrade = BitfinexStreamingAdapters.adaptPreTrade(object);
+				if (preTrade != null)
+					subjectPreTrade.onNext(preTrade);
+				break;
+			case "tu":
+				BitfinexWebSocketAuthTrade trade = BitfinexStreamingAdapters.adaptTrade(object);
+				if (trade != null)
+					subjectTrade.onNext(trade);
+				break;
+			case "os":
+				BitfinexStreamingAdapters.adaptOrders(object).forEach(subjectOrder::onNext);
+				break;
+			case "on":
+			case "ou":
+			case "oc":
+				BitfinexWebSocketAuthOrder order = BitfinexStreamingAdapters.adaptOrder(object);
+				if (order != null)
+					subjectOrder.onNext(order);
+				break;
+			case "ws":
+				BitfinexStreamingAdapters.adaptBalances(object).forEach(subjectBalance::onNext);
+				break;
+			case "wu":
+				BitfinexWebSocketAuthBalance balance = BitfinexStreamingAdapters.adaptBalance(object);
+				if (balance != null)
+					subjectBalance.onNext(balance);
+				break;
+			case "bu":
+				break;
+			default:
+				LOG.debug("Unknown Bitfinex authenticated message type {}. Content={}", type, object);
+		}
+	}
 
-  @Override
-  public boolean processArrayMessageSeparately() {
-    return false;
-  }
+	boolean isAuthenticated() {
+		return StringUtils.isNotEmpty(apiKey);
+	}
 
-  @Override
-  protected void handleMessage(JsonNode message) {
+	private void auth() {
+		long nonce = nonceFactory.createValue();
+		final String payload = "AUTH" + nonce;
+		final Mac macEncoder = BitfinexDigest.createInstance(apiSecret).getMac();
+		byte[] result = macEncoder.doFinal(payload.getBytes(StandardCharsets.UTF_8));
+		final String signature = DigestUtils.bytesToHex(result);
+		sendObjectMessage(
+				new BitfinexWebSocketAuth(apiKey, payload, String.valueOf(nonce), signature.toLowerCase()));
+	}
 
-    if (message.isArray()) {
-      String type = message.get(1).asText();
-      if ("hb".equals(type)) {
-        return;
-      }
-    }
+	@Override
+	public boolean processArrayMessageSeparately() {
+		return false;
+	}
 
-    JsonNode event = message.get(EVENT);
-    if (event != null) {
-      switch (event.textValue()) {
-        case INFO:
-          JsonNode version = message.get(VERSION);
-          if (version != null) {
-            LOG.debug("Bitfinex websocket API version: {}.", version.intValue());
-          }
-          if (isAuthenticated()) auth();
-          break;
-        case AUTH:
-          final String status = message.get(STATUS).textValue();
-          if (BitfinexAuthRequestStatus.FAILED.name().equals(status)) {
-            LOG.error("Authentication error: {}", message.get(MESSAGE));
-          }
-          if (BitfinexAuthRequestStatus.OK.name().equals(status)) {
-            LOG.info("Authenticated successfully");
-          }
-          break;
-        case SUBSCRIBED:
-          {
-            String channel = message.get("channel").asText();
-            String symbol = message.get("symbol").asText();
-            String channelId = message.get(CHANNEL_ID).asText();
-            try {
-              String subscriptionUniqueId = getSubscriptionUniqueId(channel, symbol);
-              subscribedChannels.put(channelId, subscriptionUniqueId);
-              LOG.debug("Register channel {}: {}", subscriptionUniqueId, channelId);
-            } catch (Exception e) {
-              LOG.error(e.getMessage());
-            }
-            break;
-          }
-        case UNSUBSCRIBED:
-          {
-            String channelId = message.get(CHANNEL_ID).asText();
-            subscribedChannels.remove(channelId);
-            break;
-          }
-        case ERROR:
-          final int code = message.get(ERROR_CODE).asInt();
-          switch (code) {
-            case SUBSCRIPTION_FAILED:
-              LOG.error("Error with message: " + message.get("symbol") + " " + message.get("msg"));
-              return;
-            case SUBSCRIPTION_DUP:
-              LOG.warn("Already subscribed: " + message.toString());
-              return;
-          }
-          super.handleError(message, new ExchangeException("Error code: " + code));
-          break;
-      }
-    } else {
-      try {
-        if ("0".equals(getChannelNameFromMessage(message))
-            && message.isArray()
-            && message.size() == 3) {
-          processAuthenticatedMessage(message);
-          return;
-        }
-      } catch (IOException e) {
-        throw new RuntimeException("Failed to get channel name from message", e);
-      }
-      super.handleMessage(message);
-    }
-  }
+	void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
 
-  private void processAuthenticatedMessage(JsonNode message) {
-    String type = message.get(1).asText();
-    JsonNode object = message.get(2);
-    switch (type) {
-      case "te":
-        BitfinexWebSocketAuthPreTrade preTrade = BitfinexStreamingAdapters.adaptPreTrade(object);
-        if (preTrade != null) subjectPreTrade.onNext(preTrade);
-        break;
-      case "tu":
-        BitfinexWebSocketAuthTrade trade = BitfinexStreamingAdapters.adaptTrade(object);
-        if (trade != null) subjectTrade.onNext(trade);
-        break;
-      case "os":
-        BitfinexStreamingAdapters.adaptOrders(object).forEach(subjectOrder::onNext);
-        break;
-      case "on":
-      case "ou":
-      case "oc":
-        BitfinexWebSocketAuthOrder order = BitfinexStreamingAdapters.adaptOrder(object);
-        if (order != null) subjectOrder.onNext(order);
-        break;
-      case "ws":
-        BitfinexStreamingAdapters.adaptBalances(object).forEach(subjectBalance::onNext);
-        break;
-      case "wu":
-        BitfinexWebSocketAuthBalance balance = BitfinexStreamingAdapters.adaptBalance(object);
-        if (balance != null) subjectBalance.onNext(balance);
-        break;
-      case "bu":
-        break;
-      default:
-        LOG.debug("Unknown Bitfinex authenticated message type {}. Content={}", type, object);
-    }
-  }
+	void setApiSecret(String apiSecret) {
+		this.apiSecret = apiSecret;
+	}
 
-  @Override
-  public String getSubscriptionUniqueId(String channelName, Object... args) {
-    if (args.length > 0) {
-      return channelName + "-" + args[0].toString();
-    } else {
-      return channelName;
-    }
-  }
+	Observable<BitfinexWebSocketAuthOrder> getAuthenticatedOrders() {
+		return subjectOrder.share();
+	}
 
-  @Override
-  protected String getChannelNameFromMessage(JsonNode message) throws IOException {
-    String chanId = null;
-    if (message.has(CHANNEL_ID)) {
-      chanId = message.get(CHANNEL_ID).asText();
-    } else {
-      JsonNode jsonNode = message.get(0);
-      if (jsonNode != null) {
-        chanId = message.get(0).asText();
-      }
-    }
-    if (chanId == null)
-      throw new IOException("Can't find CHANNEL_ID value in socket message: " + message.toString());
-    String subscribedChannel = subscribedChannels.get(chanId);
-    if (subscribedChannel != null) return subscribedChannel;
-    return chanId; // In case bitfinex adds new channels, just fallback to the name in the message
-  }
+	Observable<BitfinexWebSocketAuthPreTrade> getAuthenticatedPreTrades() {
+		return subjectPreTrade.share();
+	}
 
-  @Override
-  public String getSubscribeMessage(String channelName, Object... args) throws IOException {
-    BitfinexWebSocketSubscriptionMessage subscribeMessage = null;
-    if (args.length == 1) {
-      subscribeMessage = new BitfinexWebSocketSubscriptionMessage(channelName, (String) args[0]);
-    } else if (args.length == 3) {
-      subscribeMessage =
-          new BitfinexWebSocketSubscriptionMessage(
-              channelName, (String) args[0], (String) args[1], (String) args[2]);
-    }
-    if (subscribeMessage == null) throw new IOException("SubscribeMessage: Insufficient arguments");
+	Observable<BitfinexWebSocketAuthTrade> getAuthenticatedTrades() {
+		return subjectTrade.share();
+	}
 
-    return objectMapper.writeValueAsString(subscribeMessage);
-  }
+	Observable<BitfinexWebSocketAuthBalance> getAuthenticatedBalances() {
+		return subjectBalance.share();
+	}
 
-  @Override
-  public String getUnsubscribeMessage(String channelName, Object... args) throws IOException {
-    String channelId = null;
-    for (Map.Entry<String, String> entry : subscribedChannels.entrySet()) {
-      if (entry.getValue().equals(channelName)) {
-        channelId = entry.getKey();
-        break;
-      }
-    }
-
-    if (channelId == null) throw new IOException("Can't find channel unique name");
-
-    return objectMapper.writeValueAsString(new BitfinexWebSocketUnSubscriptionMessage(channelId));
-  }
-
-  void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
-  }
-
-  void setApiSecret(String apiSecret) {
-    this.apiSecret = apiSecret;
-  }
-
-  boolean isAuthenticated() {
-    return StringUtils.isNotEmpty(apiKey);
-  }
-
-  private void auth() {
-    long nonce = nonceFactory.createValue();
-    final String payload = "AUTH" + nonce;
-    final Mac macEncoder = BitfinexDigest.createInstance(apiSecret).getMac();
-    byte[] result = macEncoder.doFinal(payload.getBytes(StandardCharsets.UTF_8));
-    final String signature = DigestUtils.bytesToHex(result);
-
-    sendObjectMessage(
-        new BitfinexWebSocketAuth(apiKey, payload, String.valueOf(nonce), signature.toLowerCase()));
-  }
-
-  Observable<BitfinexWebSocketAuthOrder> getAuthenticatedOrders() {
-    return subjectOrder.share();
-  }
-
-  Observable<BitfinexWebSocketAuthPreTrade> getAuthenticatedPreTrades() {
-    return subjectPreTrade.share();
-  }
-
-  Observable<BitfinexWebSocketAuthTrade> getAuthenticatedTrades() {
-    return subjectTrade.share();
-  }
-
-  Observable<BitfinexWebSocketAuthBalance> getAuthenticatedBalances() {
-    return subjectBalance.share();
-  }
-
-  /**
-   * Call on receipt of a partial balance (missing available amount) to schedule the release of a
-   * full calculated amount at some point shortly.
-   *
-   * @param currency The currency code.
-   */
-  void scheduleCalculatedBalanceFetch(String currency) {
-    LOG.debug("Scheduling request for full calculated balances for: {}", currency);
-    calculationQueue.add(currency);
-  }
-
-  /**
-   * Bitfinex generally doesn't supply calculated data, such as the available amount in a balance,
-   * unless this is specifically requested. You have to send a message down the socket requesting
-   * the full information. However, this is rate limited to 8 calculations a second and 30 per
-   * batch, so we queue up requests and dispatch them in batches of 8, once a second. See {@link
-   * #scheduleCalculatedBalanceFetch(String)}.
-   *
-   * <p>Details: https://docs.bitfinex.com/v2/docs/changelog#section--calc-input-message
-   */
-  private void requestCalcs() {
-    Set<String> currencies = new HashSet<>();
-    do {
-      String nextRequest = calculationQueue.poll();
-      if (nextRequest == null) break;
-      if (currencies.size() >= CALCULATION_BATCH_SIZE) break;
-      currencies.add(nextRequest);
-    } while (true);
-
-    if (currencies.isEmpty()) return;
-
-    Object[] subscriptions =
-        currencies.stream()
-            .map(BitfinexAdapters::adaptBitfinexCurrency)
-            .flatMap(
-                currency -> WALLETS.stream().map(wallet -> "wallet_" + wallet + "_" + currency))
-            .map(calcName -> new String[] {calcName})
-            .toArray();
-    Object[] message = new Object[] {0, "calc", null, subscriptions};
-
-    LOG.debug("Requesting full calculated balances for: {} in {}", currencies, WALLETS);
-
-    sendObjectMessage(message);
-  }
+	/**
+	 * Call on receipt of a partial balance (missing available amount) to schedule the release of a
+	 * full calculated amount at some point shortly.
+	 *
+	 * @param currency The currency code.
+	 */
+	void scheduleCalculatedBalanceFetch(String currency) {
+		LOG.debug("Scheduling request for full calculated balances for: {}", currency);
+		calculationQueue.add(currency);
+	}
 }

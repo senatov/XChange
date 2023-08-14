@@ -1,159 +1,153 @@
 package org.knowm.xchange.okcoin.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OkCoinRecords {
 
-  private final String address;
+	private final String address;
 
-  private final String account;
+	private final String account;
 
-  private final BigDecimal amount;
+	private final BigDecimal amount;
 
-  private final String bank;
+	private final String bank;
 
-  private final String benificiaryAddress;
+	private final String benificiaryAddress;
 
-  private final BigDecimal transactionValue;
+	private final BigDecimal transactionValue;
 
-  private final BigDecimal fee;
+	private final BigDecimal fee;
 
-  private final Long date;
+	private final Long date;
 
-  private final Integer status;
+	private final Integer status;
 
-  public OkCoinRecords(
-      @JsonProperty("addr") final String address,
-      @JsonProperty("account") final String account,
-      @JsonProperty("amount") final BigDecimal amount,
-      @JsonProperty("bank") final String bank,
-      @JsonProperty("benificiary_addr") final String benificiaryAddress,
-      @JsonProperty("transaction_value") final BigDecimal transactionValue,
-      @JsonProperty("fee") final BigDecimal fee,
-      @JsonProperty("date") final Long date,
-      @JsonProperty("status") final Integer status) {
+	public OkCoinRecords(
+			@JsonProperty("addr") final String address,
+			@JsonProperty("account") final String account,
+			@JsonProperty("amount") final BigDecimal amount,
+			@JsonProperty("bank") final String bank,
+			@JsonProperty("benificiary_addr") final String benificiaryAddress,
+			@JsonProperty("transaction_value") final BigDecimal transactionValue,
+			@JsonProperty("fee") final BigDecimal fee,
+			@JsonProperty("date") final Long date,
+			@JsonProperty("status") final Integer status) {
+		this.address = address;
+		this.account = account;
+		this.amount = amount;
+		this.bank = bank;
+		this.benificiaryAddress = benificiaryAddress;
+		this.transactionValue = transactionValue;
+		this.fee = fee;
+		this.date = date;
+		this.status = status;
+	}
 
-    this.address = address;
-    this.account = account;
-    this.amount = amount;
-    this.bank = bank;
-    this.benificiaryAddress = benificiaryAddress;
-    this.transactionValue = transactionValue;
-    this.fee = fee;
-    this.date = date;
-    this.status = status;
-  }
+	public String getAddress() {
+		return address;
+	}
 
-  public String getAddress() {
+	public String getAccount() {
+		return account;
+	}
 
-    return address;
-  }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-  public String getAccount() {
+	public String getBank() {
+		return bank;
+	}
 
-    return account;
-  }
+	public String getBenificiaryAddress() {
+		return benificiaryAddress;
+	}
 
-  public BigDecimal getAmount() {
+	public BigDecimal getTransactionValue() {
+		return transactionValue;
+	}
 
-    return amount;
-  }
+	public BigDecimal getFee() {
+		return fee;
+	}
 
-  public String getBank() {
+	public Long getDate() {
+		return date;
+	}
 
-    return bank;
-  }
+	public Integer getStatus() {
+		return status;
+	}
 
-  public String getBenificiaryAddress() {
+	public enum RechargeStatus {
+		FAILURE(-1, "Failure"),
+		WAIT_CONFIRMATION(0, "Wait Confirmation"),
+		COMPLETE(1, "Complete"),
+		;
 
-    return benificiaryAddress;
-  }
+		private static final Map<Integer, RechargeStatus> fromInt =
+				new HashMap<Integer, RechargeStatus>();
 
-  public BigDecimal getTransactionValue() {
+		static {
+			for (RechargeStatus status : values())
+				fromInt.put(status.code, status);
+		}
 
-    return transactionValue;
-  }
+		private final int code;
+		private final String status;
 
-  public BigDecimal getFee() {
+		RechargeStatus(int code, String status) {
+			this.code = code;
+			this.status = status;
+		}
 
-    return fee;
-  }
+		public static RechargeStatus fromInt(int statusInt) {
+			return fromInt.get(statusInt);
+		}
 
-  public Long getDate() {
+		public String getStatus() {
+			return status;
+		}
+	}
 
-    return date;
-  }
+	public enum WithdrawalStatus {
+		REVOKED(-3, "Revoked"),
+		CANCELLED(-2, "Cancelled"),
+		FAILURE(-1, "Failure"),
+		PENDING_0(0, "Pending"),
+		PENDING_1(1, "Pending"),
+		COMPLETE(2, "Complete"),
+		EMAIL_CONFIRMATION(3, "Email Confirmation"),
+		VERIFYING(4, "Verifying"),
+		WAIT_CONFIRMATION(5, "Wait Confirmation"),
+		;
 
-  public Integer getStatus() {
-    return status;
-  }
+		private static final Map<Integer, WithdrawalStatus> fromInt =
+				new HashMap<Integer, WithdrawalStatus>();
 
-  public enum RechargeStatus {
-    FAILURE(-1, "Failure"),
-    WAIT_CONFIRMATION(0, "Wait Confirmation"),
-    COMPLETE(1, "Complete"),
-    ;
+		static {
+			for (WithdrawalStatus status : values())
+				fromInt.put(status.code, status);
+		}
 
-    private static final Map<Integer, RechargeStatus> fromInt =
-        new HashMap<Integer, RechargeStatus>();
+		private final int code;
+		private final String status;
 
-    static {
-      for (RechargeStatus status : values()) fromInt.put(status.code, status);
-    }
+		WithdrawalStatus(int code, String status) {
+			this.code = code;
+			this.status = status;
+		}
 
-    private int code;
-    private String status;
+		public static WithdrawalStatus fromInt(int statusInt) {
+			return fromInt.get(statusInt);
+		}
 
-    RechargeStatus(int code, String status) {
-      this.code = code;
-      this.status = status;
-    }
-
-    public static RechargeStatus fromInt(int statusInt) {
-      return fromInt.get(statusInt);
-    }
-
-    public String getStatus() {
-      return status;
-    }
-  }
-
-  public enum WithdrawalStatus {
-    REVOKED(-3, "Revoked"),
-    CANCELLED(-2, "Cancelled"),
-    FAILURE(-1, "Failure"),
-    PENDING_0(0, "Pending"),
-    PENDING_1(1, "Pending"),
-    COMPLETE(2, "Complete"),
-    EMAIL_CONFIRMATION(3, "Email Confirmation"),
-    VERIFYING(4, "Verifying"),
-    WAIT_CONFIRMATION(5, "Wait Confirmation"),
-    ;
-
-    private static final Map<Integer, WithdrawalStatus> fromInt =
-        new HashMap<Integer, WithdrawalStatus>();
-
-    static {
-      for (WithdrawalStatus status : values()) fromInt.put(status.code, status);
-    }
-
-    private int code;
-    private String status;
-
-    WithdrawalStatus(int code, String status) {
-      this.code = code;
-      this.status = status;
-    }
-
-    public static WithdrawalStatus fromInt(int statusInt) {
-      return fromInt.get(statusInt);
-    }
-
-    public String getStatus() {
-      return status;
-    }
-  }
+		public String getStatus() {
+			return status;
+		}
+	}
 }

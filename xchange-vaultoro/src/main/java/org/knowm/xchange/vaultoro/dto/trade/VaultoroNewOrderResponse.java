@@ -6,60 +6,64 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"status", "data"})
 public class VaultoroNewOrderResponse {
 
-  @JsonProperty("status")
-  private String status;
+	@JsonProperty("status")
+	private String status;
 
-  @JsonProperty("data")
-  private VaultoroNewOrderData data;
+	@JsonProperty("data")
+	private VaultoroNewOrderData data;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  /** @return The status */
-  @JsonProperty("status")
-  public String getStatus() {
+	/**
+	 * @return The status
+	 */
+	@JsonProperty("status")
+	public String getStatus() {
+		return status;
+	}
 
-    return status;
-  }
+	/**
+	 * @param status The status
+	 */
+	@JsonProperty("status")
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-  /** @param status The status */
-  @JsonProperty("status")
-  public void setStatus(String status) {
+	/**
+	 * @return The data
+	 */
+	@JsonProperty("data")
+	public VaultoroNewOrderData getData() {
+		return data;
+	}
 
-    this.status = status;
-  }
+	/**
+	 * @param data The data
+	 */
+	@JsonProperty("data")
+	public void setData(VaultoroNewOrderData data) {
+		this.data = data;
+	}
 
-  /** @return The data */
-  @JsonProperty("data")
-  public VaultoroNewOrderData getData() {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    return data;
-  }
-
-  /** @param data The data */
-  @JsonProperty("data")
-  public void setData(VaultoroNewOrderData data) {
-
-    this.data = data;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 }

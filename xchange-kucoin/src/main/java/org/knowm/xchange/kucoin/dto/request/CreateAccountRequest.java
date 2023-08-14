@@ -12,8 +12,12 @@ import lombok.ToString;
 @JsonInclude(value = Include.NON_EMPTY, content = Include.NON_NULL)
 public class CreateAccountRequest {
 
-  /** Account type: main, trade, margin */
-  private final String type;
-  /** currency */
-  private final String currency;
+	/**
+	 * Account type: main, trade, margin
+	 */
+	private final String type;
+	/**
+	 * currency
+	 */
+	private final String currency;
 }

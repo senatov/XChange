@@ -5,12 +5,13 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum CoincheckSubscriptionNames {
-  ORDERBOOK("orderbook"),
-  TRADES("trades");
+	ORDERBOOK("orderbook"),
+	TRADES("trades");
 
-  @Getter private final String name;
+	@Getter
+	private final String name;
 
-  public String toString() {
-    return getName();
-  }
+	public String toString() {
+		return getName();
+	}
 }

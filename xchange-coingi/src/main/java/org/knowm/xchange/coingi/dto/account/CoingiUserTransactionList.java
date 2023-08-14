@@ -1,19 +1,20 @@
 package org.knowm.xchange.coingi.dto.account;
 
-import java.util.List;
 import org.knowm.xchange.coingi.dto.trade.CoingiPaginatedResultList;
 
+import java.util.List;
+
 public class CoingiUserTransactionList extends CoingiPaginatedResultList<CoingiUserTransaction> {
-  private List<CoingiUserTransaction> coingiUserTransactions;
+	private final List<CoingiUserTransaction> coingiUserTransactions;
 
-  public CoingiUserTransactionList(
-      boolean hasMore, List<CoingiUserTransaction> coingiUserTransactions) {
-    super(hasMore);
-    this.coingiUserTransactions = coingiUserTransactions;
-  }
+	public CoingiUserTransactionList(
+			boolean hasMore, List<CoingiUserTransaction> coingiUserTransactions) {
+		super(hasMore);
+		this.coingiUserTransactions = coingiUserTransactions;
+	}
 
-  @Override
-  protected List<CoingiUserTransaction> getResultsList() {
-    return coingiUserTransactions;
-  }
+	@Override
+	protected List<CoingiUserTransaction> getResultsList() {
+		return coingiUserTransactions;
+	}
 }

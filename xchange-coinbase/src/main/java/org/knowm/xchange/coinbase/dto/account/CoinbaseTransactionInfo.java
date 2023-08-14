@@ -1,42 +1,45 @@
 package org.knowm.xchange.coinbase.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Date;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseTransaction.CoinbaseTransactionStatus;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseMoney;
 
-/** @author jamespedwards42 */
+import java.util.Date;
+
+/**
+ * @author jamespedwards42
+ */
 public interface CoinbaseTransactionInfo {
 
-  @JsonIgnore
-  String getId();
+	@JsonIgnore
+	String getId();
 
-  @JsonIgnore
-  Date getCreatedAt();
+	@JsonIgnore
+	Date getCreatedAt();
 
-  @JsonIgnore
-  CoinbaseMoney getAmount();
+	@JsonIgnore
+	CoinbaseMoney getAmount();
 
-  @JsonIgnore
-  boolean isRequest();
+	@JsonIgnore
+	boolean isRequest();
 
-  @JsonIgnore
-  CoinbaseTransactionStatus getStatus();
+	@JsonIgnore
+	CoinbaseTransactionStatus getStatus();
 
-  @JsonIgnore
-  CoinbaseUser getSender();
+	@JsonIgnore
+	CoinbaseUser getSender();
 
-  @JsonIgnore
-  CoinbaseUser getRecipient();
+	@JsonIgnore
+	CoinbaseUser getRecipient();
 
-  @JsonIgnore
-  String getRecipientAddress();
+	@JsonIgnore
+	String getRecipientAddress();
 
-  String getNotes();
+	String getNotes();
 
-  @JsonIgnore
-  String getTransactionHash();
+	@JsonIgnore
+	String getTransactionHash();
 
-  @JsonIgnore
-  String getIdempotencyKey();
+	@JsonIgnore
+	String getIdempotencyKey();
 }

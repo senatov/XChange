@@ -1,10 +1,11 @@
 package org.knowm.xchange.tradeogre.dto.account;
 
-import java.math.BigDecimal;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 public class TradeOgreBalance {
-  private BigDecimal balance;
-  private BigDecimal available;
+	private BigDecimal balance;
+	private BigDecimal available;
 }

@@ -4,7 +4,7 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 
 public interface DeribitTradeHistoryParamsOld extends TradeHistoryParams {
 
-  Boolean isIncludeOld();
+	Boolean isIncludeOld();
 
-  void setIncludeOld(Boolean includeOld);
+	void setIncludeOld(Boolean includeOld);
 }

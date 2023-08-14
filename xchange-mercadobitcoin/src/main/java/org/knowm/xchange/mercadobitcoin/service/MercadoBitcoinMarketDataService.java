@@ -1,6 +1,5 @@
 package org.knowm.xchange.mercadobitcoin.service;
 
-import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.OrderBook;
@@ -9,37 +8,35 @@ import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.mercadobitcoin.MercadoBitcoinAdapters;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-/** @author Felipe Micaroni Lalli */
+import java.io.IOException;
+
+/**
+ * @author Felipe Micaroni Lalli
+ */
 public class MercadoBitcoinMarketDataService extends MercadoBitcoinMarketDataServiceRaw
-    implements MarketDataService {
+		implements MarketDataService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public MercadoBitcoinMarketDataService(Exchange exchange) {
+	/**
+	 * Constructor
+	 */
+	public MercadoBitcoinMarketDataService(Exchange exchange) {
+		super(exchange);
+	}
 
-    super(exchange);
-  }
+	@Override
+	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
+		return MercadoBitcoinAdapters.adaptTicker(getMercadoBitcoinTicker(currencyPair), currencyPair);
+	}
 
-  @Override
-  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
+	@Override
+	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+		return MercadoBitcoinAdapters.adaptOrderBook(
+				getMercadoBitcoinOrderBook(currencyPair), currencyPair);
+	}
 
-    return MercadoBitcoinAdapters.adaptTicker(getMercadoBitcoinTicker(currencyPair), currencyPair);
-  }
-
-  @Override
-  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-
-    return MercadoBitcoinAdapters.adaptOrderBook(
-        getMercadoBitcoinOrderBook(currencyPair), currencyPair);
-  }
-
-  @Override
-  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
-
-    return MercadoBitcoinAdapters.adaptTrades(
-        getMercadoBitcoinTransactions(currencyPair, args), currencyPair);
-  }
+	@Override
+	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+		return MercadoBitcoinAdapters.adaptTrades(
+				getMercadoBitcoinTransactions(currencyPair, args), currencyPair);
+	}
 }

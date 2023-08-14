@@ -1,28 +1,30 @@
 package org.knowm.xchange.bibox.dto.trade;
 
-/** @author odrotleff */
+/**
+ * @author odrotleff
+ */
 public enum BiboxAccountType {
-  REGULAR(0),
-  MARGIN(1);
+	REGULAR(0),
+	MARGIN(1);
 
-  private int accountType;
+	private final int accountType;
 
-  private BiboxAccountType(int accountType) {
-    this.accountType = accountType;
-  }
+	BiboxAccountType(int accountType) {
+		this.accountType = accountType;
+	}
 
-  public static BiboxAccountType fromInt(int accountType) {
-    switch (accountType) {
-      case 0:
-        return REGULAR;
-      case 1:
-        return MARGIN;
-      default:
-        throw new RuntimeException("Unexpected Bibox account type!");
-    }
-  }
+	public static BiboxAccountType fromInt(int accountType) {
+		switch (accountType) {
+			case 0:
+				return REGULAR;
+			case 1:
+				return MARGIN;
+			default:
+				throw new RuntimeException("Unexpected Bibox account type!");
+		}
+	}
 
-  public int asInt() {
-    return accountType;
-  }
+	public int asInt() {
+		return accountType;
+	}
 }

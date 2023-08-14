@@ -4,25 +4,25 @@ import org.knowm.xchange.exceptions.ExchangeException;
 
 public class OkCoinException extends ExchangeException {
 
-  private static final long serialVersionUID = 20140614L;
+	private static final long serialVersionUID = 20140614L;
 
-  private final int errorCode;
+	private final int errorCode;
 
-  /**
-   * Constructor.
-   *
-   * @param errorCode the error code.
-   * @param message the exception message.
-   */
-  public OkCoinException(int errorCode, String message) {
+	/**
+	 * Constructor.
+	 *
+	 * @param errorCode the error code.
+	 * @param message the exception message.
+	 */
+	public OkCoinException(int errorCode, String message) {
+		super(message);
+		this.errorCode = errorCode;
+	}
 
-    super(message);
-    this.errorCode = errorCode;
-  }
-
-  /** @return the error code. */
-  public int getErrorCode() {
-
-    return errorCode;
-  }
+	/**
+	 * @return the error code.
+	 */
+	public int getErrorCode() {
+		return errorCode;
+	}
 }

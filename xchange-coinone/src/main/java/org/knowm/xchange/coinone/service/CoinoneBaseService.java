@@ -9,30 +9,28 @@ import si.mazi.rescu.ParamsDigest;
 
 public class CoinoneBaseService extends BaseExchangeService implements BaseService {
 
-  protected final CoinoneAuthenticated coinone;
-  protected final String apiKey;
-  protected final String apiSecret;
-  protected final String url;
-  protected ParamsDigest signatureCreator;
-  protected ParamsDigest payloadCreator;
+	protected final CoinoneAuthenticated coinone;
+	protected final String apiKey;
+	protected final String apiSecret;
+	protected final String url;
+	protected ParamsDigest signatureCreator;
+	protected ParamsDigest payloadCreator;
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public CoinoneBaseService(Exchange exchange) {
-    super(exchange);
-    this.coinone =
-        ExchangeRestProxyBuilder.forInterface(
-                CoinoneAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-    this.apiKey = exchange.getExchangeSpecification().getApiKey();
-    this.apiSecret = exchange.getExchangeSpecification().getSecretKey();
-    this.url = exchange.getExchangeSpecification().getSslUri();
-    if (apiSecret != null) {
-      this.signatureCreator = CoinoneHmacDigest.createInstance(apiSecret);
-      this.payloadCreator = CoinonePayloadDigest.createInstance();
-    }
-  }
+	/**
+	 * Constructor
+	 */
+	public CoinoneBaseService(Exchange exchange) {
+		super(exchange);
+		this.coinone =
+				ExchangeRestProxyBuilder.forInterface(
+								CoinoneAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+		this.apiKey = exchange.getExchangeSpecification().getApiKey();
+		this.apiSecret = exchange.getExchangeSpecification().getSecretKey();
+		this.url = exchange.getExchangeSpecification().getSslUri();
+		if (apiSecret != null) {
+			this.signatureCreator = CoinoneHmacDigest.createInstance(apiSecret);
+			this.payloadCreator = CoinonePayloadDigest.createInstance();
+		}
+	}
 }

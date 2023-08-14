@@ -10,42 +10,42 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 public class BybitOrderRequest {
 
-  @JsonProperty("accountId")
-  String accountId;
+	@JsonProperty("accountId")
+	String accountId;
 
-  @JsonProperty("symbol")
-  String symbol;
+	@JsonProperty("symbol")
+	String symbol;
 
-  @JsonProperty("symbolName")
-  String symbolName;
+	@JsonProperty("symbolName")
+	String symbolName;
 
-  @JsonProperty("orderLinkId")
-  String orderLinkId;
+	@JsonProperty("orderLinkId")
+	String orderLinkId;
 
-  @JsonProperty("orderId")
-  String orderId;
+	@JsonProperty("orderId")
+	String orderId;
 
-  @JsonProperty("transactTime")
-  String transactTime;
+	@JsonProperty("transactTime")
+	String transactTime;
 
-  @JsonProperty("price")
-  String price;
+	@JsonProperty("price")
+	String price;
 
-  @JsonProperty("origQty")
-  String origQty;
+	@JsonProperty("origQty")
+	String origQty;
 
-  @JsonProperty("executedQty")
-  String executedQty;
+	@JsonProperty("executedQty")
+	String executedQty;
 
-  @JsonProperty("status")
-  String status;
+	@JsonProperty("status")
+	String status;
 
-  @JsonProperty("timeInForce")
-  String timeInForce;
+	@JsonProperty("timeInForce")
+	String timeInForce;
 
-  @JsonProperty("type")
-  String type;
+	@JsonProperty("type")
+	String type;
 
-  @JsonProperty("side")
-  String side;
+	@JsonProperty("side")
+	String side;
 }

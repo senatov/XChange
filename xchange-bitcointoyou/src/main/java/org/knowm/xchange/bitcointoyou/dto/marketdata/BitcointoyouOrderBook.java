@@ -6,12 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.annotation.Generated;
 
 /**
  * @author Jonathas Carrijo
@@ -22,64 +23,68 @@ import javax.annotation.Generated;
 @JsonPropertyOrder({"asks", "bids"})
 public class BitcointoyouOrderBook {
 
-  private final List<List<BigDecimal>> asks;
-  private final List<List<BigDecimal>> bids;
-  @JsonIgnore private final Map<String, Object> additionalProperties = new HashMap<>();
+	private final List<List<BigDecimal>> asks;
+	private final List<List<BigDecimal>> bids;
+	@JsonIgnore
+	private final Map<String, Object> additionalProperties = new HashMap<>();
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof BitcointoyouOrderBook)) return false;
-    BitcointoyouOrderBook that = (BitcointoyouOrderBook) o;
-    return Objects.equals(getAsks(), that.getAsks())
-        && Objects.equals(getBids(), that.getBids())
-        && Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
-  }
+	public BitcointoyouOrderBook(
+			@JsonProperty("asks") List<List<BigDecimal>> asks,
+			@JsonProperty("bids") List<List<BigDecimal>> bids) {
+		this.asks = asks;
+		this.bids = bids;
+	}
 
-  @Override
-  public int hashCode() {
+	@Override
+	public int hashCode() {
+		return Objects.hash(getAsks(), getBids(), getAdditionalProperties());
+	}
 
-    return Objects.hash(getAsks(), getBids(), getAdditionalProperties());
-  }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof BitcointoyouOrderBook))
+			return false;
+		BitcointoyouOrderBook that = (BitcointoyouOrderBook) o;
+		return Objects.equals(getAsks(), that.getAsks())
+				&& Objects.equals(getBids(), that.getBids())
+				&& Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+	}
 
-  @Override
-  public String toString() {
-    return "BitcointoyouOrderBook{"
-        + "asks="
-        + asks
-        + ", bids="
-        + bids
-        + ", additionalProperties="
-        + additionalProperties
-        + '}';
-  }
+	@Override
+	public String toString() {
+		return "BitcointoyouOrderBook{"
+				+ "asks="
+				+ asks
+				+ ", bids="
+				+ bids
+				+ ", additionalProperties="
+				+ additionalProperties
+				+ '}';
+	}
 
-  public BitcointoyouOrderBook(
-      @JsonProperty("asks") List<List<BigDecimal>> asks,
-      @JsonProperty("bids") List<List<BigDecimal>> bids) {
-    this.asks = asks;
-    this.bids = bids;
-  }
+	/**
+	 * @return The asks
+	 */
+	public List<List<BigDecimal>> getAsks() {
+		return asks;
+	}
 
-  /** @return The asks */
-  public List<List<BigDecimal>> getAsks() {
+	/**
+	 * @return The bids
+	 */
+	public List<List<BigDecimal>> getBids() {
+		return bids;
+	}
 
-    return asks;
-  }
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-  /** @return The bids */
-  public List<List<BigDecimal>> getBids() {
-
-    return bids;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-    this.additionalProperties.put(name, value);
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 }

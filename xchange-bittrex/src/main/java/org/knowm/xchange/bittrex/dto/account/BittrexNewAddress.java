@@ -9,5 +9,5 @@ import org.knowm.xchange.currency.Currency;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BittrexNewAddress {
-  private Currency currencySymbol;
+	private Currency currencySymbol;
 }

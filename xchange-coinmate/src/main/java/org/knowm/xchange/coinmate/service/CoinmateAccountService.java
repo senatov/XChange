@@ -23,13 +23,6 @@
  */
 package org.knowm.xchange.coinmate.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinmate.CoinmateAdapters;
 import org.knowm.xchange.coinmate.CoinmateUtils;
@@ -39,7 +32,6 @@ import org.knowm.xchange.coinmate.dto.trade.CoinmateTradeResponse;
 import org.knowm.xchange.coinmate.dto.trade.CoinmateTransactionHistory;
 import org.knowm.xchange.coinmate.dto.trade.CoinmateTransferHistory;
 import org.knowm.xchange.currency.Currency;
-import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.account.AccountInfo;
 import org.knowm.xchange.dto.account.Fee;
 import org.knowm.xchange.dto.account.FundingRecord;
@@ -53,148 +45,147 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamsSorted;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamsTimeSpan;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 
-/** @author Martin Stachon */
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * @author Martin Stachon
+ */
 public class CoinmateAccountService extends CoinmateAccountServiceRaw implements AccountService {
 
-  public static final int DEFAULT_RESULT_LIMIT = 100;
+	public static final int DEFAULT_RESULT_LIMIT = 100;
 
-  public CoinmateAccountService(Exchange exchange) {
-    super(exchange);
-  }
+	public CoinmateAccountService(Exchange exchange) {
+		super(exchange);
+	}
 
-  @Override
-  public AccountInfo getAccountInfo() throws IOException {
-    return new AccountInfo(CoinmateAdapters.adaptWallet(getCoinmateBalance()));
-  }
+	@Override
+	public AccountInfo getAccountInfo() throws IOException {
+		return new AccountInfo(CoinmateAdapters.adaptWallet(getCoinmateBalance()));
+	}
 
-  @Override
-  public Map<Instrument, Fee> getDynamicTradingFeesByInstrument() throws IOException {
-    Set<Instrument> instruments = exchange.getExchangeMetaData().getInstruments().keySet();
-    HashMap<Instrument, Fee> result = new HashMap<>();
-    for (Instrument instrument: instruments) {
-      CoinmateTradingFeesResponseData data = getCoinmateTraderFees(CoinmateUtils.getPair(instrument));
-      Fee fee = new Fee(data.getMaker(), data.getTaker());
-      result.put(instrument, fee);
-    }
-    return result;
-  }
+	@Override
+	public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+			throws IOException {
+		CoinmateTradeResponse response;
+		if (currency.equals(Currency.BTC)) {
+			response = coinmateBitcoinWithdrawal(amount, address);
+		} else if (currency.equals(Currency.LTC)) {
+			response = coinmateLitecoinWithdrawal(amount, address);
+		} else if (currency.equals(Currency.ETH)) {
+			response = coinmateEthereumWithdrawal(amount, address);
+		} else if (currency.equals(Currency.XRP)) {
+			response = coinmateRippleWithdrawal(amount, address);
+		} else if (currency.equals(Currency.DASH)) {
+			response = coinmateDashWithdrawal(amount, address);
+		} else if (currency.equals(Currency.ADA)) {
+			response = coinmateCardanoWithdrawal(amount, address);
+		} else if (currency.equals(Currency.SOL)) {
+			response = coinmateSolanaWithdrawal(amount, address);
+		} else {
+			throw new IOException(
+					"Wallet for currency" + currency.getCurrencyCode() + " is currently not supported");
+		}
+		return Long.toString(response.getData());
+	}
 
-  @Override
-  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
-      throws IOException {
-    CoinmateTradeResponse response;
+	@Override
+	public String withdrawFunds(WithdrawFundsParams params) throws IOException {
+		if (params instanceof DefaultWithdrawFundsParams defaultParams) {
+			return withdrawFunds(
+					defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
+		}
+		throw new IllegalStateException("Don't know how to withdraw: " + params);
+	}
 
-    if (currency.equals(Currency.BTC)) {
-      response = coinmateBitcoinWithdrawal(amount, address);
-    } else if (currency.equals(Currency.LTC)) {
-      response = coinmateLitecoinWithdrawal(amount, address);
-    } else if (currency.equals(Currency.ETH)) {
-      response = coinmateEthereumWithdrawal(amount, address);
-    } else if (currency.equals(Currency.XRP)) {
-      response = coinmateRippleWithdrawal(amount, address);
-    } else if (currency.equals(Currency.DASH)) {
-      response = coinmateDashWithdrawal(amount, address);
-    } else if (currency.equals(Currency.ADA)) {
-      response = coinmateCardanoWithdrawal(amount, address);
-    } else if (currency.equals(Currency.SOL)) {
-      response = coinmateSolanaWithdrawal(amount, address);
-    } else {
-      throw new IOException(
-          "Wallet for currency" + currency.getCurrencyCode() + " is currently not supported");
-    }
+	@Override
+	public String requestDepositAddress(Currency currency, String... args) throws IOException {
+		CoinmateDepositAddresses addresses;
+		if (currency.equals(Currency.BTC)) {
+			addresses = coinmateBitcoinDepositAddresses();
+		} else if (currency.equals(Currency.LTC)) {
+			addresses = coinmateLitecoinDepositAddresses();
+		} else if (currency.equals(Currency.ETH)) {
+			addresses = coinmateEthereumDepositAddresses();
+		} else if (currency.equals(Currency.XRP)) {
+			addresses = coinmateRippleDepositAddresses();
+		} else if (currency.equals(Currency.DASH)) {
+			addresses = coinmateDashDepositAddresses();
+		} else if (currency.equals(Currency.ADA)) {
+			addresses = coinmateCardanoDepositAddresses();
+		} else if (currency.equals(Currency.SOL)) {
+			addresses = coinmateSolanaDepositAddresses();
+		} else {
+			throw new IOException(
+					"Wallet for currency" + currency.getCurrencyCode() + " is currently not supported");
+		}
+		if (addresses.getData().isEmpty()) {
+			return null;
+		} else {
+			// here we return only the first address
+			return addresses.getData().get(0);
+		}
+	}
 
-    return Long.toString(response.getData());
-  }
+	@Override
+	public TradeHistoryParams createFundingHistoryParams() {
+		return new CoinmateFundingHistoryParams();
+	}
 
-  @Override
-  public String withdrawFunds(WithdrawFundsParams params) throws IOException {
-    if (params instanceof DefaultWithdrawFundsParams) {
-      DefaultWithdrawFundsParams defaultParams = (DefaultWithdrawFundsParams) params;
-      return withdrawFunds(
-          defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
-    }
-    throw new IllegalStateException("Don't know how to withdraw: " + params);
-  }
+	@Override
+	public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
+		TradeHistoryParamsSorted.Order order = TradeHistoryParamsSorted.Order.asc;
+		Integer limit = 1000;
+		int offset = 0;
+		Long timestampFrom = null;
+		Long timestampTo = null;
+		if (params instanceof TradeHistoryParamOffset) {
+			offset = Math.toIntExact(((TradeHistoryParamOffset) params).getOffset());
+		}
+		if (params instanceof TradeHistoryParamLimit) {
+			limit = ((TradeHistoryParamLimit) params).getLimit();
+		}
+		if (params instanceof TradeHistoryParamsSorted) {
+			order = ((TradeHistoryParamsSorted) params).getOrder();
+		}
+		if (params instanceof TradeHistoryParamsTimeSpan thpts) {
+			if (thpts.getStartTime() != null) {
+				timestampFrom = thpts.getStartTime().getTime();
+			}
+			if (thpts.getEndTime() != null) {
+				timestampTo = thpts.getEndTime().getTime();
+			}
+		}
+		CoinmateTransferHistory coinmateTransferHistory =
+				getTransfersData(limit, timestampFrom, timestampTo);
+		CoinmateTransactionHistory coinmateTransactionHistory =
+				getCoinmateTransactionHistory(
+						offset,
+						limit,
+						CoinmateAdapters.adaptSortOrder(order),
+						timestampFrom,
+						timestampTo,
+						null);
+		return CoinmateAdapters.adaptFundingHistory(coinmateTransactionHistory, coinmateTransferHistory);
+	}
 
-  @Override
-  public String requestDepositAddress(Currency currency, String... args) throws IOException {
-    CoinmateDepositAddresses addresses;
-    if (currency.equals(Currency.BTC)) {
-      addresses = coinmateBitcoinDepositAddresses();
-    } else if (currency.equals(Currency.LTC)) {
-      addresses = coinmateLitecoinDepositAddresses();
-    } else if (currency.equals(Currency.ETH)) {
-      addresses = coinmateEthereumDepositAddresses();
-    } else if (currency.equals(Currency.XRP)) {
-      addresses = coinmateRippleDepositAddresses();
-    } else if (currency.equals(Currency.DASH)) {
-      addresses = coinmateDashDepositAddresses();
-    } else if (currency.equals(Currency.ADA)) {
-      addresses = coinmateCardanoDepositAddresses();
-    } else if (currency.equals(Currency.SOL)) {
-      addresses = coinmateSolanaDepositAddresses();
-    } else {
-      throw new IOException(
-          "Wallet for currency" + currency.getCurrencyCode() + " is currently not supported");
-    }
+	@Override
+	public Map<Instrument, Fee> getDynamicTradingFeesByInstrument() throws IOException {
+		Set<Instrument> instruments = exchange.getExchangeMetaData().getInstruments().keySet();
+		HashMap<Instrument, Fee> result = new HashMap<>();
+		for (Instrument instrument : instruments) {
+			CoinmateTradingFeesResponseData data = getCoinmateTraderFees(CoinmateUtils.getPair(instrument));
+			Fee fee = new Fee(data.getMaker(), data.getTaker());
+			result.put(instrument, fee);
+		}
+		return result;
+	}
 
-    if (addresses.getData().isEmpty()) {
-      return null;
-    } else {
-      // here we return only the first address
-      return addresses.getData().get(0);
-    }
-  }
-
-  @Override
-  public TradeHistoryParams createFundingHistoryParams() {
-    return new CoinmateFundingHistoryParams();
-  }
-
-  @Override
-  public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
-
-    TradeHistoryParamsSorted.Order order = TradeHistoryParamsSorted.Order.asc;
-    Integer limit = 1000;
-    int offset = 0;
-    Long timestampFrom = null;
-    Long timestampTo = null;
-
-    if (params instanceof TradeHistoryParamOffset) {
-      offset = Math.toIntExact(((TradeHistoryParamOffset) params).getOffset());
-    }
-
-    if (params instanceof TradeHistoryParamLimit) {
-      limit = ((TradeHistoryParamLimit) params).getLimit();
-    }
-
-    if (params instanceof TradeHistoryParamsSorted) {
-      order = ((TradeHistoryParamsSorted) params).getOrder();
-    }
-
-    if (params instanceof TradeHistoryParamsTimeSpan) {
-      TradeHistoryParamsTimeSpan thpts = (TradeHistoryParamsTimeSpan) params;
-      if (thpts.getStartTime() != null) {
-        timestampFrom = thpts.getStartTime().getTime();
-      }
-      if (thpts.getEndTime() != null) {
-        timestampTo = thpts.getEndTime().getTime();
-      }
-    }
-    CoinmateTransferHistory coinmateTransferHistory =
-            getTransfersData(limit, timestampFrom, timestampTo);
-
-    CoinmateTransactionHistory coinmateTransactionHistory =
-        getCoinmateTransactionHistory(
-            offset,
-            limit,
-            CoinmateAdapters.adaptSortOrder(order),
-            timestampFrom,
-            timestampTo,
-            null);
-    return CoinmateAdapters.adaptFundingHistory(coinmateTransactionHistory, coinmateTransferHistory);
-  }
-
-  public static class CoinmateFundingHistoryParams
-      extends CoinmateTradeService.CoinmateTradeHistoryHistoryParams {}
+	public static class CoinmateFundingHistoryParams
+			extends CoinmateTradeService.CoinmateTradeHistoryHistoryParams {
+	}
 }

@@ -1,118 +1,119 @@
 package org.knowm.xchange.huobi.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public final class HuobiAllTicker {
 
-  private final BigDecimal amount;
-  private final long count;
-  private final BigDecimal open;
-  private final BigDecimal close;
-  private final BigDecimal low;
-  private final BigDecimal high;
-  private final BigDecimal vol;
-  private final HuobiPrice bid;
-  private final HuobiPrice ask;
-  private final String symbol;
-  private Date ts;
+	private final BigDecimal amount;
+	private final long count;
+	private final BigDecimal open;
+	private final BigDecimal close;
+	private final BigDecimal low;
+	private final BigDecimal high;
+	private final BigDecimal vol;
+	private final HuobiPrice bid;
+	private final HuobiPrice ask;
+	private final String symbol;
+	private Date ts;
 
-  public HuobiAllTicker(
-      @JsonProperty("open") BigDecimal open,
-      @JsonProperty("close") BigDecimal close,
-      @JsonProperty("low") BigDecimal low,
-      @JsonProperty("high") BigDecimal high,
-      @JsonProperty("amount") BigDecimal amount,
-      @JsonProperty("count") long count,
-      @JsonProperty("vol") BigDecimal vol,
-      @JsonProperty("symbol") String symbol,
-      @JsonProperty("bid") BigDecimal bid,
-      @JsonProperty("bidSize") BigDecimal bidSize,
-      @JsonProperty("ask") BigDecimal ask,
-      @JsonProperty("askSize") BigDecimal askSize) {
-    this.amount = amount;
-    this.count = count;
-    this.open = open;
-    this.close = close;
-    this.low = low;
-    this.high = high;
-    this.vol = vol;
-    this.bid = new HuobiPrice(new BigDecimal[] {bid, bidSize});
-    this.ask = new HuobiPrice(new BigDecimal[] {ask, askSize});
-    this.symbol = symbol;
-  }
+	public HuobiAllTicker(
+			@JsonProperty("open") BigDecimal open,
+			@JsonProperty("close") BigDecimal close,
+			@JsonProperty("low") BigDecimal low,
+			@JsonProperty("high") BigDecimal high,
+			@JsonProperty("amount") BigDecimal amount,
+			@JsonProperty("count") long count,
+			@JsonProperty("vol") BigDecimal vol,
+			@JsonProperty("symbol") String symbol,
+			@JsonProperty("bid") BigDecimal bid,
+			@JsonProperty("bidSize") BigDecimal bidSize,
+			@JsonProperty("ask") BigDecimal ask,
+			@JsonProperty("askSize") BigDecimal askSize) {
+		this.amount = amount;
+		this.count = count;
+		this.open = open;
+		this.close = close;
+		this.low = low;
+		this.high = high;
+		this.vol = vol;
+		this.bid = new HuobiPrice(new BigDecimal[]{bid, bidSize});
+		this.ask = new HuobiPrice(new BigDecimal[]{ask, askSize});
+		this.symbol = symbol;
+	}
 
-  public BigDecimal getAmount() {
-    return amount;
-  }
+	public Date getTs() {
+		return ts;
+	}
 
-  public long getCount() {
-    return count;
-  }
+	public void setTs(Date ts) {
+		this.ts = ts;
+	}
 
-  public BigDecimal getOpen() {
-    return open;
-  }
+	@Override
+	public String toString() {
+		return "HuobiAllTicker [symbol="
+				+ getSymbol()
+				+ ", amount="
+				+ getAmount()
+				+ ", count="
+				+ getCount()
+				+ ", open="
+				+ getOpen()
+				+ ", close="
+				+ getClose()
+				+ ", low="
+				+ getLow()
+				+ ", high="
+				+ getHigh()
+				+ ", vol="
+				+ getVol()
+				+ ", bid="
+				+ getBid()
+				+ ", ask="
+				+ getAsk()
+				+ "]";
+	}
 
-  public BigDecimal getClose() {
-    return close;
-  }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-  public BigDecimal getLow() {
-    return low;
-  }
+	public long getCount() {
+		return count;
+	}
 
-  public BigDecimal getHigh() {
-    return high;
-  }
+	public BigDecimal getOpen() {
+		return open;
+	}
 
-  public BigDecimal getVol() {
-    return vol;
-  }
+	public BigDecimal getClose() {
+		return close;
+	}
 
-  public HuobiPrice getBid() {
-    return bid;
-  }
+	public BigDecimal getLow() {
+		return low;
+	}
 
-  public HuobiPrice getAsk() {
-    return ask;
-  }
+	public BigDecimal getHigh() {
+		return high;
+	}
 
-  public Date getTs() {
-    return ts;
-  }
+	public BigDecimal getVol() {
+		return vol;
+	}
 
-  public void setTs(Date ts) {
-    this.ts = ts;
-  }
+	public HuobiPrice getBid() {
+		return bid;
+	}
 
-  public String getSymbol() {
-    return symbol;
-  }
+	public HuobiPrice getAsk() {
+		return ask;
+	}
 
-  @Override
-  public String toString() {
-    return "HuobiAllTicker [symbol="
-        + getSymbol()
-        + ", amount="
-        + getAmount()
-        + ", count="
-        + getCount()
-        + ", open="
-        + getOpen()
-        + ", close="
-        + getClose()
-        + ", low="
-        + getLow()
-        + ", high="
-        + getHigh()
-        + ", vol="
-        + getVol()
-        + ", bid="
-        + getBid().toString()
-        + ", ask="
-        + getAsk().toString()
-        + "]";
-  }
+	public String getSymbol() {
+		return symbol;
+	}
 }

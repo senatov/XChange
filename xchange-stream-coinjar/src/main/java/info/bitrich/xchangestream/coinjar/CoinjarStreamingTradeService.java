@@ -14,41 +14,41 @@ import org.slf4j.LoggerFactory;
 
 class CoinjarStreamingTradeService implements StreamingTradeService {
 
-  private static final Logger logger = LoggerFactory.getLogger(CoinjarStreamingTradeService.class);
+	private static final Logger logger = LoggerFactory.getLogger(CoinjarStreamingTradeService.class);
 
-  private final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+	private final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
 
-  private final CoinjarStreamingService service;
+	private final CoinjarStreamingService service;
 
-  private final String userTradeChannel = "private";
+	private final String userTradeChannel = "private";
 
-  public CoinjarStreamingTradeService(CoinjarStreamingService service) {
-    this.service = service;
-  }
+	public CoinjarStreamingTradeService(CoinjarStreamingService service) {
+		this.service = service;
+	}
 
-  @Override
-  public Observable<UserTrade> getUserTrades(CurrencyPair currencyPair, Object... args) {
-    return service
-        .subscribeChannel(userTradeChannel)
-        .filter(node -> node.get("event").textValue().equals("private:fill"))
-        .map(
-            node -> {
-              return mapper.treeToValue(node, CoinjarWebSocketUserTradeEvent.class);
-            })
-        .map(CoinjarStreamingAdapters::adaptUserTrade)
-        .filter(userTrade -> currencyPair == null || currencyPair == userTrade.getInstrument());
-  }
+	@Override
+	public Observable<Order> getOrderChanges(CurrencyPair currencyPair, Object... args) {
+		return service
+				.subscribeChannel(userTradeChannel)
+				.filter(node -> node.get("event").textValue().equals("private:order"))
+				.map(
+						node -> {
+							return mapper.treeToValue(node, CoinjarWebSocketOrderEvent.class);
+						})
+				.map(CoinjarStreamingAdapters::adaptOrder)
+				.filter(order -> currencyPair == null || currencyPair == order.getInstrument());
+	}
 
-  @Override
-  public Observable<Order> getOrderChanges(CurrencyPair currencyPair, Object... args) {
-    return service
-        .subscribeChannel(userTradeChannel)
-        .filter(node -> node.get("event").textValue().equals("private:order"))
-        .map(
-            node -> {
-              return mapper.treeToValue(node, CoinjarWebSocketOrderEvent.class);
-            })
-        .map(CoinjarStreamingAdapters::adaptOrder)
-        .filter(order -> currencyPair == null || currencyPair == order.getInstrument());
-  }
+	@Override
+	public Observable<UserTrade> getUserTrades(CurrencyPair currencyPair, Object... args) {
+		return service
+				.subscribeChannel(userTradeChannel)
+				.filter(node -> node.get("event").textValue().equals("private:fill"))
+				.map(
+						node -> {
+							return mapper.treeToValue(node, CoinjarWebSocketUserTradeEvent.class);
+						})
+				.map(CoinjarStreamingAdapters::adaptUserTrade)
+				.filter(userTrade -> currencyPair == null || currencyPair == userTrade.getInstrument());
+	}
 }

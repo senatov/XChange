@@ -5,28 +5,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BankeraMarket {
-  private int id;
-  private String slug;
-  private String name;
+	private final int id;
+	private final String slug;
+	private final String name;
 
-  public BankeraMarket(
-      @JsonProperty("id") int id,
-      @JsonProperty("slug") String slug,
-      @JsonProperty("name") String name) {
-    this.id = id;
-    this.slug = slug;
-    this.name = name;
-  }
+	public BankeraMarket(
+			@JsonProperty("id") int id,
+			@JsonProperty("slug") String slug,
+			@JsonProperty("name") String name) {
+		this.id = id;
+		this.slug = slug;
+		this.name = name;
+	}
 
-  public int getId() {
-    return id;
-  }
+	public int getId() {
+		return id;
+	}
 
-  public String getSlug() {
-    return slug;
-  }
+	public String getSlug() {
+		return slug;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 }

@@ -1,68 +1,60 @@
 package org.knowm.xchange.bitcoinde.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
-/** @author matthewdowney */
+/**
+ * @author matthewdowney
+ */
 public class BitcoindeTrade {
 
-  private final long date;
-  private final BigDecimal price;
-  private final BigDecimal amount;
-  private final int tid;
+	private final long date;
+	private final BigDecimal price;
+	private final BigDecimal amount;
+	private final int tid;
 
-  /**
-   * Constructor
-   *
-   * @param tid
-   * @param price
-   * @param amount
-   * @param date
-   */
-  public BitcoindeTrade(
-      @JsonProperty("tid") int tid,
-      @JsonProperty("price") BigDecimal price,
-      @JsonProperty("amount") BigDecimal amount,
-      @JsonProperty("date") long date) {
+	/**
+	 * Constructor
+	 */
+	public BitcoindeTrade(
+			@JsonProperty("tid") int tid,
+			@JsonProperty("price") BigDecimal price,
+			@JsonProperty("amount") BigDecimal amount,
+			@JsonProperty("date") long date) {
+		this.tid = tid;
+		this.price = price;
+		this.amount = amount;
+		this.date = date;
+	}
 
-    this.tid = tid;
-    this.price = price;
-    this.amount = amount;
-    this.date = date;
-  }
+	public int getTid() {
+		return tid;
+	}
 
-  public int getTid() {
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    return tid;
-  }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-  public BigDecimal getPrice() {
+	public long getDate() {
+		return date;
+	}
 
-    return price;
-  }
-
-  public BigDecimal getAmount() {
-
-    return amount;
-  }
-
-  public long getDate() {
-
-    return date;
-  }
-
-  @Override
-  public String toString() {
-
-    return "BitcoindeTrade{"
-        + "date="
-        + date
-        + ", price="
-        + price
-        + ", amount='"
-        + amount
-        + "', tid="
-        + tid
-        + '}';
-  }
+	@Override
+	public String toString() {
+		return "BitcoindeTrade{"
+				+ "date="
+				+ date
+				+ ", price="
+				+ price
+				+ ", amount='"
+				+ amount
+				+ "', tid="
+				+ tid
+				+ '}';
+	}
 }

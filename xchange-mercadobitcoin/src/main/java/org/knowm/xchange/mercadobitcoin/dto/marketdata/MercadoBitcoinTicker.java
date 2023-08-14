@@ -1,111 +1,102 @@
 package org.knowm.xchange.mercadobitcoin.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
-/** @author Felipe Micaroni Lalli */
+/**
+ * @author Felipe Micaroni Lalli
+ */
 public class MercadoBitcoinTicker {
 
-  private final MercadoBitcoinTicker.Ticker ticker;
+	private final MercadoBitcoinTicker.Ticker ticker;
 
-  public MercadoBitcoinTicker(@JsonProperty("ticker") MercadoBitcoinTicker.Ticker ticker) {
+	public MercadoBitcoinTicker(@JsonProperty("ticker") MercadoBitcoinTicker.Ticker ticker) {
+		this.ticker = ticker;
+	}
 
-    this.ticker = ticker;
-  }
+	public Ticker getTicker() {
+		return ticker;
+	}
 
-  public Ticker getTicker() {
+	@Override
+	public String toString() {
+		return "MercadoBitcoinTicker [ticker=" + ticker + "]";
+	}
 
-    return ticker;
-  }
+	public static class Ticker {
 
-  @Override
-  public String toString() {
+		private final BigDecimal last;
+		private final BigDecimal high;
+		private final BigDecimal low;
+		private final BigDecimal vol;
+		private final BigDecimal buy;
+		private final BigDecimal sell;
+		private final long date;
 
-    return "MercadoBitcoinTicker [ticker=" + ticker + "]";
-  }
+		public Ticker(
+				@JsonProperty("last") BigDecimal last,
+				@JsonProperty("high") BigDecimal high,
+				@JsonProperty("low") BigDecimal low,
+				@JsonProperty("vol") BigDecimal vol,
+				@JsonProperty("buy") BigDecimal buy,
+				@JsonProperty("sell") BigDecimal sell,
+				@JsonProperty("date") long date) {
+			this.last = last;
+			this.high = high;
+			this.low = low;
+			this.vol = vol;
+			this.buy = buy;
+			this.sell = sell;
+			this.date = date;
+		}
 
-  public static class Ticker {
+		public BigDecimal getLast() {
+			return last;
+		}
 
-    private final BigDecimal last;
-    private final BigDecimal high;
-    private final BigDecimal low;
-    private final BigDecimal vol;
-    private final BigDecimal buy;
-    private final BigDecimal sell;
-    private final long date;
+		public BigDecimal getHigh() {
+			return high;
+		}
 
-    public Ticker(
-        @JsonProperty("last") BigDecimal last,
-        @JsonProperty("high") BigDecimal high,
-        @JsonProperty("low") BigDecimal low,
-        @JsonProperty("vol") BigDecimal vol,
-        @JsonProperty("buy") BigDecimal buy,
-        @JsonProperty("sell") BigDecimal sell,
-        @JsonProperty("date") long date) {
+		public BigDecimal getLow() {
+			return low;
+		}
 
-      this.last = last;
-      this.high = high;
-      this.low = low;
-      this.vol = vol;
-      this.buy = buy;
-      this.sell = sell;
-      this.date = date;
-    }
+		public BigDecimal getVol() {
+			return vol;
+		}
 
-    public BigDecimal getLast() {
+		public BigDecimal getBuy() {
+			return buy;
+		}
 
-      return last;
-    }
+		public BigDecimal getSell() {
+			return sell;
+		}
 
-    public BigDecimal getHigh() {
+		public long getDate() {
+			return date;
+		}
 
-      return high;
-    }
-
-    public BigDecimal getLow() {
-
-      return low;
-    }
-
-    public BigDecimal getVol() {
-
-      return vol;
-    }
-
-    public BigDecimal getBuy() {
-
-      return buy;
-    }
-
-    public BigDecimal getSell() {
-
-      return sell;
-    }
-
-    public long getDate() {
-
-      return date;
-    }
-
-    @Override
-    public String toString() {
-
-      return "Ticker ["
-          + "last="
-          + last
-          + ", high="
-          + high
-          + ", low="
-          + low
-          + ", vol="
-          + vol
-          + ", buy="
-          + buy
-          + ", sell="
-          + sell
-          + ", date="
-          + date
-          + ']';
-    }
-  }
+		@Override
+		public String toString() {
+			return "Ticker ["
+					+ "last="
+					+ last
+					+ ", high="
+					+ high
+					+ ", low="
+					+ low
+					+ ", vol="
+					+ vol
+					+ ", buy="
+					+ buy
+					+ ", sell="
+					+ sell
+					+ ", date="
+					+ date
+					+ ']';
+		}
+	}
 }

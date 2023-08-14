@@ -10,28 +10,29 @@ import org.apache.commons.lang3.StringUtils;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindeError {
 
-  String message;
-  Integer code;
-  String field;
+	String message;
+	Integer code;
+	String field;
 
-  @JsonCreator
-  public BitcoindeError(
-      @JsonProperty("message") String message,
-      @JsonProperty("code") Integer code,
-      @JsonProperty("field") String field) {
-    this.message = message;
-    this.code = code;
-    this.field = field;
-  }
+	@JsonCreator
+	public BitcoindeError(
+			@JsonProperty("message") String message,
+			@JsonProperty("code") Integer code,
+			@JsonProperty("field") String field) {
+		this.message = message;
+		this.code = code;
+		this.field = field;
+	}
 
-  /** Customized {@code toString()} methode for better usage in {@link BitcoindeException} */
-  @Override
-  public String toString() {
-    final StringBuilder sb = new StringBuilder("Error ").append(code).append(": ").append(message);
-
-    if (StringUtils.isNotBlank(this.field)) {
-      sb.append(" (Field: ").append(this.field).append(")");
-    }
-    return sb.toString();
-  }
+	/**
+	 * Customized {@code toString()} methode for better usage in {@link BitcoindeException}
+	 */
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("Error ").append(code).append(": ").append(message);
+		if (StringUtils.isNotBlank(this.field)) {
+			sb.append(" (Field: ").append(this.field).append(")");
+		}
+		return sb.toString();
+	}
 }

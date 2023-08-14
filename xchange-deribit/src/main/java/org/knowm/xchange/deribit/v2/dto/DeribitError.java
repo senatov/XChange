@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 public class DeribitError {
 
-  @JsonProperty("code")
-  private int code;
+	@JsonProperty("code")
+	private int code;
 
-  @JsonProperty("message")
-  private String message;
+	@JsonProperty("message")
+	private String message;
 
-  @JsonProperty("data")
-  private Object data;
+	@JsonProperty("data")
+	private Object data;
 }

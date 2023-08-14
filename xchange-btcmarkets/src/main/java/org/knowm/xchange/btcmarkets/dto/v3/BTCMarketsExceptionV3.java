@@ -6,17 +6,17 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 public class BTCMarketsExceptionV3 extends HttpStatusExceptionSupport {
 
-  private final String message;
-  private final String code;
+	private final String message;
+	private final String code;
 
-  protected BTCMarketsExceptionV3(
-      @JsonProperty("message") String errorMessage, @JsonProperty("code") String code) {
-    this.message = errorMessage;
-    this.code = code;
-  }
+	protected BTCMarketsExceptionV3(
+			@JsonProperty("message") String errorMessage, @JsonProperty("code") String code) {
+		this.message = errorMessage;
+		this.code = code;
+	}
 
-  @Override
-  public String toString() {
-    return new ToStringBuilder(this).append("message", message).append("code", code).toString();
-  }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("message", message).append("code", code).toString();
+	}
 }

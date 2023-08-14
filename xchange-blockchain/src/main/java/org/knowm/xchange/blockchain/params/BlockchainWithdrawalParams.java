@@ -15,17 +15,18 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainWithdrawalParams implements WithdrawFundsParams {
 
-    /**
-     * UUID representing a whitelist address that is indicated in the whitelistId field.
-     * Whitelist addresses can be managed in Blockchain Exchange UI.
-     * To obtain the UUIDs of the whitelist addresses, call this endpoint:
-     * @see <a href="https://api.blockchain.info/v3/#/payments/getWhitelist">getWhitelist</a>
-     */
-    public final String beneficiary;
-    public final Currency currency;
-    public final BigDecimal amount;
-    /**
-     * if this is set to true, the amount will be ignored and a withdrawal of all funds will be made
-     */
-    public final Boolean sendMax;
+	/**
+	 * UUID representing a whitelist address that is indicated in the whitelistId field.
+	 * Whitelist addresses can be managed in Blockchain Exchange UI.
+	 * To obtain the UUIDs of the whitelist addresses, call this endpoint:
+	 *
+	 * @see <a href="https://api.blockchain.info/v3/#/payments/getWhitelist">getWhitelist</a>
+	 */
+	public final String beneficiary;
+	public final Currency currency;
+	public final BigDecimal amount;
+	/**
+	 * if this is set to true, the amount will be ignored and a withdrawal of all funds will be made
+	 */
+	public final Boolean sendMax;
 }

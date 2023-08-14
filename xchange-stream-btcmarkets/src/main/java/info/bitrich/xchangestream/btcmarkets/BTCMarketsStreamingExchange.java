@@ -11,69 +11,68 @@ import org.knowm.xchange.btcmarkets.BTCMarketsExchange;
 
 public class BTCMarketsStreamingExchange extends BTCMarketsExchange implements StreamingExchange {
 
-  private static final String API_URI = "wss://socket.btcmarkets.net/v2";
+	private static final String API_URI = "wss://socket.btcmarkets.net/v2";
 
-  private BTCMarketsStreamingService streamingService;
-  private BTCMarketsStreamingMarketDataService streamingMarketDataService;
+	private BTCMarketsStreamingService streamingService;
+	private BTCMarketsStreamingMarketDataService streamingMarketDataService;
 
-  @Override
-  protected void initServices() {
-    super.initServices();
+	@Override
+	protected void initServices() {
+		super.initServices();
+		this.streamingService = createStreamingService();
+		this.streamingMarketDataService = new BTCMarketsStreamingMarketDataService(streamingService);
+	}
 
-    this.streamingService = createStreamingService();
-    this.streamingMarketDataService = new BTCMarketsStreamingMarketDataService(streamingService);
-  }
+	private BTCMarketsStreamingService createStreamingService() {
+		BTCMarketsStreamingService streamingService = new BTCMarketsStreamingService(API_URI);
+		applyStreamingSpecification(getExchangeSpecification(), streamingService);
+		return streamingService;
+	}
 
-  private BTCMarketsStreamingService createStreamingService() {
-    BTCMarketsStreamingService streamingService = new BTCMarketsStreamingService(API_URI);
-    applyStreamingSpecification(getExchangeSpecification(), streamingService);
-    return streamingService;
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification spec = super.getDefaultExchangeSpecification();
+		spec.setShouldLoadRemoteMetaData(false);
+		return spec;
+	}
 
-  @Override
-  public Completable connect(ProductSubscription... args) {
-    return streamingService.connect();
-  }
+	@Override
+	public Completable connect(ProductSubscription... args) {
+		return streamingService.connect();
+	}
 
-  @Override
-  public Completable disconnect() {
-    return streamingService.disconnect();
-  }
+	@Override
+	public Completable disconnect() {
+		return streamingService.disconnect();
+	}
 
-  @Override
-  public boolean isAlive() {
-    return streamingService.isSocketOpen();
-  }
+	@Override
+	public boolean isAlive() {
+		return streamingService.isSocketOpen();
+	}
 
-  @Override
-  public Observable<Throwable> reconnectFailure() {
-    return streamingService.subscribeReconnectFailure();
-  }
+	@Override
+	public Observable<Throwable> reconnectFailure() {
+		return streamingService.subscribeReconnectFailure();
+	}
 
-  @Override
-  public Observable<Object> connectionSuccess() {
-    return streamingService.subscribeConnectionSuccess();
-  }
+	@Override
+	public Observable<Object> connectionSuccess() {
+		return streamingService.subscribeConnectionSuccess();
+	}
 
-  @Override
-  public Observable<State> connectionStateObservable() {
-    return streamingService.subscribeConnectionState();
-  }
+	@Override
+	public Observable<State> connectionStateObservable() {
+		return streamingService.subscribeConnectionState();
+	}
 
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-    ExchangeSpecification spec = super.getDefaultExchangeSpecification();
-    spec.setShouldLoadRemoteMetaData(false);
-    return spec;
-  }
+	@Override
+	public StreamingMarketDataService getStreamingMarketDataService() {
+		return streamingMarketDataService;
+	}
 
-  @Override
-  public StreamingMarketDataService getStreamingMarketDataService() {
-    return streamingMarketDataService;
-  }
-
-  @Override
-  public void useCompressedMessages(boolean compressedMessages) {
-    streamingService.useCompressedMessages(compressedMessages);
-  }
+	@Override
+	public void useCompressedMessages(boolean compressedMessages) {
+		streamingService.useCompressedMessages(compressedMessages);
+	}
 }

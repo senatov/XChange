@@ -7,18 +7,16 @@ import org.knowm.xchange.bity.dto.account.BityOrder;
 
 class BityTradeServiceRaw extends BityBaseService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  protected BityTradeServiceRaw(Exchange exchange) {
-    super(exchange);
-  }
+	/**
+	 * Constructor
+	 */
+	protected BityTradeServiceRaw(Exchange exchange) {
+		super(exchange);
+	}
 
-  public BityResponse<BityOrder> getBityOrders(Long offset, final Integer limit, String orderBy) {
-    BityExchange bityExchange = (BityExchange) exchange;
-    String auth = "Bearer " + bityExchange.getToken().getAccessToken();
-    return bity.getOrders(offset, limit, orderBy, auth);
-  }
+	public BityResponse<BityOrder> getBityOrders(Long offset, final Integer limit, String orderBy) {
+		BityExchange bityExchange = (BityExchange) exchange;
+		String auth = "Bearer " + bityExchange.getToken().getAccessToken();
+		return bity.getOrders(offset, limit, orderBy, auth);
+	}
 }

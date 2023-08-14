@@ -1,94 +1,87 @@
 package org.knowm.xchange.bitso.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
-/** @author Piotr Ładyżyński */
+/**
+ * @author Piotr Ładyżyński
+ */
 public class BitsoTransaction {
 
-  private final long date;
-  private final int tid;
-  private final BigDecimal price;
-  private final BigDecimal amount;
-  private final String side;
+	private final long date;
+	private final int tid;
+	private final BigDecimal price;
+	private final BigDecimal amount;
+	private final String side;
 
-  /**
-   * Constructor
-   *
-   * @param date Unix timestamp date and time
-   * @param tid Transaction id
-   * @param price BTC price
-   * @param amount BTC amount
-   * @param side "buy"/"sell" for the type of order the trade has completed
-   */
-  public BitsoTransaction(
-      @JsonProperty("date") long date,
-      @JsonProperty("tid") int tid,
-      @JsonProperty("price") BigDecimal price,
-      @JsonProperty("amount") BigDecimal amount,
-      @JsonProperty("side") String side) {
+	/**
+	 * Constructor
+	 *
+	 * @param date Unix timestamp date and time
+	 * @param tid Transaction id
+	 * @param price BTC price
+	 * @param amount BTC amount
+	 * @param side "buy"/"sell" for the type of order the trade has completed
+	 */
+	public BitsoTransaction(
+			@JsonProperty("date") long date,
+			@JsonProperty("tid") int tid,
+			@JsonProperty("price") BigDecimal price,
+			@JsonProperty("amount") BigDecimal amount,
+			@JsonProperty("side") String side) {
+		this.date = date;
+		this.tid = tid;
+		this.price = price;
+		this.amount = amount;
+		this.side = side;
+	}
 
-    this.date = date;
-    this.tid = tid;
-    this.price = price;
-    this.amount = amount;
-    this.side = side;
-  }
+	public int getTid() {
+		return tid;
+	}
 
-  public int getTid() {
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    return tid;
-  }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-  public BigDecimal getPrice() {
+	public long getDate() {
+		return date;
+	}
 
-    return price;
-  }
+	public String getSide() {
+		return side;
+	}
 
-  public BigDecimal getAmount() {
+	public BigDecimal calculateFeeMxn() {
+		return calculateFeeBtc().multiply(price);
+	}
 
-    return amount;
-  }
+	public BigDecimal calculateFeeBtc() {
+		return roundUp(amount.multiply(new BigDecimal("0.5"))).divide(new BigDecimal("100"));
+	}
 
-  public long getDate() {
+	private BigDecimal roundUp(BigDecimal x) {
+		long n = x.longValue();
+		return BigDecimal.valueOf(x.equals(BigDecimal.valueOf(n)) ? n : n + 1);
+	}
 
-    return date;
-  }
-
-  public String getSide() {
-
-    return side;
-  }
-
-  public BigDecimal calculateFeeBtc() {
-
-    return roundUp(amount.multiply(new BigDecimal("0.5"))).divide(new BigDecimal("100"));
-  }
-
-  private BigDecimal roundUp(BigDecimal x) {
-
-    long n = x.longValue();
-    return BigDecimal.valueOf(x.equals(BigDecimal.valueOf(n)) ? n : n + 1);
-  }
-
-  public BigDecimal calculateFeeMxn() {
-
-    return calculateFeeBtc().multiply(price);
-  }
-
-  @Override
-  public String toString() {
-
-    return "Transaction [date="
-        + date
-        + ", tid="
-        + tid
-        + ", price="
-        + price
-        + ", amount="
-        + amount
-        + ", side="
-        + side
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "Transaction [date="
+				+ date
+				+ ", tid="
+				+ tid
+				+ ", price="
+				+ price
+				+ ", amount="
+				+ amount
+				+ ", side="
+				+ side
+				+ "]";
+	}
 }

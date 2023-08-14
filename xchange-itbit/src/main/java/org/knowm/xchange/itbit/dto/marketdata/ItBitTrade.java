@@ -1,60 +1,54 @@
 package org.knowm.xchange.itbit.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 public class ItBitTrade {
 
-  private final BigDecimal amount;
-  private final String timestamp;
-  private final BigDecimal price;
-  private final long matchNumber;
+	private final BigDecimal amount;
+	private final String timestamp;
+	private final BigDecimal price;
+	private final long matchNumber;
 
-  public ItBitTrade(
-      @JsonProperty("amount") BigDecimal amount,
-      @JsonProperty("timestamp") String timestamp,
-      @JsonProperty("price") BigDecimal price,
-      @JsonProperty("matchNumber") long matchNumber) {
+	public ItBitTrade(
+			@JsonProperty("amount") BigDecimal amount,
+			@JsonProperty("timestamp") String timestamp,
+			@JsonProperty("price") BigDecimal price,
+			@JsonProperty("matchNumber") long matchNumber) {
+		this.amount = amount;
+		this.timestamp = timestamp;
+		this.price = price;
+		this.matchNumber = matchNumber;
+	}
 
-    this.amount = amount;
-    this.timestamp = timestamp;
-    this.price = price;
-    this.matchNumber = matchNumber;
-  }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-  public BigDecimal getAmount() {
+	public String getTimestamp() {
+		return timestamp;
+	}
 
-    return amount;
-  }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-  public String getTimestamp() {
+	public long getMatchNumber() {
+		return matchNumber;
+	}
 
-    return timestamp;
-  }
-
-  public BigDecimal getPrice() {
-
-    return price;
-  }
-
-  public long getMatchNumber() {
-
-    return matchNumber;
-  }
-
-  @Override
-  public String toString() {
-
-    StringBuilder builder = new StringBuilder();
-    builder.append("ItBitTrade [amount=");
-    builder.append(amount);
-    builder.append(", timestamp=");
-    builder.append(timestamp);
-    builder.append(", price=");
-    builder.append(price);
-    builder.append(", matchNumber=");
-    builder.append(matchNumber);
-    builder.append("]");
-    return builder.toString();
-  }
+	@Override
+	public String toString() {
+		String builder = "ItBitTrade [amount=" +
+				amount +
+				", timestamp=" +
+				timestamp +
+				", price=" +
+				price +
+				", matchNumber=" +
+				matchNumber +
+				"]";
+		return builder;
+	}
 }

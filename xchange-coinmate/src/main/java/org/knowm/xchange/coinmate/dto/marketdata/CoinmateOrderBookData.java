@@ -24,27 +24,29 @@
 package org.knowm.xchange.coinmate.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** @author Martin Stachon */
+/**
+ * @author Martin Stachon
+ */
 public class CoinmateOrderBookData {
 
-  private final List<CoinmateOrderBookEntry> asks;
-  private final List<CoinmateOrderBookEntry> bids;
+	private final List<CoinmateOrderBookEntry> asks;
+	private final List<CoinmateOrderBookEntry> bids;
 
-  public CoinmateOrderBookData(
-      @JsonProperty("asks") List<CoinmateOrderBookEntry> asks,
-      @JsonProperty("bids") List<CoinmateOrderBookEntry> bids) {
+	public CoinmateOrderBookData(
+			@JsonProperty("asks") List<CoinmateOrderBookEntry> asks,
+			@JsonProperty("bids") List<CoinmateOrderBookEntry> bids) {
+		this.asks = asks;
+		this.bids = bids;
+	}
 
-    this.asks = asks;
-    this.bids = bids;
-  }
+	public List<CoinmateOrderBookEntry> getAsks() {
+		return asks;
+	}
 
-  public List<CoinmateOrderBookEntry> getAsks() {
-    return asks;
-  }
-
-  public List<CoinmateOrderBookEntry> getBids() {
-    return bids;
-  }
+	public List<CoinmateOrderBookEntry> getBids() {
+		return bids;
+	}
 }

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CoincheckSubscribeMessage {
-  @JsonProperty private String type;
-  @JsonProperty private String channel;
+	@JsonProperty
+	private String type;
+	@JsonProperty
+	private String channel;
 }

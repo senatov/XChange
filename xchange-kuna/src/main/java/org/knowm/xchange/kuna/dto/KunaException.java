@@ -10,14 +10,14 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
  */
 public class KunaException extends HttpStatusExceptionSupport {
 
-  private String errorCode;
+	private final String errorCode;
 
-  public KunaException(@JsonProperty("code") String code, @JsonProperty("message") String message) {
-    super(message);
-    this.errorCode = code;
-  }
+	public KunaException(@JsonProperty("code") String code, @JsonProperty("message") String message) {
+		super(message);
+		this.errorCode = code;
+	}
 
-  public String getErrorCode() {
-    return errorCode;
-  }
+	public String getErrorCode() {
+		return errorCode;
+	}
 }

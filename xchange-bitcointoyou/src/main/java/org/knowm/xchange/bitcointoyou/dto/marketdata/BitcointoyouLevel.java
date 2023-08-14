@@ -8,29 +8,25 @@ import java.math.BigDecimal;
  */
 public class BitcointoyouLevel {
 
-  private final BigDecimal amount;
-  private final BigDecimal limit;
+	private final BigDecimal amount;
+	private final BigDecimal limit;
 
-  public BitcointoyouLevel(BigDecimal price, BigDecimal quantity) {
+	public BitcointoyouLevel(BigDecimal price, BigDecimal quantity) {
+		super();
+		this.amount = quantity;
+		this.limit = price;
+	}
 
-    super();
-    this.amount = quantity;
-    this.limit = price;
-  }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-  public BigDecimal getAmount() {
+	public BigDecimal getLimit() {
+		return limit;
+	}
 
-    return amount;
-  }
-
-  public BigDecimal getLimit() {
-
-    return limit;
-  }
-
-  @Override
-  public String toString() {
-
-    return "BitcointoyouLevel [amount=" + amount + ", limit=" + limit + "]";
-  }
+	@Override
+	public String toString() {
+		return "BitcointoyouLevel [amount=" + amount + ", limit=" + limit + "]";
+	}
 }

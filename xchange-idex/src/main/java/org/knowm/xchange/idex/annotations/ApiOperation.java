@@ -1,9 +1,9 @@
 package org.knowm.xchange.idex.annotations;
 
 public @interface ApiOperation {
-  String value();
+	String value();
 
-  String notes();
+	String notes();
 
-  String[] tags();
+	String[] tags();
 }

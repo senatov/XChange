@@ -10,14 +10,16 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 public class CoincheckException extends HttpStatusExceptionSupport {
-  @JsonProperty private final boolean success;
-  @JsonProperty private final String error;
+	@JsonProperty
+	private final boolean success;
+	@JsonProperty
+	private final String error;
 
-  @JsonCreator
-  public CoincheckException(
-      @JsonProperty("success") boolean success, @JsonProperty("error") String error) {
-    super(error);
-    this.success = success;
-    this.error = error;
-  }
+	@JsonCreator
+	public CoincheckException(
+			@JsonProperty("success") boolean success, @JsonProperty("error") String error) {
+		super(error);
+		this.success = success;
+		this.error = error;
+	}
 }

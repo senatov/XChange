@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class FtxConvertAcceptRequestDto {
 
-  @JsonCreator
-  public FtxConvertAcceptRequestDto() {}
+	@JsonCreator
+	public FtxConvertAcceptRequestDto() {
+	}
 }

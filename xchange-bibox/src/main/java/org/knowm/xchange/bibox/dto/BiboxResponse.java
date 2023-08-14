@@ -7,31 +7,31 @@ package org.knowm.xchange.bibox.dto;
  * @author odrotleff
  */
 public class BiboxResponse<T> {
-  protected T result;
-  protected String cmd;
-  protected BiboxError error = null;
+	protected T result;
+	protected String cmd;
+	protected BiboxError error = null;
 
-  public T getResult() {
-    return result;
-  }
+	public T getResult() {
+		return result;
+	}
 
-  public void setResult(T result) {
-    this.result = result;
-  }
+	public void setResult(T result) {
+		this.result = result;
+	}
 
-  public String getCmd() {
-    return cmd;
-  }
+	public String getCmd() {
+		return cmd;
+	}
 
-  public void setCmd(String cmd) {
-    this.cmd = cmd;
-  }
+	public void setCmd(String cmd) {
+		this.cmd = cmd;
+	}
 
-  public BiboxError getError() {
-    return error;
-  }
+	public BiboxError getError() {
+		return error;
+	}
 
-  public void setError(BiboxError error) {
-    this.error = error;
-  }
+	public void setError(BiboxError error) {
+		this.error = error;
+	}
 }

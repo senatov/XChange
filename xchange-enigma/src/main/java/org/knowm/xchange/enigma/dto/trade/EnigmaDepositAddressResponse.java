@@ -8,12 +8,12 @@ import org.knowm.xchange.enigma.dto.BaseResponse;
 @Setter
 @Getter
 public class EnigmaDepositAddressResponse extends BaseResponse {
-  @JsonProperty("result")
-  private boolean result;
+	@JsonProperty("result")
+	private boolean result;
 
-  @JsonProperty("message")
-  private String message;
+	@JsonProperty("message")
+	private String message;
 
-  @JsonProperty("address")
-  private String address;
+	@JsonProperty("address")
+	private String address;
 }

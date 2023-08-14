@@ -6,39 +6,39 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class CoingiPaginatedResultList<T> implements Iterable<T> {
-  private boolean hasMore;
+	private final boolean hasMore;
 
-  public CoingiPaginatedResultList(boolean hasMore) {
-    this.hasMore = hasMore;
-  }
+	public CoingiPaginatedResultList(boolean hasMore) {
+		this.hasMore = hasMore;
+	}
 
-  public final boolean hasMore() {
-    return hasMore;
-  }
+	public final boolean hasMore() {
+		return hasMore;
+	}
 
-  protected abstract List<T> getResultsList();
+	@Override
+	public Iterator<T> iterator() {
+		return getList().iterator();
+	}
 
-  public final List<T> getList() {
-    return Collections.unmodifiableList(getResultsList());
-  }
+	public final List<T> getList() {
+		return Collections.unmodifiableList(getResultsList());
+	}
 
-  @Override
-  public Iterator<T> iterator() {
-    return getList().iterator();
-  }
+	protected abstract List<T> getResultsList();
 
-  @Override
-  public final boolean equals(Object o) {
-    if (this == o) return true;
+	@Override
+	public final int hashCode() {
+		return Objects.hash(hasMore, getResultsList());
+	}
 
-    if (o == null || getClass() != o.getClass()) return false;
-
-    CoingiPaginatedResultList<?> that = (CoingiPaginatedResultList<?>) o;
-    return hasMore == that.hasMore && Objects.equals(getResultsList(), that.getResultsList());
-  }
-
-  @Override
-  public final int hashCode() {
-    return Objects.hash(hasMore, getResultsList());
-  }
+	@Override
+	public final boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		CoingiPaginatedResultList<?> that = (CoingiPaginatedResultList<?>) o;
+		return hasMore == that.hasMore && Objects.equals(getResultsList(), that.getResultsList());
+	}
 }

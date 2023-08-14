@@ -9,13 +9,14 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamCurrency;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamsTimeSpan;
 
 import java.util.Date;
+
 @Data
 @Builder
 public class BlockchainFundingHistoryParams
-    implements TradeHistoryParamCurrency, TradeHistoryParamsTimeSpan, HistoryParamsFundingType {
+		implements TradeHistoryParamCurrency, TradeHistoryParamsTimeSpan, HistoryParamsFundingType {
 
-  private Currency currency;
-  private Type type;
-  private Date startTime;
-  private Date endTime;
+	private Currency currency;
+	private Type type;
+	private Date startTime;
+	private Date endTime;
 }

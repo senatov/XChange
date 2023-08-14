@@ -5,7 +5,7 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 public class DVChainException extends HttpStatusExceptionSupport {
 
-  public DVChainException(@JsonProperty("message") String reason) {
-    super(reason);
-  }
+	public DVChainException(@JsonProperty("message") String reason) {
+		super(reason);
+	}
 }

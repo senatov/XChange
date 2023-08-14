@@ -5,9 +5,9 @@ import java.util.Base64;
 
 public interface StructDecoder<T> {
 
-  T decode(final byte[] bytes) throws IOException;
+	default T decode(final String data) throws IOException {
+		return decode(Base64.getDecoder().decode(data));
+	}
 
-  default T decode(final String data) throws IOException {
-    return decode(Base64.getDecoder().decode(data));
-  }
+	T decode(final byte[] bytes) throws IOException;
 }

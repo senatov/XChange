@@ -1,8 +1,5 @@
 package org.knowm.xchange.bitbay.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitbay.BitbayAdapters;
 import org.knowm.xchange.bitbay.service.account.params.BitbayWithdrawFundsSwiftParams;
@@ -17,102 +14,103 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamLimit;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 
-/** @author Z. Dolezal */
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+
+/**
+ * @author Z. Dolezal
+ */
 public class BitbayAccountService extends BitbayAccountServiceRaw implements AccountService {
 
-  public BitbayAccountService(Exchange exchange) {
-    super(exchange);
-  }
+	public BitbayAccountService(Exchange exchange) {
+		super(exchange);
+	}
 
-  @Override
-  public AccountInfo getAccountInfo() throws IOException {
-    return BitbayAdapters.adaptAccountInfo(
-        exchange.getExchangeSpecification().getUserName(), getBitbayAccountInfo());
-  }
+	@Override
+	public AccountInfo getAccountInfo() throws IOException {
+		return BitbayAdapters.adaptAccountInfo(
+				exchange.getExchangeSpecification().getUserName(), getBitbayAccountInfo());
+	}
 
-  @Override
-  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
-      throws IOException {
-    return withdrawFunds(new DefaultWithdrawFundsParams(address, currency, amount));
-  }
+	@Override
+	public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+			throws IOException {
+		return withdrawFunds(new DefaultWithdrawFundsParams(address, currency, amount));
+	}
 
-  @Override
-  public String withdrawFunds(WithdrawFundsParams params) throws IOException {
-    if (params instanceof DefaultWithdrawFundsParams) {
-      DefaultWithdrawFundsParams defaultParams = (DefaultWithdrawFundsParams) params;
-      transfer(defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
-      return "Success";
-    } else if (params instanceof BitbayWithdrawFundsSwiftParams) {
-      BitbayWithdrawFundsSwiftParams bicParams = (BitbayWithdrawFundsSwiftParams) params;
-      withdraw(
-          bicParams.getCurrency(),
-          bicParams.getAmount(),
-          bicParams.getAccount(),
-          bicParams.isExpress(),
-          bicParams.getBic());
-      return "Success";
-    }
+	@Override
+	public String withdrawFunds(WithdrawFundsParams params) throws IOException {
+		if (params instanceof DefaultWithdrawFundsParams defaultParams) {
+			transfer(defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
+			return "Success";
+		} else if (params instanceof BitbayWithdrawFundsSwiftParams bicParams) {
+			withdraw(
+					bicParams.getCurrency(),
+					bicParams.getAmount(),
+					bicParams.getAccount(),
+					bicParams.isExpress(),
+					bicParams.getBic());
+			return "Success";
+		}
+		throw new NotAvailableFromExchangeException();
+	}
 
-    throw new NotAvailableFromExchangeException();
-  }
+	@Override
+	public String requestDepositAddress(Currency currency, String... args) throws IOException {
+		throw new NotAvailableFromExchangeException();
+	}
 
-  @Override
-  public String requestDepositAddress(Currency currency, String... args) throws IOException {
-    throw new NotAvailableFromExchangeException();
-  }
+	@Override
+	public TradeHistoryParams createFundingHistoryParams() {
+		throw new NotAvailableFromExchangeException();
+	}
 
-  @Override
-  public TradeHistoryParams createFundingHistoryParams() {
-    throw new NotAvailableFromExchangeException();
-  }
+	@Override
+	public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
+		Currency currency = null;
+		if (params instanceof TradeHistoryParamCurrency tradeHistoryParamCurrency) {
+			currency = tradeHistoryParamCurrency.getCurrency();
+		}
+		Integer limit = 1000;
+		if (params instanceof TradeHistoryParamLimit) {
+			limit = ((TradeHistoryParamLimit) params).getLimit();
+		}
+		return history(currency, limit);
+	}
 
-  @Override
-  public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
-    Currency currency = null;
-    if (params instanceof TradeHistoryParamCurrency) {
-      TradeHistoryParamCurrency tradeHistoryParamCurrency = (TradeHistoryParamCurrency) params;
-      currency = tradeHistoryParamCurrency.getCurrency();
-    }
+	public static class BitbayFundingHistory
+			implements TradeHistoryParamCurrency, TradeHistoryParamLimit {
 
-    Integer limit = 1000;
-    if (params instanceof TradeHistoryParamLimit) {
-      limit = ((TradeHistoryParamLimit) params).getLimit();
-    }
+		private Currency currency;
+		private Integer limit;
 
-    return history(currency, limit);
-  }
+		public BitbayFundingHistory(Currency currency, Integer limit) {
+			this.currency = currency;
+			this.limit = limit;
+		}
 
-  public static class BitbayFundingHistory
-      implements TradeHistoryParamCurrency, TradeHistoryParamLimit {
+		public BitbayFundingHistory() {
+		}
 
-    private Currency currency;
-    private Integer limit;
+		@Override
+		public Currency getCurrency() {
+			return currency;
+		}
 
-    public BitbayFundingHistory(Currency currency, Integer limit) {
-      this.currency = currency;
-      this.limit = limit;
-    }
+		@Override
+		public void setCurrency(Currency currency) {
+			this.currency = currency;
+		}
 
-    public BitbayFundingHistory() {}
+		@Override
+		public Integer getLimit() {
+			return limit;
+		}
 
-    @Override
-    public Currency getCurrency() {
-      return currency;
-    }
-
-    @Override
-    public void setCurrency(Currency currency) {
-      this.currency = currency;
-    }
-
-    @Override
-    public Integer getLimit() {
-      return limit;
-    }
-
-    @Override
-    public void setLimit(Integer limit) {
-      this.limit = limit;
-    }
-  }
+		@Override
+		public void setLimit(Integer limit) {
+			this.limit = limit;
+		}
+	}
 }

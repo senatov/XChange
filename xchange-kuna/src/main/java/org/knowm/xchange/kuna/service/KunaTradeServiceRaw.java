@@ -2,14 +2,14 @@ package org.knowm.xchange.kuna.service;
 
 import org.knowm.xchange.Exchange;
 
-/** @author Dat Bui */
+/**
+ * @author Dat Bui
+ */
 public class KunaTradeServiceRaw extends KunaBaseService {
-  /**
-   * Constructor.
-   *
-   * @param exchange
-   */
-  protected KunaTradeServiceRaw(Exchange exchange) {
-    super(exchange);
-  }
+	/**
+	 * Constructor.
+	 */
+	protected KunaTradeServiceRaw(Exchange exchange) {
+		super(exchange);
+	}
 }

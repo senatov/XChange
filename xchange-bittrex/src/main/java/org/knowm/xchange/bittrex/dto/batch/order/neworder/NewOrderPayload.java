@@ -9,10 +9,10 @@ import org.knowm.xchange.bittrex.dto.batch.order.OrderPayload;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class NewOrderPayload extends OrderPayload {
-  private String marketSymbol;
-  private Direction direction;
-  private Type type;
-  private String quantity;
-  private String limit;
-  private TimeInForce timeInForce;
+	private String marketSymbol;
+	private Direction direction;
+	private Type type;
+	private String quantity;
+	private String limit;
+	private TimeInForce timeInForce;
 }

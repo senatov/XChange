@@ -5,14 +5,13 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 /**
  * Response schema:
- *
  * <pre>
  * {
  * 	"error": {
  * 		"message": "string",
  * 		"errorType": "string",
  * 		"statusCode": 0
- * 	}
+ *    }
  * }
  * </pre>
  *
@@ -20,38 +19,34 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
  */
 public class LatokenException extends HttpStatusExceptionSupport {
 
-  private static final long serialVersionUID = -3780202375788517773L;
+	private static final long serialVersionUID = -3780202375788517773L;
+	private final String errorType;
 
-  public static class LatokenError {
-    String message;
-    String errorType;
-    int statusCode;
+	/**
+	 * C'tor
+	 */
+	public LatokenException(@JsonProperty("error") LatokenError error) {
+		super(error.message);
+		setHttpStatusCode(error.statusCode);
+		this.errorType = error.errorType;
+	}
 
-    public LatokenError(
-        @JsonProperty("message") String message,
-        @JsonProperty("errorType") String errorType,
-        @JsonProperty("statusCode") int statusCode) {
+	public String getErrorType() {
+		return errorType;
+	}
 
-      this.message = message;
-      this.errorType = errorType;
-      this.statusCode = statusCode;
-    }
-  }
+	public static class LatokenError {
+		String message;
+		String errorType;
+		int statusCode;
 
-  private final String errorType;
-
-  /**
-   * C'tor
-   *
-   * @param error
-   */
-  public LatokenException(@JsonProperty("error") LatokenError error) {
-    super(error.message);
-    setHttpStatusCode(error.statusCode);
-    this.errorType = error.errorType;
-  }
-
-  public String getErrorType() {
-    return errorType;
-  }
+		public LatokenError(
+				@JsonProperty("message") String message,
+				@JsonProperty("errorType") String errorType,
+				@JsonProperty("statusCode") int statusCode) {
+			this.message = message;
+			this.errorType = errorType;
+			this.statusCode = statusCode;
+		}
+	}
 }

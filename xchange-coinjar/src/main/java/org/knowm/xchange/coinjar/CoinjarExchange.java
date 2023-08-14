@@ -10,20 +10,19 @@ import org.knowm.xchange.coinjar.service.CoinjarTradeService;
 
 public class CoinjarExchange extends BaseExchange implements Exchange {
 
-  @Override
-  protected void initServices() {
-    this.accountService = new CoinjarAccountService(this);
-    this.marketDataService = new CoinjarMarketDataService(this);
-    this.tradeService = new CoinjarTradeService(this);
-  }
+	@Override
+	protected void initServices() {
+		this.accountService = new CoinjarAccountService(this);
+		this.marketDataService = new CoinjarMarketDataService(this);
+		this.tradeService = new CoinjarTradeService(this);
+	}
 
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-    exchangeSpecification.setSslUri(CoinjarBaseService.LIVE_URL);
-    exchangeSpecification.setExchangeName("Coinjar");
-    exchangeSpecification.setExchangeDescription("Coinjar");
-
-    return exchangeSpecification;
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+		exchangeSpecification.setSslUri(CoinjarBaseService.LIVE_URL);
+		exchangeSpecification.setExchangeName("Coinjar");
+		exchangeSpecification.setExchangeDescription("Coinjar");
+		return exchangeSpecification;
+	}
 }

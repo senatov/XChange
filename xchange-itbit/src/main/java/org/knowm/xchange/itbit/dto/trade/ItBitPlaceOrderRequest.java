@@ -4,77 +4,70 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ItBitPlaceOrderRequest {
 
-  @JsonProperty("type")
-  protected String type;
+	@JsonProperty("type")
+	protected String type;
 
-  @JsonProperty("currency")
-  protected String baseCurrency;
+	@JsonProperty("currency")
+	protected String baseCurrency;
 
-  @JsonProperty("side")
-  private String side;
+	@JsonProperty("side")
+	private String side;
 
-  @JsonProperty("amount")
-  private String amount;
+	@JsonProperty("amount")
+	private String amount;
 
-  @JsonProperty("price")
-  private String price;
+	@JsonProperty("price")
+	private String price;
 
-  @JsonProperty("instrument")
-  private String instrument;
+	@JsonProperty("instrument")
+	private String instrument;
 
-  @JsonProperty("postOnly")
-  private boolean postOnly;
+	@JsonProperty("postOnly")
+	private boolean postOnly;
 
-  public ItBitPlaceOrderRequest(
-      String side,
-      String type,
-      String baseCurrency,
-      String amount,
-      String price,
-      String instrument,
-      boolean postOnly) {
+	public ItBitPlaceOrderRequest(
+			String side,
+			String type,
+			String baseCurrency,
+			String amount,
+			String price,
+			String instrument,
+			boolean postOnly) {
+		super();
+		this.side = side;
+		this.type = type;
+		this.baseCurrency = baseCurrency;
+		this.amount = amount;
+		this.price = price;
+		this.instrument = instrument;
+		this.postOnly = postOnly;
+	}
 
-    super();
-    this.side = side;
-    this.type = type;
-    this.baseCurrency = baseCurrency;
-    this.amount = amount;
-    this.price = price;
-    this.instrument = instrument;
-    this.postOnly = postOnly;
-  }
+	public String getSide() {
+		return side;
+	}
 
-  public String getSide() {
+	public String getType() {
+		return type;
+	}
 
-    return side;
-  }
+	public String getBaseCurrency() {
+		return baseCurrency;
+	}
 
-  public String getType() {
+	public String getAmount() {
+		return amount;
+	}
 
-    return type;
-  }
+	public String getPrice() {
+		return price;
+	}
 
-  public String getBaseCurrency() {
+	public String getInstrument() {
+		return instrument;
+	}
 
-    return baseCurrency;
-  }
-
-  public String getAmount() {
-
-    return amount;
-  }
-
-  public String getPrice() {
-
-    return price;
-  }
-
-  public String getInstrument() {
-
-    return instrument;
-  }
-
-  public boolean isPostOnly() {
-    return postOnly;
-  }
+	public boolean isPostOnly() {
+		return postOnly;
+	}
 }

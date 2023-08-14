@@ -5,17 +5,17 @@ import lombok.Data;
 
 @Data
 public class BatchOrder {
-  @JsonProperty("Resource")
-  private String resource = "Order";
+	@JsonProperty("Resource")
+	private String resource = "Order";
 
-  @JsonProperty("Operation")
-  private Operation operation;
+	@JsonProperty("Operation")
+	private Operation operation;
 
-  @JsonProperty("Payload")
-  private OrderPayload payload;
+	@JsonProperty("Payload")
+	private OrderPayload payload;
 
-  public BatchOrder(Operation operation, OrderPayload payload) {
-    this.operation = operation;
-    this.payload = payload;
-  }
+	public BatchOrder(Operation operation, OrderPayload payload) {
+		this.operation = operation;
+		this.payload = payload;
+	}
 }

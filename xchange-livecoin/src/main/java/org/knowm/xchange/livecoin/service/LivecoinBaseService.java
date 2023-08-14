@@ -8,19 +8,18 @@ import org.knowm.xchange.service.BaseResilientExchangeService;
 import org.knowm.xchange.service.BaseService;
 
 public class LivecoinBaseService extends BaseResilientExchangeService<LivecoinExchange>
-    implements BaseService {
+		implements BaseService {
 
-  protected final Livecoin service;
-  protected final LivecoinDigest signatureCreator;
-  protected final String apiKey;
+	protected final Livecoin service;
+	protected final LivecoinDigest signatureCreator;
+	protected final String apiKey;
 
-  public LivecoinBaseService(
-      LivecoinExchange exchange, Livecoin livecoin, ResilienceRegistries resilienceRegistries) {
-    super(exchange, resilienceRegistries);
-
-    this.service = livecoin;
-    this.apiKey = exchange.getExchangeSpecification().getApiKey();
-    this.signatureCreator =
-        LivecoinDigest.createInstance(exchange.getExchangeSpecification().getSecretKey(), apiKey);
-  }
+	public LivecoinBaseService(
+			LivecoinExchange exchange, Livecoin livecoin, ResilienceRegistries resilienceRegistries) {
+		super(exchange, resilienceRegistries);
+		this.service = livecoin;
+		this.apiKey = exchange.getExchangeSpecification().getApiKey();
+		this.signatureCreator =
+				LivecoinDigest.createInstance(exchange.getExchangeSpecification().getSecretKey(), apiKey);
+	}
 }

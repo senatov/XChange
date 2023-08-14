@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinmateChannelData {
-  private String channel;
+	private final String channel;
 
-  @JsonCreator
-  public CoinmateChannelData(@JsonProperty("channel") String channel) {
-    this.channel = channel;
-  }
+	@JsonCreator
+	public CoinmateChannelData(@JsonProperty("channel") String channel) {
+		this.channel = channel;
+	}
 
-  public String getChannel() {
-    return channel;
-  }
+	public String getChannel() {
+		return channel;
+	}
 }

@@ -5,25 +5,25 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.paribu.service.ParibuMarketDataService;
 
-/** @author semihunaldi */
+/**
+ * @author semihunaldi
+ */
 public class ParibuExchange extends BaseExchange implements Exchange {
 
-  @Override
-  protected void initServices() {
+	@Override
+	protected void initServices() {
+		this.marketDataService = new ParibuMarketDataService(this);
+	}
 
-    this.marketDataService = new ParibuMarketDataService(this);
-  }
-
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-
-    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-    exchangeSpecification.setSslUri("https://www.paribu.com");
-    exchangeSpecification.setHost("www.paribu.com");
-    exchangeSpecification.setPort(80);
-    exchangeSpecification.setExchangeName("Paribu");
-    exchangeSpecification.setExchangeDescription(
-        "Paribu is a Bitcoin exchange registered in Turkey.");
-    return exchangeSpecification;
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+		exchangeSpecification.setSslUri("https://www.paribu.com");
+		exchangeSpecification.setHost("www.paribu.com");
+		exchangeSpecification.setPort(80);
+		exchangeSpecification.setExchangeName("Paribu");
+		exchangeSpecification.setExchangeDescription(
+				"Paribu is a Bitcoin exchange registered in Turkey.");
+		return exchangeSpecification;
+	}
 }

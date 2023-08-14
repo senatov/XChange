@@ -2,11 +2,11 @@ package org.knowm.xchange.coinbasepro.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 /**
  * LIMIT ORDER PARAMETERS
- *
  * <table>
  * <tr><th>Param</th><th>Description</th></tr>
  * <tr><td>price</td><td>Price per bitcoin</td></tr>
@@ -19,160 +19,159 @@ import java.math.BigDecimal;
  * @author bryant_harris
  */
 public class CoinbaseProPlaceLimitOrder extends CoinbaseProPlaceOrder {
-  @JsonProperty("price")
-  BigDecimal price;
+	@JsonProperty("price")
+	BigDecimal price;
 
-  @JsonProperty("size")
-  BigDecimal size;
+	@JsonProperty("size")
+	BigDecimal size;
 
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  @JsonProperty("time_in_force")
-  TimeInForce timeInForce;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@JsonProperty("time_in_force")
+	TimeInForce timeInForce;
 
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  @JsonProperty("cancel_after")
-  CancelAfter cancelAfter;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@JsonProperty("cancel_after")
+	CancelAfter cancelAfter;
 
-  @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  @JsonProperty("post_only")
-  Boolean postOnly;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	@JsonProperty("post_only")
+	Boolean postOnly;
 
-  public CoinbaseProPlaceLimitOrder(
-      String clientOld,
-      Type type,
-      Side side,
-      String productId,
-      SelfTradePrevention stp,
-      Stop stop,
-      BigDecimal stopPrice,
-      BigDecimal price,
-      BigDecimal size,
-      TimeInForce timeInForce,
-      CancelAfter cancelAfter,
-      Boolean postOnly) {
-    super(clientOld, type, side, productId, stp, stop, stopPrice);
-    this.price = price;
-    this.size = size;
-    this.timeInForce = timeInForce;
-    this.cancelAfter = cancelAfter;
-    this.postOnly = postOnly;
+	public CoinbaseProPlaceLimitOrder(
+			String clientOld,
+			Type type,
+			Side side,
+			String productId,
+			SelfTradePrevention stp,
+			Stop stop,
+			BigDecimal stopPrice,
+			BigDecimal price,
+			BigDecimal size,
+			TimeInForce timeInForce,
+			CancelAfter cancelAfter,
+			Boolean postOnly) {
+		super(clientOld, type, side, productId, stp, stop, stopPrice);
+		this.price = price;
+		this.size = size;
+		this.timeInForce = timeInForce;
+		this.cancelAfter = cancelAfter;
+		this.postOnly = postOnly;
+		if (cancelAfter != null && timeInForce != TimeInForce.GTT)
+			throw new IllegalArgumentException("cancel_after Requires time_in_force to be GTT");
+		if (postOnly != null && (timeInForce == TimeInForce.IOC || timeInForce == TimeInForce.FOK))
+			throw new IllegalArgumentException("post_only Invalid when time_in_force is IOC or FOK");
+	}
 
-    if (cancelAfter != null && timeInForce != TimeInForce.GTT)
-      throw new IllegalArgumentException("cancel_after Requires time_in_force to be GTT");
-    if (postOnly != null && (timeInForce == TimeInForce.IOC || timeInForce == TimeInForce.FOK))
-      throw new IllegalArgumentException("post_only Invalid when time_in_force is IOC or FOK");
-  }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-  public BigDecimal getPrice() {
-    return price;
-  }
+	public BigDecimal getSize() {
+		return size;
+	}
 
-  public BigDecimal getSize() {
-    return size;
-  }
+	public TimeInForce getTimeInForce() {
+		return timeInForce;
+	}
 
-  public TimeInForce getTimeInForce() {
-    return timeInForce;
-  }
+	public CancelAfter getCancelAfter() {
+		return cancelAfter;
+	}
 
-  public CancelAfter getCancelAfter() {
-    return cancelAfter;
-  }
+	public Boolean getPostOnly() {
+		return postOnly;
+	}
 
-  public Boolean getPostOnly() {
-    return postOnly;
-  }
+	@Override
+	public String toString() {
+		return "CoinbaseProPlaceLimitOrder [price="
+				+ price
+				+ ", size="
+				+ size
+				+ ", timeInForce="
+				+ timeInForce
+				+ ", cancelAfter="
+				+ cancelAfter
+				+ ", postOnly="
+				+ postOnly
+				+ ", clientOid="
+				+ clientOid
+				+ ", type="
+				+ type
+				+ ", side="
+				+ side
+				+ ", productId="
+				+ productId
+				+ ", stp="
+				+ stp
+				+ ", stop="
+				+ stop
+				+ ", stopPrice="
+				+ stopPrice
+				+ "]";
+	}
 
-  @Override
-  public String toString() {
-    return "CoinbaseProPlaceLimitOrder [price="
-        + price
-        + ", size="
-        + size
-        + ", timeInForce="
-        + timeInForce
-        + ", cancelAfter="
-        + cancelAfter
-        + ", postOnly="
-        + postOnly
-        + ", clientOid="
-        + clientOid
-        + ", type="
-        + type
-        + ", side="
-        + side
-        + ", productId="
-        + productId
-        + ", stp="
-        + stp
-        + ", stop="
-        + stop
-        + ", stopPrice="
-        + stopPrice
-        + "]";
-  }
+	public enum TimeInForce {
+		GTC,
+		GTT,
+		IOC,
+		FOK
+	}
 
-  public static class Builder
-      extends CoinbaseProPlaceOrder.Builder<CoinbaseProPlaceLimitOrder, Builder> {
-    BigDecimal price;
-    BigDecimal size;
-    TimeInForce timeInForce;
-    CancelAfter cancelAfter;
-    Boolean postOnly;
+	public enum CancelAfter {
+		min,
+		hour,
+		day
+	}
 
-    public Builder price(BigDecimal price) {
-      this.price = price;
-      return this;
-    }
+	public static class Builder
+			extends CoinbaseProPlaceOrder.Builder<CoinbaseProPlaceLimitOrder, Builder> {
+		BigDecimal price;
+		BigDecimal size;
+		TimeInForce timeInForce;
+		CancelAfter cancelAfter;
+		Boolean postOnly;
 
-    public Builder size(BigDecimal size) {
-      this.size = size;
-      return this;
-    }
+		public Builder price(BigDecimal price) {
+			this.price = price;
+			return this;
+		}
 
-    public Builder timeInForce(TimeInForce timeInForce) {
-      this.timeInForce = timeInForce;
-      return this;
-    }
+		public Builder size(BigDecimal size) {
+			this.size = size;
+			return this;
+		}
 
-    public Builder cancelAfter(CancelAfter cancelAfter) {
-      this.cancelAfter = cancelAfter;
-      return this;
-    }
+		public Builder timeInForce(TimeInForce timeInForce) {
+			this.timeInForce = timeInForce;
+			return this;
+		}
 
-    public Builder postOnly(boolean postOnly) {
-      this.postOnly = postOnly;
-      return this;
-    }
+		public Builder cancelAfter(CancelAfter cancelAfter) {
+			this.cancelAfter = cancelAfter;
+			return this;
+		}
 
-    @Override
-    public CoinbaseProPlaceLimitOrder build() {
-      return new CoinbaseProPlaceLimitOrder(
-          clientOid,
-          type,
-          side,
-          productId,
-          stp,
-          stop,
-          stopPrice,
-          price,
-          size,
-          timeInForce,
-          cancelAfter,
-          postOnly);
-    }
-  }
+		public Builder postOnly(boolean postOnly) {
+			this.postOnly = postOnly;
+			return this;
+		}
 
-  public enum TimeInForce {
-    GTC,
-    GTT,
-    IOC,
-    FOK
-  }
-
-  public enum CancelAfter {
-    min,
-    hour,
-    day;
-  }
+		@Override
+		public CoinbaseProPlaceLimitOrder build() {
+			return new CoinbaseProPlaceLimitOrder(
+					clientOid,
+					type,
+					side,
+					productId,
+					stp,
+					stop,
+					stopPrice,
+					price,
+					size,
+					timeInForce,
+					cancelAfter,
+					postOnly);
+		}
+	}
 }

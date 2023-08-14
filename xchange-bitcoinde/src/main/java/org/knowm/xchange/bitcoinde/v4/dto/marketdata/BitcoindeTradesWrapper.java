@@ -17,20 +17,20 @@ import org.knowm.xchange.utils.jackson.CurrencyPairDeserializer;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindeTradesWrapper extends BitcoindeResponse {
 
-  CurrencyPair tradingPair;
-  BitcoindeTrade[] trades;
+	CurrencyPair tradingPair;
+	BitcoindeTrade[] trades;
 
-  @JsonCreator
-  public BitcoindeTradesWrapper(
-      @JsonProperty("trading_pair") @JsonDeserialize(using = CurrencyPairDeserializer.class)
-          CurrencyPair tradingPair,
-      @JsonProperty("trades") BitcoindeTrade[] trades,
-      @JsonProperty("credits") Integer credits,
-      @JsonProperty("errors") BitcoindeError[] errors,
-      @JsonProperty("maintenance") BitcoindeMaintenance maintenance,
-      @JsonProperty("nonce") Long nonce) {
-    super(credits, errors, maintenance, nonce);
-    this.tradingPair = tradingPair;
-    this.trades = trades;
-  }
+	@JsonCreator
+	public BitcoindeTradesWrapper(
+			@JsonProperty("trading_pair") @JsonDeserialize(using = CurrencyPairDeserializer.class)
+			CurrencyPair tradingPair,
+			@JsonProperty("trades") BitcoindeTrade[] trades,
+			@JsonProperty("credits") Integer credits,
+			@JsonProperty("errors") BitcoindeError[] errors,
+			@JsonProperty("maintenance") BitcoindeMaintenance maintenance,
+			@JsonProperty("nonce") Long nonce) {
+		super(credits, errors, maintenance, nonce);
+		this.tradingPair = tradingPair;
+		this.trades = trades;
+	}
 }

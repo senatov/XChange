@@ -7,12 +7,10 @@ import org.knowm.xchange.hitbtc.v2.HitbtcExchange;
 
 public class HitbtcExampleUtils {
 
-  public static Exchange createExchange() {
-
-    ExchangeSpecification exSpec = new ExchangeSpecification(HitbtcExchange.class);
-    exSpec.setApiKey("");
-    exSpec.setSecretKey("");
-
-    return ExchangeFactory.INSTANCE.createExchange(exSpec);
-  }
+	public static Exchange createExchange() {
+		ExchangeSpecification exSpec = new ExchangeSpecification(HitbtcExchange.class);
+		exSpec.setApiKey("");
+		exSpec.setSecretKey("");
+		return ExchangeFactory.INSTANCE.createExchange(exSpec);
+	}
 }

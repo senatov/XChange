@@ -6,138 +6,125 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"tradeID", "date", "type", "rate", "amount", "total"})
 public class PoloniexPublicTrade {
 
-  @JsonProperty("tradeID")
-  private String tradeID;
+	@JsonProperty("tradeID")
+	private String tradeID;
 
-  @JsonProperty("date")
-  private String date;
+	@JsonProperty("date")
+	private String date;
 
-  @JsonProperty("type")
-  private String type;
+	@JsonProperty("type")
+	private String type;
 
-  @JsonProperty("rate")
-  private BigDecimal rate;
+	@JsonProperty("rate")
+	private BigDecimal rate;
 
-  @JsonProperty("amount")
-  private BigDecimal amount;
+	@JsonProperty("amount")
+	private BigDecimal amount;
 
-  @JsonProperty("total")
-  private BigDecimal total;
+	@JsonProperty("total")
+	private BigDecimal total;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  @JsonProperty("tradeID")
-  public String getTradeID() {
+	@JsonProperty("tradeID")
+	public String getTradeID() {
+		return tradeID;
+	}
 
-    return tradeID;
-  }
+	@JsonProperty("tradeID")
+	public void setTradeID(String tradeID) {
+		this.tradeID = tradeID;
+	}
 
-  @JsonProperty("tradeID")
-  public void setTradeID(String tradeID) {
+	@JsonProperty("date")
+	public String getDate() {
+		return date;
+	}
 
-    this.tradeID = tradeID;
-  }
+	@JsonProperty("date")
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-  @JsonProperty("date")
-  public String getDate() {
+	@JsonProperty("type")
+	public String getType() {
+		return type;
+	}
 
-    return date;
-  }
+	@JsonProperty("type")
+	public void setType(String type) {
+		this.type = type;
+	}
 
-  @JsonProperty("date")
-  public void setDate(String date) {
+	@JsonProperty("rate")
+	public BigDecimal getRate() {
+		return rate;
+	}
 
-    this.date = date;
-  }
+	@JsonProperty("rate")
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
+	}
 
-  @JsonProperty("type")
-  public String getType() {
+	@JsonProperty("amount")
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    return type;
-  }
+	@JsonProperty("amount")
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-  @JsonProperty("type")
-  public void setType(String type) {
+	@JsonProperty("total")
+	public BigDecimal getTotal() {
+		return total;
+	}
 
-    this.type = type;
-  }
+	@JsonProperty("total")
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
 
-  @JsonProperty("rate")
-  public BigDecimal getRate() {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    return rate;
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 
-  @JsonProperty("rate")
-  public void setRate(BigDecimal rate) {
-
-    this.rate = rate;
-  }
-
-  @JsonProperty("amount")
-  public BigDecimal getAmount() {
-
-    return amount;
-  }
-
-  @JsonProperty("amount")
-  public void setAmount(BigDecimal amount) {
-
-    this.amount = amount;
-  }
-
-  @JsonProperty("total")
-  public BigDecimal getTotal() {
-
-    return total;
-  }
-
-  @JsonProperty("total")
-  public void setTotal(BigDecimal total) {
-
-    this.total = total;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
-
-  @Override
-  public String toString() {
-
-    return "PoloniexPublicTrade [tradeID="
-        + tradeID
-        + ", date="
-        + date
-        + ", type="
-        + type
-        + ", amount="
-        + amount
-        + ", rate="
-        + rate
-        + ", total="
-        + total
-        + ""
-        + ", additionalProperties="
-        + additionalProperties
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "PoloniexPublicTrade [tradeID="
+				+ tradeID
+				+ ", date="
+				+ date
+				+ ", type="
+				+ type
+				+ ", amount="
+				+ amount
+				+ ", rate="
+				+ rate
+				+ ", total="
+				+ total
+				+ ""
+				+ ", additionalProperties="
+				+ additionalProperties
+				+ "]";
+	}
 }

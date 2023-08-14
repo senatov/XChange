@@ -17,81 +17,79 @@ import org.knowm.xchange.exceptions.ExchangeSecurityException;
 
 public class BinanceStreamingAccountService implements StreamingAccountService {
 
-  private final BehaviorSubject<OutboundAccountPositionBinanceWebsocketTransaction> accountInfoLast =
-      BehaviorSubject.create();
-  private final Subject<OutboundAccountPositionBinanceWebsocketTransaction> accountInfoPublisher =
-      accountInfoLast.toSerialized();
+	private final BehaviorSubject<OutboundAccountPositionBinanceWebsocketTransaction> accountInfoLast =
+			BehaviorSubject.create();
+	private final Subject<OutboundAccountPositionBinanceWebsocketTransaction> accountInfoPublisher =
+			accountInfoLast.toSerialized();
+	private final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+	private volatile Disposable accountInfo;
+	private volatile BinanceUserDataStreamingService binanceUserDataStreamingService;
 
-  private volatile Disposable accountInfo;
-  private volatile BinanceUserDataStreamingService binanceUserDataStreamingService;
+	public BinanceStreamingAccountService(
+			BinanceUserDataStreamingService binanceUserDataStreamingService) {
+		this.binanceUserDataStreamingService = binanceUserDataStreamingService;
+	}
 
-  private final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+	@Override
+	public Observable<Balance> getBalanceChanges(Currency currency, Object... args) {
+		return getBalanceChanges().filter(t -> t.getCurrency().equals(currency));
+	}
 
-  public BinanceStreamingAccountService(
-      BinanceUserDataStreamingService binanceUserDataStreamingService) {
-    this.binanceUserDataStreamingService = binanceUserDataStreamingService;
-  }
+	public Observable<Balance> getBalanceChanges() {
+		checkConnected();
+		return getRawAccountInfo()
+				.map(OutboundAccountPositionBinanceWebsocketTransaction::toBalanceList)
+				.flatMap(Observable::fromIterable);
+	}
 
-  public Observable<OutboundAccountPositionBinanceWebsocketTransaction> getRawAccountInfo() {
-    checkConnected();
-    return accountInfoPublisher;
-  }
+	public Observable<OutboundAccountPositionBinanceWebsocketTransaction> getRawAccountInfo() {
+		checkConnected();
+		return accountInfoPublisher;
+	}
 
-  public Observable<Balance> getBalanceChanges() {
-    checkConnected();
-    return getRawAccountInfo()
-        .map(OutboundAccountPositionBinanceWebsocketTransaction::toBalanceList)
-        .flatMap(Observable::fromIterable);
-  }
+	private void checkConnected() {
+		if (binanceUserDataStreamingService == null || !binanceUserDataStreamingService.isSocketOpen())
+			throw new ExchangeSecurityException("Not authenticated");
+	}
 
-  private void checkConnected() {
-    if (binanceUserDataStreamingService == null || !binanceUserDataStreamingService.isSocketOpen())
-      throw new ExchangeSecurityException("Not authenticated");
-  }
+	/**
+	 * User data subscriptions may have to persist across multiple socket connections to different
+	 * URLs and therefore must act in a publisher fashion so that subscribers get an uninterrupted
+	 * stream.
+	 */
+	void setUserDataStreamingService(
+			BinanceUserDataStreamingService binanceUserDataStreamingService) {
+		if (accountInfo != null && !accountInfo.isDisposed())
+			accountInfo.dispose();
+		this.binanceUserDataStreamingService = binanceUserDataStreamingService;
+		openSubscriptions();
+	}
 
-  @Override
-  public Observable<Balance> getBalanceChanges(Currency currency, Object... args) {
-    return getBalanceChanges().filter(t -> t.getCurrency().equals(currency));
-  }
+	/**
+	 * Registers subsriptions with the streaming service for the given products.
+	 * <p>As we receive messages as soon as the connection is open, we need to register subscribers to
+	 * handle these before the first messages arrive.
+	 */
+	public void openSubscriptions() {
+		if (binanceUserDataStreamingService != null) {
+			accountInfo =
+					binanceUserDataStreamingService
+							.subscribeChannel(
+									BaseBinanceWebSocketTransaction.BinanceWebSocketTypes.OUTBOUND_ACCOUNT_POSITION)
+							.map(this::accountInfo)
+							.filter(
+									m ->
+											accountInfoLast.getValue() == null
+													|| accountInfoLast.getValue().getEventTime().before(m.getEventTime()))
+							.subscribe(accountInfoPublisher::onNext);
+		}
+	}
 
-  /**
-   * Registers subsriptions with the streaming service for the given products.
-   *
-   * <p>As we receive messages as soon as the connection is open, we need to register subscribers to
-   * handle these before the first messages arrive.
-   */
-  public void openSubscriptions() {
-    if (binanceUserDataStreamingService != null) {
-      accountInfo =
-          binanceUserDataStreamingService
-              .subscribeChannel(
-                  BaseBinanceWebSocketTransaction.BinanceWebSocketTypes.OUTBOUND_ACCOUNT_POSITION)
-              .map(this::accountInfo)
-              .filter(
-                  m ->
-                      accountInfoLast.getValue() == null
-                          || accountInfoLast.getValue().getEventTime().before(m.getEventTime()))
-              .subscribe(accountInfoPublisher::onNext);
-    }
-  }
-
-  /**
-   * User data subscriptions may have to persist across multiple socket connections to different
-   * URLs and therefore must act in a publisher fashion so that subscribers get an uninterrupted
-   * stream.
-   */
-  void setUserDataStreamingService(
-      BinanceUserDataStreamingService binanceUserDataStreamingService) {
-    if (accountInfo != null && !accountInfo.isDisposed()) accountInfo.dispose();
-    this.binanceUserDataStreamingService = binanceUserDataStreamingService;
-    openSubscriptions();
-  }
-
-  private OutboundAccountPositionBinanceWebsocketTransaction accountInfo(JsonNode json) {
-    try {
-      return mapper.treeToValue(json, OutboundAccountPositionBinanceWebsocketTransaction.class);
-    } catch (Exception e) {
-      throw new ExchangeException("Unable to parse account info", e);
-    }
-  }
+	private OutboundAccountPositionBinanceWebsocketTransaction accountInfo(JsonNode json) {
+		try {
+			return mapper.treeToValue(json, OutboundAccountPositionBinanceWebsocketTransaction.class);
+		} catch (Exception e) {
+			throw new ExchangeException("Unable to parse account info", e);
+		}
+	}
 }

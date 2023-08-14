@@ -1,10 +1,5 @@
 package org.knowm.xchange.coinfloor.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinfloor.CoinfloorAdapters;
 import org.knowm.xchange.coinfloor.dto.trade.CoinfloorOrder;
@@ -29,178 +24,171 @@ import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamMultiCurrenc
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamMultiInstrument;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 public class CoinfloorTradeService extends CoinfloorTradeServiceRaw implements TradeService {
 
-  private static final CurrencyPair NO_CURRENCY_PAIR = null;
-  private static final Collection<CurrencyPair> NO_CURRENCY_PAIR_COLLECTION =
-      Collections.emptySet();
-  private static final Collection<Instrument> NO_INSTRUMENT_COLLECTION =
-          Collections.emptySet();
+	private static final CurrencyPair NO_CURRENCY_PAIR = null;
+	private static final Collection<CurrencyPair> NO_CURRENCY_PAIR_COLLECTION =
+			Collections.emptySet();
+	private static final Collection<Instrument> NO_INSTRUMENT_COLLECTION =
+			Collections.emptySet();
 
-  private final Collection<Instrument> allConfiguredCurrencyPairs;
+	private final Collection<Instrument> allConfiguredCurrencyPairs;
 
-  public CoinfloorTradeService(Exchange exchange) {
-    super(exchange);
-    allConfiguredCurrencyPairs = exchange.getExchangeMetaData().getInstruments().keySet();
-  }
+	public CoinfloorTradeService(Exchange exchange) {
+		super(exchange);
+		allConfiguredCurrencyPairs = exchange.getExchangeMetaData().getInstruments().keySet();
+	}
 
-  @Override
-  public OpenOrders getOpenOrders() throws IOException {
-    // no currency pairs have been supplied - search them all
-    return getOpenOrders(NO_CURRENCY_PAIR, allConfiguredCurrencyPairs);
-  }
+	@Override
+	public OpenOrders getOpenOrders() throws IOException {
+		// no currency pairs have been supplied - search them all
+		return getOpenOrders(NO_CURRENCY_PAIR, allConfiguredCurrencyPairs);
+	}
 
-  @Override
-  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-    CurrencyPair pair;
-    if (params instanceof OpenOrdersParamCurrencyPair) {
-      pair = ((OpenOrdersParamCurrencyPair) params).getCurrencyPair();
-    } else {
-      pair = NO_CURRENCY_PAIR;
-    }
+	@Override
+	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+		CurrencyPair pair;
+		if (params instanceof OpenOrdersParamCurrencyPair) {
+			pair = ((OpenOrdersParamCurrencyPair) params).getCurrencyPair();
+		} else {
+			pair = NO_CURRENCY_PAIR;
+		}
+		Collection<Instrument> pairs;
+		if (params instanceof OpenOrdersParamMultiCurrencyPair) {
+			pairs = ((OpenOrdersParamMultiInstrument) params).getInstruments();
+		} else {
+			pairs = NO_INSTRUMENT_COLLECTION;
+		}
+		return getOpenOrders(pair, pairs);
+	}
 
-    Collection<Instrument> pairs;
-    if (params instanceof OpenOrdersParamMultiCurrencyPair) {
-      pairs = ((OpenOrdersParamMultiInstrument) params).getInstruments();
-    } else {
-      pairs = NO_INSTRUMENT_COLLECTION;
-    }
+	@Override
+	public String placeMarketOrder(MarketOrder order) throws IOException {
+		placeMarketOrder(order.getCurrencyPair(), order.getType(), order.getOriginalAmount());
+		return ""; // coinfloor does not return an id for market orders
+	}
 
-    return getOpenOrders(pair, pairs);
-  }
+	@Override
+	public String placeLimitOrder(LimitOrder order) throws IOException {
+		CoinfloorOrder rawOrder =
+				placeLimitOrder(
+						order.getCurrencyPair(),
+						order.getType(),
+						order.getOriginalAmount(),
+						order.getLimitPrice());
+		return Long.toString(rawOrder.getId());
+	}
 
-  private OpenOrders getOpenOrders(CurrencyPair pair, Collection<Instrument> pairs)
-      throws IOException {
-    Collection<CoinfloorOrder> orders = new ArrayList<>();
+	@Override
+	public boolean cancelOrder(String orderId) throws IOException {
+		// API requires currency pair but value seems to be ignored - only the order ID is used for
+		// lookup.
+		CurrencyPair currencyPairValueIsIgnored = CurrencyPair.BTC_GBP;
+		return cancelOrder(currencyPairValueIsIgnored, Long.parseLong(orderId));
+	}
 
-    if (pair == NO_CURRENCY_PAIR) {
-      if (pairs.isEmpty()) {
-        // no currency pairs have been supplied - search them all
-        pairs = allConfiguredCurrencyPairs;
-      }
-    } else {
-      CoinfloorOrder[] orderArray = getOpenOrders(pair);
-      for (CoinfloorOrder order : orderArray) {
-        order.setCurrencyPair(pair);
-        orders.add(order);
-      }
-    }
+	@Override
+	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+		if (orderParams instanceof CancelOrderByIdParams) {
+			return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
+		} else {
+			return false;
+		}
+	}
 
-    for (Instrument currencyPair : pairs) {
-      CoinfloorOrder[] orderArray = getOpenOrders((CurrencyPair) currencyPair);
-      for (CoinfloorOrder order : orderArray) {
-        order.setCurrencyPair((CurrencyPair) currencyPair);
-        orders.add(order);
-      }
-    }
+	@Override
+	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+		Integer limit;
+		if (params instanceof TradeHistoryParamPaging) {
+			limit = ((TradeHistoryParamPaging) params).getPageLength();
+		} else {
+			limit = null;
+		}
+		Long offset;
+		if (params instanceof TradeHistoryParamOffset) {
+			offset = ((TradeHistoryParamOffset) params).getOffset();
+		} else {
+			offset = null;
+		}
+		TradeHistoryParamsSorted.Order sort;
+		if (params instanceof TradeHistoryParamsSorted) {
+			sort = ((TradeHistoryParamsSorted) params).getOrder();
+		} else {
+			sort = null;
+		}
+		CurrencyPair pair;
+		if (params instanceof TradeHistoryParamCurrencyPair) {
+			pair = ((TradeHistoryParamCurrencyPair) params).getCurrencyPair();
+		} else {
+			pair = NO_CURRENCY_PAIR;
+		}
+		Collection<CurrencyPair> pairs;
+		if (params instanceof TradeHistoryParamMultiCurrencyPair) {
+			pairs = ((TradeHistoryParamMultiCurrencyPair) params).getCurrencyPairs();
+		} else {
+			pairs = NO_CURRENCY_PAIR_COLLECTION;
+		}
+		Collection<CoinfloorUserTransaction> transactions = new ArrayList<>();
+		if (pair == NO_CURRENCY_PAIR) {
+			if (pairs.isEmpty()) {
+				// no currency pairs have been supplied - search them all
+				allConfiguredCurrencyPairs.forEach(instrument -> pairs.add((CurrencyPair) instrument));
+			}
+			for (Instrument currencyPair : pairs) {
+				transactions.addAll(Arrays.asList(getUserTransactions(currencyPair, limit, offset, sort)));
+			}
+		} else {
+			transactions.addAll(Arrays.asList(getUserTransactions(pair, limit, offset, sort)));
+		}
+		return CoinfloorAdapters.adaptTradeHistory(transactions);
+	}
 
-    return CoinfloorAdapters.adaptOpenOrders(orders);
-  }
+	/**
+	 * By default if no CurrencyPairs are specified then the trade history for all markets will be
+	 * returned.
+	 */
+	@Override
+	public TradeHistoryParams createTradeHistoryParams() {
+		return new CoinfloorTradeHistoryParams();
+	}
 
-  /**
-   * By default if no CurrencyPairs are specified then the trade history for all markets will be
-   * returned.
-   */
-  @Override
-  public OpenOrdersParams createOpenOrdersParams() {
-    return new CoinfloorOpenOrdersParams();
-  }
+	/**
+	 * By default if no CurrencyPairs are specified then the trade history for all markets will be
+	 * returned.
+	 */
+	@Override
+	public OpenOrdersParams createOpenOrdersParams() {
+		return new CoinfloorOpenOrdersParams();
+	}
 
-  @Override
-  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-    Integer limit;
-    if (params instanceof TradeHistoryParamPaging) {
-      limit = ((TradeHistoryParamPaging) params).getPageLength();
-    } else {
-      limit = null;
-    }
-
-    Long offset;
-    if (params instanceof TradeHistoryParamOffset) {
-      offset = ((TradeHistoryParamOffset) params).getOffset();
-    } else {
-      offset = null;
-    }
-
-    TradeHistoryParamsSorted.Order sort;
-    if (params instanceof TradeHistoryParamsSorted) {
-      sort = ((TradeHistoryParamsSorted) params).getOrder();
-    } else {
-      sort = null;
-    }
-
-    CurrencyPair pair;
-    if (params instanceof TradeHistoryParamCurrencyPair) {
-      pair = ((TradeHistoryParamCurrencyPair) params).getCurrencyPair();
-    } else {
-      pair = NO_CURRENCY_PAIR;
-    }
-
-    Collection<CurrencyPair> pairs;
-    if (params instanceof TradeHistoryParamMultiCurrencyPair) {
-      pairs = ((TradeHistoryParamMultiCurrencyPair) params).getCurrencyPairs();
-    } else {
-      pairs = NO_CURRENCY_PAIR_COLLECTION;
-    }
-
-    Collection<CoinfloorUserTransaction> transactions = new ArrayList<>();
-
-    if (pair == NO_CURRENCY_PAIR) {
-      if (pairs.isEmpty()) {
-        // no currency pairs have been supplied - search them all
-        allConfiguredCurrencyPairs.forEach(instrument -> pairs.add((CurrencyPair) instrument));
-      }
-
-      for (Instrument currencyPair : pairs) {
-        transactions.addAll(Arrays.asList(getUserTransactions(currencyPair, limit, offset, sort)));
-      }
-    } else {
-      transactions.addAll(Arrays.asList(getUserTransactions(pair, limit, offset, sort)));
-    }
-
-    return CoinfloorAdapters.adaptTradeHistory(transactions);
-  }
-
-  /**
-   * By default if no CurrencyPairs are specified then the trade history for all markets will be
-   * returned.
-   */
-  @Override
-  public TradeHistoryParams createTradeHistoryParams() {
-    return new CoinfloorTradeHistoryParams();
-  }
-
-  @Override
-  public String placeLimitOrder(LimitOrder order) throws IOException {
-    CoinfloorOrder rawOrder =
-        placeLimitOrder(
-            order.getCurrencyPair(),
-            order.getType(),
-            order.getOriginalAmount(),
-            order.getLimitPrice());
-    return Long.toString(rawOrder.getId());
-  }
-
-  @Override
-  public String placeMarketOrder(MarketOrder order) throws IOException {
-    placeMarketOrder(order.getCurrencyPair(), order.getType(), order.getOriginalAmount());
-    return ""; // coinfloor does not return an id for market orders
-  }
-
-  @Override
-  public boolean cancelOrder(String orderId) throws IOException {
-    // API requires currency pair but value seems to be ignored - only the order ID is used for
-    // lookup.
-    CurrencyPair currencyPairValueIsIgnored = CurrencyPair.BTC_GBP;
-    return cancelOrder(currencyPairValueIsIgnored, Long.parseLong(orderId));
-  }
-
-  @Override
-  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-    if (orderParams instanceof CancelOrderByIdParams) {
-      return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
-    } else {
-      return false;
-    }
-  }
+	private OpenOrders getOpenOrders(CurrencyPair pair, Collection<Instrument> pairs)
+			throws IOException {
+		Collection<CoinfloorOrder> orders = new ArrayList<>();
+		if (pair == NO_CURRENCY_PAIR) {
+			if (pairs.isEmpty()) {
+				// no currency pairs have been supplied - search them all
+				pairs = allConfiguredCurrencyPairs;
+			}
+		} else {
+			CoinfloorOrder[] orderArray = getOpenOrders(pair);
+			for (CoinfloorOrder order : orderArray) {
+				order.setCurrencyPair(pair);
+				orders.add(order);
+			}
+		}
+		for (Instrument currencyPair : pairs) {
+			CoinfloorOrder[] orderArray = getOpenOrders((CurrencyPair) currencyPair);
+			for (CoinfloorOrder order : orderArray) {
+				order.setCurrencyPair((CurrencyPair) currencyPair);
+				orders.add(order);
+			}
+		}
+		return CoinfloorAdapters.adaptOpenOrders(orders);
+	}
 }

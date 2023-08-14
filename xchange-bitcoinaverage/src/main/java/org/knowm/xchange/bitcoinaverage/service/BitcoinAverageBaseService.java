@@ -6,13 +6,10 @@ import org.knowm.xchange.service.BaseService;
 
 public class BitcoinAverageBaseService extends BaseExchangeService implements BaseService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public BitcoinAverageBaseService(Exchange exchange) {
-
-    super(exchange);
-  }
+	/**
+	 * Constructor
+	 */
+	public BitcoinAverageBaseService(Exchange exchange) {
+		super(exchange);
+	}
 }

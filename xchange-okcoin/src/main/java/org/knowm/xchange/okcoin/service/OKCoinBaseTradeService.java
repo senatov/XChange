@@ -10,36 +10,31 @@ import org.knowm.xchange.okcoin.dto.trade.OkCoinErrorResult;
 
 public class OKCoinBaseTradeService extends OkCoinBaseService {
 
-  protected final OkCoin okCoin;
-  protected final String apikey;
-  protected final String secretKey;
+	protected final OkCoin okCoin;
+	protected final String apikey;
+	protected final String secretKey;
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  protected OKCoinBaseTradeService(Exchange exchange) {
+	/**
+	 * Constructor
+	 */
+	protected OKCoinBaseTradeService(Exchange exchange) {
+		super(exchange);
+		okCoin =
+				ExchangeRestProxyBuilder.forInterface(OkCoin.class, exchange.getExchangeSpecification())
+						.build();
+		apikey = exchange.getExchangeSpecification().getApiKey();
+		secretKey = exchange.getExchangeSpecification().getSecretKey();
+	}
 
-    super(exchange);
+	protected static <T extends OkCoinErrorResult> T returnOrThrow(T t) {
+		if (t.isResult()) {
+			return t;
+		} else {
+			throw new ExchangeException(OkCoinUtils.getErrorMessage(t.getErrorCode()));
+		}
+	}
 
-    okCoin =
-        ExchangeRestProxyBuilder.forInterface(OkCoin.class, exchange.getExchangeSpecification())
-            .build();
-    apikey = exchange.getExchangeSpecification().getApiKey();
-    secretKey = exchange.getExchangeSpecification().getSecretKey();
-  }
-
-  protected OkCoinDigest signatureCreator() {
-    return new OkCoinDigest(apikey, secretKey);
-  }
-
-  protected static <T extends OkCoinErrorResult> T returnOrThrow(T t) {
-
-    if (t.isResult()) {
-      return t;
-    } else {
-      throw new ExchangeException(OkCoinUtils.getErrorMessage(t.getErrorCode()));
-    }
-  }
+	protected OkCoinDigest signatureCreator() {
+		return new OkCoinDigest(apikey, secretKey);
+	}
 }

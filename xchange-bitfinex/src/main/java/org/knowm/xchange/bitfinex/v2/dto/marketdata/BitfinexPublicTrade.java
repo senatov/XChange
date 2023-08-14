@@ -1,64 +1,59 @@
 package org.knowm.xchange.bitfinex.v2.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.math.BigDecimal;
 import org.knowm.xchange.dto.Order.OrderType;
+
+import java.math.BigDecimal;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class BitfinexPublicTrade {
 
-  private long tradeId;
-  private long timestamp;
-  private BigDecimal amount;
-  private BigDecimal price;
+	private long tradeId;
+	private long timestamp;
+	private BigDecimal amount;
+	private BigDecimal price;
 
-  public BitfinexPublicTrade() {}
+	public BitfinexPublicTrade() {
+	}
 
-  public BitfinexPublicTrade(long tradeId, long timestamp, BigDecimal amount, BigDecimal price) {
+	public BitfinexPublicTrade(long tradeId, long timestamp, BigDecimal amount, BigDecimal price) {
+		this.tradeId = tradeId;
+		this.timestamp = timestamp;
+		this.amount = amount;
+		this.price = price;
+	}
 
-    this.tradeId = tradeId;
-    this.timestamp = timestamp;
-    this.amount = amount;
-    this.price = price;
-  }
+	public long getTradeId() {
+		return tradeId;
+	}
 
-  public long getTradeId() {
+	public long getTimestamp() {
+		return timestamp;
+	}
 
-    return tradeId;
-  }
+	public OrderType getType() {
+		return getAmount().signum() == -1 ? OrderType.ASK : OrderType.BID;
+	}
 
-  public long getTimestamp() {
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    return timestamp;
-  }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-  public BigDecimal getAmount() {
-
-    return amount;
-  }
-
-  public OrderType getType() {
-
-    return getAmount().signum() == -1 ? OrderType.ASK : OrderType.BID;
-  }
-
-  public BigDecimal getPrice() {
-
-    return price;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("BitfinexPublicTrade [tradeId=");
-    builder.append(tradeId);
-    builder.append(", timestamp=");
-    builder.append(timestamp);
-    builder.append(", amount=");
-    builder.append(amount);
-    builder.append(", price=");
-    builder.append(price);
-    builder.append("]");
-    return builder.toString();
-  }
+	@Override
+	public String toString() {
+		String builder = "BitfinexPublicTrade [tradeId=" +
+				tradeId +
+				", timestamp=" +
+				timestamp +
+				", amount=" +
+				amount +
+				", price=" +
+				price +
+				"]";
+		return builder;
+	}
 }

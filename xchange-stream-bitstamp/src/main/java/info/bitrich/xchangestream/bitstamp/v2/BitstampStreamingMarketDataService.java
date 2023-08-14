@@ -18,74 +18,71 @@ import org.knowm.xchange.dto.trade.LimitOrder;
  * 15.03.2018.
  */
 public class BitstampStreamingMarketDataService implements StreamingMarketDataService {
-  private final BitstampStreamingService service;
+	private final BitstampStreamingService service;
 
-  public BitstampStreamingMarketDataService(BitstampStreamingService service) {
-    this.service = service;
-  }
+	public BitstampStreamingMarketDataService(BitstampStreamingService service) {
+		this.service = service;
+	}
 
-  public Observable<OrderBook> getFullOrderBook(CurrencyPair currencyPair, Object... args) {
-    return getOrderBook("diff_order_book", currencyPair, args);
-  }
+	public Observable<OrderBook> getFullOrderBook(CurrencyPair currencyPair, Object... args) {
+		return getOrderBook("diff_order_book", currencyPair, args);
+	}
 
-  @Override
-  public Observable<OrderBook> getOrderBook(CurrencyPair currencyPair, Object... args) {
-    return getOrderBook("order_book", currencyPair, args);
-  }
+	private Observable<OrderBook> getOrderBook(
+			String channelPrefix, CurrencyPair currencyPair, Object... args) {
+		String channelName = channelPrefix + getChannelPostfix(currencyPair);
+		return service
+				.subscribeChannel(channelName, BitstampStreamingService.EVENT_ORDERBOOK)
+				.map(
+						s -> {
+							ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+							BitstampOrderBook orderBook =
+									mapper.treeToValue(s.get("data"), BitstampOrderBook.class);
+							return BitstampAdapters.adaptOrderBook(orderBook, currencyPair);
+						});
+	}	@Override
+	public Observable<OrderBook> getOrderBook(CurrencyPair currencyPair, Object... args) {
+		return getOrderBook("order_book", currencyPair, args);
+	}
 
-  private Observable<OrderBook> getOrderBook(
-      String channelPrefix, CurrencyPair currencyPair, Object... args) {
-    String channelName = channelPrefix + getChannelPostfix(currencyPair);
+	private String getChannelPostfix(CurrencyPair currencyPair) {
+		return "_"
+				+ currencyPair.base.toString().toLowerCase()
+				+ currencyPair.counter.toString().toLowerCase();
+	}
 
-    return service
-        .subscribeChannel(channelName, BitstampStreamingService.EVENT_ORDERBOOK)
-        .map(
-            s -> {
-              ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
-              BitstampOrderBook orderBook =
-                  mapper.treeToValue(s.get("data"), BitstampOrderBook.class);
-              return BitstampAdapters.adaptOrderBook(orderBook, currencyPair);
-            });
-  }
+	@Override
+	public Observable<Ticker> getTicker(CurrencyPair currencyPair, Object... args) {
+		return getOrderBook(currencyPair, args)
+				.map(orderBook -> mapOrderBookToTicker(currencyPair, orderBook));
+	}
 
-  @Override
-  public Observable<Ticker> getTicker(CurrencyPair currencyPair, Object... args) {
-    return getOrderBook(currencyPair, args)
-        .map(orderBook -> mapOrderBookToTicker(currencyPair, orderBook));
-  }
+	private Ticker mapOrderBookToTicker(CurrencyPair currencyPair, OrderBook orderBook) {
+		final LimitOrder ask = orderBook.getAsks().get(0);
+		final LimitOrder bid = orderBook.getBids().get(0);
+		return new Ticker.Builder()
+				.instrument(currencyPair)
+				.bid(bid.getLimitPrice())
+				.bidSize(bid.getOriginalAmount())
+				.ask(ask.getLimitPrice())
+				.askSize(ask.getOriginalAmount())
+				.timestamp(orderBook.getTimeStamp())
+				.build();
+	}
 
-  private Ticker mapOrderBookToTicker(CurrencyPair currencyPair, OrderBook orderBook) {
-    final LimitOrder ask = orderBook.getAsks().get(0);
-    final LimitOrder bid = orderBook.getBids().get(0);
+	@Override
+	public Observable<Trade> getTrades(CurrencyPair currencyPair, Object... args) {
+		String channelName = "live_trades" + getChannelPostfix(currencyPair);
+		return service
+				.subscribeChannel(channelName, BitstampStreamingService.EVENT_TRADE)
+				.map(
+						s -> {
+							ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+							BitstampWebSocketTransaction transactions =
+									mapper.treeToValue(s.get("data"), BitstampWebSocketTransaction.class);
+							return BitstampAdapters.adaptTrade(transactions, currencyPair, 1);
+						});
+	}
 
-    return new Ticker.Builder()
-        .instrument(currencyPair)
-        .bid(bid.getLimitPrice())
-        .bidSize(bid.getOriginalAmount())
-        .ask(ask.getLimitPrice())
-        .askSize(ask.getOriginalAmount())
-        .timestamp(orderBook.getTimeStamp())
-        .build();
-  }
 
-  @Override
-  public Observable<Trade> getTrades(CurrencyPair currencyPair, Object... args) {
-    String channelName = "live_trades" + getChannelPostfix(currencyPair);
-
-    return service
-        .subscribeChannel(channelName, BitstampStreamingService.EVENT_TRADE)
-        .map(
-            s -> {
-              ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
-              BitstampWebSocketTransaction transactions =
-                  mapper.treeToValue(s.get("data"), BitstampWebSocketTransaction.class);
-              return BitstampAdapters.adaptTrade(transactions, currencyPair, 1);
-            });
-  }
-
-  private String getChannelPostfix(CurrencyPair currencyPair) {
-    return "_"
-        + currencyPair.base.toString().toLowerCase()
-        + currencyPair.counter.toString().toLowerCase();
-  }
 }

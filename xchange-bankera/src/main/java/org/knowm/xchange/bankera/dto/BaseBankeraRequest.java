@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BaseBankeraRequest {
 
-  @JsonProperty("nonce")
-  private final Long nonce;
+	@JsonProperty("nonce")
+	private final Long nonce;
 
-  public BaseBankeraRequest(Long nonce) {
-    this.nonce = nonce;
-  }
+	public BaseBankeraRequest(Long nonce) {
+		this.nonce = nonce;
+	}
 }

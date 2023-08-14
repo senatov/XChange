@@ -5,19 +5,20 @@ import java.util.List;
 
 public class BTCMarketsCancelOrderRequest {
 
-  private List<Long> orderIds;
+	private List<Long> orderIds;
 
-  protected BTCMarketsCancelOrderRequest() {}
+	protected BTCMarketsCancelOrderRequest() {
+	}
 
-  public BTCMarketsCancelOrderRequest(List<Long> orderIds) {
-    this.orderIds = orderIds;
-  }
+	public BTCMarketsCancelOrderRequest(List<Long> orderIds) {
+		this.orderIds = orderIds;
+	}
 
-  public BTCMarketsCancelOrderRequest(Long... orderIds) {
-    this.orderIds = Arrays.asList(orderIds);
-  }
+	public BTCMarketsCancelOrderRequest(Long... orderIds) {
+		this.orderIds = Arrays.asList(orderIds);
+	}
 
-  public List<Long> getOrderIds() {
-    return orderIds;
-  }
+	public List<Long> getOrderIds() {
+		return orderIds;
+	}
 }

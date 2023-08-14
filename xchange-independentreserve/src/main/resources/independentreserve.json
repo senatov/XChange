@@ -9,7 +9,6 @@
     "BTC/NZD": {
       "price_scale": 2
     },
-
     "XRP/USD": {
       "price_scale": 5
     },
@@ -19,7 +18,6 @@
     "XRP/NZD": {
       "price_scale": 5
     },
-
     "ETH/USD": {
       "price_scale": 2
     },
@@ -29,7 +27,6 @@
     "ETH/NZD": {
       "price_scale": 2
     },
-
     "EOS/USD": {
       "price_scale": 2
     },
@@ -39,7 +36,6 @@
     "EOS/NZD": {
       "price_scale": 2
     },
-
     "BCH/USD": {
       "price_scale": 4
     },
@@ -49,7 +45,6 @@
     "BCH/NZD": {
       "price_scale": 4
     },
-
     "LTC/USD": {
       "price_scale": 2
     },
@@ -59,7 +54,6 @@
     "LTC/NZD": {
       "price_scale": 2
     },
-
     "XLM/USD": {
       "price_scale": 5
     },
@@ -69,7 +63,6 @@
     "XLM/NZD": {
       "price_scale": 5
     },
-
     "PLA/USD": {
       "price_scale": 5
     },
@@ -79,7 +72,6 @@
     "PLA/NZD": {
       "price_scale": 5
     },
-
     "OMG/USD": {
       "price_scale": 4
     },
@@ -89,7 +81,6 @@
     "OMG/NZD": {
       "price_scale": 4
     },
-
     "ZRX/USD": {
       "price_scale": 5
     },
@@ -99,7 +90,6 @@
     "ZRX/NZD": {
       "price_scale": 5
     }
-
   },
   "currencies": {},
   "private_rate_limits": [

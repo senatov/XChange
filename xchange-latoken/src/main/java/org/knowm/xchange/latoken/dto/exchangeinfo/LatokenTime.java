@@ -1,11 +1,11 @@
 package org.knowm.xchange.latoken.dto.exchangeinfo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 /**
  * Response schema:
- *
  * <pre>
  * {
  * 	"time": "2019-04-18T9:00:00.0Z",
@@ -17,17 +17,16 @@ import java.util.Date;
  * @author Ezer
  */
 public class LatokenTime {
-  private final Date time;
+	private final Date time;
 
-  public LatokenTime(
-      @JsonProperty("time") String time,
-      @JsonProperty("unixTimeSeconds") long unixTimeSeconds,
-      @JsonProperty("unixTimeMiliseconds") long unixTimeMiliseconds) {
+	public LatokenTime(
+			@JsonProperty("time") String time,
+			@JsonProperty("unixTimeSeconds") long unixTimeSeconds,
+			@JsonProperty("unixTimeMiliseconds") long unixTimeMiliseconds) {
+		this.time = new Date(unixTimeMiliseconds);
+	}
 
-    this.time = new Date(unixTimeMiliseconds);
-  }
-
-  public Date getTime() {
-    return time;
-  }
+	public Date getTime() {
+		return time;
+	}
 }

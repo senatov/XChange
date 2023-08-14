@@ -20,270 +20,264 @@ import io.reactivex.CompletableEmitter;
 import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
-import java.io.IOException;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 public class CexioStreamingRawService extends JsonNettyStreamingService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CexioStreamingRawService.class);
+	public static final String CONNECTED = "connected";
+	public static final String AUTH = "auth";
+	public static final String PING = "ping";
+	public static final String PONG = "pong";
+	public static final String ORDER = "order";
+	public static final String TRANSACTION = "tx";
+	public static final String ORDERBOOK = "order-book-subscribe";
+	public static final String ORDERBOOK_UPDATE = "md_update";
+	private static final Logger LOG = LoggerFactory.getLogger(CexioStreamingRawService.class);
+	private String apiKey;
+	private String apiSecret;
+	private final AuthCompletable authCompletable = new AuthCompletable();
 
-  public static final String CONNECTED = "connected";
-  public static final String AUTH = "auth";
-  public static final String PING = "ping";
-  public static final String PONG = "pong";
-  public static final String ORDER = "order";
-  public static final String TRANSACTION = "tx";
-  public static final String ORDERBOOK = "order-book-subscribe";
-  public static final String ORDERBOOK_UPDATE = "md_update";
+	private final PublishSubject<Order> subjectOrder = PublishSubject.create();
+	private final PublishSubject<CexioWebSocketTransaction> subjectTransaction = PublishSubject.create();
 
-  private String apiKey;
-  private String apiSecret;
-  private AuthCompletable authCompletable = new AuthCompletable();
+	public CexioStreamingRawService(String apiUrl) {
+		super(apiUrl, Integer.MAX_VALUE);
+	}
 
-  private PublishSubject<Order> subjectOrder = PublishSubject.create();
-  private PublishSubject<CexioWebSocketTransaction> subjectTransaction = PublishSubject.create();
+	@Override
+	protected String getChannelNameFromMessage(JsonNode message) throws IOException {
+		JsonNode eNode = message.get("e");
+		if (eNode.textValue().compareTo(ORDERBOOK_UPDATE) == 0) {
+			final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+			JsonNode dataNode = message.get("data");
+			CexioWebSocketOrderBookSubscribeResponse orderBookSubResp =
+					mapper.treeToValue(dataNode, CexioWebSocketOrderBookSubscribeResponse.class);
+			CurrencyPair currencyPair = CexioAdapters.adaptCurrencyPair(orderBookSubResp.pair);
+			return GetOrderBookChannelForCurrencyPair(currencyPair);
+		} else {
+			JsonNode oidNode = message.get("oid");
+			if (oidNode == null) {
+				throw new IllegalArgumentException("Missing OID on message " + message);
+			}
+			return oidNode.textValue();
+		}
+	}
 
-  public CexioStreamingRawService(String apiUrl) {
-    super(apiUrl, Integer.MAX_VALUE);
-  }
+	public static String GetOrderBookChannelForCurrencyPair(CurrencyPair currencyPair) {
+		return ORDERBOOK + "-" + currencyPair.toString();
+	}
 
-  public static String GetOrderBookChannelForCurrencyPair(CurrencyPair currencyPair) {
-    return ORDERBOOK + "-" + currencyPair.toString();
-  }
+	@Override
+	public String getSubscribeMessage(String channelName, Object... args) throws IOException {
+		String eventName = getEventNameFromChannel(channelName);
+		final Object eventSubData = GetEventSubscriptionData(eventName, true, args);
+		CexioWebSocketSubscriptionRequest subReq =
+				new CexioWebSocketSubscriptionRequest(eventName, eventSubData, channelName);
+		return objectMapper.writeValueAsString(subReq);
+	}
 
-  public static CurrencyPair GetCurrencyPairForChannelName(String channelName) {
-    return new CurrencyPair(channelName.substring(ORDERBOOK.length() + 1));
-  }
+	private Object GetEventSubscriptionData(String channelName, boolean isSubscribe, Object... args) {
+		switch (channelName) {
+			case ORDERBOOK: {
+				CurrencyPair currencyPair = (CurrencyPair) args[0];
+				int depth = 0;
+				if (args.length > 1 && args[1] instanceof Integer) {
+					depth = (int) args[1];
+				}
+				return new CexioWebSocketOrderBookSubscriptionData(currencyPair, isSubscribe, depth);
+			}
+			default: {
+				throw new IllegalArgumentException(
+						"Cannot get subscription data for unknown channel name " + channelName);
+			}
+		}
+	}
 
-  @Override
-  protected String getChannelNameFromMessage(JsonNode message) throws IOException {
-    JsonNode eNode = message.get("e");
-    if (eNode.textValue().compareTo(ORDERBOOK_UPDATE) == 0) {
-      final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
-      JsonNode dataNode = message.get("data");
-      CexioWebSocketOrderBookSubscribeResponse orderBookSubResp =
-          mapper.treeToValue(dataNode, CexioWebSocketOrderBookSubscribeResponse.class);
-      CurrencyPair currencyPair = CexioAdapters.adaptCurrencyPair(orderBookSubResp.pair);
-      return GetOrderBookChannelForCurrencyPair(currencyPair);
-    } else {
-      JsonNode oidNode = message.get("oid");
-      if (oidNode == null) {
-        throw new IllegalArgumentException("Missing OID on message " + message);
-      }
-      return oidNode.textValue();
-    }
-  }
+	private static String getEventNameFromChannel(String channelName) {
+		if (channelName.contains(ORDERBOOK)) {
+			return ORDERBOOK;
+		}
+		return null;
+	}
 
-  private Object GetEventSubscriptionData(String channelName, boolean isSubscribe, Object... args) {
-    switch (channelName) {
-      case ORDERBOOK:
-        {
-          CurrencyPair currencyPair = (CurrencyPair) args[0];
-          int depth = 0;
-          if (args.length > 1 && args[1] instanceof Integer) {
-            depth = (int) args[1];
-          }
-          return new CexioWebSocketOrderBookSubscriptionData(currencyPair, isSubscribe, depth);
-        }
-      default:
-        {
-          throw new IllegalArgumentException(
-              "Cannot get subscription data for unknown channel name " + channelName);
-        }
-    }
-  }
+	@Override
+	public String getUnsubscribeMessage(String channelName, Object... args) throws IOException {
+		String eventName = getEventNameFromChannel(channelName);
+		CurrencyPair currencyPairForChannel = null;
+		if (eventName.compareTo(ORDERBOOK) == 0) {
+			currencyPairForChannel = GetCurrencyPairForChannelName(channelName);
+		}
+		final Object eventSubData = GetEventSubscriptionData(eventName, false, currencyPairForChannel);
+		CexioWebSocketSubscriptionRequest subReq =
+				new CexioWebSocketSubscriptionRequest(eventName, eventSubData, channelName);
+		return objectMapper.writeValueAsString(subReq);
+	}
 
-  private static String getEventNameFromChannel(String channelName) {
-    if (channelName.contains(ORDERBOOK)) {
-      return ORDERBOOK;
-    }
-    return null;
-  }
+	public static CurrencyPair GetCurrencyPairForChannelName(String channelName) {
+		return new CurrencyPair(channelName.substring(ORDERBOOK.length() + 1));
+	}
 
-  @Override
-  public String getSubscribeMessage(String channelName, Object... args) throws IOException {
-    String eventName = getEventNameFromChannel(channelName);
-    final Object eventSubData = GetEventSubscriptionData(eventName, true, args);
-    CexioWebSocketSubscriptionRequest subReq =
-        new CexioWebSocketSubscriptionRequest(eventName, eventSubData, channelName);
-    return objectMapper.writeValueAsString(subReq);
-  }
+	@Override
+	protected void handleMessage(JsonNode message) {
+		LOG.debug("Receiving message: {}", message);
+		JsonNode cexioMessage = message.get("e");
+		try {
+			if (cexioMessage != null) {
+				switch (cexioMessage.textValue()) {
+					case CONNECTED:
+						auth();
+						break;
+					case AUTH:
+						CexioWebSocketAuthResponse response =
+								deserialize(message, CexioWebSocketAuthResponse.class);
+						if (response != null) {
+							if (response.isSuccess()) {
+								synchronized (authCompletable) {
+									authCompletable.SignalAuthComplete();
+								}
+							} else {
+								String authErrorString =
+										"Authentication error: " + response.getData().getError();
+								LOG.error(authErrorString);
+								synchronized (authCompletable) {
+									authCompletable.SignalError(authErrorString);
+								}
+							}
+						}
+						break;
+					case PING:
+						pong();
+						break;
+					case ORDER:
+						try {
+							CexioWebSocketOrderMessage cexioOrder =
+									deserialize(message, CexioWebSocketOrderMessage.class);
+							Order order = CexioAdapters.adaptOrder(cexioOrder.getData());
+							LOG.debug(String.format("Order is updated: %s", order));
+							subjectOrder.onNext(order);
+						} catch (Exception e) {
+							LOG.error("Order parsing error: {}", e.getMessage(), e);
+							subjectOrder.onError(e);
+						}
+						break;
+					case TRANSACTION:
+						try {
+							CexioWebSocketTransactionMessage transaction =
+									deserialize(message, CexioWebSocketTransactionMessage.class);
+							LOG.debug(String.format("New transaction: %s", transaction.getData()));
+							subjectTransaction.onNext(transaction.getData());
+						} catch (Exception e) {
+							LOG.error("Transaction parsing error: {}", e.getMessage(), e);
+							subjectTransaction.onError(e);
+						}
+						break;
+					case ORDERBOOK:
+						JsonNode okNode = message.get("ok");
+						if (okNode.textValue().compareTo("ok") != 0) {
+							String errorString =
+									"Error response for order book subscription: %s" + message;
+							LOG.error(errorString);
+							subjectOrder.onError(new IllegalArgumentException(errorString));
+						} else {
+							super.handleMessage(message);
+						}
+						break;
+					case ORDERBOOK_UPDATE:
+						super.handleMessage(message);
+						break;
+				}
+			}
+		} catch (JsonProcessingException e) {
+			LOG.error("Json parsing error: {}", e.getMessage());
+		}
+	}
 
-  @Override
-  public String getUnsubscribeMessage(String channelName, Object... args) throws IOException {
-    String eventName = getEventNameFromChannel(channelName);
+	private void auth() {
+		if (apiSecret == null || apiKey == null) {
+			throw new IllegalStateException("API keys must be provided to use cexio streaming exchange");
+		}
+		long timestamp = System.currentTimeMillis() / 1000;
+		CexioDigest cexioDigest = CexioDigest.createInstance(apiSecret);
+		String signature = cexioDigest.createSignature(timestamp, apiKey);
+		CexioWebSocketAuthMessage message =
+				new CexioWebSocketAuthMessage(new CexioWebSocketAuth(apiKey, signature, timestamp));
+		sendMessage(message);
+	}
 
-    CurrencyPair currencyPairForChannel = null;
-    if (eventName.compareTo(ORDERBOOK) == 0) {
-      currencyPairForChannel = GetCurrencyPairForChannelName(channelName);
-    }
+	private void sendMessage(Object message) {
+		try {
+			sendMessage(objectMapper.writeValueAsString(message));
+		} catch (JsonProcessingException e) {
+			LOG.error("Error creating json message: {}", e.getMessage());
+		}
+	}
 
-    final Object eventSubData = GetEventSubscriptionData(eventName, false, currencyPairForChannel);
-    CexioWebSocketSubscriptionRequest subReq =
-        new CexioWebSocketSubscriptionRequest(eventName, eventSubData, channelName);
-    return objectMapper.writeValueAsString(subReq);
-  }
+	private void pong() {
+		CexioWebSocketPongMessage message = new CexioWebSocketPongMessage();
+		sendMessage(message);
+	}
 
-  @Override
-  public void messageHandler(String message) {
-    JsonNode jsonNode;
-    try {
-      jsonNode = objectMapper.readTree(message);
-    } catch (IOException e) {
-      LOG.error("Error parsing incoming message to JSON: {}", message);
-      subjectOrder.onError(e);
-      return;
-    }
-    handleMessage(jsonNode);
-  }
+	private <T> T deserialize(JsonNode message, Class<T> valueType) throws JsonProcessingException {
+		return objectMapper.treeToValue(message, valueType);
+	}
 
-  protected static class AuthCompletable implements CompletableOnSubscribe {
-    private CompletableEmitter completableEmitter;
+	@Override
+	public void messageHandler(String message) {
+		JsonNode jsonNode;
+		try {
+			jsonNode = objectMapper.readTree(message);
+		} catch (IOException e) {
+			LOG.error("Error parsing incoming message to JSON: {}", message);
+			subjectOrder.onError(e);
+			return;
+		}
+		handleMessage(jsonNode);
+	}
 
-    @Override
-    public void subscribe(CompletableEmitter e) throws Exception {
-      this.completableEmitter = e;
-    }
+	@Override
+	public Completable connect() {
+		synchronized (authCompletable) {
+			Completable parentCompletable = super.connect();
+			parentCompletable.blockingAwait();
+			return Completable.create(authCompletable);
+		}
+	}
 
-    public void SignalAuthComplete() {
-      completableEmitter.onComplete();
-    }
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
 
-    public void SignalError(String error) {
-      completableEmitter.onError(new IllegalStateException(error));
-    }
-  }
+	public void setApiSecret(String apiSecret) {
+		this.apiSecret = apiSecret;
+	}
 
-  @Override
-  public Completable connect() {
-    synchronized (authCompletable) {
-      Completable parentCompletable = super.connect();
-      parentCompletable.blockingAwait();
-      return Completable.create(authCompletable);
-    }
-  }
+	public Observable<Order> getOrderData() {
+		return subjectOrder.share();
+	}
 
-  @Override
-  protected void handleMessage(JsonNode message) {
-    LOG.debug("Receiving message: {}", message);
-    JsonNode cexioMessage = message.get("e");
+	public Observable<CexioWebSocketTransaction> getTransactions() {
+		return subjectTransaction.share();
+	}
 
-    try {
-      if (cexioMessage != null) {
-        switch (cexioMessage.textValue()) {
-          case CONNECTED:
-            auth();
-            break;
-          case AUTH:
-            CexioWebSocketAuthResponse response =
-                deserialize(message, CexioWebSocketAuthResponse.class);
-            if (response != null) {
-              if (response.isSuccess()) {
-                synchronized (authCompletable) {
-                  authCompletable.SignalAuthComplete();
-                }
-              } else {
-                String authErrorString =
-                    new String("Authentication error: " + response.getData().getError());
-                LOG.error(authErrorString);
-                synchronized (authCompletable) {
-                  authCompletable.SignalError(authErrorString);
-                }
-              }
-            }
-            break;
-          case PING:
-            pong();
-            break;
-          case ORDER:
-            try {
-              CexioWebSocketOrderMessage cexioOrder =
-                  deserialize(message, CexioWebSocketOrderMessage.class);
-              Order order = CexioAdapters.adaptOrder(cexioOrder.getData());
-              LOG.debug(String.format("Order is updated: %s", order));
-              subjectOrder.onNext(order);
-            } catch (Exception e) {
-              LOG.error("Order parsing error: {}", e.getMessage(), e);
-              subjectOrder.onError(e);
-            }
-            break;
-          case TRANSACTION:
-            try {
-              CexioWebSocketTransactionMessage transaction =
-                  deserialize(message, CexioWebSocketTransactionMessage.class);
-              LOG.debug(String.format("New transaction: %s", transaction.getData()));
-              subjectTransaction.onNext(transaction.getData());
-            } catch (Exception e) {
-              LOG.error("Transaction parsing error: {}", e.getMessage(), e);
-              subjectTransaction.onError(e);
-            }
-            break;
-          case ORDERBOOK:
-            JsonNode okNode = message.get("ok");
-            if (okNode.textValue().compareTo("ok") != 0) {
-              String errorString =
-                  "Error response for order book subscription: %s" + message.toString();
-              LOG.error(errorString);
-              subjectOrder.onError(new IllegalArgumentException(errorString));
-            } else {
-              super.handleMessage(message);
-            }
-            break;
-          case ORDERBOOK_UPDATE:
-            super.handleMessage(message);
-            break;
-        }
-      }
-    } catch (JsonProcessingException e) {
-      LOG.error("Json parsing error: {}", e.getMessage());
-    }
-  }
+	protected static class AuthCompletable implements CompletableOnSubscribe {
+		private CompletableEmitter completableEmitter;
 
-  private void auth() {
-    if (apiSecret == null || apiKey == null) {
-      throw new IllegalStateException("API keys must be provided to use cexio streaming exchange");
-    }
-    long timestamp = System.currentTimeMillis() / 1000;
-    CexioDigest cexioDigest = CexioDigest.createInstance(apiSecret);
-    String signature = cexioDigest.createSignature(timestamp, apiKey);
-    CexioWebSocketAuthMessage message =
-        new CexioWebSocketAuthMessage(new CexioWebSocketAuth(apiKey, signature, timestamp));
-    sendMessage(message);
-  }
+		@Override
+		public void subscribe(CompletableEmitter e) throws Exception {
+			this.completableEmitter = e;
+		}
 
-  private void pong() {
-    CexioWebSocketPongMessage message = new CexioWebSocketPongMessage();
-    sendMessage(message);
-  }
+		public void SignalAuthComplete() {
+			completableEmitter.onComplete();
+		}
 
-  private void sendMessage(Object message) {
-    try {
-      sendMessage(objectMapper.writeValueAsString(message));
-    } catch (JsonProcessingException e) {
-      LOG.error("Error creating json message: {}", e.getMessage());
-    }
-  }
-
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
-  }
-
-  public void setApiSecret(String apiSecret) {
-    this.apiSecret = apiSecret;
-  }
-
-  private <T> T deserialize(JsonNode message, Class<T> valueType) throws JsonProcessingException {
-    return objectMapper.treeToValue(message, valueType);
-  }
-
-  public Observable<Order> getOrderData() {
-    return subjectOrder.share();
-  }
-
-  public Observable<CexioWebSocketTransaction> getTransactions() {
-    return subjectTransaction.share();
-  }
+		public void SignalError(String error) {
+			completableEmitter.onError(new IllegalStateException(error));
+		}
+	}
 }

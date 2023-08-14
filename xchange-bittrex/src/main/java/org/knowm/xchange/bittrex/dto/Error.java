@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Error {
-  private String code;
-  private String detail;
-  private Object data;
+	private String code;
+	private String detail;
+	private Object data;
 }

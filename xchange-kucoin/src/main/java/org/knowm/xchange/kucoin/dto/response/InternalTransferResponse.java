@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InternalTransferResponse {
-  /** The order ID of a funds transfer */
-  private String orderId;
+	/**
+	 * The order ID of a funds transfer
+	 */
+	private String orderId;
 }

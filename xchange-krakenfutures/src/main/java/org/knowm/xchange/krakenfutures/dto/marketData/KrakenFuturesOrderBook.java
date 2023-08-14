@@ -1,36 +1,36 @@
 package org.knowm.xchange.krakenfutures.dto.marketData;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
+import org.knowm.xchange.instrument.Instrument;
+import org.knowm.xchange.krakenfutures.dto.KrakenFuturesResult;
 
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.ToString;
-import org.knowm.xchange.krakenfutures.dto.KrakenFuturesResult;
-import org.knowm.xchange.instrument.Instrument;
-
-/** @author Panchen */
+/**
+ * @author Panchen
+ */
 @Getter
 @ToString
 public class KrakenFuturesOrderBook extends KrakenFuturesResult {
 
-  private final Date serverTime;
-  private final KrakenFuturesBidsAsks bidsAsks;
+	private final Date serverTime;
+	private final KrakenFuturesBidsAsks bidsAsks;
 
-  private Instrument instrument;
+	private Instrument instrument;
 
-  public KrakenFuturesOrderBook(
-      @JsonProperty("result") String result,
-      @JsonProperty("serverTime") Date serverTime,
-      @JsonProperty("error") String error,
-      @JsonProperty("orderBook") KrakenFuturesBidsAsks bidsAsks) {
+	public KrakenFuturesOrderBook(
+			@JsonProperty("result") String result,
+			@JsonProperty("serverTime") Date serverTime,
+			@JsonProperty("error") String error,
+			@JsonProperty("orderBook") KrakenFuturesBidsAsks bidsAsks) {
+		super(result, error);
+		this.serverTime = serverTime;
+		this.bidsAsks = bidsAsks;
+	}
 
-    super(result, error);
-    this.serverTime = serverTime;
-    this.bidsAsks = bidsAsks;
-  }
-
-  public void setInstrument(Instrument instrument){
-    this.instrument = instrument;
-  }
+	public void setInstrument(Instrument instrument) {
+		this.instrument = instrument;
+	}
 }

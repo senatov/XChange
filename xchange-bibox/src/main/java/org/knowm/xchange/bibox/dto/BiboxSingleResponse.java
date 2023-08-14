@@ -7,7 +7,7 @@ package org.knowm.xchange.bibox.dto;
  */
 public class BiboxSingleResponse<T> extends BiboxMultipleResponses<T> {
 
-  public BiboxResponse<T> get() {
-    return result.get(0);
-  }
+	public BiboxResponse<T> get() {
+		return result.get(0);
+	}
 }

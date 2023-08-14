@@ -4,35 +4,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ItBitWithdrawalRequest {
 
-  @JsonProperty("amount")
-  protected String amount;
+	@JsonProperty("amount")
+	protected String amount;
 
-  @JsonProperty("address")
-  protected String address;
+	@JsonProperty("address")
+	protected String address;
 
-  @JsonProperty("currency")
-  private String currency;
+	@JsonProperty("currency")
+	private String currency;
 
-  public ItBitWithdrawalRequest(String currency, String amount, String address) {
+	public ItBitWithdrawalRequest(String currency, String amount, String address) {
+		super();
+		this.currency = currency;
+		this.amount = amount;
+		this.address = address;
+	}
 
-    super();
-    this.currency = currency;
-    this.amount = amount;
-    this.address = address;
-  }
+	public String getCurrency() {
+		return currency;
+	}
 
-  public String getCurrency() {
+	public String getAmount() {
+		return amount;
+	}
 
-    return currency;
-  }
-
-  public String getAmount() {
-
-    return amount;
-  }
-
-  public String getAddress() {
-
-    return address;
-  }
+	public String getAddress() {
+		return address;
+	}
 }

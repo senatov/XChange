@@ -4,126 +4,127 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class BitfinexWebSocketAuthPreTrade {
-  private final long id;
-  private final String pair;
-  private final long mtsCreate;
-  private final long orderId;
-  private final BigDecimal execAmount;
-  private final BigDecimal execPrice;
-  private final String orderType;
-  private final BigDecimal orderPrice;
-  private final long maker;
+	private final long id;
+	private final String pair;
+	private final long mtsCreate;
+	private final long orderId;
+	private final BigDecimal execAmount;
+	private final BigDecimal execPrice;
+	private final String orderType;
+	private final BigDecimal orderPrice;
+	private final long maker;
 
-  public BitfinexWebSocketAuthPreTrade(
-      long id,
-      String pair,
-      long mtsCreate,
-      long orderId,
-      BigDecimal execAmount,
-      BigDecimal execPrice,
-      String orderType,
-      BigDecimal orderPrice,
-      long maker) {
-    this.id = id;
-    this.pair = pair;
-    this.mtsCreate = mtsCreate;
-    this.orderId = orderId;
-    this.execAmount = execAmount;
-    this.execPrice = execPrice;
-    this.orderType = orderType;
-    this.orderPrice = orderPrice;
-    this.maker = maker;
-  }
+	public BitfinexWebSocketAuthPreTrade(
+			long id,
+			String pair,
+			long mtsCreate,
+			long orderId,
+			BigDecimal execAmount,
+			BigDecimal execPrice,
+			String orderType,
+			BigDecimal orderPrice,
+			long maker) {
+		this.id = id;
+		this.pair = pair;
+		this.mtsCreate = mtsCreate;
+		this.orderId = orderId;
+		this.execAmount = execAmount;
+		this.execPrice = execPrice;
+		this.orderType = orderType;
+		this.orderPrice = orderPrice;
+		this.maker = maker;
+	}
 
-  public long getId() {
-    return id;
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+				getId(),
+				getPair(),
+				getMtsCreate(),
+				getOrderId(),
+				getExecAmount(),
+				getExecPrice(),
+				getOrderType(),
+				getOrderPrice(),
+				getMaker());
+	}
 
-  public String getPair() {
-    return pair;
-  }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof BitfinexWebSocketAuthPreTrade that))
+			return false;
+		return getId() == that.getId()
+				&& getMtsCreate() == that.getMtsCreate()
+				&& getOrderId() == that.getOrderId()
+				&& getMaker() == that.getMaker()
+				&& Objects.equals(getPair(), that.getPair())
+				&& Objects.equals(getExecAmount(), that.getExecAmount())
+				&& Objects.equals(getExecPrice(), that.getExecPrice())
+				&& Objects.equals(getOrderType(), that.getOrderType())
+				&& Objects.equals(getOrderPrice(), that.getOrderPrice());
+	}
 
-  public long getMtsCreate() {
-    return mtsCreate;
-  }
+	public long getId() {
+		return id;
+	}
 
-  public long getOrderId() {
-    return orderId;
-  }
+	public String getPair() {
+		return pair;
+	}
 
-  public BigDecimal getExecAmount() {
-    return execAmount;
-  }
+	public long getMtsCreate() {
+		return mtsCreate;
+	}
 
-  public BigDecimal getExecPrice() {
-    return execPrice;
-  }
+	public long getOrderId() {
+		return orderId;
+	}
 
-  public String getOrderType() {
-    return orderType;
-  }
+	public BigDecimal getExecAmount() {
+		return execAmount;
+	}
 
-  public BigDecimal getOrderPrice() {
-    return orderPrice;
-  }
+	public BigDecimal getExecPrice() {
+		return execPrice;
+	}
 
-  public long getMaker() {
-    return maker;
-  }
+	public String getOrderType() {
+		return orderType;
+	}
 
-  @Override
-  public String toString() {
-    return "BitfinexWebSocketAuthPreTrade{"
-        + "id="
-        + id
-        + ", pair='"
-        + pair
-        + '\''
-        + ", mtsCreate="
-        + mtsCreate
-        + ", orderId="
-        + orderId
-        + ", execAmount="
-        + execAmount
-        + ", execPrice="
-        + execPrice
-        + ", orderType='"
-        + orderType
-        + '\''
-        + ", orderPrice="
-        + orderPrice
-        + ", maker="
-        + maker
-        + '}';
-  }
+	public BigDecimal getOrderPrice() {
+		return orderPrice;
+	}
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof BitfinexWebSocketAuthPreTrade)) return false;
-    BitfinexWebSocketAuthPreTrade that = (BitfinexWebSocketAuthPreTrade) o;
-    return getId() == that.getId()
-        && getMtsCreate() == that.getMtsCreate()
-        && getOrderId() == that.getOrderId()
-        && getMaker() == that.getMaker()
-        && Objects.equals(getPair(), that.getPair())
-        && Objects.equals(getExecAmount(), that.getExecAmount())
-        && Objects.equals(getExecPrice(), that.getExecPrice())
-        && Objects.equals(getOrderType(), that.getOrderType())
-        && Objects.equals(getOrderPrice(), that.getOrderPrice());
-  }
+	public long getMaker() {
+		return maker;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(
-        getId(),
-        getPair(),
-        getMtsCreate(),
-        getOrderId(),
-        getExecAmount(),
-        getExecPrice(),
-        getOrderType(),
-        getOrderPrice(),
-        getMaker());
-  }
+	@Override
+	public String toString() {
+		return "BitfinexWebSocketAuthPreTrade{"
+				+ "id="
+				+ id
+				+ ", pair='"
+				+ pair
+				+ '\''
+				+ ", mtsCreate="
+				+ mtsCreate
+				+ ", orderId="
+				+ orderId
+				+ ", execAmount="
+				+ execAmount
+				+ ", execPrice="
+				+ execPrice
+				+ ", orderType='"
+				+ orderType
+				+ '\''
+				+ ", orderPrice="
+				+ orderPrice
+				+ ", maker="
+				+ maker
+				+ '}';
+	}
 }

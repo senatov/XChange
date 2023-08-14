@@ -1,16 +1,16 @@
 package org.knowm.xchange.enigma.model;
 
 public enum Infrastructure {
-  DEVELOPMENT("dev"),
-  PRODUCTION("prod");
+	DEVELOPMENT("dev"),
+	PRODUCTION("prod");
 
-  private String value;
+	private final String value;
 
-  private Infrastructure(String value) {
-    this.value = value;
-  }
+	Infrastructure(String value) {
+		this.value = value;
+	}
 
-  public String getValue() {
-    return this.value;
-  }
+	public String getValue() {
+		return this.value;
+	}
 }

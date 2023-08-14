@@ -9,13 +9,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public interface CertificateAuthority {
 
-  @Path("index.txt")
-  @Produces(MediaType.TEXT_PLAIN)
-  @GET
-  String fetchIndex();
+	@Path("index.txt")
+	@Produces(MediaType.TEXT_PLAIN)
+	@GET
+	String fetchIndex();
 
-  @Path("{id}_public.pem")
-  @Produces(MediaType.TEXT_PLAIN)
-  @GET
-  String fetchKey(@PathParam("id") String keyId);
+	@Path("{id}_public.pem")
+	@Produces(MediaType.TEXT_PLAIN)
+	@GET
+	String fetchKey(@PathParam("id") String keyId);
 }

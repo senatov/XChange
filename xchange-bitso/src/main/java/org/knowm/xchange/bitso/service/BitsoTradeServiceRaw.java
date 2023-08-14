@@ -1,90 +1,88 @@
 package org.knowm.xchange.bitso.service;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitso.BitsoAuthenticated;
 import org.knowm.xchange.bitso.dto.trade.BitsoOrder;
 import org.knowm.xchange.bitso.dto.trade.BitsoUserTransaction;
 import org.knowm.xchange.client.ExchangeRestProxyBuilder;
 
-/** @author Piotr Ładyżyński */
+import java.io.IOException;
+import java.math.BigDecimal;
+
+/**
+ * @author Piotr Ładyżyński
+ */
 public class BitsoTradeServiceRaw extends BitsoBaseService {
 
-  private final BitsoAuthenticated bitsoAuthenticated;
-  private final BitsoDigest signatureCreator;
+	private final BitsoAuthenticated bitsoAuthenticated;
+	private final BitsoDigest signatureCreator;
 
-  /** @param exchange */
-  public BitsoTradeServiceRaw(Exchange exchange) {
+	/**
+	 *
+	 */
+	public BitsoTradeServiceRaw(Exchange exchange) {
+		super(exchange);
+		this.bitsoAuthenticated =
+				ExchangeRestProxyBuilder.forInterface(
+								BitsoAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+		this.signatureCreator =
+				BitsoDigest.createInstance(
+						exchange.getExchangeSpecification().getSecretKey(),
+						exchange.getExchangeSpecification().getUserName(),
+						exchange.getExchangeSpecification().getApiKey());
+	}
 
-    super(exchange);
-    this.bitsoAuthenticated =
-        ExchangeRestProxyBuilder.forInterface(
-                BitsoAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-    this.signatureCreator =
-        BitsoDigest.createInstance(
-            exchange.getExchangeSpecification().getSecretKey(),
-            exchange.getExchangeSpecification().getUserName(),
-            exchange.getExchangeSpecification().getApiKey());
-  }
+	public BitsoOrder[] getBitsoOpenOrders() throws IOException {
+		return bitsoAuthenticated.getOpenOrders(
+				exchange.getExchangeSpecification().getApiKey(),
+				signatureCreator,
+				exchange.getNonceFactory());
+	}
 
-  public BitsoOrder[] getBitsoOpenOrders() throws IOException {
+	public BitsoOrder sellBitsoOrder(BigDecimal originalAmount, BigDecimal price) throws IOException {
+		return bitsoAuthenticated.sell(
+				exchange.getExchangeSpecification().getApiKey(),
+				signatureCreator,
+				exchange.getNonceFactory(),
+				originalAmount,
+				price);
+	}
 
-    return bitsoAuthenticated.getOpenOrders(
-        exchange.getExchangeSpecification().getApiKey(),
-        signatureCreator,
-        exchange.getNonceFactory());
-  }
+	public BitsoOrder buyBitoOrder(BigDecimal originalAmount, BigDecimal price) throws IOException {
+		return bitsoAuthenticated.buy(
+				exchange.getExchangeSpecification().getApiKey(),
+				signatureCreator,
+				exchange.getNonceFactory(),
+				originalAmount,
+				price);
+	}
 
-  public BitsoOrder sellBitsoOrder(BigDecimal originalAmount, BigDecimal price) throws IOException {
+	public boolean cancelBitsoOrder(String orderId) throws IOException {
+		return bitsoAuthenticated.cancelOrder(
+				exchange.getExchangeSpecification().getApiKey(),
+				signatureCreator,
+				exchange.getNonceFactory(),
+				orderId);
+	}
 
-    return bitsoAuthenticated.sell(
-        exchange.getExchangeSpecification().getApiKey(),
-        signatureCreator,
-        exchange.getNonceFactory(),
-        originalAmount,
-        price);
-  }
+	public BitsoUserTransaction[] getBitsoUserTransactions(Long numberOfTransactions)
+			throws IOException {
+		return bitsoAuthenticated.getUserTransactions(
+				exchange.getExchangeSpecification().getApiKey(),
+				signatureCreator,
+				exchange.getNonceFactory(),
+				numberOfTransactions);
+	}
 
-  public BitsoOrder buyBitoOrder(BigDecimal originalAmount, BigDecimal price) throws IOException {
-
-    return bitsoAuthenticated.buy(
-        exchange.getExchangeSpecification().getApiKey(),
-        signatureCreator,
-        exchange.getNonceFactory(),
-        originalAmount,
-        price);
-  }
-
-  public boolean cancelBitsoOrder(String orderId) throws IOException {
-
-    return bitsoAuthenticated.cancelOrder(
-        exchange.getExchangeSpecification().getApiKey(),
-        signatureCreator,
-        exchange.getNonceFactory(),
-        orderId);
-  }
-
-  public BitsoUserTransaction[] getBitsoUserTransactions(Long numberOfTransactions)
-      throws IOException {
-
-    return bitsoAuthenticated.getUserTransactions(
-        exchange.getExchangeSpecification().getApiKey(),
-        signatureCreator,
-        exchange.getNonceFactory(),
-        numberOfTransactions);
-  }
-
-  public BitsoUserTransaction[] getBitsoUserTransactions(
-      Long numberOfTransactions, Long offset, String sort) throws IOException {
-
-    return bitsoAuthenticated.getUserTransactions(
-        exchange.getExchangeSpecification().getApiKey(),
-        signatureCreator,
-        exchange.getNonceFactory(),
-        numberOfTransactions,
-        offset,
-        sort);
-  }
+	public BitsoUserTransaction[] getBitsoUserTransactions(
+			Long numberOfTransactions, Long offset, String sort) throws IOException {
+		return bitsoAuthenticated.getUserTransactions(
+				exchange.getExchangeSpecification().getApiKey(),
+				signatureCreator,
+				exchange.getNonceFactory(),
+				numberOfTransactions,
+				offset,
+				sort);
+	}
 }

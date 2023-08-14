@@ -6,9 +6,8 @@ import org.knowm.xchange.binance.BinanceExchange;
 
 public class BinanceDemoUtils {
 
-  public static Exchange createExchange() {
-
-    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BinanceExchange.class);
-    return exchange;
-  }
+	public static Exchange createExchange() {
+		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BinanceExchange.class);
+		return exchange;
+	}
 }

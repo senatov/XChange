@@ -19,30 +19,26 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
  */
 public class TickerFetchIntegration {
 
-  private static Ticker ticker;
+	private static Ticker ticker;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
+		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitcointoyouExchange.class);
+		exchange.remoteInit();
+		MarketDataService marketDataService = exchange.getMarketDataService();
+		ticker = marketDataService.getTicker(new CurrencyPair(Currency.BTC, Currency.BRL));
+	}
 
-    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitcointoyouExchange.class);
-    exchange.remoteInit();
-    MarketDataService marketDataService = exchange.getMarketDataService();
-    ticker = marketDataService.getTicker(new CurrencyPair(Currency.BTC, Currency.BRL));
-  }
-
-  @Test
-  public void tickerTest() throws Exception {
-
-    final SoftAssertions softly = new SoftAssertions();
-
-    softly.assertThat(ticker).isNotNull();
-    softly.assertThat(ticker.getHigh()).isNotNull();
-    softly.assertThat(ticker.getLow()).isNotNull();
-    softly.assertThat(ticker.getVolume()).isNotNull();
-    softly.assertThat(ticker.getLast()).isNotNull();
-    softly.assertThat(ticker.getBid()).isNotNull();
-    softly.assertThat(ticker.getTimestamp()).isNotNull();
-
-    softly.assertAll();
-  }
+	@Test
+	public void tickerTest() throws Exception {
+		final SoftAssertions softly = new SoftAssertions();
+		softly.assertThat(ticker).isNotNull();
+		softly.assertThat(ticker.getHigh()).isNotNull();
+		softly.assertThat(ticker.getLow()).isNotNull();
+		softly.assertThat(ticker.getVolume()).isNotNull();
+		softly.assertThat(ticker.getLast()).isNotNull();
+		softly.assertThat(ticker.getBid()).isNotNull();
+		softly.assertThat(ticker.getTimestamp()).isNotNull();
+		softly.assertAll();
+	}
 }

@@ -4,49 +4,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BitfinexNewOrderMultiRequest {
 
-  @JsonProperty("request")
-  protected String request;
+	@JsonProperty("request")
+	protected String request;
 
-  @JsonProperty("nonce")
-  protected String nonce;
+	@JsonProperty("nonce")
+	protected String nonce;
 
-  @JsonProperty("orders")
-  protected BitfinexNewOrder[] orders;
+	@JsonProperty("orders")
+	protected BitfinexNewOrder[] orders;
 
-  public BitfinexNewOrderMultiRequest(String nonce, BitfinexNewOrder[] orders) {
+	public BitfinexNewOrderMultiRequest(String nonce, BitfinexNewOrder[] orders) {
+		this.request = "/v1/order/new/multi";
+		this.nonce = nonce;
+		this.orders = orders;
+	}
 
-    this.request = "/v1/order/new/multi";
-    this.nonce = nonce;
-    this.orders = orders;
-  }
+	public String getRequest() {
+		return request;
+	}
 
-  public String getRequest() {
+	public void setRequest(String request) {
+		this.request = request;
+	}
 
-    return request;
-  }
+	public String getNonce() {
+		return nonce;
+	}
 
-  public void setRequest(String request) {
+	public void setNonce(String nonce) {
+		this.nonce = nonce;
+	}
 
-    this.request = request;
-  }
+	public BitfinexNewOrder[] getOrders() {
+		return orders;
+	}
 
-  public String getNonce() {
-
-    return nonce;
-  }
-
-  public void setNonce(String nonce) {
-
-    this.nonce = nonce;
-  }
-
-  public BitfinexNewOrder[] getOrders() {
-
-    return orders;
-  }
-
-  public void setOrders(BitfinexNewOrder[] orders) {
-
-    this.orders = orders;
-  }
+	public void setOrders(BitfinexNewOrder[] orders) {
+		this.orders = orders;
+	}
 }

@@ -1,10 +1,11 @@
 package org.knowm.xchange.tradeogre.dto.account;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Map;
-import lombok.Data;
 
 @Data
 public class TradeOgreBalances {
-  private Map<String, BigDecimal> balances;
+	private Map<String, BigDecimal> balances;
 }

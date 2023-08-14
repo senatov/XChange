@@ -15,11 +15,11 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainDeposits {
 
-    private final String depositId;
-    private final BigDecimal amount;
-    private final Currency currency;
-    private final String address;
-    private final String txHash;
-    private final String state;
-    private final Date timestamp;
+	private final String depositId;
+	private final BigDecimal amount;
+	private final Currency currency;
+	private final String address;
+	private final String txHash;
+	private final String state;
+	private final Date timestamp;
 }

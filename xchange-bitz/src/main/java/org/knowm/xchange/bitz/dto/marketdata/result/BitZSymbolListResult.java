@@ -6,13 +6,13 @@ import org.knowm.xchange.bitz.dto.marketdata.BitZSymbolList;
 
 public class BitZSymbolListResult extends BitZResult<BitZSymbolList> {
 
-  public BitZSymbolListResult(
-      @JsonProperty("status") int status,
-      @JsonProperty("msg") String message,
-      @JsonProperty("data") BitZSymbolList data,
-      @JsonProperty("time") String time,
-      @JsonProperty("microtime") String microtime,
-      @JsonProperty("source") String source) {
-    super(status, message, data);
-  }
+	public BitZSymbolListResult(
+			@JsonProperty("status") int status,
+			@JsonProperty("msg") String message,
+			@JsonProperty("data") BitZSymbolList data,
+			@JsonProperty("time") String time,
+			@JsonProperty("microtime") String microtime,
+			@JsonProperty("source") String source) {
+		super(status, message, data);
+	}
 }

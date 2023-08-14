@@ -15,11 +15,11 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainAccountInformation {
 
-    private final Currency   currency;
-    @JsonProperty("balance")
-    private final BigDecimal total;
-    private final BigDecimal available;
-    private final BigDecimal balance_local;
-    private final BigDecimal available_local;
-    private final BigDecimal rate;
+	private final Currency currency;
+	@JsonProperty("balance")
+	private final BigDecimal total;
+	private final BigDecimal available;
+	private final BigDecimal balance_local;
+	private final BigDecimal available_local;
+	private final BigDecimal rate;
 }

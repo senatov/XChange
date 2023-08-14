@@ -7,27 +7,27 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class OkexTradeFee {
-  @JsonProperty("category")
-  String category;
+	@JsonProperty("category")
+	String category;
 
-  @JsonProperty("delivery")
-  String delivery;
+	@JsonProperty("delivery")
+	String delivery;
 
-  @JsonProperty("exercise")
-  String exercise;
+	@JsonProperty("exercise")
+	String exercise;
 
-  @JsonProperty("instType")
-  String instType;
+	@JsonProperty("instType")
+	String instType;
 
-  @JsonProperty("level")
-  String level;
+	@JsonProperty("level")
+	String level;
 
-  @JsonProperty("maker")
-  String maker;
+	@JsonProperty("maker")
+	String maker;
 
-  @JsonProperty("taker")
-  String taker;
+	@JsonProperty("taker")
+	String taker;
 
-  @JsonProperty("timestamp")
-  String timestamp;
+	@JsonProperty("timestamp")
+	String timestamp;
 }

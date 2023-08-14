@@ -6,197 +6,179 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-  "globalTradeID",
-  "tradeID",
-  "date",
-  "rate",
-  "amount",
-  "total",
-  "fee",
-  "orderNumber",
-  "type"
+		"globalTradeID",
+		"tradeID",
+		"date",
+		"rate",
+		"amount",
+		"total",
+		"fee",
+		"orderNumber",
+		"type"
 })
 public class PoloniexUserTrade {
 
-  @JsonProperty("globalTradeID")
-  private String globalTradeID;
+	@JsonProperty("globalTradeID")
+	private String globalTradeID;
 
-  @JsonProperty("tradeID")
-  private String tradeID;
+	@JsonProperty("tradeID")
+	private String tradeID;
 
-  @JsonProperty("date")
-  private String date;
+	@JsonProperty("date")
+	private String date;
 
-  @JsonProperty("rate")
-  private BigDecimal rate;
+	@JsonProperty("rate")
+	private BigDecimal rate;
 
-  @JsonProperty("amount")
-  private BigDecimal amount;
+	@JsonProperty("amount")
+	private BigDecimal amount;
 
-  @JsonProperty("total")
-  private BigDecimal total;
+	@JsonProperty("total")
+	private BigDecimal total;
 
-  @JsonProperty("fee")
-  private BigDecimal fee;
+	@JsonProperty("fee")
+	private BigDecimal fee;
 
-  @JsonProperty("orderNumber")
-  private String orderNumber;
+	@JsonProperty("orderNumber")
+	private String orderNumber;
 
-  @JsonProperty("type")
-  private String type;
+	@JsonProperty("type")
+	private String type;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  @JsonProperty("globalTradeID")
-  public String getGlobalTradeID() {
+	@JsonProperty("globalTradeID")
+	public String getGlobalTradeID() {
+		return globalTradeID;
+	}
 
-    return globalTradeID;
-  }
+	@JsonProperty("globalTradeID")
+	public void setGlobalTradeID(String globalTradeID) {
+		this.globalTradeID = globalTradeID;
+	}
 
-  @JsonProperty("globalTradeID")
-  public void setGlobalTradeID(String globalTradeID) {
+	@JsonProperty("tradeID")
+	public String getTradeID() {
+		return tradeID;
+	}
 
-    this.globalTradeID = globalTradeID;
-  }
+	@JsonProperty("tradeID")
+	public void setTradeID(String tradeID) {
+		this.tradeID = tradeID;
+	}
 
-  @JsonProperty("tradeID")
-  public String getTradeID() {
+	@JsonProperty("date")
+	public String getDate() {
+		return date;
+	}
 
-    return tradeID;
-  }
+	@JsonProperty("date")
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-  @JsonProperty("tradeID")
-  public void setTradeID(String tradeID) {
+	@JsonProperty("rate")
+	public BigDecimal getRate() {
+		return rate;
+	}
 
-    this.tradeID = tradeID;
-  }
+	@JsonProperty("rate")
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
+	}
 
-  @JsonProperty("date")
-  public String getDate() {
+	@JsonProperty("amount")
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    return date;
-  }
+	@JsonProperty("amount")
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-  @JsonProperty("date")
-  public void setDate(String date) {
+	@JsonProperty("total")
+	public BigDecimal getTotal() {
+		return total;
+	}
 
-    this.date = date;
-  }
+	@JsonProperty("total")
+	public void setTotal(BigDecimal total) {
+		this.total = total;
+	}
 
-  @JsonProperty("rate")
-  public BigDecimal getRate() {
+	@JsonProperty("fee")
+	public BigDecimal getFee() {
+		return fee;
+	}
 
-    return rate;
-  }
+	@JsonProperty("fee")
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
+	}
 
-  @JsonProperty("rate")
-  public void setRate(BigDecimal rate) {
+	@JsonProperty("orderNumber")
+	public String getOrderNumber() {
+		return orderNumber;
+	}
 
-    this.rate = rate;
-  }
+	@JsonProperty("orderNumber")
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
 
-  @JsonProperty("amount")
-  public BigDecimal getAmount() {
+	@JsonProperty("type")
+	public String getType() {
+		return type;
+	}
 
-    return amount;
-  }
+	@JsonProperty("type")
+	public void setType(String type) {
+		this.type = type;
+	}
 
-  @JsonProperty("amount")
-  public void setAmount(BigDecimal amount) {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    this.amount = amount;
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 
-  @JsonProperty("total")
-  public BigDecimal getTotal() {
-
-    return total;
-  }
-
-  @JsonProperty("total")
-  public void setTotal(BigDecimal total) {
-
-    this.total = total;
-  }
-
-  @JsonProperty("fee")
-  public BigDecimal getFee() {
-
-    return fee;
-  }
-
-  @JsonProperty("fee")
-  public void setFee(BigDecimal fee) {
-
-    this.fee = fee;
-  }
-
-  @JsonProperty("orderNumber")
-  public String getOrderNumber() {
-
-    return orderNumber;
-  }
-
-  @JsonProperty("orderNumber")
-  public void setOrderNumber(String orderNumber) {
-
-    this.orderNumber = orderNumber;
-  }
-
-  @JsonProperty("type")
-  public String getType() {
-
-    return type;
-  }
-
-  @JsonProperty("type")
-  public void setType(String type) {
-
-    this.type = type;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
-
-  @Override
-  public String toString() {
-    return "PoloniexUserTrade [globalTradeID="
-        + globalTradeID
-        + ", tradeID= "
-        + tradeID
-        + ", date="
-        + date
-        + ", rate="
-        + rate
-        + ", amount="
-        + amount
-        + ", total="
-        + total
-        + ", fee="
-        + fee
-        + ", orderNumber="
-        + orderNumber
-        + ", type="
-        + type
-        + ", additionalProperties="
-        + additionalProperties
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "PoloniexUserTrade [globalTradeID="
+				+ globalTradeID
+				+ ", tradeID= "
+				+ tradeID
+				+ ", date="
+				+ date
+				+ ", rate="
+				+ rate
+				+ ", amount="
+				+ amount
+				+ ", total="
+				+ total
+				+ ", fee="
+				+ fee
+				+ ", orderNumber="
+				+ orderNumber
+				+ ", type="
+				+ type
+				+ ", additionalProperties="
+				+ additionalProperties
+				+ "]";
+	}
 }

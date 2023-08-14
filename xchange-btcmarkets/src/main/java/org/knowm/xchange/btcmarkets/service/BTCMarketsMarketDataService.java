@@ -1,6 +1,5 @@
 package org.knowm.xchange.btcmarkets.service;
 
-import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.btcmarkets.BTCMarketsAdapters;
 import org.knowm.xchange.btcmarkets.dto.marketdata.BTCMarketsTicker;
@@ -12,37 +11,41 @@ import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 import org.knowm.xchange.service.marketdata.params.Params;
 
-/** @author Matija Mazi (with additions from CDP) */
+import java.io.IOException;
+
+/**
+ * @author Matija Mazi (with additions from CDP)
+ */
 public class BTCMarketsMarketDataService extends BTCMarketsMarketDataServiceRaw
-    implements MarketDataService {
+		implements MarketDataService {
 
-  public BTCMarketsMarketDataService(Exchange exchange) {
-    super(exchange);
-  }
+	public BTCMarketsMarketDataService(Exchange exchange) {
+		super(exchange);
+	}
 
-  @Override
-  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
-    BTCMarketsTicker t = getBTCMarketsTicker(currencyPair);
-    return BTCMarketsAdapters.adaptTicker(currencyPair, t);
-  }
+	@Override
+	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
+		BTCMarketsTicker t = getBTCMarketsTicker(currencyPair);
+		return BTCMarketsAdapters.adaptTicker(currencyPair, t);
+	}
 
-  @Override
-  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-    return BTCMarketsAdapters.adaptOrderBook(getBTCMarketsOrderBook(currencyPair), currencyPair);
-  }
+	@Override
+	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+		return BTCMarketsAdapters.adaptOrderBook(getBTCMarketsOrderBook(currencyPair), currencyPair);
+	}
 
-  @Override
-  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+	@Override
+	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+		return BTCMarketsAdapters.adaptMarketTrades(getBTCMarketsTrade(currencyPair), currencyPair);
+	}
 
-    return BTCMarketsAdapters.adaptMarketTrades(getBTCMarketsTrade(currencyPair), currencyPair);
-  }
-
-  /** @param params use {@link BTCMarketsMarketTradeParams} for params */
-  @Override
-  public Trades getTrades(Params params) throws IOException {
-
-    return BTCMarketsAdapters.adaptMarketTrades(
-        getBTCMarketsTrade(((BTCMarketsMarketTradeParams) params).currencyPair, params),
-        ((BTCMarketsMarketTradeParams) params).currencyPair);
-  }
+	/**
+	 * @param params use {@link BTCMarketsMarketTradeParams} for params
+	 */
+	@Override
+	public Trades getTrades(Params params) throws IOException {
+		return BTCMarketsAdapters.adaptMarketTrades(
+				getBTCMarketsTrade(((BTCMarketsMarketTradeParams) params).currencyPair, params),
+				((BTCMarketsMarketTradeParams) params).currencyPair);
+	}
 }

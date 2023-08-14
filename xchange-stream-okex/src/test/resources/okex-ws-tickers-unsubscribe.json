@@ -1,1 +1,9 @@
-{"op":"unsubscribe","args":[{"channel":"tickers","instId":"LTC-USD-200327"}]}
+{
+  "op": "unsubscribe",
+  "args": [
+    {
+      "channel": "tickers",
+      "instId": "LTC-USD-200327"
+    }
+  ]
+}

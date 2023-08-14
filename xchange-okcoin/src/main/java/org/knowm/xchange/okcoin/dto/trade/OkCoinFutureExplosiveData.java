@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OkCoinFutureExplosiveData {
 
-  private final OkCoinFutureExplosiveDataInfo[] data;
+	private final OkCoinFutureExplosiveDataInfo[] data;
 
-  public OkCoinFutureExplosiveData(@JsonProperty("data") OkCoinFutureExplosiveDataInfo[] data) {
-    this.data = data;
-  }
+	public OkCoinFutureExplosiveData(@JsonProperty("data") OkCoinFutureExplosiveDataInfo[] data) {
+		this.data = data;
+	}
 
-  public OkCoinFutureExplosiveDataInfo[] getData() {
-    return data;
-  }
+	public OkCoinFutureExplosiveDataInfo[] getData() {
+		return data;
+	}
 }

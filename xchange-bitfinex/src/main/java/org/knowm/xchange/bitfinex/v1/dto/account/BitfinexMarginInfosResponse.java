@@ -6,217 +6,197 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-  "margin_balance",
-  "tradable_balance",
-  "unrealized_pl",
-  "unrealized_swap",
-  "net_value",
-  "required_margin",
-  "leverage",
-  "margin_requirement",
-  "margin_limits",
-  "message"
+		"margin_balance",
+		"tradable_balance",
+		"unrealized_pl",
+		"unrealized_swap",
+		"net_value",
+		"required_margin",
+		"leverage",
+		"margin_requirement",
+		"margin_limits",
+		"message"
 })
 public class BitfinexMarginInfosResponse {
 
-  @JsonProperty("margin_balance")
-  private BigDecimal marginBalance;
+	@JsonProperty("margin_balance")
+	private BigDecimal marginBalance;
 
-  @JsonProperty("tradable_balance")
-  private BigDecimal tradableBalance;
+	@JsonProperty("tradable_balance")
+	private BigDecimal tradableBalance;
 
-  @JsonProperty("unrealized_pl")
-  private BigDecimal unrealizedPl;
+	@JsonProperty("unrealized_pl")
+	private BigDecimal unrealizedPl;
 
-  @JsonProperty("unrealized_swap")
-  private BigDecimal unrealizedSwap;
+	@JsonProperty("unrealized_swap")
+	private BigDecimal unrealizedSwap;
 
-  @JsonProperty("net_value")
-  private BigDecimal netValue;
+	@JsonProperty("net_value")
+	private BigDecimal netValue;
 
-  @JsonProperty("required_margin")
-  private BigDecimal requiredMargin;
+	@JsonProperty("required_margin")
+	private BigDecimal requiredMargin;
 
-  @JsonProperty("leverage")
-  private BigDecimal leverage;
+	@JsonProperty("leverage")
+	private BigDecimal leverage;
 
-  @JsonProperty("margin_requirement")
-  private BigDecimal marginRequirement;
+	@JsonProperty("margin_requirement")
+	private BigDecimal marginRequirement;
 
-  @JsonProperty("margin_limits")
-  private List<BitfinexMarginLimit> marginLimits = new ArrayList<BitfinexMarginLimit>();
+	@JsonProperty("margin_limits")
+	private List<BitfinexMarginLimit> marginLimits = new ArrayList<BitfinexMarginLimit>();
 
-  @JsonProperty("message")
-  private String message;
+	@JsonProperty("message")
+	private String message;
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  @JsonProperty("margin_balance")
-  public BigDecimal getMarginBalance() {
+	@JsonProperty("margin_balance")
+	public BigDecimal getMarginBalance() {
+		return marginBalance;
+	}
 
-    return marginBalance;
-  }
+	@JsonProperty("margin_balance")
+	public void setMarginBalance(BigDecimal marginBalance) {
+		this.marginBalance = marginBalance;
+	}
 
-  @JsonProperty("margin_balance")
-  public void setMarginBalance(BigDecimal marginBalance) {
+	@JsonProperty("tradable_balance")
+	public BigDecimal getTradableBalance() {
+		return tradableBalance;
+	}
 
-    this.marginBalance = marginBalance;
-  }
+	@JsonProperty("tradable_balance")
+	public void setTradableBalance(BigDecimal tradableBalance) {
+		this.tradableBalance = tradableBalance;
+	}
 
-  @JsonProperty("tradable_balance")
-  public BigDecimal getTradableBalance() {
+	@JsonProperty("unrealized_pl")
+	public BigDecimal getUnrealizedPl() {
+		return unrealizedPl;
+	}
 
-    return tradableBalance;
-  }
+	@JsonProperty("unrealized_pl")
+	public void setUnrealizedPl(BigDecimal unrealizedPl) {
+		this.unrealizedPl = unrealizedPl;
+	}
 
-  @JsonProperty("tradable_balance")
-  public void setTradableBalance(BigDecimal tradableBalance) {
+	@JsonProperty("unrealized_swap")
+	public BigDecimal getUnrealizedSwap() {
+		return unrealizedSwap;
+	}
 
-    this.tradableBalance = tradableBalance;
-  }
+	@JsonProperty("unrealized_swap")
+	public void setUnrealizedSwap(BigDecimal unrealizedSwap) {
+		this.unrealizedSwap = unrealizedSwap;
+	}
 
-  @JsonProperty("unrealized_pl")
-  public BigDecimal getUnrealizedPl() {
+	@JsonProperty("net_value")
+	public BigDecimal getNetValue() {
+		return netValue;
+	}
 
-    return unrealizedPl;
-  }
+	@JsonProperty("net_value")
+	public void setNetValue(BigDecimal netValue) {
+		this.netValue = netValue;
+	}
 
-  @JsonProperty("unrealized_pl")
-  public void setUnrealizedPl(BigDecimal unrealizedPl) {
+	@JsonProperty("required_margin")
+	public BigDecimal getRequiredMargin() {
+		return requiredMargin;
+	}
 
-    this.unrealizedPl = unrealizedPl;
-  }
+	@JsonProperty("required_margin")
+	public void setRequiredMargin(BigDecimal requiredMargin) {
+		this.requiredMargin = requiredMargin;
+	}
 
-  @JsonProperty("unrealized_swap")
-  public BigDecimal getUnrealizedSwap() {
+	@JsonProperty("leverage")
+	public BigDecimal getLeverage() {
+		return leverage;
+	}
 
-    return unrealizedSwap;
-  }
+	@JsonProperty("leverage")
+	public void setLeverage(BigDecimal leverage) {
+		this.leverage = leverage;
+	}
 
-  @JsonProperty("unrealized_swap")
-  public void setUnrealizedSwap(BigDecimal unrealizedSwap) {
+	@JsonProperty("margin_requirement")
+	public BigDecimal getMarginRequirement() {
+		return marginRequirement;
+	}
 
-    this.unrealizedSwap = unrealizedSwap;
-  }
+	@JsonProperty("margin_requirement")
+	public void setMarginRequirement(BigDecimal marginRequirement) {
+		this.marginRequirement = marginRequirement;
+	}
 
-  @JsonProperty("net_value")
-  public BigDecimal getNetValue() {
+	@JsonProperty("margin_limits")
+	public List<BitfinexMarginLimit> getMarginLimits() {
+		return marginLimits;
+	}
 
-    return netValue;
-  }
+	@JsonProperty("margin_limits")
+	public void setMarginLimits(List<BitfinexMarginLimit> marginLimits) {
+		this.marginLimits = marginLimits;
+	}
 
-  @JsonProperty("net_value")
-  public void setNetValue(BigDecimal netValue) {
+	@JsonProperty("message")
+	public String getMessage() {
+		return message;
+	}
 
-    this.netValue = netValue;
-  }
+	@JsonProperty("message")
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-  @JsonProperty("required_margin")
-  public BigDecimal getRequiredMargin() {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    return requiredMargin;
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 
-  @JsonProperty("required_margin")
-  public void setRequiredMargin(BigDecimal requiredMargin) {
-
-    this.requiredMargin = requiredMargin;
-  }
-
-  @JsonProperty("leverage")
-  public BigDecimal getLeverage() {
-
-    return leverage;
-  }
-
-  @JsonProperty("leverage")
-  public void setLeverage(BigDecimal leverage) {
-
-    this.leverage = leverage;
-  }
-
-  @JsonProperty("margin_requirement")
-  public BigDecimal getMarginRequirement() {
-
-    return marginRequirement;
-  }
-
-  @JsonProperty("margin_requirement")
-  public void setMarginRequirement(BigDecimal marginRequirement) {
-
-    this.marginRequirement = marginRequirement;
-  }
-
-  @JsonProperty("margin_limits")
-  public List<BitfinexMarginLimit> getMarginLimits() {
-
-    return marginLimits;
-  }
-
-  @JsonProperty("margin_limits")
-  public void setMarginLimits(List<BitfinexMarginLimit> marginLimits) {
-
-    this.marginLimits = marginLimits;
-  }
-
-  @JsonProperty("message")
-  public String getMessage() {
-
-    return message;
-  }
-
-  @JsonProperty("message")
-  public void setMessage(String message) {
-
-    this.message = message;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
-
-  @Override
-  public String toString() {
-    return "BitfinexMarginInfosResponse{"
-        + "marginBalance="
-        + marginBalance
-        + ", tradableBalance="
-        + tradableBalance
-        + ", unrealizedPl="
-        + unrealizedPl
-        + ", unrealizedSwap="
-        + unrealizedSwap
-        + ", netValue="
-        + netValue
-        + ", requiredMargin="
-        + requiredMargin
-        + ", leverage="
-        + leverage
-        + ", marginRequirement="
-        + marginRequirement
-        + ", marginLimits="
-        + marginLimits
-        + ", message='"
-        + message
-        + '\''
-        + '}';
-  }
+	@Override
+	public String toString() {
+		return "BitfinexMarginInfosResponse{"
+				+ "marginBalance="
+				+ marginBalance
+				+ ", tradableBalance="
+				+ tradableBalance
+				+ ", unrealizedPl="
+				+ unrealizedPl
+				+ ", unrealizedSwap="
+				+ unrealizedSwap
+				+ ", netValue="
+				+ netValue
+				+ ", requiredMargin="
+				+ requiredMargin
+				+ ", leverage="
+				+ leverage
+				+ ", marginRequirement="
+				+ marginRequirement
+				+ ", marginLimits="
+				+ marginLimits
+				+ ", message='"
+				+ message
+				+ '\''
+				+ '}';
+	}
 }

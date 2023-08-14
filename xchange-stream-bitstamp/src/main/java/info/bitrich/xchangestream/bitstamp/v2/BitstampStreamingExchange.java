@@ -14,67 +14,66 @@ import org.knowm.xchange.bitstamp.BitstampExchange;
  */
 public class BitstampStreamingExchange extends BitstampExchange implements StreamingExchange {
 
-  private static final String API_URI = "wss://ws.bitstamp.net";
+	private static final String API_URI = "wss://ws.bitstamp.net";
 
-  private final BitstampStreamingService streamingService;
-  private BitstampStreamingMarketDataService streamingMarketDataService;
+	private final BitstampStreamingService streamingService;
+	private BitstampStreamingMarketDataService streamingMarketDataService;
 
-  public BitstampStreamingExchange() {
-    this.streamingService = new BitstampStreamingService(API_URI);
-  }
+	public BitstampStreamingExchange() {
+		this.streamingService = new BitstampStreamingService(API_URI);
+	}
 
-  @Override
-  protected void initServices() {
-    super.initServices();
-    applyStreamingSpecification(getExchangeSpecification(), streamingService);
-    streamingMarketDataService = new BitstampStreamingMarketDataService(streamingService);
-  }
+	@Override
+	public Completable connect(ProductSubscription... args) {
+		return streamingService.connect();
+	}
 
-  @Override
-  public Completable connect(ProductSubscription... args) {
-    return streamingService.connect();
-  }
+	@Override
+	public Completable disconnect() {
+		return streamingService.disconnect();
+	}
 
-  @Override
-  public Completable disconnect() {
-    return streamingService.disconnect();
-  }
+	@Override
+	public boolean isAlive() {
+		return streamingService.isSocketOpen();
+	}
 
-  @Override
-  public boolean isAlive() {
-    return streamingService.isSocketOpen();
-  }
+	@Override
+	public Observable<Throwable> reconnectFailure() {
+		return streamingService.subscribeReconnectFailure();
+	}
 
-  @Override
-  public Observable<Throwable> reconnectFailure() {
-    return streamingService.subscribeReconnectFailure();
-  }
+	@Override
+	public Observable<Object> connectionSuccess() {
+		return streamingService.subscribeConnectionSuccess();
+	}
 
-  @Override
-  public Observable<Object> connectionSuccess() {
-    return streamingService.subscribeConnectionSuccess();
-  }
+	@Override
+	public Observable<State> connectionStateObservable() {
+		return streamingService.subscribeConnectionState();
+	}
 
-  @Override
-  public Observable<State> connectionStateObservable() {
-    return streamingService.subscribeConnectionState();
-  }
+	@Override
+	public StreamingMarketDataService getStreamingMarketDataService() {
+		return streamingMarketDataService;
+	}
 
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-    ExchangeSpecification spec = super.getDefaultExchangeSpecification();
-    spec.setShouldLoadRemoteMetaData(false);
+	@Override
+	public void useCompressedMessages(boolean compressedMessages) {
+		streamingService.useCompressedMessages(compressedMessages);
+	}
 
-    return spec;
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification spec = super.getDefaultExchangeSpecification();
+		spec.setShouldLoadRemoteMetaData(false);
+		return spec;
+	}
 
-  @Override
-  public StreamingMarketDataService getStreamingMarketDataService() {
-    return streamingMarketDataService;
-  }
-
-  @Override
-  public void useCompressedMessages(boolean compressedMessages) {
-    streamingService.useCompressedMessages(compressedMessages);
-  }
+	@Override
+	protected void initServices() {
+		super.initServices();
+		applyStreamingSpecification(getExchangeSpecification(), streamingService);
+		streamingMarketDataService = new BitstampStreamingMarketDataService(streamingService);
+	}
 }

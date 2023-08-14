@@ -1,8 +1,5 @@
 package org.knowm.xchange.binance.us;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,47 +10,51 @@ import org.knowm.xchange.binance.BinanceUsExchange;
 import org.knowm.xchange.binance.dto.meta.BinanceSystemStatus;
 import org.knowm.xchange.binance.service.BinanceUsAccountService;
 
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class BinanceUsExchangeIntegration {
-  protected static BinanceUsExchange exchange;
+	protected static BinanceUsExchange exchange;
 
-  @BeforeClass
-  public static void beforeClass() throws Exception {
-    createExchange();
-  }
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		createExchange();
+	}
 
-  @Test
-  public void testSetupIsCorrect() {
-    ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
-    assertThat(specification.getExchangeName().equalsIgnoreCase("Binance US")).isTrue();
-    assertThat(specification.getSslUri().equalsIgnoreCase("https://api.binance.us")).isTrue();
-    assertThat(specification.getHost().equalsIgnoreCase("www.binance.us")).isTrue();
-    assertThat(specification.getExchangeDescription().equalsIgnoreCase("Binance US Exchange."))
-        .isTrue();
-    assertThat(specification.getExchangeClass().equals(BinanceUsExchange.class)).isTrue();
-    assertThat(specification.getResilience()).isNotNull();
-  }
+	protected static void createExchange() throws Exception {
+		exchange = ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(BinanceUsExchange.class);
+		ExchangeSpecification spec = exchange.getDefaultExchangeSpecification();
+		boolean useSandbox =
+				Boolean.parseBoolean(
+						System.getProperty(Exchange.USE_SANDBOX, Boolean.FALSE.toString()));
+		spec.setExchangeSpecificParametersItem(Exchange.USE_SANDBOX, useSandbox);
+		exchange.applySpecification(spec);
+	}
 
-  @Test
-  public void testSystemStatus() throws IOException {
-    assumeProduction();
-    BinanceSystemStatus systemStatus =
-        ((BinanceUsAccountService) exchange.getAccountService()).getSystemStatus();
-    assertThat(systemStatus).isNotNull();
-    // Not yet supported by binance.us
-    assertThat(systemStatus.getStatus()).isNull();
-  }
+	@Test
+	public void testSetupIsCorrect() {
+		ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
+		assertThat(specification.getExchangeName().equalsIgnoreCase("Binance US")).isTrue();
+		assertThat(specification.getSslUri().equalsIgnoreCase("https://api.binance.us")).isTrue();
+		assertThat(specification.getHost().equalsIgnoreCase("www.binance.us")).isTrue();
+		assertThat(specification.getExchangeDescription().equalsIgnoreCase("Binance US Exchange."))
+				.isTrue();
+		assertThat(specification.getExchangeClass().equals(BinanceUsExchange.class)).isTrue();
+		assertThat(specification.getResilience()).isNotNull();
+	}
 
-  protected static void createExchange() throws Exception {
-    exchange = ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(BinanceUsExchange.class);
-    ExchangeSpecification spec = exchange.getDefaultExchangeSpecification();
-    boolean useSandbox =
-        Boolean.parseBoolean(
-            System.getProperty(Exchange.USE_SANDBOX, Boolean.FALSE.toString()));
-    spec.setExchangeSpecificParametersItem(Exchange.USE_SANDBOX, useSandbox);
-    exchange.applySpecification(spec);
-  }
+	@Test
+	public void testSystemStatus() throws IOException {
+		assumeProduction();
+		BinanceSystemStatus systemStatus =
+				((BinanceUsAccountService) exchange.getAccountService()).getSystemStatus();
+		assertThat(systemStatus).isNotNull();
+		// Not yet supported by binance.us
+		assertThat(systemStatus.getStatus()).isNull();
+	}
 
-  protected void assumeProduction() {
-    Assume.assumeFalse("Using sandbox", exchange.usingSandbox());
-  }
+	protected void assumeProduction() {
+		Assume.assumeFalse("Using sandbox", exchange.usingSandbox());
+	}
 }

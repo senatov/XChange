@@ -10,22 +10,22 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 public class BybitBalance {
 
-  @JsonProperty("coin")
-  String coin;
+	@JsonProperty("coin")
+	String coin;
 
-  @JsonProperty("coinId")
-  String coinId;
+	@JsonProperty("coinId")
+	String coinId;
 
-  @JsonProperty("coinName")
-  String coinName;
+	@JsonProperty("coinName")
+	String coinName;
 
-  @JsonProperty("total")
-  String total;
+	@JsonProperty("total")
+	String total;
 
-  @JsonProperty("free")
-  String free;
+	@JsonProperty("free")
+	String free;
 
-  @JsonProperty("locked")
-  String locked;
+	@JsonProperty("locked")
+	String locked;
 
 }

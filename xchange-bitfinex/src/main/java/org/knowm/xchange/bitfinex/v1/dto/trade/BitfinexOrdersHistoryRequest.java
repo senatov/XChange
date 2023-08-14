@@ -5,26 +5,22 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 
 public class BitfinexOrdersHistoryRequest {
 
-  @JsonProperty("request")
-  protected String request;
+	@JsonProperty("request")
+	protected String request;
 
-  @JsonProperty("nonce")
-  protected String nonce;
+	@JsonProperty("nonce")
+	protected String nonce;
 
-  @JsonProperty("limit")
-  @JsonRawValue
-  private long limit;
+	@JsonProperty("limit")
+	@JsonRawValue
+	private long limit;
 
-  /**
-   * Constructor
-   *
-   * @param nonce
-   * @param limit
-   */
-  public BitfinexOrdersHistoryRequest(String nonce, long limit) {
-
-    this.request = "/v1/orders/hist";
-    this.limit = limit;
-    this.nonce = nonce;
-  }
+	/**
+	 * Constructor
+	 */
+	public BitfinexOrdersHistoryRequest(String nonce, long limit) {
+		this.request = "/v1/orders/hist";
+		this.limit = limit;
+		this.nonce = nonce;
+	}
 }

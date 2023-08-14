@@ -1,6 +1,5 @@
 package org.knowm.xchange.independentreserve.service;
 
-import java.util.Collection;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,36 +12,35 @@ import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.independentreserve.IndependentReserveExchange;
 import org.knowm.xchange.utils.AuthUtils;
 
+import java.util.Collection;
+
 public class IndependentReserveTradeServiceIntegration {
 
-  static Exchange exchange;
-  static IndependentReserveTradeService tradeService;
+	static Exchange exchange;
+	static IndependentReserveTradeService tradeService;
 
-  @BeforeClass
-  public static void beforeClass() {
-    exchange = ExchangeFactory.INSTANCE.createExchange(IndependentReserveExchange.class);
-    AuthUtils.setApiAndSecretKey(exchange.getExchangeSpecification());
-    exchange = ExchangeFactory.INSTANCE.createExchange(exchange.getExchangeSpecification());
-    tradeService = (IndependentReserveTradeService) exchange.getTradeService();
-  }
+	@BeforeClass
+	public static void beforeClass() {
+		exchange = ExchangeFactory.INSTANCE.createExchange(IndependentReserveExchange.class);
+		AuthUtils.setApiAndSecretKey(exchange.getExchangeSpecification());
+		exchange = ExchangeFactory.INSTANCE.createExchange(exchange.getExchangeSpecification());
+		tradeService = (IndependentReserveTradeService) exchange.getTradeService();
+	}
 
-  @Test
-  public void testGetOpenOrders() throws Exception {
+	@Test
+	public void testGetOpenOrders() throws Exception {
+		Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
+		OpenOrders openOrders = tradeService.getOpenOrders();
+	}
 
-    Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
-
-    OpenOrders openOrders = tradeService.getOpenOrders();
-  }
-
-  @Test
-  public void testGetTradeHistory() throws Exception {
-    Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
-
-    UserTrades userTrades = tradeService.getTradeHistory(tradeService.createTradeHistoryParams());
-    if (userTrades.getUserTrades().size() > 0) {
-      UserTrade userTrade = userTrades.getUserTrades().get(0);
-      String orderId = userTrade.getOrderId();
-      Collection<Order> orders = tradeService.getOrder(orderId);
-    }
-  }
+	@Test
+	public void testGetTradeHistory() throws Exception {
+		Assume.assumeNotNull(exchange.getExchangeSpecification().getApiKey());
+		UserTrades userTrades = tradeService.getTradeHistory(tradeService.createTradeHistoryParams());
+		if (userTrades.getUserTrades().size() > 0) {
+			UserTrade userTrade = userTrades.getUserTrades().get(0);
+			String orderId = userTrade.getOrderId();
+			Collection<Order> orders = tradeService.getOrder(orderId);
+		}
+	}
 }

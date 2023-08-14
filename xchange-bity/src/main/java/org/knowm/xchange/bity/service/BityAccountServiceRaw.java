@@ -4,12 +4,10 @@ import org.knowm.xchange.Exchange;
 
 class BityAccountServiceRaw extends BityBaseService {
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public BityAccountServiceRaw(Exchange exchange) {
-    super(exchange);
-  }
+	/**
+	 * Constructor
+	 */
+	public BityAccountServiceRaw(Exchange exchange) {
+		super(exchange);
+	}
 }

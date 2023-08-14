@@ -1,44 +1,45 @@
 package org.knowm.xchange.bitstamp.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
+
+import java.math.BigDecimal;
 
 @Builder
 @Jacksonized
 @Value
 public class BitstampTicker {
 
-  @JsonProperty("pair")
-  String pair;
+	@JsonProperty("pair")
+	String pair;
 
-  @JsonProperty("open")
-  BigDecimal open;
+	@JsonProperty("open")
+	BigDecimal open;
 
-  @JsonProperty("last")
-  BigDecimal last;
+	@JsonProperty("last")
+	BigDecimal last;
 
-  @JsonProperty("high")
-  BigDecimal high;
+	@JsonProperty("high")
+	BigDecimal high;
 
-  @JsonProperty("low")
-  BigDecimal low;
+	@JsonProperty("low")
+	BigDecimal low;
 
-  @JsonProperty("vwap")
-  BigDecimal vwap;
+	@JsonProperty("vwap")
+	BigDecimal vwap;
 
-  @JsonProperty("volume")
-  BigDecimal volume;
+	@JsonProperty("volume")
+	BigDecimal volume;
 
-  @JsonProperty("bid")
-  BigDecimal bid;
+	@JsonProperty("bid")
+	BigDecimal bid;
 
-  @JsonProperty("ask")
-  BigDecimal ask;
+	@JsonProperty("ask")
+	BigDecimal ask;
 
-  @JsonProperty("timestamp")
-  long timestamp;
+	@JsonProperty("timestamp")
+	long timestamp;
 
 }

@@ -2069,8 +2069,8 @@
       "withdrawal_fee": 0.10000000
     },
     "BCH": {
-      "scale":8,
-      "withdrawal_fee":0.00010000
+      "scale": 8,
+      "withdrawal_fee": 0.00010000
     },
     "EOS": {
       "scale": 4,

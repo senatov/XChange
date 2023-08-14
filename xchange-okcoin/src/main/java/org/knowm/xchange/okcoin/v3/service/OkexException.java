@@ -14,25 +14,25 @@ public class OkexException extends HttpStatusExceptionSupport {
   {"error_message":"Contract does not exist","result":"true","error_code":"35001","order_id":"-1"}
   */
 
-  private String code;
-  private String message;
+	private String code;
+	private String message;
 
-  @JsonProperty("error_code")
-  private String errorCode;
+	@JsonProperty("error_code")
+	private String errorCode;
 
-  @JsonProperty("error_message")
-  private String errorMessage;
+	@JsonProperty("error_message")
+	private String errorMessage;
 
-  public String getCode() {
-    return code != null && !code.isEmpty() ? code : errorCode;
-  }
+	@Override
+	public String getMessage() {
+		return String.format("[%s] %s", getCode(), getErrorMessage());
+	}
 
-  public String getErrorMessage() {
-    return message != null && !message.isEmpty() ? message : errorMessage;
-  }
+	public String getCode() {
+		return code != null && !code.isEmpty() ? code : errorCode;
+	}
 
-  @Override
-  public String getMessage() {
-    return String.format("[%s] %s", getCode(), getErrorMessage());
-  }
+	public String getErrorMessage() {
+		return message != null && !message.isEmpty() ? message : errorMessage;
+	}
 }

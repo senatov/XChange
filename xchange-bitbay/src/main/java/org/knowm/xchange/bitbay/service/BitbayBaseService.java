@@ -12,34 +12,31 @@ import org.knowm.xchange.service.BaseService;
 import si.mazi.rescu.ParamsDigest;
 
 public class BitbayBaseService extends BaseExchangeService implements BaseService {
-  protected final Bitbay bitbay;
-  final BitbayAuthenticated bitbayAuthenticated;
-  final ParamsDigest sign;
-  final String apiKey;
+	protected final Bitbay bitbay;
+	final BitbayAuthenticated bitbayAuthenticated;
+	final ParamsDigest sign;
+	final String apiKey;
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  BitbayBaseService(Exchange exchange) {
-    super(exchange);
+	/**
+	 * Constructor
+	 */
+	BitbayBaseService(Exchange exchange) {
+		super(exchange);
+		bitbay =
+				ExchangeRestProxyBuilder.forInterface(Bitbay.class, exchange.getExchangeSpecification())
+						.build();
+		bitbayAuthenticated =
+				ExchangeRestProxyBuilder.forInterface(
+								BitbayAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+		sign = BitbayDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+		apiKey = exchange.getExchangeSpecification().getApiKey();
+	}
 
-    bitbay =
-        ExchangeRestProxyBuilder.forInterface(Bitbay.class, exchange.getExchangeSpecification())
-            .build();
-    bitbayAuthenticated =
-        ExchangeRestProxyBuilder.forInterface(
-                BitbayAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-    sign = BitbayDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-    apiKey = exchange.getExchangeSpecification().getApiKey();
-  }
-
-  void checkError(BitbayBaseResponse response) {
-    if (!response.isSuccess()) {
-      throw new ExchangeException(
-          String.format("%d: %s", response.getCode(), response.getMessage()));
-    }
-  }
+	void checkError(BitbayBaseResponse response) {
+		if (!response.isSuccess()) {
+			throw new ExchangeException(
+					String.format("%d: %s", response.getCode(), response.getMessage()));
+		}
+	}
 }

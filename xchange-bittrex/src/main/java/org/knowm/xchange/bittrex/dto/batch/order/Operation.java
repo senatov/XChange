@@ -7,8 +7,8 @@ import org.knowm.xchange.bittrex.BittrexConstants;
 @AllArgsConstructor
 @Getter
 public enum Operation {
-  POST(BittrexConstants.POST),
-  DELETE(BittrexConstants.DELETE);
+	POST(BittrexConstants.POST),
+	DELETE(BittrexConstants.DELETE);
 
-  private final String operation;
+	private final String operation;
 }

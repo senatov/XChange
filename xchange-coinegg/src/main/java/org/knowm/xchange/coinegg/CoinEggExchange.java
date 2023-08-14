@@ -10,30 +10,29 @@ import org.knowm.xchange.service.trade.TradeService;
 
 public class CoinEggExchange extends BaseExchange implements Exchange {
 
-  @Override
-  protected void initServices() {
-    this.marketDataService = new CoinEggMarketDataService(this);
-    this.accountService = new CoinEggAccountService(this);
-  }
+	@Override
+	protected void initServices() {
+		this.marketDataService = new CoinEggMarketDataService(this);
+		this.accountService = new CoinEggAccountService(this);
+	}
 
-  @Override
-  public ExchangeSpecification getDefaultExchangeSpecification() {
-    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-    exchangeSpecification.setSslUri("https://api.coinegg.com");
-    exchangeSpecification.setHost("http://api.coinegg.com");
-    exchangeSpecification.setPort(80);
-    exchangeSpecification.setExchangeName("CoinEgg");
-    exchangeSpecification.setExchangeDescription(
-        "CoinEgg is a Bitcoin exchange based in the United Kingdom.");
-    exchangeSpecification.setApiKey("");
-    exchangeSpecification.setSecretKey("");
-    exchangeSpecification.setPassword("");
+	@Override
+	public TradeService getTradeService() {
+		throw new NotAvailableFromExchangeException();
+	}
 
-    return exchangeSpecification;
-  }
-
-  @Override
-  public TradeService getTradeService() {
-    throw new NotAvailableFromExchangeException();
-  }
+	@Override
+	public ExchangeSpecification getDefaultExchangeSpecification() {
+		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+		exchangeSpecification.setSslUri("https://api.coinegg.com");
+		exchangeSpecification.setHost("http://api.coinegg.com");
+		exchangeSpecification.setPort(80);
+		exchangeSpecification.setExchangeName("CoinEgg");
+		exchangeSpecification.setExchangeDescription(
+				"CoinEgg is a Bitcoin exchange based in the United Kingdom.");
+		exchangeSpecification.setApiKey("");
+		exchangeSpecification.setSecretKey("");
+		exchangeSpecification.setPassword("");
+		return exchangeSpecification;
+	}
 }

@@ -16,9 +16,8 @@
       "state": 1,
       "is_trade_marked_as_paid": false,
       "my_rating_for_trading_partner": "positive",
-      "trading_partner_information":
-      {
-        "username":"testuser",
+      "trading_partner_information": {
+        "username": "testuser",
         "is_kyc_full": true,
         "depositor": "Max Musterman",
         "iban": "DE02370501980001802057",

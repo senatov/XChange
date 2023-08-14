@@ -4,25 +4,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public final class HuobiDepositAddressWithTag {
 
-  private final String address;
-  private final String tag;
+	private final String address;
+	private final String tag;
 
-  public HuobiDepositAddressWithTag(
-      @JsonProperty("address") String address, @JsonProperty("tag") String tag) {
-    this.address = address;
-    this.tag = tag;
-  }
+	public HuobiDepositAddressWithTag(
+			@JsonProperty("address") String address, @JsonProperty("tag") String tag) {
+		this.address = address;
+		this.tag = tag;
+	}
 
-  public String getAddress() {
-    return address;
-  }
+	@Override
+	public String toString() {
+		return "HuobiDepositAddressWithTag [address=" + getAddress() + ", tag=" + getTag() + "]";
+	}
 
-  public String getTag() {
-    return tag;
-  }
+	public String getAddress() {
+		return address;
+	}
 
-  @Override
-  public String toString() {
-    return "HuobiDepositAddressWithTag [address=" + getAddress() + ", tag=" + getTag() + "]";
-  }
+	public String getTag() {
+		return tag;
+	}
 }

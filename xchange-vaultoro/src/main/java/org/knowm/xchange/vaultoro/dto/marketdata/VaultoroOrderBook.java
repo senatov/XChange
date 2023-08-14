@@ -6,74 +6,77 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"b", "s"})
 public class VaultoroOrderBook {
 
-  @JsonProperty("b")
-  private List<VaultoroOrder> b = new ArrayList<VaultoroOrder>();
+	@JsonProperty("b")
+	private List<VaultoroOrder> b = new ArrayList<VaultoroOrder>();
 
-  @JsonProperty("s")
-  private List<VaultoroOrder> s = new ArrayList<VaultoroOrder>();
+	@JsonProperty("s")
+	private List<VaultoroOrder> s = new ArrayList<VaultoroOrder>();
 
-  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	@JsonIgnore
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-  /** @return The b */
-  @JsonProperty("b")
-  public List<VaultoroOrder> getBuys() {
+	/**
+	 * @return The b
+	 */
+	@JsonProperty("b")
+	public List<VaultoroOrder> getBuys() {
+		return b;
+	}
 
-    return b;
-  }
+	/**
+	 * @param b The b
+	 */
+	@JsonProperty("b")
+	public void setB(List<VaultoroOrder> b) {
+		this.b = b;
+	}
 
-  /** @param b The b */
-  @JsonProperty("b")
-  public void setB(List<VaultoroOrder> b) {
+	/**
+	 * @return The s
+	 */
+	@JsonProperty("s")
+	public List<VaultoroOrder> getSells() {
+		return s;
+	}
 
-    this.b = b;
-  }
+	/**
+	 * @param s The s
+	 */
+	@JsonProperty("s")
+	public void setS(List<VaultoroOrder> s) {
+		this.s = s;
+	}
 
-  /** @return The s */
-  @JsonProperty("s")
-  public List<VaultoroOrder> getSells() {
+	@JsonAnyGetter
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
 
-    return s;
-  }
+	@JsonAnySetter
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
+	}
 
-  /** @param s The s */
-  @JsonProperty("s")
-  public void setS(List<VaultoroOrder> s) {
-
-    this.s = s;
-  }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() {
-
-    return this.additionalProperties;
-  }
-
-  @JsonAnySetter
-  public void setAdditionalProperty(String name, Object value) {
-
-    this.additionalProperties.put(name, value);
-  }
-
-  @Override
-  public String toString() {
-
-    return "VaultoroOrderBook [b="
-        + b
-        + ", s="
-        + s
-        + ", additionalProperties="
-        + additionalProperties
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "VaultoroOrderBook [b="
+				+ b
+				+ ", s="
+				+ s
+				+ ", additionalProperties="
+				+ additionalProperties
+				+ "]";
+	}
 }

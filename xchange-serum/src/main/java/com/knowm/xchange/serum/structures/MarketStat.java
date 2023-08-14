@@ -5,23 +5,23 @@ import com.knowm.xchange.serum.structures.AccountFlagsLayout.AccountFlags;
 
 public interface MarketStat {
 
-  AccountFlags getAccountFlags();
+	AccountFlags getAccountFlags();
 
-  PublicKey getOwnAddress();
+	PublicKey getOwnAddress();
 
-  PublicKey baseMint();
+	PublicKey baseMint();
 
-  PublicKey quoteMint();
+	PublicKey quoteMint();
 
-  PublicKey getBids();
+	PublicKey getBids();
 
-  PublicKey getAsks();
+	PublicKey getAsks();
 
-  PublicKey getEventQueue();
+	PublicKey getEventQueue();
 
-  PublicKey getRequestQueue();
+	PublicKey getRequestQueue();
 
-  long getBaseLotSize();
+	long getBaseLotSize();
 
-  long getQuoteLotSize();
+	long getQuoteLotSize();
 }

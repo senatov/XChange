@@ -6,11 +6,11 @@ import org.knowm.xchange.huobi.dto.HuobiResultV2;
 import org.knowm.xchange.huobi.dto.account.HuobiTransactFeeRate;
 
 public class HuobiTransactFeeRateResult extends HuobiResultV2<HuobiTransactFeeRate[]> {
-  @JsonCreator
-  public HuobiTransactFeeRateResult(
-      @JsonProperty("code") String code,
-      @JsonProperty("message") String message,
-      @JsonProperty("data") HuobiTransactFeeRate[] data) {
-    super(code, message, data);
-  }
+	@JsonCreator
+	public HuobiTransactFeeRateResult(
+			@JsonProperty("code") String code,
+			@JsonProperty("message") String message,
+			@JsonProperty("data") HuobiTransactFeeRate[] data) {
+		super(code, message, data);
+	}
 }

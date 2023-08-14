@@ -6,14 +6,15 @@ import org.knowm.xchange.therock.TheRockExchange;
 
 public class TheRockExampleUtils {
 
-  private TheRockExampleUtils() {}
+	private TheRockExampleUtils() {
+	}
 
-  public static Exchange createTestExchange() {
-    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(TheRockExchange.class);
-    exchange.getExchangeSpecification().setApiKey("API Key");
-    exchange.getExchangeSpecification().setSecretKey("Secret==");
-    exchange.getExchangeSpecification().setUserName("user");
-    exchange.applySpecification(exchange.getExchangeSpecification());
-    return exchange;
-  }
+	public static Exchange createTestExchange() {
+		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(TheRockExchange.class);
+		exchange.getExchangeSpecification().setApiKey("API Key");
+		exchange.getExchangeSpecification().setSecretKey("Secret==");
+		exchange.getExchangeSpecification().setUserName("user");
+		exchange.applySpecification(exchange.getExchangeSpecification());
+		return exchange;
+	}
 }

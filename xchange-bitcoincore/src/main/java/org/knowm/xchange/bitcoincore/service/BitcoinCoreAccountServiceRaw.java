@@ -1,6 +1,5 @@
 package org.knowm.xchange.bitcoincore.service;
 
-import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.bitcoincore.BitcoinCore;
@@ -14,43 +13,43 @@ import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.service.BaseExchangeService;
 import si.mazi.rescu.ClientConfigUtil;
 
+import java.io.IOException;
+
 public class BitcoinCoreAccountServiceRaw extends BaseExchangeService {
 
-  private final BitcoinCore bitcoinCore;
+	private final BitcoinCore bitcoinCore;
 
-  private final BitcoinCoreBalanceRequest balanceRequest = new BitcoinCoreBalanceRequest();
-  private final BitcoinCoreUnconfirmedBalanceRequest unconfirmedBalanceRequest =
-      new BitcoinCoreUnconfirmedBalanceRequest();
+	private final BitcoinCoreBalanceRequest balanceRequest = new BitcoinCoreBalanceRequest();
+	private final BitcoinCoreUnconfirmedBalanceRequest unconfirmedBalanceRequest =
+			new BitcoinCoreUnconfirmedBalanceRequest();
 
-  protected BitcoinCoreAccountServiceRaw(Exchange exchange) {
-    super(exchange);
+	protected BitcoinCoreAccountServiceRaw(Exchange exchange) {
+		super(exchange);
+		ExchangeSpecification specification = exchange.getExchangeSpecification();
+		String user = specification.getUserName();
+		ClientConfigCustomizer clientConfigCustomizer =
+				config ->
+						ClientConfigUtil.addBasicAuthCredentials(
+								config, user == null ? "" : user, specification.getPassword());
+		bitcoinCore =
+				ExchangeRestProxyBuilder.forInterface(BitcoinCore.class, specification)
+						.clientConfigCustomizer(clientConfigCustomizer)
+						.build();
+	}
 
-    ExchangeSpecification specification = exchange.getExchangeSpecification();
+	public BitcoinCoreBalanceResponse getBalance() throws IOException {
+		try {
+			return bitcoinCore.getBalance(balanceRequest);
+		} catch (BitcoinCoreException e) {
+			throw new ExchangeException(e);
+		}
+	}
 
-    String user = specification.getUserName();
-    ClientConfigCustomizer clientConfigCustomizer =
-        config ->
-            ClientConfigUtil.addBasicAuthCredentials(
-                config, user == null ? "" : user, specification.getPassword());
-    bitcoinCore =
-        ExchangeRestProxyBuilder.forInterface(BitcoinCore.class, specification)
-            .clientConfigCustomizer(clientConfigCustomizer)
-            .build();
-  }
-
-  public BitcoinCoreBalanceResponse getBalance() throws IOException {
-    try {
-      return bitcoinCore.getBalance(balanceRequest);
-    } catch (BitcoinCoreException e) {
-      throw new ExchangeException(e);
-    }
-  }
-
-  public BitcoinCoreBalanceResponse getUnconfirmedBalance() throws IOException {
-    try {
-      return bitcoinCore.getUnconfirmedBalance(unconfirmedBalanceRequest);
-    } catch (BitcoinCoreException e) {
-      throw new ExchangeException(e);
-    }
-  }
+	public BitcoinCoreBalanceResponse getUnconfirmedBalance() throws IOException {
+		try {
+			return bitcoinCore.getUnconfirmedBalance(unconfirmedBalanceRequest);
+		} catch (BitcoinCoreException e) {
+			throw new ExchangeException(e);
+		}
+	}
 }

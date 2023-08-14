@@ -1,90 +1,80 @@
 package org.knowm.xchange.kraken.dto.marketdata;
 
-import java.math.BigDecimal;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrderType;
 import org.knowm.xchange.kraken.dto.trade.KrakenType;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 
 public class KrakenPublicTrade {
 
-  private final BigDecimal price;
-  private final BigDecimal volume;
-  private final double time;
-  private final KrakenType type;
-  private final KrakenOrderType orderType;
-  private final String miscellaneous;
+	private final BigDecimal price;
+	private final BigDecimal volume;
+	private final double time;
+	private final KrakenType type;
+	private final KrakenOrderType orderType;
+	private final String miscellaneous;
 	private final String tradeId;
 
-  public KrakenPublicTrade(
-      @JsonProperty("price") BigDecimal price,
-      @JsonProperty("volume") BigDecimal volume,
-      @JsonProperty("time") double time,
-      @JsonProperty("type") KrakenType type,
-      @JsonProperty("orderType") KrakenOrderType orderType,
+	public KrakenPublicTrade(
+			@JsonProperty("price") BigDecimal price,
+			@JsonProperty("volume") BigDecimal volume,
+			@JsonProperty("time") double time,
+			@JsonProperty("type") KrakenType type,
+			@JsonProperty("orderType") KrakenOrderType orderType,
 			@JsonProperty("miscellaneous") String miscellaneous, @JsonProperty("trade_id") String tradeId) {
+		this.price = price;
+		this.volume = volume;
+		this.time = time;
+		this.type = type;
+		this.orderType = orderType;
+		this.miscellaneous = miscellaneous;
+		this.tradeId = tradeId;
+	}
 
-    this.price = price;
-    this.volume = volume;
-    this.time = time;
-    this.type = type;
-    this.orderType = orderType;
-    this.miscellaneous = miscellaneous;
-	this.tradeId = tradeId;
-  }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-  public BigDecimal getPrice() {
+	public BigDecimal getVolume() {
+		return volume;
+	}
 
-    return price;
-  }
+	public double getTime() {
+		return time;
+	}
 
-  public BigDecimal getVolume() {
+	public KrakenType getType() {
+		return type;
+	}
 
-    return volume;
-  }
+	public KrakenOrderType getOrderType() {
+		return orderType;
+	}
 
-  public double getTime() {
-
-    return time;
-  }
-
-  public KrakenType getType() {
-
-    return type;
-  }
-
-  public KrakenOrderType getOrderType() {
-
-    return orderType;
-  }
-
-  public String getMiscellaneous() {
-
-    return miscellaneous;
-  }
+	public String getMiscellaneous() {
+		return miscellaneous;
+	}
 
 	public String getTradeId() {
-
 		return tradeId;
 	}
 
-  @Override
-  public String toString() {
-
-    return "KrakenPublicTrade [price="
-        + price
-        + ", volume="
-        + volume
-        + ", time="
-        + time
-        + ", type="
-        + type
-        + ", orderType="
-        + orderType
-        + ", miscellaneous="
-        + miscellaneous
-			+ ", trade_id=" + tradeId
-        + "]";
-  }
+	@Override
+	public String toString() {
+		return "KrakenPublicTrade [price="
+				+ price
+				+ ", volume="
+				+ volume
+				+ ", time="
+				+ time
+				+ ", type="
+				+ type
+				+ ", orderType="
+				+ orderType
+				+ ", miscellaneous="
+				+ miscellaneous
+				+ ", trade_id=" + tradeId
+				+ "]";
+	}
 }

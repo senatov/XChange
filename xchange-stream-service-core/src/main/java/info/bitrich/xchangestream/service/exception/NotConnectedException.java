@@ -6,5 +6,5 @@ package info.bitrich.xchangestream.service.exception;
  */
 public class NotConnectedException extends RuntimeException {
 
-  private static final long serialVersionUID = 486649649653058827L;
+	private static final long serialVersionUID = 486649649653058827L;
 }

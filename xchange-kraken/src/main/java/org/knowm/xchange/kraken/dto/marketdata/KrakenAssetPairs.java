@@ -4,20 +4,16 @@ import java.util.Map;
 
 public class KrakenAssetPairs {
 
-  private final Map<String, KrakenAssetPair> assetPairMap;
+	private final Map<String, KrakenAssetPair> assetPairMap;
 
-  /**
-   * Constructor
-   *
-   * @param assetPairMap
-   */
-  public KrakenAssetPairs(Map<String, KrakenAssetPair> assetPairMap) {
+	/**
+	 * Constructor
+	 */
+	public KrakenAssetPairs(Map<String, KrakenAssetPair> assetPairMap) {
+		this.assetPairMap = assetPairMap;
+	}
 
-    this.assetPairMap = assetPairMap;
-  }
-
-  public Map<String, KrakenAssetPair> getAssetPairMap() {
-
-    return assetPairMap;
-  }
+	public Map<String, KrakenAssetPair> getAssetPairMap() {
+		return assetPairMap;
+	}
 }

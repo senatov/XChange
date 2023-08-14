@@ -9,23 +9,23 @@ import org.knowm.xchange.service.BaseExchangeService;
 import org.knowm.xchange.service.BaseService;
 
 public class BitcoindeBaseService extends BaseExchangeService<BitcoindeExchange>
-    implements BaseService {
+		implements BaseService {
 
-  protected final Bitcoinde bitcoinde;
-  protected final String apiKey;
-  protected final BitcoindeDigest signatureCreator;
+	protected final Bitcoinde bitcoinde;
+	protected final String apiKey;
+	protected final BitcoindeDigest signatureCreator;
 
-  protected BitcoindeBaseService(BitcoindeExchange exchange) {
-    super(exchange);
-    this.bitcoinde =
-        ExchangeRestProxyBuilder.forInterface(Bitcoinde.class, exchange.getExchangeSpecification())
-            .build();
-    this.apiKey = exchange.getExchangeSpecification().getApiKey();
-    this.signatureCreator =
-        BitcoindeDigest.createInstance(exchange.getExchangeSpecification().getSecretKey(), apiKey);
-  }
+	protected BitcoindeBaseService(BitcoindeExchange exchange) {
+		super(exchange);
+		this.bitcoinde =
+				ExchangeRestProxyBuilder.forInterface(Bitcoinde.class, exchange.getExchangeSpecification())
+						.build();
+		this.apiKey = exchange.getExchangeSpecification().getApiKey();
+		this.signatureCreator =
+				BitcoindeDigest.createInstance(exchange.getExchangeSpecification().getSecretKey(), apiKey);
+	}
 
-  protected RuntimeException handleError(BitcoindeException exception) {
-    return BitcoindeErrorAdapter.adaptBitcoindeException(exception);
-  }
+	protected RuntimeException handleError(BitcoindeException exception) {
+		return BitcoindeErrorAdapter.adaptBitcoindeException(exception);
+	}
 }

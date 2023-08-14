@@ -5,7 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class PiggyBalance {
-  @JsonProperty private String earnings;
-  @JsonProperty private String ccy;
-  @JsonProperty private String amt;
+	@JsonProperty
+	private String earnings;
+	@JsonProperty
+	private String ccy;
+	@JsonProperty
+	private String amt;
 }

@@ -9,25 +9,21 @@ import si.mazi.rescu.ParamsDigest;
 
 public class VaultoroBaseService extends BaseExchangeService implements BaseService {
 
-  protected final String apiKey;
-  protected final VaultoroAuthenticated vaultoro;
-  protected final ParamsDigest signatureCreator;
+	protected final String apiKey;
+	protected final VaultoroAuthenticated vaultoro;
+	protected final ParamsDigest signatureCreator;
 
-  /**
-   * Constructor
-   *
-   * @param exchange
-   */
-  public VaultoroBaseService(Exchange exchange) {
-
-    super(exchange);
-
-    this.vaultoro =
-        ExchangeRestProxyBuilder.forInterface(
-                VaultoroAuthenticated.class, exchange.getExchangeSpecification())
-            .build();
-    this.apiKey = exchange.getExchangeSpecification().getApiKey();
-    this.signatureCreator =
-        VaultoroDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-  }
+	/**
+	 * Constructor
+	 */
+	public VaultoroBaseService(Exchange exchange) {
+		super(exchange);
+		this.vaultoro =
+				ExchangeRestProxyBuilder.forInterface(
+								VaultoroAuthenticated.class, exchange.getExchangeSpecification())
+						.build();
+		this.apiKey = exchange.getExchangeSpecification().getApiKey();
+		this.signatureCreator =
+				VaultoroDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+	}
 }
