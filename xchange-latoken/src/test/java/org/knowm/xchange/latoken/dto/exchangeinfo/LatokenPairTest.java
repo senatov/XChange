@@ -1,81 +1,81 @@
 package org.knowm.xchange.latoken.dto.exchangeinfo;
 
+import static org.junit.Assert.assertNotNull;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.knowm.xchange.latoken.dto.account.LatokenBalanceTest;
 
-import java.io.InputStream;
-
-import static org.junit.Assert.assertNotNull;
-
 public class LatokenPairTest {
 
-	LatokenPair pair;
+  LatokenPair pair;
 
-	@Before
-	public void testSetup() throws Exception {
-		// Read in the JSON from the example resources
-		InputStream is =
-				LatokenBalanceTest.class.getResourceAsStream(
-						"/org/knowm/xchange/latoken/dto/exchangeinfo/latoken-pair-response.json");
-		// Use Jackson to parse it
-		ObjectMapper mapper = new ObjectMapper();
-		pair = mapper.readValue(is, LatokenPair.class);
-	}
+  @Before
+  public void testSetup() throws Exception {
+    // Read in the JSON from the example resources
+    InputStream is =
+        LatokenBalanceTest.class.getResourceAsStream(
+            "/org/knowm/xchange/latoken/dto/exchangeinfo/latoken-pair-response.json");
 
-	@Test
-	public void testLatokenPair() {
-		assertNotNull(pair);
-	}
+    // Use Jackson to parse it
+    ObjectMapper mapper = new ObjectMapper();
+    pair = mapper.readValue(is, LatokenPair.class);
+  }
 
-	@Test
-	public void testGetPairId() {
-		assertNotNull(pair.getPairId());
-	}
+  @Test
+  public void testLatokenPair() {
+    assertNotNull(pair);
+  }
 
-	@Test
-	public void testGetSymbol() {
-		assertNotNull(pair.getSymbol());
-	}
+  @Test
+  public void testGetPairId() {
+    assertNotNull(pair.getPairId());
+  }
 
-	@Test
-	public void testGetBaseCurrency() {
-		assertNotNull(pair.getBaseCurrency());
-	}
+  @Test
+  public void testGetSymbol() {
+    assertNotNull(pair.getSymbol());
+  }
 
-	@Test
-	public void testGetCounterCurrency() {
-		assertNotNull(pair.getCounterCurrency());
-	}
+  @Test
+  public void testGetBaseCurrency() {
+    assertNotNull(pair.getBaseCurrency());
+  }
 
-	@Test
-	public void testGetMakerFee() {
-		assertNotNull(pair.getMakerFee());
-	}
+  @Test
+  public void testGetCounterCurrency() {
+    assertNotNull(pair.getCounterCurrency());
+  }
 
-	@Test
-	public void testGetTakerFee() {
-		assertNotNull(pair.getTakerFee());
-	}
+  @Test
+  public void testGetMakerFee() {
+    assertNotNull(pair.getMakerFee());
+  }
 
-	@Test
-	public void testGetPricePrecision() {
-		assertNotNull(pair.getPricePrecision());
-	}
+  @Test
+  public void testGetTakerFee() {
+    assertNotNull(pair.getTakerFee());
+  }
 
-	@Test
-	public void testGetAmountPrecision() {
-		assertNotNull(pair.getAmountPrecision());
-	}
+  @Test
+  public void testGetPricePrecision() {
+    assertNotNull(pair.getPricePrecision());
+  }
 
-	@Test
-	public void testGetMinOrderAmount() {
-		assertNotNull(pair.getMinOrderAmount());
-	}
+  @Test
+  public void testGetAmountPrecision() {
+    assertNotNull(pair.getAmountPrecision());
+  }
 
-	@Test
-	public void testToString() {
-		assertNotNull(pair.toString());
-	}
+  @Test
+  public void testGetMinOrderAmount() {
+    assertNotNull(pair.getMinOrderAmount());
+  }
+
+  @Test
+  public void testToString() {
+    assertNotNull(pair.toString());
+  }
 }

@@ -1,5 +1,7 @@
 package org.knowm.xchange.ccex;
 
+import java.io.IOException;
+import java.util.List;
 import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
@@ -9,35 +11,33 @@ import org.knowm.xchange.ccex.service.CCEXMarketDataService;
 import org.knowm.xchange.ccex.service.CCEXMarketDataServiceRaw;
 import org.knowm.xchange.ccex.service.CCEXTradeService;
 
-import java.io.IOException;
-import java.util.List;
-
 public class CCEXExchange extends BaseExchange implements Exchange {
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-		exchangeSpecification.setSslUri("https://c-cex.com");
-		exchangeSpecification.setHost("c-cex.com");
-		exchangeSpecification.setPort(80);
-		exchangeSpecification.setExchangeName("C-CEX");
-		exchangeSpecification.setExchangeDescription(
-				"C-CEX.com - Crypto-currency exchange / MultiWallet");
-		return exchangeSpecification;
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+    exchangeSpecification.setSslUri("https://c-cex.com");
+    exchangeSpecification.setHost("c-cex.com");
+    exchangeSpecification.setPort(80);
+    exchangeSpecification.setExchangeName("C-CEX");
+    exchangeSpecification.setExchangeDescription(
+        "C-CEX.com - Crypto-currency exchange / MultiWallet");
 
-	@Override
-	protected void initServices() {
-		this.marketDataService = new CCEXMarketDataService(this);
-		this.tradeService = new CCEXTradeService(this);
-		this.accountService = new CCEXAccountService(this);
-	}
+    return exchangeSpecification;
+  }
 
-	@Override
-	public void remoteInit() throws IOException {
-		List<CCEXMarket> products =
-				((CCEXMarketDataServiceRaw) marketDataService).getConbaseExProducts();
-		exchangeMetaData = CCEXAdapters.adaptToExchangeMetaData(exchangeMetaData, products);
-		// System.out.println("JSON: " + ObjectMapperHelper.toJSON(exchangeMetaData));
-	}
+  @Override
+  protected void initServices() {
+    this.marketDataService = new CCEXMarketDataService(this);
+    this.tradeService = new CCEXTradeService(this);
+    this.accountService = new CCEXAccountService(this);
+  }
+
+  @Override
+  public void remoteInit() throws IOException {
+    List<CCEXMarket> products =
+        ((CCEXMarketDataServiceRaw) marketDataService).getConbaseExProducts();
+    exchangeMetaData = CCEXAdapters.adaptToExchangeMetaData(exchangeMetaData, products);
+    // System.out.println("JSON: " + ObjectMapperHelper.toJSON(exchangeMetaData));
+  }
 }

@@ -1,5 +1,7 @@
 package org.knowm.xchange.itbit.service;
 
+import java.io.IOException;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order.OrderType;
@@ -12,34 +14,40 @@ import org.knowm.xchange.itbit.dto.marketdata.ItBitDepth;
 import org.knowm.xchange.itbit.dto.marketdata.ItBitTicker;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-import java.io.IOException;
-import java.util.List;
-
 public class ItBitMarketDataService extends ItBitMarketDataServiceRaw implements MarketDataService {
 
-	/**
-	 * Constructor
-	 */
-	public ItBitMarketDataService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public ItBitMarketDataService(Exchange exchange) {
 
-	@Override
-	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
-		ItBitTicker itBitTicker = getItBitTicker(currencyPair);
-		return ItBitAdapters.adaptTicker(currencyPair, itBitTicker);
-	}
+    super(exchange);
+  }
 
-	@Override
-	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-		ItBitDepth depth = getItBitDepth(currencyPair, args);
-		List<LimitOrder> asks = ItBitAdapters.adaptOrders(depth.getAsks(), currencyPair, OrderType.ASK);
-		List<LimitOrder> bids = ItBitAdapters.adaptOrders(depth.getBids(), currencyPair, OrderType.BID);
-		return new OrderBook(null, asks, bids);
-	}
+  @Override
+  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
 
-	@Override
-	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
-		return ItBitAdapters.adaptTrades(getItBitTrades(currencyPair, args), currencyPair);
-	}
+    ItBitTicker itBitTicker = getItBitTicker(currencyPair);
+
+    return ItBitAdapters.adaptTicker(currencyPair, itBitTicker);
+  }
+
+  @Override
+  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+
+    ItBitDepth depth = getItBitDepth(currencyPair, args);
+
+    List<LimitOrder> asks = ItBitAdapters.adaptOrders(depth.getAsks(), currencyPair, OrderType.ASK);
+    List<LimitOrder> bids = ItBitAdapters.adaptOrders(depth.getBids(), currencyPair, OrderType.BID);
+
+    return new OrderBook(null, asks, bids);
+  }
+
+  @Override
+  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+
+    return ItBitAdapters.adaptTrades(getItBitTrades(currencyPair, args), currencyPair);
+  }
 }

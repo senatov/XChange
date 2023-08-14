@@ -6,14 +6,14 @@ import lombok.Getter;
 @Getter
 public class CoinbaseTransactionV2NetworkField {
 
-	private final String status;
+  private String status;
 
-	public CoinbaseTransactionV2NetworkField(@JsonProperty("status") String status) {
-		this.status = status;
-	}
+  public CoinbaseTransactionV2NetworkField(@JsonProperty("status") String status) {
+    this.status = status;
+  }
 
-	@Override
-	public String toString() {
-		return "{" + "\"status\":" + '\"' + status + '\"' + '}';
-	}
+  @Override
+  public String toString() {
+    return "{" + "\"status\":" + '\"' + status + '\"' + '}';
+  }
 }

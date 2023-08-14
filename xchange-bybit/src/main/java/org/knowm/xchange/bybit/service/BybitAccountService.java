@@ -14,16 +14,16 @@ import static org.knowm.xchange.bybit.BybitAdapters.adaptBybitBalances;
 
 public class BybitAccountService extends BybitAccountServiceRaw implements AccountService {
 
-	public BybitAccountService(Exchange exchange) {
-		super(exchange);
-	}
+    public BybitAccountService(Exchange exchange) {
+        super(exchange);
+    }
 
-	@Override
-	public AccountInfo getAccountInfo() throws IOException {
-		BybitResult<BybitBalances> walletBalances = getWalletBalances();
-		BybitBalances walletBalancesResult = walletBalances.getResult();
-		List<BybitBalance> balances = walletBalancesResult.getBalances();
-		return new AccountInfo(adaptBybitBalances(balances));
-	}
+    @Override
+    public AccountInfo getAccountInfo() throws IOException {
+        BybitResult<BybitBalances> walletBalances = getWalletBalances();
+        BybitBalances walletBalancesResult = walletBalances.getResult();
+        List<BybitBalance> balances = walletBalancesResult.getBalances();
+        return new AccountInfo(adaptBybitBalances(balances));
+    }
 
 }

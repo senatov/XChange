@@ -9,97 +9,94 @@ import io.reactivex.Observable;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.bitmex.BitmexExchange;
 
-/**
- * Created by Lukas Zaoralek on 12.11.17.
- */
+/** Created by Lukas Zaoralek on 12.11.17. */
 public class BitmexStreamingExchange extends BitmexExchange implements StreamingExchange {
-	private static final String API_URI = "wss://www.bitmex.com/realtime";
-	private static final String TESTNET_API_URI = "wss://testnet.bitmex.com/realtime";
+  private static final String API_URI = "wss://www.bitmex.com/realtime";
+  private static final String TESTNET_API_URI = "wss://testnet.bitmex.com/realtime";
 
-	private BitmexStreamingService streamingService;
-	private BitmexStreamingMarketDataService streamingMarketDataService;
+  private BitmexStreamingService streamingService;
+  private BitmexStreamingMarketDataService streamingMarketDataService;
 
-	public BitmexStreamingExchange() {
-	}
+  public BitmexStreamingExchange() {}
 
-	@Override
-	public Completable connect(ProductSubscription... args) {
-		return streamingService.connect();
-	}
+  @Override
+  protected void initServices() {
+    super.initServices();
+    streamingService = createStreamingService();
+    streamingMarketDataService = new BitmexStreamingMarketDataService(streamingService, this);
+  }
 
-	@Override
-	public Completable disconnect() {
-		return streamingService.disconnect();
-	}
+  @Override
+  public Completable connect(ProductSubscription... args) {
+    return streamingService.connect();
+  }
 
-	@Override
-	public boolean isAlive() {
-		return streamingService.isSocketOpen();
-	}
+  private BitmexStreamingService createStreamingService() {
+    ExchangeSpecification exchangeSpec = getExchangeSpecification();
+    Boolean useSandbox = (Boolean) exchangeSpec.getExchangeSpecificParametersItem(USE_SANDBOX);
+    String uri = useSandbox == null || !useSandbox ? API_URI : TESTNET_API_URI;
+    BitmexStreamingService streamingService =
+        new BitmexStreamingService(uri, exchangeSpec.getApiKey(), exchangeSpec.getSecretKey());
+    applyStreamingSpecification(exchangeSpec, streamingService);
+    return streamingService;
+  }
 
-	@Override
-	public Observable<Throwable> reconnectFailure() {
-		return streamingService.subscribeReconnectFailure();
-	}
+  @Override
+  public Completable disconnect() {
+    return streamingService.disconnect();
+  }
 
-	@Override
-	public Observable<Object> connectionSuccess() {
-		return streamingService.subscribeConnectionSuccess();
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+    ExchangeSpecification spec = super.getDefaultExchangeSpecification();
+    spec.setShouldLoadRemoteMetaData(false);
+    return spec;
+  }
 
-	@Override
-	public Observable<State> connectionStateObservable() {
-		return streamingService.subscribeConnectionState();
-	}
+  @Override
+  public StreamingMarketDataService getStreamingMarketDataService() {
+    return streamingMarketDataService;
+  }
 
-	@Override
-	public Observable<Long> messageDelay() {
-		return Observable.create(
-				delayEmitter -> {
-					streamingService.addDelayEmitter(delayEmitter);
-				});
-	}
+  @Override
+  public Observable<Throwable> reconnectFailure() {
+    return streamingService.subscribeReconnectFailure();
+  }
 
-	@Override
-	public void resubscribeChannels() {
-		streamingService.resubscribeChannels();
-	}
+  @Override
+  public Observable<Object> connectionSuccess() {
+    return streamingService.subscribeConnectionSuccess();
+  }
 
-	@Override
-	public StreamingMarketDataService getStreamingMarketDataService() {
-		return streamingMarketDataService;
-	}
+  @Override
+  public Observable<State> connectionStateObservable() {
+    return streamingService.subscribeConnectionState();
+  }
 
-	@Override
-	public void useCompressedMessages(boolean compressedMessages) {
-		streamingService.useCompressedMessages(compressedMessages);
-	}
+  @Override
+  public boolean isAlive() {
+    return streamingService.isSocketOpen();
+  }
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification spec = super.getDefaultExchangeSpecification();
-		spec.setShouldLoadRemoteMetaData(false);
-		return spec;
-	}
+  @Override
+  public void useCompressedMessages(boolean compressedMessages) {
+    streamingService.useCompressedMessages(compressedMessages);
+  }
 
-	@Override
-	protected void initServices() {
-		super.initServices();
-		streamingService = createStreamingService();
-		streamingMarketDataService = new BitmexStreamingMarketDataService(streamingService, this);
-	}
+  @Override
+  public Observable<Long> messageDelay() {
+    return Observable.create(
+        delayEmitter -> {
+          streamingService.addDelayEmitter(delayEmitter);
+        });
+  }
 
-	private BitmexStreamingService createStreamingService() {
-		ExchangeSpecification exchangeSpec = getExchangeSpecification();
-		Boolean useSandbox = (Boolean) exchangeSpec.getExchangeSpecificParametersItem(USE_SANDBOX);
-		String uri = useSandbox == null || !useSandbox ? API_URI : TESTNET_API_URI;
-		BitmexStreamingService streamingService =
-				new BitmexStreamingService(uri, exchangeSpec.getApiKey(), exchangeSpec.getSecretKey());
-		applyStreamingSpecification(exchangeSpec, streamingService);
-		return streamingService;
-	}
+  @Override
+  public void resubscribeChannels() {
+    streamingService.resubscribeChannels();
+  }
 
-	public BitmexStreamingService getStreamingService() {
-		return streamingService;
-	}
+  public BitmexStreamingService getStreamingService() {
+    return streamingService;
+  }
 }

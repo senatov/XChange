@@ -19,105 +19,110 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
-	private static final Logger LOG = LoggerFactory.getLogger(WebSocketClientHandler.class);
-	protected final WebSocketClientHandshaker handshaker;
-	protected final WebSocketMessageHandler handler;
-	private final StringBuilder currentMessage = new StringBuilder();
-	private ChannelPromise handshakeFuture;
-	public WebSocketClientHandler(
-			WebSocketClientHandshaker handshaker, WebSocketMessageHandler handler) {
-		this.handshaker = handshaker;
-		this.handler = handler;
-	}
+  private static final Logger LOG = LoggerFactory.getLogger(WebSocketClientHandler.class);
+  private final StringBuilder currentMessage = new StringBuilder();
 
-	public ChannelFuture handshakeFuture() {
-		return handshakeFuture;
-	}
+  public interface WebSocketMessageHandler {
+    public void onMessage(String message);
+  }
 
-	@Override
-	public void handlerAdded(ChannelHandlerContext ctx) {
-		handshakeFuture = ctx.newPromise();
-	}
+  protected final WebSocketClientHandshaker handshaker;
+  protected final WebSocketMessageHandler handler;
+  private ChannelPromise handshakeFuture;
 
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) {
-		handshaker.handshake(ctx.channel());
-	}
+  public WebSocketClientHandler(
+      WebSocketClientHandshaker handshaker, WebSocketMessageHandler handler) {
+    this.handshaker = handshaker;
+    this.handler = handler;
+  }
 
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) {
-		LOG.info("WebSocket Client disconnected! {}", ctx.channel());
-	}
+  public ChannelFuture handshakeFuture() {
+    return handshakeFuture;
+  }
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		LOG.error(
-				"WebSocket client {} encountered exception ({} - {}). Closing",
-				ctx.channel(),
-				cause.getClass().getSimpleName(),
-				cause.getMessage(),
-				cause);
-		if (!handshakeFuture.isDone()) {
-			handshakeFuture.setFailure(cause);
-		}
-		ctx.close();
-	}
+  @Override
+  public void handlerAdded(ChannelHandlerContext ctx) {
+    handshakeFuture = ctx.newPromise();
+  }
 
-	@Override
-	public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-		Channel ch = ctx.channel();
-		if (!handshaker.isHandshakeComplete()) {
-			try {
-				handshaker.finishHandshake(ch, (FullHttpResponse) msg);
-				LOG.info("WebSocket Client connected! {}", ctx.channel());
-				handshakeFuture.setSuccess();
-			} catch (WebSocketHandshakeException e) {
-				LOG.error("WebSocket Client failed to connect. {} {}", e.getMessage(), ctx.channel());
-				handshakeFuture.setFailure(e);
-			}
-			return;
-		}
-		if (msg instanceof FullHttpResponse response) {
-			throw new IllegalStateException(
-					"Unexpected FullHttpResponse (getStatus="
-							+ response.status()
-							+ ", content="
-							+ response.content().toString(CharsetUtil.UTF_8)
-							+ ')');
-		}
-		WebSocketFrame frame = (WebSocketFrame) msg;
-		if (frame instanceof TextWebSocketFrame) {
-			dealWithTextFrame((TextWebSocketFrame) frame);
-		} else if (frame instanceof ContinuationWebSocketFrame) {
-			dealWithContinuation((ContinuationWebSocketFrame) frame);
-		} else if (frame instanceof PingWebSocketFrame) {
-			LOG.debug("WebSocket Client received ping");
-			ch.writeAndFlush(new PongWebSocketFrame(frame.content().retain()));
-		} else if (frame instanceof PongWebSocketFrame) {
-			LOG.debug("WebSocket Client received pong");
-		} else if (frame instanceof CloseWebSocketFrame) {
-			LOG.info("WebSocket Client received closing! {}", ctx.channel());
-			ch.close();
-		}
-	}
+  @Override
+  public void channelActive(ChannelHandlerContext ctx) {
+    handshaker.handshake(ctx.channel());
+  }
 
-	private void dealWithTextFrame(TextWebSocketFrame frame) {
-		if (frame.isFinalFragment()) {
-			handler.onMessage(frame.text());
-			return;
-		}
-		currentMessage.append(frame.text());
-	}
+  @Override
+  public void channelInactive(ChannelHandlerContext ctx) {
+    LOG.info("WebSocket Client disconnected! {}", ctx.channel());
+  }
 
-	private void dealWithContinuation(ContinuationWebSocketFrame frame) {
-		currentMessage.append(frame.text());
-		if (frame.isFinalFragment()) {
-			handler.onMessage(currentMessage.toString());
-			currentMessage.setLength(0);
-		}
-	}
+  @Override
+  public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+    Channel ch = ctx.channel();
+    if (!handshaker.isHandshakeComplete()) {
+      try {
+        handshaker.finishHandshake(ch, (FullHttpResponse) msg);
+        LOG.info("WebSocket Client connected! {}", ctx.channel());
+        handshakeFuture.setSuccess();
+      } catch (WebSocketHandshakeException e) {
+        LOG.error("WebSocket Client failed to connect. {} {}", e.getMessage(), ctx.channel());
+        handshakeFuture.setFailure(e);
+      }
+      return;
+    }
 
-	public interface WebSocketMessageHandler {
-		void onMessage(String message);
-	}
+    if (msg instanceof FullHttpResponse) {
+      FullHttpResponse response = (FullHttpResponse) msg;
+      throw new IllegalStateException(
+          "Unexpected FullHttpResponse (getStatus="
+              + response.status()
+              + ", content="
+              + response.content().toString(CharsetUtil.UTF_8)
+              + ')');
+    }
+
+    WebSocketFrame frame = (WebSocketFrame) msg;
+    if (frame instanceof TextWebSocketFrame) {
+      dealWithTextFrame((TextWebSocketFrame) frame);
+    } else if (frame instanceof ContinuationWebSocketFrame) {
+      dealWithContinuation((ContinuationWebSocketFrame) frame);
+    } else if (frame instanceof PingWebSocketFrame) {
+      LOG.debug("WebSocket Client received ping");
+      ch.writeAndFlush(new PongWebSocketFrame(frame.content().retain()));
+    } else if (frame instanceof PongWebSocketFrame) {
+      LOG.debug("WebSocket Client received pong");
+    } else if (frame instanceof CloseWebSocketFrame) {
+      LOG.info("WebSocket Client received closing! {}", ctx.channel());
+      ch.close();
+    }
+  }
+
+  private void dealWithTextFrame(TextWebSocketFrame frame) {
+    if (frame.isFinalFragment()) {
+      handler.onMessage(frame.text());
+      return;
+    }
+    currentMessage.append(frame.text());
+  }
+
+  private void dealWithContinuation(ContinuationWebSocketFrame frame) {
+    currentMessage.append(frame.text());
+    if (frame.isFinalFragment()) {
+      handler.onMessage(currentMessage.toString());
+      currentMessage.setLength(0);
+    }
+  }
+
+  @Override
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+    LOG.error(
+        "WebSocket client {} encountered exception ({} - {}). Closing",
+        ctx.channel(),
+        cause.getClass().getSimpleName(),
+        cause.getMessage(),
+        cause);
+    if (!handshakeFuture.isDone()) {
+      handshakeFuture.setFailure(cause);
+    }
+    ctx.close();
+  }
 }

@@ -31,67 +31,59 @@ package org.knowm.xchange.cexio.dto.trade;
 
 public class CexIOFullOrder extends CexIOOpenOrder {
 
-	/**
-	 * ta:{symbol2} string total amount in current currency (Maker)
-	 */
-	public final String totalAmountMaker;
-	/**
-	 * tta:{symbol2} string total amount in current currency (Taker)
-	 */
-	public final String totalAmountTaker;
-	/**
-	 * fa:{symbol2} string fee amount in current currency (Maker)
-	 */
-	public final String feeMaker;
+  /** ta:{symbol2} string total amount in current currency (Maker) */
+  public final String totalAmountMaker;
+  /** tta:{symbol2} string total amount in current currency (Taker) */
+  public final String totalAmountTaker;
+  /** fa:{symbol2} string fee amount in current currency (Maker) */
+  public final String feeMaker;
 
-	/**
-	 * tfa:{symbol2} string fee amount in current currency (Taker)
-	 */
-	public final String feeTaker;
+  /** tfa:{symbol2} string fee amount in current currency (Taker) */
+  public final String feeTaker;
 
-	public CexIOFullOrder(
-			String user,
-			String type,
-			String symbol1,
-			String symbol2,
-			String amount,
-			String remains,
-			String price,
-			long time,
-			String lastTxTime,
-			String tradingFeeStrategy,
-			String tradingFeeTaker,
-			String tradingFeeMaker,
-			String tradingFeeUserVolumeAmount,
-			String lastTx,
-			String status,
-			String orderId,
-			String id,
-			String totalAmountMaker,
-			String totalAmountTaker,
-			String feeMaker,
-			String feeTaker) {
-		super(
-				user,
-				type,
-				symbol1,
-				symbol2,
-				amount,
-				remains,
-				price,
-				time,
-				lastTxTime,
-				tradingFeeStrategy,
-				tradingFeeTaker,
-				tradingFeeMaker,
-				tradingFeeUserVolumeAmount,
-				lastTx,
-				status,
-				orderId,
-				id);
-		this.totalAmountMaker = totalAmountMaker;
-		this.totalAmountTaker = totalAmountTaker;
-		this.feeMaker = feeMaker;
-		this.feeTaker = feeTaker;
-	}
+  public CexIOFullOrder(
+      String user,
+      String type,
+      String symbol1,
+      String symbol2,
+      String amount,
+      String remains,
+      String price,
+      long time,
+      String lastTxTime,
+      String tradingFeeStrategy,
+      String tradingFeeTaker,
+      String tradingFeeMaker,
+      String tradingFeeUserVolumeAmount,
+      String lastTx,
+      String status,
+      String orderId,
+      String id,
+      String totalAmountMaker,
+      String totalAmountTaker,
+      String feeMaker,
+      String feeTaker) {
+    super(
+        user,
+        type,
+        symbol1,
+        symbol2,
+        amount,
+        remains,
+        price,
+        time,
+        lastTxTime,
+        tradingFeeStrategy,
+        tradingFeeTaker,
+        tradingFeeMaker,
+        tradingFeeUserVolumeAmount,
+        lastTx,
+        status,
+        orderId,
+        id);
+    this.totalAmountMaker = totalAmountMaker;
+    this.totalAmountTaker = totalAmountTaker;
+    this.feeMaker = feeMaker;
+    this.feeTaker = feeTaker;
+  }
 }

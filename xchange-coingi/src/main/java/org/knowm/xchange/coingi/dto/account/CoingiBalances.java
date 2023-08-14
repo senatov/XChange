@@ -2,14 +2,11 @@ package org.knowm.xchange.coingi.dto.account;
 
 import java.util.Collection;
 
-/**
- * List of user balances
- */
+/** List of user balances */
 public class CoingiBalances extends CoingiResultList<CoingiBalance> {
-	CoingiBalances() {
-	}
+  CoingiBalances() {}
 
-	public CoingiBalances(Collection<CoingiBalance> c) {
-		super(c);
-	}
+  public CoingiBalances(Collection<CoingiBalance> c) {
+    super(c);
+  }
 }

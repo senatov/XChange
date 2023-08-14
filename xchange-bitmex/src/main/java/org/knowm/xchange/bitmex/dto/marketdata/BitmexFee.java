@@ -7,45 +7,50 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.knowm.xchange.bitmex.dto.marketdata.BitmexFee.BitmexFeeDeserializer;
-
 import java.io.IOException;
 import java.math.BigDecimal;
+import org.knowm.xchange.bitmex.dto.marketdata.BitmexFee.BitmexFeeDeserializer;
 
 @JsonDeserialize(using = BitmexFeeDeserializer.class)
 public class BitmexFee {
 
-	private final BigDecimal volume;
-	private final BigDecimal percentFee;
+  private final BigDecimal volume;
+  private final BigDecimal percentFee;
 
-	public BitmexFee(BigDecimal volume, BigDecimal percentFee) {
-		this.volume = volume;
-		this.percentFee = percentFee;
-	}
+  public BitmexFee(BigDecimal volume, BigDecimal percentFee) {
 
-	public BigDecimal getVolume() {
-		return volume;
-	}
+    this.volume = volume;
+    this.percentFee = percentFee;
+  }
 
-	public BigDecimal getPercentFee() {
-		return percentFee;
-	}
+  public BigDecimal getVolume() {
 
-	@Override
-	public String toString() {
-		return "KrakenFee [volume=" + volume + ", percentFee=" + percentFee + "]";
-	}
+    return volume;
+  }
 
-	static class BitmexFeeDeserializer extends JsonDeserializer<BitmexFee> {
+  public BigDecimal getPercentFee() {
 
-		@Override
-		public BitmexFee deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-				throws IOException {
-			ObjectCodec oc = jsonParser.getCodec();
-			JsonNode node = oc.readTree(jsonParser);
-			BigDecimal volume = new BigDecimal(node.path(0).asText());
-			BigDecimal fee = new BigDecimal(node.path(1).asText());
-			return new BitmexFee(volume, fee);
-		}
-	}
+    return percentFee;
+  }
+
+  @Override
+  public String toString() {
+
+    return "KrakenFee [volume=" + volume + ", percentFee=" + percentFee + "]";
+  }
+
+  static class BitmexFeeDeserializer extends JsonDeserializer<BitmexFee> {
+
+    @Override
+    public BitmexFee deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException, JsonProcessingException {
+
+      ObjectCodec oc = jsonParser.getCodec();
+      JsonNode node = oc.readTree(jsonParser);
+      BigDecimal volume = new BigDecimal(node.path(0).asText());
+      BigDecimal fee = new BigDecimal(node.path(1).asText());
+
+      return new BitmexFee(volume, fee);
+    }
+  }
 }

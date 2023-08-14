@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinmateSubscribeMessage {
 
-	@JsonProperty("event")
-	private String event;
+  @JsonProperty("event")
+  private String event;
 
-	@JsonProperty("data")
-	private CoinmateChannelData data;
+  @JsonProperty("data")
+  private CoinmateChannelData data;
 
-	public CoinmateSubscribeMessage(String channel) {
-		this.event = "subscribe";
-		this.data = new CoinmateChannelData(channel);
-	}
+  public CoinmateSubscribeMessage(String channel) {
+    this.event = "subscribe";
+    this.data = new CoinmateChannelData(channel);
+  }
 }

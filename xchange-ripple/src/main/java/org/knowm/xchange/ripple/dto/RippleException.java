@@ -19,31 +19,31 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 public class RippleException extends HttpStatusExceptionSupport {
 
-	@JsonProperty("message")
-	private String message;
+  @JsonProperty("message")
+  private String message;
 
-	@JsonProperty("error")
-	private String error;
+  @JsonProperty("error")
+  private String error;
 
-	@JsonProperty("error_type")
-	private String errorType;
+  @JsonProperty("error_type")
+  private String errorType;
 
-	@Override
-	public String getMessage() {
-		return message;
-	}
+  @Override
+  public String getMessage() {
+    return message;
+  }
 
-	public String getError() {
-		return error;
-	}
+  public String getError() {
+    return error;
+  }
 
-	public String getErrorType() {
-		return errorType;
-	}
+  public String getErrorType() {
+    return errorType;
+  }
 
-	@Override
-	public String toString() {
-		return String.format(
-				"%s errorType[%s] error[%s] message[%s]", super.toString(), errorType, error, message);
-	}
+  @Override
+  public String toString() {
+    return String.format(
+        "%s errorType[%s] error[%s] message[%s]", super.toString(), errorType, error, message);
+  }
 }

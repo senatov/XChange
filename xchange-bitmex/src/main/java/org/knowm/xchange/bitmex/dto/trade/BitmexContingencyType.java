@@ -2,18 +2,18 @@ package org.knowm.xchange.bitmex.dto.trade;
 
 @SuppressWarnings("unused")
 public enum BitmexContingencyType {
-	OCO("OneCancelsTheOther"),
-	OTO("OneTriggersTheOther"),
-	OUOA("OneUpdatesTheOtherAbsolute"),
-	OUOP("OneUpdatesTheOtherProportional");
+  OCO("OneCancelsTheOther"),
+  OTO("OneTriggersTheOther"),
+  OUOA("OneUpdatesTheOtherAbsolute"),
+  OUOP("OneUpdatesTheOtherProportional");
 
-	private final String apiParameter;
+  private String apiParameter;
 
-	BitmexContingencyType(String apiParameter) {
-		this.apiParameter = apiParameter;
-	}
+  BitmexContingencyType(String apiParameter) {
+    this.apiParameter = apiParameter;
+  }
 
-	public String toApiParameter() {
-		return apiParameter;
-	}
+  public String toApiParameter() {
+    return apiParameter;
+  }
 }

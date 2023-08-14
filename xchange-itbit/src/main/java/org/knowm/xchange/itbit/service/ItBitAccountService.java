@@ -1,5 +1,9 @@
 package org.knowm.xchange.itbit.service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.AccountInfo;
@@ -14,92 +18,98 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamPaging;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ItBitAccountService extends ItBitAccountServiceRaw implements AccountService {
 
-	/**
-	 * Constructor
-	 */
-	public ItBitAccountService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public ItBitAccountService(Exchange exchange) {
 
-	@Override
-	public AccountInfo getAccountInfo() throws IOException {
-		return ItBitAdapters.adaptAccountInfo(getItBitAccountInfo());
-	}
+    super(exchange);
+  }
 
-	@Override
-	public String withdrawFunds(Currency currency, BigDecimal amount, String address)
-			throws IOException {
-		return withdrawItBitFunds(currency.toString(), amount, address);
-	}
+  @Override
+  public AccountInfo getAccountInfo() throws IOException {
 
-	@Override
-	public String withdrawFunds(WithdrawFundsParams params) throws IOException {
-		if (params instanceof DefaultWithdrawFundsParams defaultParams) {
-			return withdrawFunds(
-					defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
-		}
-		throw new IllegalStateException("Don't know how to withdraw: " + params);
-	}
+    return ItBitAdapters.adaptAccountInfo(getItBitAccountInfo());
+  }
 
-	@Override
-	public String requestDepositAddress(Currency currency, String... args) throws IOException {
-		return requestItBitDepositAddress(currency.toString(), args);
-	}
+  @Override
+  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+      throws IOException {
 
-	@Override
-	public TradeHistoryParams createFundingHistoryParams() {
-		throw new NotAvailableFromExchangeException();
-	}
+    return withdrawItBitFunds(currency.toString(), amount, address);
+  }
 
-	@Override
-	public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
-		int page = 1;
-		int perPage = 50;
-		if (params instanceof TradeHistoryParamPaging tradeHistoryParamPaging) {
-			perPage = tradeHistoryParamPaging.getPageLength();
-			page = tradeHistoryParamPaging.getPageNumber();
-		}
-		List<FundingRecord> fundingRecords = new ArrayList<>();
-		ItBitFundingHistoryResponse funding = getFunding(page, perPage);
-		if (funding.fundingHistory != null) {
-			for (ItBitFunding itBitFunding : funding.fundingHistory) {
-				FundingRecord fundingRecord = ItBitAdapters.adapt(itBitFunding);
-				fundingRecords.add(fundingRecord);
-			}
-		}
-		return fundingRecords;
-	}
+  @Override
+  public String withdrawFunds(WithdrawFundsParams params) throws IOException {
+    if (params instanceof DefaultWithdrawFundsParams) {
+      DefaultWithdrawFundsParams defaultParams = (DefaultWithdrawFundsParams) params;
+      return withdrawFunds(
+          defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
+    }
+    throw new IllegalStateException("Don't know how to withdraw: " + params);
+  }
 
-	public static class ItBitFundingParams implements TradeHistoryParamPaging {
+  @Override
+  public String requestDepositAddress(Currency currency, String... args) throws IOException {
 
-		private Integer pageLength = 50;
-		private Integer pageNumber = 1;
+    return requestItBitDepositAddress(currency.toString(), args);
+  }
 
-		@Override
-		public Integer getPageLength() {
-			return pageLength;
-		}
+  @Override
+  public TradeHistoryParams createFundingHistoryParams() {
+    throw new NotAvailableFromExchangeException();
+  }
 
-		@Override
-		public void setPageLength(Integer pageLength) {
-			this.pageLength = pageLength;
-		}
+  @Override
+  public List<FundingRecord> getFundingHistory(TradeHistoryParams params) throws IOException {
+    int page = 1;
+    int perPage = 50;
 
-		@Override
-		public Integer getPageNumber() {
-			return pageNumber;
-		}
+    if (params instanceof TradeHistoryParamPaging) {
+      TradeHistoryParamPaging tradeHistoryParamPaging = (TradeHistoryParamPaging) params;
+      perPage = tradeHistoryParamPaging.getPageLength();
+      page = tradeHistoryParamPaging.getPageNumber();
+    }
 
-		@Override
-		public void setPageNumber(Integer pageNumber) {
-			this.pageNumber = pageNumber;
-		}
-	}
+    List<FundingRecord> fundingRecords = new ArrayList<>();
+
+    ItBitFundingHistoryResponse funding = getFunding(page, perPage);
+    if (funding.fundingHistory != null) {
+      for (ItBitFunding itBitFunding : funding.fundingHistory) {
+        FundingRecord fundingRecord = ItBitAdapters.adapt(itBitFunding);
+        fundingRecords.add(fundingRecord);
+      }
+    }
+    return fundingRecords;
+  }
+
+  public static class ItBitFundingParams implements TradeHistoryParamPaging {
+
+    private Integer pageLength = 50;
+    private Integer pageNumber = 1;
+
+    @Override
+    public Integer getPageLength() {
+      return pageLength;
+    }
+
+    @Override
+    public void setPageLength(Integer pageLength) {
+      this.pageLength = pageLength;
+    }
+
+    @Override
+    public Integer getPageNumber() {
+      return pageNumber;
+    }
+
+    @Override
+    public void setPageNumber(Integer pageNumber) {
+      this.pageNumber = pageNumber;
+    }
+  }
 }

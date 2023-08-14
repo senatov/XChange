@@ -6,27 +6,27 @@ import java.util.Map;
 
 public class CoinbaseExchangeRateData {
 
-	private CoinbaseExchangeRates data;
+  private CoinbaseExchangeRates data;
 
-	public CoinbaseExchangeRates getData() {
-		return data;
-	}
+  public CoinbaseExchangeRates getData() {
+    return data;
+  }
 
-	public void setData(CoinbaseExchangeRates data) {
-		this.data = data;
-	}
+  public void setData(CoinbaseExchangeRates data) {
+    this.data = data;
+  }
 
-	public static class CoinbaseExchangeRates {
+  public static class CoinbaseExchangeRates {
 
-		private String currency;
-		private Map<String, BigDecimal> rates;
+    private String currency;
+    private Map<String, BigDecimal> rates;
 
-		public String getCurrency() {
-			return currency;
-		}
+    public String getCurrency() {
+      return currency;
+    }
 
-		public Map<String, BigDecimal> getRates() {
-			return Collections.unmodifiableMap(rates);
-		}
-	}
+    public Map<String, BigDecimal> getRates() {
+      return Collections.unmodifiableMap(rates);
+    }
+  }
 }

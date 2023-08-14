@@ -1,54 +1,60 @@
 package org.knowm.xchange.itbit.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class ItBitTrade {
 
-	private final BigDecimal amount;
-	private final String timestamp;
-	private final BigDecimal price;
-	private final long matchNumber;
+  private final BigDecimal amount;
+  private final String timestamp;
+  private final BigDecimal price;
+  private final long matchNumber;
 
-	public ItBitTrade(
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("timestamp") String timestamp,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("matchNumber") long matchNumber) {
-		this.amount = amount;
-		this.timestamp = timestamp;
-		this.price = price;
-		this.matchNumber = matchNumber;
-	}
+  public ItBitTrade(
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("timestamp") String timestamp,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("matchNumber") long matchNumber) {
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+    this.amount = amount;
+    this.timestamp = timestamp;
+    this.price = price;
+    this.matchNumber = matchNumber;
+  }
 
-	public String getTimestamp() {
-		return timestamp;
-	}
+  public BigDecimal getAmount() {
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    return amount;
+  }
 
-	public long getMatchNumber() {
-		return matchNumber;
-	}
+  public String getTimestamp() {
 
-	@Override
-	public String toString() {
-		String builder = "ItBitTrade [amount=" +
-				amount +
-				", timestamp=" +
-				timestamp +
-				", price=" +
-				price +
-				", matchNumber=" +
-				matchNumber +
-				"]";
-		return builder;
-	}
+    return timestamp;
+  }
+
+  public BigDecimal getPrice() {
+
+    return price;
+  }
+
+  public long getMatchNumber() {
+
+    return matchNumber;
+  }
+
+  @Override
+  public String toString() {
+
+    StringBuilder builder = new StringBuilder();
+    builder.append("ItBitTrade [amount=");
+    builder.append(amount);
+    builder.append(", timestamp=");
+    builder.append(timestamp);
+    builder.append(", price=");
+    builder.append(price);
+    builder.append(", matchNumber=");
+    builder.append(matchNumber);
+    builder.append("]");
+    return builder.toString();
+  }
 }

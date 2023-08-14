@@ -8,15 +8,16 @@ import org.knowm.xchange.service.BaseService;
 
 class CmcBaseService extends BaseExchangeService implements BaseService {
 
-	final String apiKey;
-	final CmcAuthenticated cmcAuthenticated;
+  final String apiKey;
+  final CmcAuthenticated cmcAuthenticated;
 
-	CmcBaseService(Exchange exchange) {
-		super(exchange);
-		this.apiKey = exchange.getExchangeSpecification().getApiKey();
-		this.cmcAuthenticated =
-				ExchangeRestProxyBuilder.forInterface(
-								CmcAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  CmcBaseService(Exchange exchange) {
+    super(exchange);
+
+    this.apiKey = exchange.getExchangeSpecification().getApiKey();
+    this.cmcAuthenticated =
+        ExchangeRestProxyBuilder.forInterface(
+                CmcAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+  }
 }

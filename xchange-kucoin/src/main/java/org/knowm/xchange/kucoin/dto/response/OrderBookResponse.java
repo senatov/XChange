@@ -1,6 +1,4 @@
-/**
- * Copyright 2019 Mek Global Limited.
- */
+/** Copyright 2019 Mek Global Limited. */
 package org.knowm.xchange.kucoin.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderBookResponse extends OrderBook {
 
-	private String sequence;
+  private String sequence;
 
-	private long time;
+  private long time;
 }

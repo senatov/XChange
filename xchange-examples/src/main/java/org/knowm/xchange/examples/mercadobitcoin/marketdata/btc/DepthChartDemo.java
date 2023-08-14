@@ -1,5 +1,10 @@
 package org.knowm.xchange.examples.mercadobitcoin.marketdata.btc;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -14,12 +19,6 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.XYSeries.XYSeriesRenderStyle;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Demonstrate requesting OrderBook from Mercado Bitcoin and plotting it using XChart.
  *
@@ -27,58 +26,71 @@ import java.util.List;
  */
 public class DepthChartDemo {
 
-	public static void main(String[] args) throws IOException {
-		// Use the factory to get the version 1 Mercado Bitcoin exchange API using default settings
-		Exchange mercadoExchange =
-				ExchangeFactory.INSTANCE.createExchange(MercadoBitcoinExchange.class);
-		// Interested in the public market data feed (no authentication)
-		MarketDataService marketDataService = mercadoExchange.getMarketDataService();
-		System.out.println("fetching data...");
-		// Get the current orderbook
-		OrderBook orderBook = marketDataService.getOrderBook(CurrencyPair.BTC_BRL);
-		System.out.println("received data.");
-		System.out.println("plotting...");
-		// Create Chart
-		XYChart chart =
-				new XYChartBuilder()
-						.width(800)
-						.height(600)
-						.title("Mercado Order Book")
-						.xAxisTitle("BTC")
-						.yAxisTitle("BRL")
-						.build();
-		// Customize Chart
-		chart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Area);
-		// BIDS
-		List<Number> xData = new ArrayList<>();
-		List<Number> yData = new ArrayList<>();
-		BigDecimal accumulatedBidUnits = new BigDecimal("0");
-		for (LimitOrder limitOrder : orderBook.getBids()) {
-			if (limitOrder.getLimitPrice().doubleValue() > 20) {
-				xData.add(limitOrder.getLimitPrice());
-				accumulatedBidUnits = accumulatedBidUnits.add(limitOrder.getOriginalAmount());
-				yData.add(accumulatedBidUnits);
-			}
-		}
-		Collections.reverse(xData);
-		Collections.reverse(yData);
-		// Bids Series
-		XYSeries series = chart.addSeries("bids", xData, yData);
-		series.setMarker(SeriesMarkers.NONE);
-		// ASKS
-		xData = new ArrayList<>();
-		yData = new ArrayList<>();
-		BigDecimal accumulatedAskUnits = new BigDecimal("0");
-		for (LimitOrder limitOrder : orderBook.getAsks()) {
-			if (limitOrder.getLimitPrice().doubleValue() < 2000) {
-				xData.add(limitOrder.getLimitPrice());
-				accumulatedAskUnits = accumulatedAskUnits.add(limitOrder.getOriginalAmount());
-				yData.add(accumulatedAskUnits);
-			}
-		}
-		// Asks Series
-		series = chart.addSeries("asks", xData, yData);
-		series.setMarker(SeriesMarkers.NONE);
-		new SwingWrapper(chart).displayChart();
-	}
+  public static void main(String[] args) throws IOException {
+
+    // Use the factory to get the version 1 Mercado Bitcoin exchange API using default settings
+    Exchange mercadoExchange =
+        ExchangeFactory.INSTANCE.createExchange(MercadoBitcoinExchange.class);
+
+    // Interested in the public market data feed (no authentication)
+    MarketDataService marketDataService = mercadoExchange.getMarketDataService();
+
+    System.out.println("fetching data...");
+
+    // Get the current orderbook
+    OrderBook orderBook = marketDataService.getOrderBook(CurrencyPair.BTC_BRL);
+
+    System.out.println("received data.");
+
+    System.out.println("plotting...");
+
+    // Create Chart
+    XYChart chart =
+        new XYChartBuilder()
+            .width(800)
+            .height(600)
+            .title("Mercado Order Book")
+            .xAxisTitle("BTC")
+            .yAxisTitle("BRL")
+            .build();
+
+    // Customize Chart
+    chart.getStyler().setDefaultSeriesRenderStyle(XYSeriesRenderStyle.Area);
+
+    // BIDS
+    List<Number> xData = new ArrayList<>();
+    List<Number> yData = new ArrayList<>();
+    BigDecimal accumulatedBidUnits = new BigDecimal("0");
+    for (LimitOrder limitOrder : orderBook.getBids()) {
+      if (limitOrder.getLimitPrice().doubleValue() > 20) {
+        xData.add(limitOrder.getLimitPrice());
+        accumulatedBidUnits = accumulatedBidUnits.add(limitOrder.getOriginalAmount());
+        yData.add(accumulatedBidUnits);
+      }
+    }
+    Collections.reverse(xData);
+    Collections.reverse(yData);
+
+    // Bids Series
+    XYSeries series = chart.addSeries("bids", xData, yData);
+    series.setMarker(SeriesMarkers.NONE);
+
+    // ASKS
+    xData = new ArrayList<>();
+    yData = new ArrayList<>();
+    BigDecimal accumulatedAskUnits = new BigDecimal("0");
+    for (LimitOrder limitOrder : orderBook.getAsks()) {
+      if (limitOrder.getLimitPrice().doubleValue() < 2000) {
+        xData.add(limitOrder.getLimitPrice());
+        accumulatedAskUnits = accumulatedAskUnits.add(limitOrder.getOriginalAmount());
+        yData.add(accumulatedAskUnits);
+      }
+    }
+
+    // Asks Series
+    series = chart.addSeries("asks", xData, yData);
+    series.setMarker(SeriesMarkers.NONE);
+
+    new SwingWrapper(chart).displayChart();
+  }
 }

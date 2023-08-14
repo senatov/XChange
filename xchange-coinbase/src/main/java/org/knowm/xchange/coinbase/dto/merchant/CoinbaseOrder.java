@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import org.knowm.xchange.coinbase.dto.CoinbaseBaseResponse;
 import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseMoney;
 import org.knowm.xchange.coinbase.dto.merchant.CoinbaseButton.CoinbaseButtonInfo;
@@ -17,219 +20,244 @@ import org.knowm.xchange.coinbase.dto.serialization.EnumFromStringHelper;
 import org.knowm.xchange.coinbase.dto.serialization.EnumLowercaseJsonSerializer;
 import org.knowm.xchange.utils.jackson.ISO8601DateDeserializer;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-/**
- * @author jamespedwards42
- */
+/** @author jamespedwards42 */
 public class CoinbaseOrder extends CoinbaseBaseResponse {
 
-	@JsonProperty("order")
-	private CoinbaseOrderInfo order;
+  @JsonProperty("order")
+  private CoinbaseOrderInfo order;
 
-	private CoinbaseOrder(
-			@JsonProperty("order") final CoinbaseOrderInfo order,
-			@JsonProperty("success") final boolean success,
-			@JsonProperty("errors") final List<String> errors) {
-		super(success, errors);
-		this.order = order;
-	}
+  private CoinbaseOrder(
+      @JsonProperty("order") final CoinbaseOrderInfo order,
+      @JsonProperty("success") final boolean success,
+      @JsonProperty("errors") final List<String> errors) {
 
-	public String getId() {
-		return order.getId();
-	}
+    super(success, errors);
+    this.order = order;
+  }
 
-	public Date getCreatedAt() {
-		return order.getCreatedAt();
-	}
+  public String getId() {
 
-	public CoinbaseOrderStatus getStatus() {
-		return order.getStatus();
-	}
+    return order.getId();
+  }
 
-	public CoinbaseMoney getTotalBTC() {
-		return order.getTotalBTC();
-	}
+  public Date getCreatedAt() {
 
-	public CoinbaseMoney getTotalNative() {
-		return order.getTotalNative();
-	}
+    return order.getCreatedAt();
+  }
 
-	public String getCustom() {
-		return order.getCustom();
-	}
+  public CoinbaseOrderStatus getStatus() {
 
-	public String getReceiveAddress() {
-		return order.getReceiveAddress();
-	}
+    return order.getStatus();
+  }
 
-	public CoinbaseButton getButton() {
-		return order.getButton();
-	}
+  public CoinbaseMoney getTotalBTC() {
 
-	public CoinbaseOrderTransaction getTransaction() {
-		return order.getTransaction();
-	}
+    return order.getTotalBTC();
+  }
 
-	@Override
-	public String toString() {
-		return "CoinbaseOrder [order=" + order + "]";
-	}
+  public CoinbaseMoney getTotalNative() {
 
-	@JsonDeserialize(using = CoinbaseOrderStatusDeserializer.class)
-	@JsonSerialize(using = EnumLowercaseJsonSerializer.class)
-	public enum CoinbaseOrderStatus {
-		NEW,
-		COMPLETED,
-		CANCELED
-	}
+    return order.getTotalNative();
+  }
 
-	static class CoinbaseOrderStatusDeserializer extends JsonDeserializer<CoinbaseOrderStatus> {
+  public String getCustom() {
 
-		private static final EnumFromStringHelper<CoinbaseOrderStatus> FROM_STRING_HELPER =
-				new EnumFromStringHelper<>(CoinbaseOrderStatus.class);
+    return order.getCustom();
+  }
 
-		@Override
-		public CoinbaseOrderStatus deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-				throws IOException {
-			ObjectCodec oc = jsonParser.getCodec();
-			JsonNode node = oc.readTree(jsonParser);
-			String jsonString = node.textValue();
-			return FROM_STRING_HELPER.fromJsonString(jsonString);
-		}
-	}
+  public String getReceiveAddress() {
 
-	private static class CoinbaseOrderInfo {
+    return order.getReceiveAddress();
+  }
 
-		private final String id;
-		private final Date createdAt;
-		private final CoinbaseOrderStatus status;
-		private final CoinbaseMoney totalBTC;
-		private final CoinbaseMoney totalNative;
-		private final String custom;
-		private final String receiveAddress;
-		private final CoinbaseButton button;
-		private final CoinbaseOrderTransaction transaction;
+  public CoinbaseButton getButton() {
 
-		private CoinbaseOrderInfo(
-				@JsonProperty("id") final String id,
-				@JsonProperty("created_at") @JsonDeserialize(using = ISO8601DateDeserializer.class) final Date createdAt,
-				@JsonProperty("status") final CoinbaseOrderStatus status,
-				@JsonProperty("total_btc") @JsonDeserialize(using = CoinbaseCentsDeserializer.class) final CoinbaseMoney totalBTC,
-				@JsonProperty("total_native") @JsonDeserialize(using = CoinbaseCentsDeserializer.class) final CoinbaseMoney totalNative,
-				@JsonProperty("custom") final String custom,
-				@JsonProperty("receive_address") final String receiveAddress,
-				@JsonProperty("button") final CoinbaseButtonInfo button,
-				@JsonProperty("transaction") final CoinbaseOrderTransaction transaction) {
-			this.id = id;
-			this.createdAt = createdAt;
-			this.status = status;
-			this.totalBTC = totalBTC;
-			this.totalNative = totalNative;
-			this.custom = custom;
-			this.receiveAddress = receiveAddress;
-			this.button = new CoinbaseButton(button);
-			this.transaction = transaction;
-		}
+    return order.getButton();
+  }
 
-		public String getId() {
-			return id;
-		}
+  public CoinbaseOrderTransaction getTransaction() {
 
-		public Date getCreatedAt() {
-			return createdAt;
-		}
+    return order.getTransaction();
+  }
 
-		public CoinbaseOrderStatus getStatus() {
-			return status;
-		}
+  @Override
+  public String toString() {
 
-		public CoinbaseMoney getTotalBTC() {
-			return totalBTC;
-		}
+    return "CoinbaseOrder [order=" + order + "]";
+  }
 
-		public CoinbaseMoney getTotalNative() {
-			return totalNative;
-		}
+  @JsonDeserialize(using = CoinbaseOrderStatusDeserializer.class)
+  @JsonSerialize(using = EnumLowercaseJsonSerializer.class)
+  public enum CoinbaseOrderStatus {
+    NEW,
+    COMPLETED,
+    CANCELED;
+  }
 
-		public String getCustom() {
-			return custom;
-		}
+  static class CoinbaseOrderStatusDeserializer extends JsonDeserializer<CoinbaseOrderStatus> {
 
-		public String getReceiveAddress() {
-			return receiveAddress;
-		}
+    private static final EnumFromStringHelper<CoinbaseOrderStatus> FROM_STRING_HELPER =
+        new EnumFromStringHelper<>(CoinbaseOrderStatus.class);
 
-		public CoinbaseButton getButton() {
-			return button;
-		}
+    @Override
+    public CoinbaseOrderStatus deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException, JsonProcessingException {
 
-		public CoinbaseOrderTransaction getTransaction() {
-			return transaction;
-		}
+      ObjectCodec oc = jsonParser.getCodec();
+      JsonNode node = oc.readTree(jsonParser);
+      String jsonString = node.textValue();
+      return FROM_STRING_HELPER.fromJsonString(jsonString);
+    }
+  }
 
-		@Override
-		public String toString() {
-			return "CoinbaseOrderInfo [id="
-					+ id
-					+ ", createdAt="
-					+ createdAt
-					+ ", status="
-					+ status
-					+ ", totalBTC="
-					+ totalBTC
-					+ ", totalNative="
-					+ totalNative
-					+ ", custom="
-					+ custom
-					+ ", receiveAddress="
-					+ receiveAddress
-					+ ", button="
-					+ button
-					+ ", transaction="
-					+ transaction
-					+ "]";
-		}
-	}
+  private static class CoinbaseOrderInfo {
 
-	public static class CoinbaseOrderTransaction {
+    private final String id;
+    private final Date createdAt;
+    private final CoinbaseOrderStatus status;
+    private final CoinbaseMoney totalBTC;
+    private final CoinbaseMoney totalNative;
+    private final String custom;
+    private final String receiveAddress;
+    private final CoinbaseButton button;
+    private final CoinbaseOrderTransaction transaction;
 
-		private final String id;
-		private final String hash;
-		private final int confirmations;
+    private CoinbaseOrderInfo(
+        @JsonProperty("id") final String id,
+        @JsonProperty("created_at") @JsonDeserialize(using = ISO8601DateDeserializer.class)
+            final Date createdAt,
+        @JsonProperty("status") final CoinbaseOrderStatus status,
+        @JsonProperty("total_btc") @JsonDeserialize(using = CoinbaseCentsDeserializer.class)
+            final CoinbaseMoney totalBTC,
+        @JsonProperty("total_native") @JsonDeserialize(using = CoinbaseCentsDeserializer.class)
+            final CoinbaseMoney totalNative,
+        @JsonProperty("custom") final String custom,
+        @JsonProperty("receive_address") final String receiveAddress,
+        @JsonProperty("button") final CoinbaseButtonInfo button,
+        @JsonProperty("transaction") final CoinbaseOrderTransaction transaction) {
 
-		private CoinbaseOrderTransaction(
-				@JsonProperty("id") final String id,
-				@JsonProperty("hash") final String hash,
-				@JsonProperty("confirmations") final int confirmations) {
-			this.id = id;
-			this.hash = hash;
-			this.confirmations = confirmations;
-		}
+      this.id = id;
+      this.createdAt = createdAt;
+      this.status = status;
+      this.totalBTC = totalBTC;
+      this.totalNative = totalNative;
+      this.custom = custom;
+      this.receiveAddress = receiveAddress;
+      this.button = new CoinbaseButton(button);
+      this.transaction = transaction;
+    }
 
-		public String getId() {
-			return id;
-		}
+    public String getId() {
 
-		public String getHash() {
-			return hash;
-		}
+      return id;
+    }
 
-		public int getConfirmations() {
-			return confirmations;
-		}
+    public Date getCreatedAt() {
 
-		@Override
-		public String toString() {
-			return "CoinbaseOrderTransaction [id="
-					+ id
-					+ ", hash="
-					+ hash
-					+ ", confirmations="
-					+ confirmations
-					+ "]";
-		}
-	}
+      return createdAt;
+    }
+
+    public CoinbaseOrderStatus getStatus() {
+
+      return status;
+    }
+
+    public CoinbaseMoney getTotalBTC() {
+
+      return totalBTC;
+    }
+
+    public CoinbaseMoney getTotalNative() {
+
+      return totalNative;
+    }
+
+    public String getCustom() {
+
+      return custom;
+    }
+
+    public String getReceiveAddress() {
+
+      return receiveAddress;
+    }
+
+    public CoinbaseButton getButton() {
+
+      return button;
+    }
+
+    public CoinbaseOrderTransaction getTransaction() {
+
+      return transaction;
+    }
+
+    @Override
+    public String toString() {
+
+      return "CoinbaseOrderInfo [id="
+          + id
+          + ", createdAt="
+          + createdAt
+          + ", status="
+          + status
+          + ", totalBTC="
+          + totalBTC
+          + ", totalNative="
+          + totalNative
+          + ", custom="
+          + custom
+          + ", receiveAddress="
+          + receiveAddress
+          + ", button="
+          + button
+          + ", transaction="
+          + transaction
+          + "]";
+    }
+  }
+
+  public static class CoinbaseOrderTransaction {
+
+    private final String id;
+    private final String hash;
+    private final int confirmations;
+
+    private CoinbaseOrderTransaction(
+        @JsonProperty("id") final String id,
+        @JsonProperty("hash") final String hash,
+        @JsonProperty("confirmations") final int confirmations) {
+
+      this.id = id;
+      this.hash = hash;
+      this.confirmations = confirmations;
+    }
+
+    public String getId() {
+
+      return id;
+    }
+
+    public String getHash() {
+
+      return hash;
+    }
+
+    public int getConfirmations() {
+
+      return confirmations;
+    }
+
+    @Override
+    public String toString() {
+
+      return "CoinbaseOrderTransaction [id="
+          + id
+          + ", hash="
+          + hash
+          + ", confirmations="
+          + confirmations
+          + "]";
+    }
+  }
 }

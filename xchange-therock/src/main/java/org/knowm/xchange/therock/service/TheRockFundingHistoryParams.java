@@ -7,31 +7,30 @@ import org.knowm.xchange.service.trade.params.HistoryParamsFundingType;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamCurrency;
 
 public class TheRockFundingHistoryParams extends DefaultTradeHistoryParamsTimeSpan
-		implements TradeHistoryParamCurrency, HistoryParamsFundingType {
+    implements TradeHistoryParamCurrency, HistoryParamsFundingType {
 
-	private Currency currency;
-	private FundingRecord.Type type;
+  private Currency currency;
+  private FundingRecord.Type type;
 
-	public TheRockFundingHistoryParams() {
-	}
+  public TheRockFundingHistoryParams() {}
 
-	@Override
-	public FundingRecord.Type getType() {
-		return type;
-	}
+  @Override
+  public FundingRecord.Type getType() {
+    return type;
+  }
 
-	@Override
-	public void setType(FundingRecord.Type type) {
-		this.type = type;
-	}
+  @Override
+  public void setType(FundingRecord.Type type) {
+    this.type = type;
+  }
 
-	@Override
-	public Currency getCurrency() {
-		return currency;
-	}
+  @Override
+  public Currency getCurrency() {
+    return currency;
+  }
 
-	@Override
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
+  @Override
+  public void setCurrency(Currency currency) {
+    this.currency = currency;
+  }
 }

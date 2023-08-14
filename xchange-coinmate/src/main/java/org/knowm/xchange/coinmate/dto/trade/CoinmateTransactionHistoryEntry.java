@@ -24,99 +24,97 @@
 package org.knowm.xchange.coinmate.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateTransactionHistoryEntry {
 
-	private final long transactionId;
-	private final long timestamp;
-	private final String transactionType;
-	private final BigDecimal amount;
-	private final String amountCurrency;
-	private final BigDecimal price;
-	private final String priceCurrency;
-	private final BigDecimal fee;
-	private final String feeCurrency;
-	private final String description;
-	private final String status;
-	private final long orderId; // ?
+  private final long transactionId;
+  private final long timestamp;
+  private final String transactionType;
+  private final BigDecimal amount;
+  private final String amountCurrency;
+  private final BigDecimal price;
+  private final String priceCurrency;
+  private final BigDecimal fee;
+  private final String feeCurrency;
+  private final String description;
+  private final String status;
+  private final long orderId; // ?
 
-	public CoinmateTransactionHistoryEntry(
-			@JsonProperty("transactionId") long transactionId,
-			@JsonProperty("timestamp") long timestamp,
-			@JsonProperty("transactionType") String transactionType,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("amountCurrency") String amountCurrency,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("priceCurrency") String priceCurrency,
-			@JsonProperty("fee") BigDecimal fee,
-			@JsonProperty("feeCurrency") String feeCurrency,
-			@JsonProperty("description") String description,
-			@JsonProperty("status") String status,
-			@JsonProperty("orderId") long orderId) {
-		this.transactionId = transactionId;
-		this.timestamp = timestamp;
-		this.transactionType = transactionType;
-		this.amount = amount;
-		this.amountCurrency = amountCurrency;
-		this.price = price;
-		this.priceCurrency = priceCurrency;
-		this.fee = fee;
-		this.feeCurrency = feeCurrency;
-		this.description = description;
-		this.status = status;
-		this.orderId = orderId;
-	}
+  public CoinmateTransactionHistoryEntry(
+      @JsonProperty("transactionId") long transactionId,
+      @JsonProperty("timestamp") long timestamp,
+      @JsonProperty("transactionType") String transactionType,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("amountCurrency") String amountCurrency,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("priceCurrency") String priceCurrency,
+      @JsonProperty("fee") BigDecimal fee,
+      @JsonProperty("feeCurrency") String feeCurrency,
+      @JsonProperty("description") String description,
+      @JsonProperty("status") String status,
+      @JsonProperty("orderId") long orderId) {
 
-	public long getTransactionId() {
-		return transactionId;
-	}
+    this.transactionId = transactionId;
+    this.timestamp = timestamp;
+    this.transactionType = transactionType;
+    this.amount = amount;
+    this.amountCurrency = amountCurrency;
+    this.price = price;
+    this.priceCurrency = priceCurrency;
+    this.fee = fee;
+    this.feeCurrency = feeCurrency;
+    this.description = description;
+    this.status = status;
+    this.orderId = orderId;
+  }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+  public long getTransactionId() {
+    return transactionId;
+  }
 
-	public String getTransactionType() {
-		return transactionType;
-	}
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public String getTransactionType() {
+    return transactionType;
+  }
 
-	public String getAmountCurrency() {
-		return amountCurrency;
-	}
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public String getAmountCurrency() {
+    return amountCurrency;
+  }
 
-	public String getPriceCurrency() {
-		return priceCurrency;
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	public BigDecimal getFee() {
-		return fee;
-	}
+  public String getPriceCurrency() {
+    return priceCurrency;
+  }
 
-	public String getFeeCurrency() {
-		return feeCurrency;
-	}
+  public BigDecimal getFee() {
+    return fee;
+  }
 
-	public String getDescription() {
-		return description;
-	}
+  public String getFeeCurrency() {
+    return feeCurrency;
+  }
 
-	public String getStatus() {
-		return status;
-	}
+  public String getDescription() {
+    return description;
+  }
 
-	public long getOrderId() {
-		return orderId;
-	}
+  public String getStatus() {
+    return status;
+  }
+
+  public long getOrderId() {
+    return orderId;
+  }
 }

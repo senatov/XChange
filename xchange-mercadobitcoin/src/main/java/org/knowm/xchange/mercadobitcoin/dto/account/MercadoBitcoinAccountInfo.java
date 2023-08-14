@@ -1,81 +1,88 @@
 package org.knowm.xchange.mercadobitcoin.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
-/**
- * @author Felipe Micaroni Lalli
- */
+/** @author Felipe Micaroni Lalli */
 public class MercadoBitcoinAccountInfo {
 
-	private final Funds funds;
-	private final Long serverTime;
-	private final Long openOrders;
+  private final Funds funds;
+  private final Long serverTime;
+  private final Long openOrders;
 
-	public MercadoBitcoinAccountInfo(
-			@JsonProperty("funds") MercadoBitcoinAccountInfo.Funds funds,
-			@JsonProperty("server_time") Long serverTime,
-			@JsonProperty("open_orders") Long openOrders) {
-		this.funds = funds;
-		this.serverTime = serverTime;
-		this.openOrders = openOrders;
-	}
+  public MercadoBitcoinAccountInfo(
+      @JsonProperty("funds") MercadoBitcoinAccountInfo.Funds funds,
+      @JsonProperty("server_time") Long serverTime,
+      @JsonProperty("open_orders") Long openOrders) {
 
-	@Override
-	public String toString() {
-		return "MercadoBitcoinAccountInfo ["
-				+ "funds="
-				+ funds
-				+ ", serverTime="
-				+ serverTime
-				+ ", openOrders="
-				+ openOrders
-				+ ']';
-	}
+    this.funds = funds;
+    this.serverTime = serverTime;
+    this.openOrders = openOrders;
+  }
 
-	public Long getOpenOrders() {
-		return openOrders;
-	}
+  @Override
+  public String toString() {
 
-	public Long getServerTime() {
-		return serverTime;
-	}
+    return "MercadoBitcoinAccountInfo ["
+        + "funds="
+        + funds
+        + ", serverTime="
+        + serverTime
+        + ", openOrders="
+        + openOrders
+        + ']';
+  }
 
-	public Funds getFunds() {
-		return funds;
-	}
+  public Long getOpenOrders() {
 
-	public static class Funds {
+    return openOrders;
+  }
 
-		private final BigDecimal ltc;
-		private final BigDecimal brl;
-		private final BigDecimal btc;
+  public Long getServerTime() {
 
-		public Funds(
-				@JsonProperty("ltc") BigDecimal ltc,
-				@JsonProperty("brl") BigDecimal brl,
-				@JsonProperty("btc") BigDecimal btc) {
-			this.ltc = ltc;
-			this.brl = brl;
-			this.btc = btc;
-		}
+    return serverTime;
+  }
 
-		public BigDecimal getLtc() {
-			return ltc;
-		}
+  public Funds getFunds() {
 
-		public BigDecimal getBrl() {
-			return brl;
-		}
+    return funds;
+  }
 
-		public BigDecimal getBtc() {
-			return btc;
-		}
+  public static class Funds {
 
-		@Override
-		public String toString() {
-			return "Funds [" + "ltc=" + ltc + ", brl=" + brl + ", btc=" + btc + ']';
-		}
-	}
+    private final BigDecimal ltc;
+    private final BigDecimal brl;
+    private final BigDecimal btc;
+
+    public Funds(
+        @JsonProperty("ltc") BigDecimal ltc,
+        @JsonProperty("brl") BigDecimal brl,
+        @JsonProperty("btc") BigDecimal btc) {
+
+      this.ltc = ltc;
+      this.brl = brl;
+      this.btc = btc;
+    }
+
+    public BigDecimal getLtc() {
+
+      return ltc;
+    }
+
+    public BigDecimal getBrl() {
+
+      return brl;
+    }
+
+    public BigDecimal getBtc() {
+
+      return btc;
+    }
+
+    @Override
+    public String toString() {
+
+      return "Funds [" + "ltc=" + ltc + ", brl=" + brl + ", btc=" + btc + ']';
+    }
+  }
 }

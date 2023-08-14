@@ -1,12 +1,9 @@
-/**
- * Copyright 2019 Mek Global Limited.
- */
+/** Copyright 2019 Mek Global Limited. */
 package org.knowm.xchange.kucoin.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-
 import java.math.BigDecimal;
+import lombok.Data;
 
 /**
  * @author yi.yang
@@ -16,29 +13,29 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SymbolTickResponse {
 
-	private String symbol;
+  private String symbol;
 
-	private BigDecimal changeRate;
+  private BigDecimal changeRate;
 
-	private BigDecimal changePrice;
+  private BigDecimal changePrice;
 
-	private BigDecimal open;
+  private BigDecimal open;
 
-	private BigDecimal close;
+  private BigDecimal close;
 
-	private BigDecimal high;
+  private BigDecimal high;
 
-	private BigDecimal low;
+  private BigDecimal low;
 
-	private BigDecimal vol;
+  private BigDecimal vol;
 
-	private BigDecimal volValue;
+  private BigDecimal volValue;
 
-	private BigDecimal last;
+  private BigDecimal last;
 
-	private BigDecimal buy;
+  private BigDecimal buy;
 
-	private BigDecimal sell;
+  private BigDecimal sell;
 
-	private long time;
+  private long time;
 }

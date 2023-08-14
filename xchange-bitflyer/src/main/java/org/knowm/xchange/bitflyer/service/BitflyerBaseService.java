@@ -14,34 +14,38 @@ import si.mazi.rescu.ParamsDigest;
 
 public class BitflyerBaseService extends BaseExchangeService implements BaseService {
 
-	protected final String apiKey;
-	protected final Bitflyer bitflyer;
-	protected final ParamsDigest signatureCreator;
+  protected final String apiKey;
+  protected final Bitflyer bitflyer;
+  protected final ParamsDigest signatureCreator;
 
-	/**
-	 * Constructor
-	 */
-	public BitflyerBaseService(Exchange exchange) {
-		super(exchange);
-		this.bitflyer =
-				ExchangeRestProxyBuilder.forInterface(Bitflyer.class, exchange.getExchangeSpecification())
-						.build();
-		this.apiKey = exchange.getExchangeSpecification().getApiKey();
-		this.signatureCreator =
-				BitflyerDigest.createInstance(
-						exchange.getExchangeSpecification().getSecretKey(),
-						exchange.getExchangeSpecification().getApiKey());
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BitflyerBaseService(Exchange exchange) {
 
-	protected ExchangeException handleError(BitflyerException exception) {
-		if (exception.getMessage().contains("Insufficient")) {
-			return new FundsExceededException(exception);
-		} else if (exception.getMessage().contains("Rate limit exceeded")) {
-			return new RateLimitExceededException(exception);
-		} else if (exception.getMessage().contains("Internal server error")) {
-			return new InternalServerException(exception);
-		} else {
-			return new ExchangeException(exception);
-		}
-	}
+    super(exchange);
+
+    this.bitflyer =
+        ExchangeRestProxyBuilder.forInterface(Bitflyer.class, exchange.getExchangeSpecification())
+            .build();
+    this.apiKey = exchange.getExchangeSpecification().getApiKey();
+    this.signatureCreator =
+        BitflyerDigest.createInstance(
+            exchange.getExchangeSpecification().getSecretKey(),
+            exchange.getExchangeSpecification().getApiKey());
+  }
+
+  protected ExchangeException handleError(BitflyerException exception) {
+    if (exception.getMessage().contains("Insufficient")) {
+      return new FundsExceededException(exception);
+    } else if (exception.getMessage().contains("Rate limit exceeded")) {
+      return new RateLimitExceededException(exception);
+    } else if (exception.getMessage().contains("Internal server error")) {
+      return new InternalServerException(exception);
+    } else {
+      return new ExchangeException(exception);
+    }
+  }
 }

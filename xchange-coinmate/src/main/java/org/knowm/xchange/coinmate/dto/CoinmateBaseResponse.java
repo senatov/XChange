@@ -27,33 +27,35 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * @param <T>
  * @author Martin Stachon
  */
 public class CoinmateBaseResponse<T> {
 
-	private final boolean error;
-	private final String errorMessage;
-	private final T data;
+  private final boolean error;
+  private final String errorMessage;
+  private final T data;
 
-	@JsonCreator
-	public CoinmateBaseResponse(
-			@JsonProperty("error") boolean error,
-			@JsonProperty("errorMessage") String errorMessage,
-			@JsonProperty("data") T data) {
-		this.error = error;
-		this.errorMessage = errorMessage;
-		this.data = data;
-	}
+  @JsonCreator
+  public CoinmateBaseResponse(
+      @JsonProperty("error") boolean error,
+      @JsonProperty("errorMessage") String errorMessage,
+      @JsonProperty("data") T data) {
 
-	public boolean isError() {
-		return error;
-	}
+    this.error = error;
+    this.errorMessage = errorMessage;
+    this.data = data;
+  }
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+  public boolean isError() {
+    return error;
+  }
 
-	public T getData() {
-		return data;
-	}
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
+  public T getData() {
+    return data;
+  }
 }

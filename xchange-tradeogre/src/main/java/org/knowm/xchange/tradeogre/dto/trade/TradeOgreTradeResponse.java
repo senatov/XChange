@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class TradeOgreTradeResponse {
-	public boolean success;
-	public String uuid;
-	public String bnewbalavail;
-	public String snewbalavail;
-	public String error;
+  public boolean success;
+  public String uuid;
+  public String bnewbalavail;
+  public String snewbalavail;
+  public String error;
 }

@@ -1,9 +1,8 @@
 package org.knowm.xchange.bitflyer.service;
 
+import java.util.Arrays;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamCurrencies;
-
-import java.util.Arrays;
 
 /**
  * {@link TradeHistoryParam}. Allows filtering to just the provided set of currencies. If left
@@ -12,20 +11,20 @@ import java.util.Arrays;
  * @author bryant_harris
  */
 public class BitflyerTradeHistoryParams implements TradeHistoryParamCurrencies {
-	Currency[] currencies;
+  Currency[] currencies;
 
-	@Override
-	public Currency[] getCurrencies() {
-		return currencies;
-	}
+  @Override
+  public Currency[] getCurrencies() {
+    return currencies;
+  }
 
-	@Override
-	public void setCurrencies(Currency[] currencies) {
-		this.currencies = currencies;
-	}
+  @Override
+  public void setCurrencies(Currency[] currencies) {
+    this.currencies = currencies;
+  }
 
-	@Override
-	public String toString() {
-		return "BitflyerTradeHistoryParams [currencies=" + Arrays.toString(currencies) + "]";
-	}
+  @Override
+  public String toString() {
+    return "BitflyerTradeHistoryParams [currencies=" + Arrays.toString(currencies) + "]";
+  }
 }

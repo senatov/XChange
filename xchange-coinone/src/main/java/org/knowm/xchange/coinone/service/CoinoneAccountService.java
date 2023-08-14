@@ -1,5 +1,7 @@
 package org.knowm.xchange.coinone.service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinone.CoinoneAdapters;
 import org.knowm.xchange.coinone.CoinoneExchange;
@@ -11,36 +13,35 @@ import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.service.account.AccountService;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-
 public class CoinoneAccountService extends CoinoneAccountServiceRaw implements AccountService {
 
-	private final CoinoneExchange coinoneExchange;
+  private CoinoneExchange coinoneExchange;
 
-	/**
-	 * Constructor
-	 */
-	public CoinoneAccountService(Exchange exchange) {
-		super(exchange);
-		this.coinoneExchange = (CoinoneExchange) exchange;
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public CoinoneAccountService(Exchange exchange) {
+    super(exchange);
+    this.coinoneExchange = (CoinoneExchange) exchange;
+  }
 
-	@Override
-	public AccountInfo getAccountInfo()
-			throws ExchangeException, NotAvailableFromExchangeException,
-			NotYetImplementedForExchangeException, IOException {
-		return new AccountInfo(CoinoneAdapters.adaptWallet(super.getWallet()));
-	}
+  @Override
+  public AccountInfo getAccountInfo()
+      throws ExchangeException, NotAvailableFromExchangeException,
+          NotYetImplementedForExchangeException, IOException {
+    return new AccountInfo(CoinoneAdapters.adaptWallet(super.getWallet()));
+  }
 
-	@Override
-	public String withdrawFunds(Currency currency, BigDecimal amount, String address)
-			throws IOException {
-		return null;
-	}
+  @Override
+  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+      throws IOException {
+    return null;
+  }
 
-	@Override
-	public String withdrawFunds(WithdrawFundsParams withdrawFundsParams) throws IOException {
-		return null;
-	}
+  @Override
+  public String withdrawFunds(WithdrawFundsParams withdrawFundsParams) throws IOException {
+    return null;
+  }
 }

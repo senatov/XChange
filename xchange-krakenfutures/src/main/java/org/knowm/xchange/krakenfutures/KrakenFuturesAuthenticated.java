@@ -1,21 +1,7 @@
 package org.knowm.xchange.krakenfutures;
 
-import org.knowm.xchange.krakenfutures.dto.account.KrakenFuturesAccounts;
-import org.knowm.xchange.krakenfutures.dto.marketData.KrakenFuturesOrder;
-import org.knowm.xchange.krakenfutures.dto.trade.BatchOrder;
-import org.knowm.xchange.krakenfutures.dto.trade.BatchOrderResult;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesCancel;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesCancelAllOrders;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesCancelAllOrdersAfter;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesEditOrderResponse;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesFills;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesOpenOrders;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesOpenPositions;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesOrderStatusRequest;
-import org.knowm.xchange.krakenfutures.dto.trade.KrakenFuturesOrdersStatusesResponse;
-import si.mazi.rescu.ParamsDigest;
-import si.mazi.rescu.SynchronizedValueFactory;
-
+import java.io.IOException;
+import java.math.BigDecimal;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -24,123 +10,125 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.math.BigDecimal;
 
-/**
- * @author Jean-Christophe Laruelle
- */
+import org.knowm.xchange.krakenfutures.dto.account.KrakenFuturesAccounts;
+import org.knowm.xchange.krakenfutures.dto.marketData.KrakenFuturesOrder;
+import org.knowm.xchange.krakenfutures.dto.trade.*;
+import si.mazi.rescu.ParamsDigest;
+import si.mazi.rescu.SynchronizedValueFactory;
+
+/** @author Jean-Christophe Laruelle */
 @Path("/api/v3")
 @Produces(MediaType.APPLICATION_JSON)
 public interface KrakenFuturesAuthenticated extends KrakenFutures {
 
-	@GET
-	@Path("accounts")
-	KrakenFuturesAccounts accounts(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce)
-			throws IOException;
+  @GET
+  @Path("accounts")
+  KrakenFuturesAccounts accounts(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce)
+      throws IOException;
 
-	@POST
-	@Path("sendorder")
-	KrakenFuturesOrder sendOrder(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@QueryParam("orderType") String orderType,
-			@QueryParam("symbol") String symbol,
-			@QueryParam("side") String side,
-			@QueryParam("size") BigDecimal size,
-			@QueryParam("limitPrice") BigDecimal limitPrice,
-			@QueryParam("cliOrdId") String cliOrdId,
-			@QueryParam("reduceOnly") boolean reduceOnly,
-			@QueryParam("stopPrice") BigDecimal stopPrice,
-			@QueryParam("triggerSignal") String triggerSignal)
-			throws IOException;
+  @POST
+  @Path("sendorder")
+  KrakenFuturesOrder sendOrder(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+      @QueryParam("orderType") String orderType,
+      @QueryParam("symbol") String symbol,
+      @QueryParam("side") String side,
+      @QueryParam("size") BigDecimal size,
+      @QueryParam("limitPrice") BigDecimal limitPrice,
+      @QueryParam("cliOrdId") String cliOrdId,
+      @QueryParam("reduceOnly") boolean reduceOnly,
+      @QueryParam("stopPrice") BigDecimal stopPrice,
+      @QueryParam("triggerSignal") String triggerSignal)
+      throws IOException;
 
-	@POST
-	@Path("batchorder")
-	BatchOrderResult batchOrder(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@FormParam("json") BatchOrder orderCommands)
-			throws IOException;
+  @POST
+  @Path("batchorder")
+  BatchOrderResult batchOrder(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+      @FormParam("json") BatchOrder orderCommands)
+      throws IOException;
 
-	@POST
-	@Path("cancelorder")
-	KrakenFuturesCancel cancelOrder(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@QueryParam("order_id") String order_id)
-			throws IOException;
+    @POST
+    @Path("cancelorder")
+    KrakenFuturesCancel cancelOrder(
+        @HeaderParam("APIKey") String apiKey,
+        @HeaderParam("Authent") ParamsDigest signer,
+        @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+        @QueryParam("order_id") String order_id)
+        throws IOException;
 
-	@POST
-	@Path("cancelallorders")
-	KrakenFuturesCancelAllOrders cancelAllOrdersByInstrument(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@QueryParam("symbol") String symbol)
-			throws IOException;
+  @POST
+  @Path("cancelallorders")
+  KrakenFuturesCancelAllOrders cancelAllOrdersByInstrument(
+          @HeaderParam("APIKey") String apiKey,
+          @HeaderParam("Authent") ParamsDigest signer,
+          @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+          @QueryParam("symbol") String symbol)
+          throws IOException;
 
-	@POST
-	@Path("cancelallordersafter")
-	KrakenFuturesCancelAllOrdersAfter cancelAllOrdersAfter(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@QueryParam("timeout") long timeoutSeconds)
-			throws IOException;
+  @POST
+  @Path("cancelallordersafter")
+  KrakenFuturesCancelAllOrdersAfter cancelAllOrdersAfter(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+      @QueryParam("timeout") long timeoutSeconds)
+      throws IOException;
 
-	@GET
-	@Path("openorders")
-	KrakenFuturesOpenOrders openOrders(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce)
-			throws IOException;
+  @GET
+  @Path("openorders")
+  KrakenFuturesOpenOrders openOrders(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce)
+      throws IOException;
 
-	@POST
-	@Path("orders/status")
-	@Produces(MediaType.APPLICATION_FORM_URLENCODED)
-	KrakenFuturesOrdersStatusesResponse getOrdersStatuses(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			KrakenFuturesOrderStatusRequest orderIds)
-			throws IOException;
+  @POST
+  @Path("orders/status")
+  @Produces(MediaType.APPLICATION_FORM_URLENCODED)
+  KrakenFuturesOrdersStatusesResponse getOrdersStatuses(
+          @HeaderParam("APIKey") String apiKey,
+          @HeaderParam("Authent") ParamsDigest signer,
+          @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+          KrakenFuturesOrderStatusRequest orderIds)
+          throws IOException;
 
-	@POST
-	@Path("editorder")
-	KrakenFuturesEditOrderResponse changeOrder(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@QueryParam("cliOrdId") String cliOrdId,
-			@QueryParam("limitPrice") BigDecimal limitPrice,
-			@QueryParam("orderId") String orderId,
-			@QueryParam("size") BigDecimal size,
-			@QueryParam("stopPrice") BigDecimal stopPrice
-	)
-			throws IOException;
+  @POST
+  @Path("editorder")
+  KrakenFuturesEditOrderResponse changeOrder(
+          @HeaderParam("APIKey") String apiKey,
+          @HeaderParam("Authent") ParamsDigest signer,
+          @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+          @QueryParam("cliOrdId") String cliOrdId,
+          @QueryParam("limitPrice") BigDecimal limitPrice,
+          @QueryParam("orderId") String orderId,
+          @QueryParam("size") BigDecimal size,
+          @QueryParam("stopPrice") BigDecimal stopPrice
+  )
+          throws IOException;
 
-	@GET
-	@Path("fills")
-	KrakenFuturesFills fills(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
-			@QueryParam("lastFillTime") String lastFillTime)
-			throws IOException;
+  @GET
+  @Path("fills")
+  KrakenFuturesFills fills(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce,
+      @QueryParam("lastFillTime") String lastFillTime)
+      throws IOException;
 
-	@GET
-	@Path("openpositions")
-	KrakenFuturesOpenPositions openPositions(
-			@HeaderParam("APIKey") String apiKey,
-			@HeaderParam("Authent") ParamsDigest signer,
-			@HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce)
-			throws IOException;
+  @GET
+  @Path("openpositions")
+  KrakenFuturesOpenPositions openPositions(
+      @HeaderParam("APIKey") String apiKey,
+      @HeaderParam("Authent") ParamsDigest signer,
+      @HeaderParam("Nonce") SynchronizedValueFactory<Long> nonce)
+      throws IOException;
 }

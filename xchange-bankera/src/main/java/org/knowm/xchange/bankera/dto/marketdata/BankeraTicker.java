@@ -6,66 +6,76 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BankeraTicker {
 
-	private final Integer id;
-	private final String high;
-	private final String low;
-	private final String bid;
-	private final String ask;
-	private final String last;
-	private final String volume;
-	private final long timestamp;
+  private final Integer id;
+  private final String high;
+  private final String low;
+  private final String bid;
+  private final String ask;
+  private final String last;
+  private final String volume;
+  private final long timestamp;
 
-	/**
-	 * Constructor
-	 */
-	public BankeraTicker(
-			@JsonProperty("id") Integer id,
-			@JsonProperty("high") String high,
-			@JsonProperty("low") String low,
-			@JsonProperty("bid") String bid,
-			@JsonProperty("ask") String ask,
-			@JsonProperty("last") String last,
-			@JsonProperty("volume") String volume,
-			@JsonProperty("timestamp") long timestamp) {
-		this.id = id;
-		this.high = high;
-		this.low = low;
-		this.bid = bid;
-		this.ask = ask;
-		this.last = last;
-		this.volume = volume;
-		this.timestamp = timestamp;
-	}
+  /**
+   * Constructor
+   *
+   * @param id
+   * @param high
+   * @param low
+   * @param bid
+   * @param ask
+   * @param last
+   * @param volume
+   * @param timestamp
+   */
+  public BankeraTicker(
+      @JsonProperty("id") Integer id,
+      @JsonProperty("high") String high,
+      @JsonProperty("low") String low,
+      @JsonProperty("bid") String bid,
+      @JsonProperty("ask") String ask,
+      @JsonProperty("last") String last,
+      @JsonProperty("volume") String volume,
+      @JsonProperty("timestamp") long timestamp) {
 
-	public Integer getId() {
-		return id;
-	}
+    this.id = id;
+    this.high = high;
+    this.low = low;
+    this.bid = bid;
+    this.ask = ask;
+    this.last = last;
+    this.volume = volume;
+    this.timestamp = timestamp;
+  }
 
-	public String getHigh() {
-		return high;
-	}
+  public Integer getId() {
+    return id;
+  }
 
-	public String getLow() {
-		return low;
-	}
+  public String getHigh() {
+    return high;
+  }
 
-	public String getBid() {
-		return bid;
-	}
+  public String getLow() {
+    return low;
+  }
 
-	public String getAsk() {
-		return ask;
-	}
+  public String getBid() {
+    return bid;
+  }
 
-	public String getLast() {
-		return last;
-	}
+  public String getAsk() {
+    return ask;
+  }
 
-	public String getVolume() {
-		return volume;
-	}
+  public String getLast() {
+    return last;
+  }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+  public String getVolume() {
+    return volume;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
+  }
 }

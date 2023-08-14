@@ -9,5 +9,5 @@ import org.knowm.xchange.bittrex.dto.batch.order.OrderPayload;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class CancelOrderPayload extends OrderPayload {
-	private String id;
+  private String id;
 }

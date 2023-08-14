@@ -8,62 +8,72 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.knowm.xchange.currency.CurrencyPair;
 
-/**
- * Created by luca on 5/3/17.
- */
+/** Created by luca on 5/3/17. */
 public class CoinbaseProWebSocketSubscriptionMessageTest {
 
-	@Test
-	public void testWebSocketMessageSerialization() throws JsonProcessingException {
-		ProductSubscription productSubscription =
-				ProductSubscription.create()
-						.addOrderbook(CurrencyPair.BTC_USD)
-						.addTrades(CurrencyPair.BTC_USD)
-						.addTicker(CurrencyPair.BTC_USD)
-						.build();
-		CoinbaseProWebSocketSubscriptionMessage message =
-				new CoinbaseProWebSocketSubscriptionMessage("subscribe", productSubscription, CoinbaseProOrderBookMode.Default, null);
-		final ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		String serialized = mapper.writeValueAsString(message);
-		Assert.assertEquals(
-				"{\"type\":\"subscribe\",\"channels\":[{\"name\":\"matches\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"ticker\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"level2\",\"product_ids\":[\"BTC-USD\"]}]}",
-				serialized);
-	}
+  @Test
+  public void testWebSocketMessageSerialization() throws JsonProcessingException {
 
-	@Test
-	public void testWebSocketMessageSerializationL3Orderbook() throws JsonProcessingException {
-		ProductSubscription productSubscription =
-				ProductSubscription.create()
-						.addOrderbook(CurrencyPair.BTC_USD)
-						.addTrades(CurrencyPair.BTC_USD)
-						.addTicker(CurrencyPair.BTC_USD)
-						.build();
-		CoinbaseProWebSocketSubscriptionMessage message =
-				new CoinbaseProWebSocketSubscriptionMessage("subscribe", productSubscription, CoinbaseProOrderBookMode.Full, null);
-		final ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		String serialized = mapper.writeValueAsString(message);
-		Assert.assertEquals(
-				"{\"type\":\"subscribe\",\"channels\":[{\"name\":\"matches\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"ticker\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"full\",\"product_ids\":[\"BTC-USD\"]}]}",
-				serialized);
-	}
+    ProductSubscription productSubscription =
+        ProductSubscription.create()
+            .addOrderbook(CurrencyPair.BTC_USD)
+            .addTrades(CurrencyPair.BTC_USD)
+            .addTicker(CurrencyPair.BTC_USD)
+            .build();
+    CoinbaseProWebSocketSubscriptionMessage message =
+        new CoinbaseProWebSocketSubscriptionMessage("subscribe", productSubscription, CoinbaseProOrderBookMode.Default, null);
 
-	@Test
-	public void testWebSocketMessageSerializationBatch() throws JsonProcessingException {
-		ProductSubscription productSubscription =
-				ProductSubscription.create()
-						.addOrderbook(CurrencyPair.BTC_USD)
-						.addTrades(CurrencyPair.BTC_USD)
-						.addTicker(CurrencyPair.BTC_USD)
-						.build();
-		CoinbaseProWebSocketSubscriptionMessage message =
-				new CoinbaseProWebSocketSubscriptionMessage("subscribe", productSubscription, CoinbaseProOrderBookMode.Batch, null);
-		final ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-		String serialized = mapper.writeValueAsString(message);
-		Assert.assertEquals(
-				"{\"type\":\"subscribe\",\"channels\":[{\"name\":\"matches\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"level2_batch\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"ticker\",\"product_ids\":[\"BTC-USD\"]}]}",
-				serialized);
-	}
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+    String serialized = mapper.writeValueAsString(message);
+
+    Assert.assertEquals(
+        "{\"type\":\"subscribe\",\"channels\":[{\"name\":\"matches\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"ticker\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"level2\",\"product_ids\":[\"BTC-USD\"]}]}",
+        serialized);
+  }
+
+  @Test
+  public void testWebSocketMessageSerializationL3Orderbook() throws JsonProcessingException {
+
+    ProductSubscription productSubscription =
+        ProductSubscription.create()
+            .addOrderbook(CurrencyPair.BTC_USD)
+            .addTrades(CurrencyPair.BTC_USD)
+            .addTicker(CurrencyPair.BTC_USD)
+            .build();
+    CoinbaseProWebSocketSubscriptionMessage message =
+        new CoinbaseProWebSocketSubscriptionMessage("subscribe", productSubscription, CoinbaseProOrderBookMode.Full, null);
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+    String serialized = mapper.writeValueAsString(message);
+
+    Assert.assertEquals(
+        "{\"type\":\"subscribe\",\"channels\":[{\"name\":\"matches\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"ticker\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"full\",\"product_ids\":[\"BTC-USD\"]}]}",
+        serialized);
+  }
+
+  @Test
+  public void testWebSocketMessageSerializationBatch() throws JsonProcessingException {
+
+    ProductSubscription productSubscription =
+            ProductSubscription.create()
+                    .addOrderbook(CurrencyPair.BTC_USD)
+                    .addTrades(CurrencyPair.BTC_USD)
+                    .addTicker(CurrencyPair.BTC_USD)
+                    .build();
+    CoinbaseProWebSocketSubscriptionMessage message =
+            new CoinbaseProWebSocketSubscriptionMessage("subscribe", productSubscription, CoinbaseProOrderBookMode.Batch, null);
+
+    final ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+    String serialized = mapper.writeValueAsString(message);
+
+    Assert.assertEquals(
+            "{\"type\":\"subscribe\",\"channels\":[{\"name\":\"matches\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"level2_batch\",\"product_ids\":[\"BTC-USD\"]},{\"name\":\"ticker\",\"product_ids\":[\"BTC-USD\"]}]}",
+            serialized);
+  }
 }

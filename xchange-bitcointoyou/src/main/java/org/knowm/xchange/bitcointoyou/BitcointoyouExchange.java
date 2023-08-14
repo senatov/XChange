@@ -17,32 +17,36 @@ import si.mazi.rescu.SynchronizedValueFactory;
  */
 public class BitcointoyouExchange extends BaseExchange implements Exchange {
 
-	private final SynchronizedValueFactory<Long> nonceFactory =
-			new AtomicLongIncrementalTime2013NonceFactory();
+  private final SynchronizedValueFactory<Long> nonceFactory =
+      new AtomicLongIncrementalTime2013NonceFactory();
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-		exchangeSpecification.setSslUri("https://www.bitcointoyou.com/");
-		exchangeSpecification.setHost("www.bitcointoyou.com");
-		exchangeSpecification.setPort(443);
-		exchangeSpecification.setExchangeName("Bitcointoyou");
-		exchangeSpecification.setExchangeDescription("Bitcointoyou is a Brazilian bitcoin exchange.");
-		return exchangeSpecification;
-	}
+  @Override
+  protected void initServices() {
 
-	@Override
-	public SynchronizedValueFactory<Long> getNonceFactory() {
-		return nonceFactory;
-	}
+    final ExchangeSpecification spec = getExchangeSpecification();
+    this.marketDataService = new BitcointoyouMarketDataService(this);
 
-	@Override
-	protected void initServices() {
-		final ExchangeSpecification spec = getExchangeSpecification();
-		this.marketDataService = new BitcointoyouMarketDataService(this);
-		if (spec.getApiKey() != null && spec.getSecretKey() != null) {
-			this.accountService = new BitcointoyouAccountService(this);
-			this.tradeService = new BitcointoyouTradeService(this);
-		}
-	}
+    if (spec.getApiKey() != null && spec.getSecretKey() != null) {
+      this.accountService = new BitcointoyouAccountService(this);
+      this.tradeService = new BitcointoyouTradeService(this);
+    }
+  }
+
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+
+    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+    exchangeSpecification.setSslUri("https://www.bitcointoyou.com/");
+    exchangeSpecification.setHost("www.bitcointoyou.com");
+    exchangeSpecification.setPort(443);
+    exchangeSpecification.setExchangeName("Bitcointoyou");
+    exchangeSpecification.setExchangeDescription("Bitcointoyou is a Brazilian bitcoin exchange.");
+    return exchangeSpecification;
+  }
+
+  @Override
+  public SynchronizedValueFactory<Long> getNonceFactory() {
+
+    return nonceFactory;
+  }
 }

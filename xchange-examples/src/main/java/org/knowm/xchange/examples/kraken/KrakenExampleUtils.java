@@ -6,15 +6,15 @@ import org.knowm.xchange.kraken.KrakenExchange;
 
 public class KrakenExampleUtils {
 
-	private KrakenExampleUtils() {
-	}
+  private KrakenExampleUtils() {}
 
-	public static Exchange createTestExchange() {
-		Exchange krakenExchange = ExchangeFactory.INSTANCE.createExchange(KrakenExchange.class);
-		krakenExchange.getExchangeSpecification().setApiKey("API Key");
-		krakenExchange.getExchangeSpecification().setSecretKey("Secret==");
-		krakenExchange.getExchangeSpecification().setUserName("user");
-		krakenExchange.applySpecification(krakenExchange.getExchangeSpecification());
-		return krakenExchange;
-	}
+  public static Exchange createTestExchange() {
+
+    Exchange krakenExchange = ExchangeFactory.INSTANCE.createExchange(KrakenExchange.class);
+    krakenExchange.getExchangeSpecification().setApiKey("API Key");
+    krakenExchange.getExchangeSpecification().setSecretKey("Secret==");
+    krakenExchange.getExchangeSpecification().setUserName("user");
+    krakenExchange.applySpecification(krakenExchange.getExchangeSpecification());
+    return krakenExchange;
+  }
 }

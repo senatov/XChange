@@ -1,74 +1,88 @@
 package org.knowm.xchange.kraken.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class KrakenVolumeFee {
 
-	private final BigDecimal fee;
-	private final BigDecimal minFee;
-	private final BigDecimal maxFee;
-	private final BigDecimal nextFee;
-	private final BigDecimal nextVolume;
-	private final BigDecimal tierVolume;
+  private final BigDecimal fee;
+  private final BigDecimal minFee;
+  private final BigDecimal maxFee;
+  private final BigDecimal nextFee;
+  private final BigDecimal nextVolume;
+  private final BigDecimal tierVolume;
 
-	/**
-	 * Constructor
-	 */
-	public KrakenVolumeFee(
-			@JsonProperty("fee") BigDecimal fee,
-			@JsonProperty("minfee") BigDecimal minFee,
-			@JsonProperty("maxfee") BigDecimal maxFee,
-			@JsonProperty("nextfee") BigDecimal nextFee,
-			@JsonProperty("nextvolume") BigDecimal nextVolume,
-			@JsonProperty("tiervolume") BigDecimal tierVolume) {
-		this.fee = fee;
-		this.minFee = minFee;
-		this.maxFee = maxFee;
-		this.nextFee = nextFee;
-		this.nextVolume = nextVolume;
-		this.tierVolume = tierVolume;
-	}
+  /**
+   * Constructor
+   *
+   * @param fee
+   * @param minFee
+   * @param maxFee
+   * @param nextFee
+   * @param nextVolume
+   * @param tierVolume
+   */
+  public KrakenVolumeFee(
+      @JsonProperty("fee") BigDecimal fee,
+      @JsonProperty("minfee") BigDecimal minFee,
+      @JsonProperty("maxfee") BigDecimal maxFee,
+      @JsonProperty("nextfee") BigDecimal nextFee,
+      @JsonProperty("nextvolume") BigDecimal nextVolume,
+      @JsonProperty("tiervolume") BigDecimal tierVolume) {
 
-	public BigDecimal getFee() {
-		return fee;
-	}
+    this.fee = fee;
+    this.minFee = minFee;
+    this.maxFee = maxFee;
+    this.nextFee = nextFee;
+    this.nextVolume = nextVolume;
+    this.tierVolume = tierVolume;
+  }
 
-	public BigDecimal getMinFee() {
-		return minFee;
-	}
+  public BigDecimal getFee() {
 
-	public BigDecimal getMaxFee() {
-		return maxFee;
-	}
+    return fee;
+  }
 
-	public BigDecimal getNextFee() {
-		return nextFee;
-	}
+  public BigDecimal getMinFee() {
 
-	public BigDecimal getNextVolume() {
-		return nextVolume;
-	}
+    return minFee;
+  }
 
-	public BigDecimal getTierVolume() {
-		return tierVolume;
-	}
+  public BigDecimal getMaxFee() {
 
-	@Override
-	public String toString() {
-		return "KrakenVolumeFee [fee="
-				+ fee
-				+ ", minFee="
-				+ minFee
-				+ ", maxFee="
-				+ maxFee
-				+ ", nextFee="
-				+ nextFee
-				+ ", nextVolume="
-				+ nextVolume
-				+ ", tierVolume="
-				+ tierVolume
-				+ "]";
-	}
+    return maxFee;
+  }
+
+  public BigDecimal getNextFee() {
+
+    return nextFee;
+  }
+
+  public BigDecimal getNextVolume() {
+
+    return nextVolume;
+  }
+
+  public BigDecimal getTierVolume() {
+
+    return tierVolume;
+  }
+
+  @Override
+  public String toString() {
+
+    return "KrakenVolumeFee [fee="
+        + fee
+        + ", minFee="
+        + minFee
+        + ", maxFee="
+        + maxFee
+        + ", nextFee="
+        + nextFee
+        + ", nextVolume="
+        + nextVolume
+        + ", tierVolume="
+        + tierVolume
+        + "]";
+  }
 }

@@ -1,5 +1,6 @@
 package org.knowm.xchange.okcoin.service;
 
+import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.marketdata.OrderBook;
@@ -9,53 +10,53 @@ import org.knowm.xchange.okcoin.FuturesContract;
 import org.knowm.xchange.okcoin.OkCoinAdapters;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-import java.io.IOException;
-
 public class OkCoinFuturesMarketDataService extends OkCoinMarketDataServiceRaw
-		implements MarketDataService {
-	/**
-	 * Default contract to use
-	 */
-	private final FuturesContract futuresContract;
+    implements MarketDataService {
+  /** Default contract to use */
+  private final FuturesContract futuresContract;
 
-	/**
-	 * Constructor
-	 */
-	public OkCoinFuturesMarketDataService(Exchange exchange, FuturesContract futuresContract) {
-		super(exchange);
-		this.futuresContract = futuresContract;
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public OkCoinFuturesMarketDataService(Exchange exchange, FuturesContract futuresContract) {
 
-	@Override
-	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
-		if (args != null && args.length > 0) {
-			return OkCoinAdapters.adaptTicker(
-					getFuturesTicker(currencyPair, (FuturesContract) args[0]), currencyPair);
-		} else {
-			return OkCoinAdapters.adaptTicker(
-					getFuturesTicker(currencyPair, futuresContract), currencyPair);
-		}
-	}
+    super(exchange);
 
-	@Override
-	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-		if (args != null && args.length > 0) {
-			return OkCoinAdapters.adaptOrderBook(
-					getFuturesDepth(currencyPair, (FuturesContract) args[0]), currencyPair);
-		} else {
-			return OkCoinAdapters.adaptOrderBook(
-					getFuturesDepth(currencyPair, futuresContract), currencyPair);
-		}
-	}
+    this.futuresContract = futuresContract;
+  }
 
-	@Override
-	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
-		if (args != null && args.length > 0) {
-			return OkCoinAdapters.adaptTrades(
-					getFuturesTrades(currencyPair, (FuturesContract) args[0]), currencyPair);
-		} else {
-			return OkCoinAdapters.adaptTrades(
-					getFuturesTrades(currencyPair, futuresContract), currencyPair);
-		}
-	}
+  @Override
+  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
+    if (args != null && args.length > 0) {
+      return OkCoinAdapters.adaptTicker(
+          getFuturesTicker(currencyPair, (FuturesContract) args[0]), currencyPair);
+    } else {
+      return OkCoinAdapters.adaptTicker(
+          getFuturesTicker(currencyPair, futuresContract), currencyPair);
+    }
+  }
+
+  @Override
+  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+    if (args != null && args.length > 0) {
+      return OkCoinAdapters.adaptOrderBook(
+          getFuturesDepth(currencyPair, (FuturesContract) args[0]), currencyPair);
+    } else {
+      return OkCoinAdapters.adaptOrderBook(
+          getFuturesDepth(currencyPair, futuresContract), currencyPair);
+    }
+  }
+
+  @Override
+  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+    if (args != null && args.length > 0) {
+      return OkCoinAdapters.adaptTrades(
+          getFuturesTrades(currencyPair, (FuturesContract) args[0]), currencyPair);
+    } else {
+      return OkCoinAdapters.adaptTrades(
+          getFuturesTrades(currencyPair, futuresContract), currencyPair);
+    }
+  }
 }

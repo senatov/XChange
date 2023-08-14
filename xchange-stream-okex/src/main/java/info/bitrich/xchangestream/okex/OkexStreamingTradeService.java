@@ -16,24 +16,25 @@ import static info.bitrich.xchangestream.okex.OkexStreamingService.USERTRADES;
 
 public class OkexStreamingTradeService implements StreamingTradeService {
 
-	private final OkexStreamingService service;
-	private final ExchangeMetaData exchangeMetaData;
-	private final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
+    private final OkexStreamingService service;
+    private final ExchangeMetaData exchangeMetaData;
+    private final ObjectMapper mapper = StreamingObjectMapperHelper.getObjectMapper();
 
-	public OkexStreamingTradeService(OkexStreamingService service, ExchangeMetaData exchangeMetaData) {
-		this.service = service;
-		this.exchangeMetaData = exchangeMetaData;
-	}
+    public OkexStreamingTradeService(OkexStreamingService service, ExchangeMetaData exchangeMetaData) {
+        this.service = service;
+        this.exchangeMetaData = exchangeMetaData;
+    }
 
-	@Override
-	public Observable<UserTrade> getUserTrades(Instrument instrument, Object... args) {
-		String channelUniqueId = USERTRADES + OkexAdapters.adaptInstrument(instrument);
-		return service.subscribeChannel(channelUniqueId)
-				.filter(message -> message.has("data"))
-				.flatMap(jsonNode -> {
-							List<OkexOrderDetails> okexOrderDetails = mapper.treeToValue(jsonNode.get("data"), mapper.getTypeFactory().constructCollectionType(List.class, OkexOrderDetails.class));
-							return Observable.fromIterable(OkexAdapters.adaptUserTrades(okexOrderDetails, exchangeMetaData).getUserTrades());
-						}
-				);
-	}
+    @Override
+    public Observable<UserTrade> getUserTrades(Instrument instrument, Object... args) {
+        String channelUniqueId = USERTRADES+OkexAdapters.adaptInstrument(instrument);
+
+        return service.subscribeChannel(channelUniqueId)
+                .filter(message-> message.has("data"))
+                .flatMap(jsonNode -> {
+                    List<OkexOrderDetails> okexOrderDetails = mapper.treeToValue(jsonNode.get("data"), mapper.getTypeFactory().constructCollectionType(List.class, OkexOrderDetails.class));
+                    return Observable.fromIterable(OkexAdapters.adaptUserTrades(okexOrderDetails, exchangeMetaData).getUserTrades());
+                }
+        );
+    }
 }

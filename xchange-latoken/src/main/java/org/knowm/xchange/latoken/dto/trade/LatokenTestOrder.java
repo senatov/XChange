@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Response schema:
+ *
  * <pre>
  * {
  * 	"success": true,
@@ -15,25 +16,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LatokenTestOrder {
 
-	private final boolean success;
-	private final String message;
+  private final boolean success;
+  private final String message;
 
-	public LatokenTestOrder(
-			@JsonProperty("success") boolean success, @JsonProperty("message") String message) {
-		this.success = success;
-		this.message = message;
-	}
+  public LatokenTestOrder(
+      @JsonProperty("success") boolean success, @JsonProperty("message") String message) {
 
-	public boolean isSuccess() {
-		return success;
-	}
+    this.success = success;
+    this.message = message;
+  }
 
-	public String getMessage() {
-		return message;
-	}
+  public boolean isSuccess() {
+    return success;
+  }
 
-	@Override
-	public String toString() {
-		return "LatokenTestOrder [success = " + success + ", message = " + message + "]";
-	}
+  public String getMessage() {
+    return message;
+  }
+
+  @Override
+  public String toString() {
+    return "LatokenTestOrder [success = " + success + ", message = " + message + "]";
+  }
 }

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
 
     <groupId>org.knowm.xchange</groupId>
     <artifactId>xchange-parent</artifactId>
@@ -17,10 +21,6 @@
     <url>http://knowm.org/open-source/xchange</url>
     <inceptionYear>2012</inceptionYear>
 
-    <prerequisites>
-        <maven>3.8</maven>
-    </prerequisites>
-
 
     <organization>
         <name>Knowm Inc.</name>
@@ -31,27 +31,26 @@
         <compilerArgs>--enable-preview</compilerArgs>
         <downloadJavadocs>true</downloadJavadocs>
         <downloadSources>true</downloadSources>
+        <failOnNoGitDirectory>false</failOnNoGitDirectory>
+        <maven.compiler.release>17</maven.compiler.release>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.release>17</maven.compiler.release>
-        <version.java>17</version.java>
-        <failOnNoGitDirectory>false</failOnNoGitDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.assertj>3.23.1</version.assertj>
-        <version.commons.lang3>3.12.0</version.commons.lang3>
-        <version.fasterxml>2.14.1</version.fasterxml>
-        <version.github.mmazi>2.1.0</version.github.mmazi>
-
-        <version.junit>4.13.2</version.junit>
-        <version.lombok>1.18.22</version.lombok>
-        <version.knowm.xchart>3.8.4</version.knowm.xchart>
-        <version.qos.logback>1.4.5</version.qos.logback>
-        <version.reflections>0.10.2</version.reflections>
-        <version.resilience4j>1.7.0</version.resilience4j>
-        <version.slf4j>2.0.7</version.slf4j>
-        <version.crypto>5.0.0</version.crypto>
-        <version.java-jwt>3.19.2</version.java-jwt>
         <skipIntegrationTests>true</skipIntegrationTests>
+        <ver.assertj>3.23.1</ver.assertj>
+        <ver.commons.lang3>3.12.0</ver.commons.lang3>
+        <ver.crypto>5.0.0</ver.crypto>
+        <ver.fasterxml>2.14.1</ver.fasterxml>
+        <ver.github.mmazi>2.1.0</ver.github.mmazi>
+        <ver.java-jwt>3.19.2</ver.java-jwt>
+        <ver.java>17</ver.java>
+        <ver.junit>4.13.2</ver.junit>
+        <ver.knowm.xchart>3.8.4</ver.knowm.xchart>
+        <ver.lombok>1.18.28</ver.lombok>
+        <ver.qos.logback>1.4.8</ver.qos.logback>
+        <ver.reflections>0.10.2</ver.reflections>
+        <ver.resilience4j>1.7.0</ver.resilience4j>
+        <ver.slf4j>2.0.7</ver.slf4j>
     </properties>
 
     <developers>
@@ -277,7 +276,7 @@
             <dependency>
                 <groupId>com.github.mmazi</groupId>
                 <artifactId>rescu</artifactId>
-                <version>${version.github.mmazi}</version>
+                <version>${ver.github.mmazi}</version>
                 <exclusions>
                     <exclusion>
                         <groupId>commons-codec</groupId>
@@ -289,55 +288,55 @@
             <dependency>
                 <groupId>io.github.resilience4j</groupId>
                 <artifactId>resilience4j-all</artifactId>
-                <version>${version.resilience4j}</version>
+                <version>${ver.resilience4j}</version>
             </dependency>
 
             <!--For String Joining, etc. -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>${version.commons.lang3}</version>
+                <version>${ver.commons.lang3}</version>
             </dependency>
 
             <!-- Charting -->
             <dependency>
                 <groupId>org.knowm.xchart</groupId>
                 <artifactId>xchart</artifactId>
-                <version>${version.knowm.xchart}</version>
+                <version>${ver.knowm.xchart}</version>
             </dependency>
 
             <!-- Reflections - java runtime metadata analysis for integration testing -->
             <dependency>
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
-                <version>${version.reflections}</version>
+                <version>${ver.reflections}</version>
                 <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-csv</artifactId>
-                <version>${version.fasterxml}</version>
+                <version>${ver.fasterxml}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${version.fasterxml}</version>
+                <version>${ver.fasterxml}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>${version.fasterxml}</version>
+                <version>${ver.fasterxml}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>${version.fasterxml}</version>
+                <version>${ver.fasterxml}</version>
             </dependency>
             <dependency>
                 <groupId>org.web3j</groupId>
                 <artifactId>crypto</artifactId>
-                <version>${version.crypto}</version>
+                <version>${ver.crypto}</version>
             </dependency>
 
             <dependency>
@@ -364,20 +363,20 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>${version.qos.logback}</version>
+                <version>${ver.qos.logback}</version>
             </dependency>
             <!-- Lombok for boilerplate -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>${version.lombok}</version>
+                <version>${ver.lombok}</version>
                 <scope>provided</scope>
             </dependency>
             <!-- jwt for auth -->
             <dependency>
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
-                <version>${version.java-jwt}</version>
+                <version>${ver.java-jwt}</version>
             </dependency>
             <!-- for streaming-->
             <dependency>
@@ -394,7 +393,7 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
-                <version>4.1.92.Final</version>
+                <version>4.1.86.Final</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -405,7 +404,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${version.slf4j}</version>
+            <version>${ver.slf4j}</version>
         </dependency>
 
         <!-- javax APIs -->
@@ -426,13 +425,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
+            <version>${ver.junit}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${version.assertj}</version>
+            <version>${ver.assertj}</version>
             <scope>test</scope>
         </dependency>
 
@@ -453,7 +452,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.0</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -514,26 +513,47 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
+                    <source>${ver.java}</source>
+                    <target>${ver.java}</target>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${ver.lombok}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <!-- for deploying to Maven Central -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M6</version>
+                <version>3.0.0-M7</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -568,6 +588,8 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
+
 </project>

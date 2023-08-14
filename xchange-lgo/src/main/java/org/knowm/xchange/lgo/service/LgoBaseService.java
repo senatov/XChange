@@ -8,12 +8,12 @@ import org.knowm.xchange.service.BaseService;
 
 public class LgoBaseService extends BaseExchangeService<LgoExchange> implements BaseService {
 
-	protected final Lgo proxy;
+  protected final Lgo proxy;
 
-	protected LgoBaseService(LgoExchange exchange) {
-		super(exchange);
-		proxy =
-				ExchangeRestProxyBuilder.forInterface(Lgo.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  protected LgoBaseService(LgoExchange exchange) {
+    super(exchange);
+    proxy =
+        ExchangeRestProxyBuilder.forInterface(Lgo.class, exchange.getExchangeSpecification())
+            .build();
+  }
 }

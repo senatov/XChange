@@ -1,5 +1,6 @@
 package org.knowm.xchange.coinone.service;
 
+import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinone.dto.CoinoneException;
 import org.knowm.xchange.coinone.dto.trade.CoinoneTradeCancelRequest;
@@ -13,47 +14,46 @@ import org.knowm.xchange.exceptions.NotYetImplementedForExchangeException;
 import org.knowm.xchange.service.trade.TradeService;
 import org.knowm.xchange.service.trade.params.CancelOrderParams;
 
-import java.io.IOException;
-
-/**
- * @author interwater
- */
+/** @author interwater */
 public class CoinoneTradeService extends CoinoneTradeServiceRaw implements TradeService {
-	/**
-	 * Constructor
-	 */
-	public CoinoneTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public CoinoneTradeService(Exchange exchange) {
 
-	@Override
-	public OpenOrders getOpenOrders() throws IOException {
-		return getOpenOrders(createOpenOrdersParams());
-	}
+    super(exchange);
+  }
 
-	@Override
-	public String placeStopOrder(StopOrder stopOrder) throws IOException {
-		return null;
-	}
+  @Override
+  public OpenOrders getOpenOrders() throws IOException {
+    return getOpenOrders(createOpenOrdersParams());
+  }
 
-	@Override
-	public String placeLimitOrder(LimitOrder limitOrder)
-			throws IOException, NotAvailableFromExchangeException {
-		CoinoneTradeResponse response = super.placeLimitOrderRaw(limitOrder);
-		if (!response.getErrorCode().equals("0")) {
-			throw new CoinoneException(CoinoneException.resMsgMap.get(response.getErrorCode()));
-		}
-		return response.getOrderId();
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder limitOrder)
+      throws IOException, NotAvailableFromExchangeException {
+    CoinoneTradeResponse response = super.placeLimitOrderRaw(limitOrder);
+    if (!response.getErrorCode().equals("0")) {
+      throw new CoinoneException(CoinoneException.resMsgMap.get(response.getErrorCode()));
+    }
+    return response.getOrderId();
+  }
 
-	@Override
-	public boolean cancelOrder(CancelOrderParams orderParams)
-			throws ExchangeException, NotAvailableFromExchangeException,
-			NotYetImplementedForExchangeException, IOException {
-		CoinoneTradeResponse response = super.cancerOrder((CoinoneTradeCancelRequest) orderParams);
-		if (!response.getErrorCode().equals("0")) {
-			throw new CoinoneException(CoinoneException.resMsgMap.get(response.getErrorCode()));
-		}
-		return true;
-	}
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    return null;
+  }
+
+  @Override
+  public boolean cancelOrder(CancelOrderParams orderParams)
+      throws ExchangeException, NotAvailableFromExchangeException,
+          NotYetImplementedForExchangeException, IOException {
+    CoinoneTradeResponse response = super.cancerOrder((CoinoneTradeCancelRequest) orderParams);
+    if (!response.getErrorCode().equals("0")) {
+      throw new CoinoneException(CoinoneException.resMsgMap.get(response.getErrorCode()));
+    }
+    return true;
+  }
 }

@@ -24,19 +24,17 @@
 package org.knowm.xchange.coinmate.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.knowm.xchange.coinmate.dto.CoinmateBaseResponse;
 
-import java.util.List;
-
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateOpenOrders extends CoinmateBaseResponse<List<CoinmateOpenOrdersEntry>> {
 
-	public CoinmateOpenOrders(
-			@JsonProperty("error") boolean error,
-			@JsonProperty("errorMessage") String errorMessage,
-			@JsonProperty("data") List<CoinmateOpenOrdersEntry> data) {
-		super(error, errorMessage, data);
-	}
+  public CoinmateOpenOrders(
+      @JsonProperty("error") boolean error,
+      @JsonProperty("errorMessage") String errorMessage,
+      @JsonProperty("data") List<CoinmateOpenOrdersEntry> data) {
+
+    super(error, errorMessage, data);
+  }
 }

@@ -6,51 +6,50 @@ import org.knowm.xchange.gateio.GateioExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Author: Max Gao (gaamox@tutanota.com) Created: 05-05-2021
- */
+/** Author: Max Gao (gaamox@tutanota.com) Created: 05-05-2021 */
 public class GateioStreamingExchange extends GateioExchange implements StreamingExchange {
-	private static final Logger LOG = LoggerFactory.getLogger(GateioStreamingExchange.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GateioStreamingExchange.class);
 
-	private final String V4_URL = "wss://api.gateio.ws/ws/v4/";
+  private final String V4_URL = "wss://api.gateio.ws/ws/v4/";
 
-	private GateioStreamingService streamingService;
-	private StreamingMarketDataService streamingMarketDataService;
+  private GateioStreamingService streamingService;
+  private StreamingMarketDataService streamingMarketDataService;
 
-	public GateioStreamingExchange() {
-	}
+  public GateioStreamingExchange() {}
 
-	@Override
-	public Completable connect(ProductSubscription... args) {
-		if (args == null || args.length == 0)
-			throw new UnsupportedOperationException("The ProductSubscription must be defined!");
-		this.streamingService = new GateioStreamingService(V4_URL, exchangeSpecification);
-		applyStreamingSpecification(getExchangeSpecification(), streamingService);
-		this.streamingMarketDataService = new GateioStreamingMarketDataService(streamingService);
-		streamingService.subscribeMultipleCurrencyPairs(args);
-		return streamingService.connect();
-	}
+  @Override
+  public Completable connect(ProductSubscription... args) {
+    if (args == null || args.length == 0)
+      throw new UnsupportedOperationException("The ProductSubscription must be defined!");
 
-	@Override
-	public Completable disconnect() {
-		GateioStreamingService service = streamingService;
-		streamingService = null;
-		streamingMarketDataService = null;
-		return service.disconnect();
-	}
+    this.streamingService = new GateioStreamingService(V4_URL, exchangeSpecification);
+    applyStreamingSpecification(getExchangeSpecification(), streamingService);
+    this.streamingMarketDataService = new GateioStreamingMarketDataService(streamingService);
 
-	@Override
-	public boolean isAlive() {
-		return streamingService != null && streamingService.isSocketOpen();
-	}
+    streamingService.subscribeMultipleCurrencyPairs(args);
+    return streamingService.connect();
+  }
 
-	@Override
-	public StreamingMarketDataService getStreamingMarketDataService() {
-		return streamingMarketDataService;
-	}
+  @Override
+  public Completable disconnect() {
+    GateioStreamingService service = streamingService;
+    streamingService = null;
+    streamingMarketDataService = null;
+    return service.disconnect();
+  }
 
-	@Override
-	public void useCompressedMessages(boolean compressedMessages) {
-		streamingService.useCompressedMessages(compressedMessages);
-	}
+  @Override
+  public StreamingMarketDataService getStreamingMarketDataService() {
+    return streamingMarketDataService;
+  }
+
+  @Override
+  public boolean isAlive() {
+    return streamingService != null && streamingService.isSocketOpen();
+  }
+
+  @Override
+  public void useCompressedMessages(boolean compressedMessages) {
+    streamingService.useCompressedMessages(compressedMessages);
+  }
 }

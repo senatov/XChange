@@ -9,8 +9,8 @@ import org.knowm.xchange.currency.Currency;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BittrexAddress {
-	private Currency currencySymbol;
-	private String status;
-	private String cryptoAddress;
-	private String cryptoAddressTag;
+  private Currency currencySymbol;
+  private String status;
+  private String cryptoAddress;
+  private String cryptoAddressTag;
 }

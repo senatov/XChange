@@ -1,66 +1,66 @@
 package info.bitrich.xchangestream.binance.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Date;
 
 public class BaseBinanceWebSocketTransaction {
 
-	protected final BinanceWebSocketTypes eventType;
-	protected final Date eventTime;
-	public BaseBinanceWebSocketTransaction(
-			@JsonProperty("e") String _eventType, @JsonProperty("E") String _eventTime) {
-		this(
-				BinanceWebSocketTypes.fromTransactionValue(_eventType),
-				new Date(Long.parseLong(_eventTime)));
-	}
+  public enum BinanceWebSocketTypes {
+    DEPTH_UPDATE("depthUpdate"),
+    TICKER_24_HR("24hrTicker"),
+    BOOK_TICKER("bookTicker"),
+    KLINE("kline"),
+    AGG_TRADE("aggTrade"),
+    TRADE("trade"),
+    OUTBOUND_ACCOUNT_POSITION("outboundAccountPosition"),
+    EXECUTION_REPORT("executionReport");
 
-	BaseBinanceWebSocketTransaction(BinanceWebSocketTypes eventType, Date eventTime) {
-		this.eventType = eventType;
-		this.eventTime = eventTime;
-	}
+    /**
+     * Get a type from the `type` string of a `ProductBinanceWebSocketTransaction`.
+     *
+     * @param value The string representation.
+     * @return THe enum value.
+     */
+    public static BinanceWebSocketTypes fromTransactionValue(String value) {
+      for (BinanceWebSocketTypes type : BinanceWebSocketTypes.values()) {
+        if (type.serializedValue.equals(value)) {
+          return type;
+        }
+      }
+      return null;
+    }
 
-	public BinanceWebSocketTypes getEventType() {
-		return eventType;
-	}
+    private String serializedValue;
 
-	public Date getEventTime() {
-		return eventTime;
-	}
+    BinanceWebSocketTypes(String serializedValue) {
+      this.serializedValue = serializedValue;
+    }
 
-	public enum BinanceWebSocketTypes {
-		DEPTH_UPDATE("depthUpdate"),
-		TICKER_24_HR("24hrTicker"),
-		BOOK_TICKER("bookTicker"),
-		KLINE("kline"),
-		AGG_TRADE("aggTrade"),
-		TRADE("trade"),
-		OUTBOUND_ACCOUNT_POSITION("outboundAccountPosition"),
-		EXECUTION_REPORT("executionReport");
+    public String getSerializedValue() {
+      return serializedValue;
+    }
+  }
 
-		private final String serializedValue;
+  protected final BinanceWebSocketTypes eventType;
+  protected final Date eventTime;
 
-		BinanceWebSocketTypes(String serializedValue) {
-			this.serializedValue = serializedValue;
-		}
+  public BaseBinanceWebSocketTransaction(
+      @JsonProperty("e") String _eventType, @JsonProperty("E") String _eventTime) {
+    this(
+        BinanceWebSocketTypes.fromTransactionValue(_eventType),
+        new Date(Long.parseLong(_eventTime)));
+  }
 
-		/**
-		 * Get a type from the `type` string of a `ProductBinanceWebSocketTransaction`.
-		 *
-		 * @param value The string representation.
-		 * @return THe enum value.
-		 */
-		public static BinanceWebSocketTypes fromTransactionValue(String value) {
-			for (BinanceWebSocketTypes type : BinanceWebSocketTypes.values()) {
-				if (type.serializedValue.equals(value)) {
-					return type;
-				}
-			}
-			return null;
-		}
+  BaseBinanceWebSocketTransaction(BinanceWebSocketTypes eventType, Date eventTime) {
+    this.eventType = eventType;
+    this.eventTime = eventTime;
+  }
 
-		public String getSerializedValue() {
-			return serializedValue;
-		}
-	}
+  public BinanceWebSocketTypes getEventType() {
+    return eventType;
+  }
+
+  public Date getEventTime() {
+    return eventTime;
+  }
 }

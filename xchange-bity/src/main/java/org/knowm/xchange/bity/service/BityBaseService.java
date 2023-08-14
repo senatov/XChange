@@ -10,25 +10,28 @@ import org.knowm.xchange.service.BaseService;
 
 public class BityBaseService extends BaseExchangeService implements BaseService {
 
-	protected final BityAuthenticated bity;
+  protected final BityAuthenticated bity;
 
-	/**
-	 * Constructor
-	 */
-	protected BityBaseService(Exchange exchange) {
-		super(exchange);
-		bity =
-				ExchangeRestProxyBuilder.forInterface(
-								BityAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  protected BityBaseService(Exchange exchange) {
+    super(exchange);
 
-	public BityToken createToken() throws BityException {
-		String clientId = (String) exchange.getExchangeSpecification().getParameter("clientId");
-		return bity.createToken(
-				clientId,
-				"password",
-				exchange.getExchangeSpecification().getApiKey(),
-				exchange.getExchangeSpecification().getSecretKey());
-	}
+    bity =
+        ExchangeRestProxyBuilder.forInterface(
+                BityAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+  }
+
+  public BityToken createToken() throws BityException {
+    String clientId = (String) exchange.getExchangeSpecification().getParameter("clientId");
+    return bity.createToken(
+        clientId,
+        "password",
+        exchange.getExchangeSpecification().getApiKey(),
+        exchange.getExchangeSpecification().getSecretKey());
+  }
 }

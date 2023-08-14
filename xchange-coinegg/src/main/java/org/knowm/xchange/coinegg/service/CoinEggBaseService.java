@@ -8,12 +8,12 @@ import org.knowm.xchange.service.BaseService;
 
 public class CoinEggBaseService extends BaseExchangeService implements BaseService {
 
-	protected CoinEgg coinEgg;
+  protected CoinEgg coinEgg;
 
-	public CoinEggBaseService(Exchange exchange) {
-		super(exchange);
-		this.coinEgg =
-				ExchangeRestProxyBuilder.forInterface(CoinEgg.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  public CoinEggBaseService(Exchange exchange) {
+    super(exchange);
+    this.coinEgg =
+        ExchangeRestProxyBuilder.forInterface(CoinEgg.class, exchange.getExchangeSpecification())
+            .build();
+  }
 }

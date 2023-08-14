@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,71 +13,69 @@ import java.util.Map;
 @JsonPropertyOrder({"btc", "bch", "eth"})
 public class BitcoindeBalances {
 
-	@JsonProperty("btc")
-	private BitcoindeBalance btc;
+  @JsonProperty("btc")
+  private BitcoindeBalance btc;
 
-	@JsonProperty("bch")
-	private BitcoindeBalance bch;
+  @JsonProperty("bch")
+  private BitcoindeBalance bch;
 
-	@JsonProperty("eth")
-	private BitcoindeBalance eth;
+  @JsonProperty("eth")
+  private BitcoindeBalance eth;
 
-	@JsonIgnore
-	private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	/**
-	 * No args constructor for use in serialization
-	 */
-	public BitcoindeBalances() {
-	}
+  /** No args constructor for use in serialization */
+  public BitcoindeBalances() {}
 
-	/**
-	 *
-	 */
-	public BitcoindeBalances(BitcoindeBalance btc, BitcoindeBalance bch, BitcoindeBalance eth) {
-		super();
-		this.btc = btc;
-		this.bch = bch;
-		this.eth = eth;
-	}
+  /**
+   * @param eth
+   * @param bch
+   * @param btc
+   */
+  public BitcoindeBalances(BitcoindeBalance btc, BitcoindeBalance bch, BitcoindeBalance eth) {
+    super();
+    this.btc = btc;
+    this.bch = bch;
+    this.eth = eth;
+  }
 
-	@JsonProperty("btc")
-	public BitcoindeBalance getBtc() {
-		return btc;
-	}
+  @JsonProperty("btc")
+  public BitcoindeBalance getBtc() {
+    return btc;
+  }
 
-	@JsonProperty("btc")
-	public void setBtc(BitcoindeBalance btc) {
-		this.btc = btc;
-	}
+  @JsonProperty("btc")
+  public void setBtc(BitcoindeBalance btc) {
+    this.btc = btc;
+  }
 
-	@JsonProperty("bch")
-	public BitcoindeBalance getBch() {
-		return bch;
-	}
+  @JsonProperty("bch")
+  public BitcoindeBalance getBch() {
+    return bch;
+  }
 
-	@JsonProperty("bch")
-	public void setBch(BitcoindeBalance bch) {
-		this.bch = bch;
-	}
+  @JsonProperty("bch")
+  public void setBch(BitcoindeBalance bch) {
+    this.bch = bch;
+  }
 
-	@JsonProperty("eth")
-	public BitcoindeBalance getEth() {
-		return eth;
-	}
+  @JsonProperty("eth")
+  public BitcoindeBalance getEth() {
+    return eth;
+  }
 
-	@JsonProperty("eth")
-	public void setEth(BitcoindeBalance eth) {
-		this.eth = eth;
-	}
+  @JsonProperty("eth")
+  public void setEth(BitcoindeBalance eth) {
+    this.eth = eth;
+  }
 
-	@JsonAnyGetter
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
 
-	@JsonAnySetter
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
-	}
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
 }

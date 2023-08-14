@@ -1,145 +1,162 @@
 package org.knowm.xchange.gateio.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.gateio.GateioAdapters;
 import org.knowm.xchange.gateio.dto.GateioBaseResponse;
 import org.knowm.xchange.gateio.dto.GateioOrderType;
 
-import java.math.BigDecimal;
-
-/**
- * Created by David Henry on 2/19/14.
- */
+/** Created by David Henry on 2/19/14. */
 public class GateioOrderStatus extends GateioBaseResponse {
 
-	private final BTEROrderStatusInfo orderStatusInfo;
+  private final BTEROrderStatusInfo orderStatusInfo;
 
-	private GateioOrderStatus(
-			@JsonProperty("order") BTEROrderStatusInfo orderStatusInfo,
-			@JsonProperty("result") boolean result,
-			@JsonProperty("message") String msg) {
-		super(result, msg);
-		this.orderStatusInfo = orderStatusInfo;
-	}
+  private GateioOrderStatus(
+      @JsonProperty("order") BTEROrderStatusInfo orderStatusInfo,
+      @JsonProperty("result") boolean result,
+      @JsonProperty("message") String msg) {
 
-	public String getOrderNumber() {
-		return orderStatusInfo.getOrderNumber();
-	}
+    super(result, msg);
+    this.orderStatusInfo = orderStatusInfo;
+  }
 
-	public String getStatus() {
-		return orderStatusInfo.getStatus();
-	}
+  public String getOrderNumber() {
 
-	public CurrencyPair getCurrencyPair() {
-		return orderStatusInfo.getCurrencyPair();
-	}
+    return orderStatusInfo.getOrderNumber();
+  }
 
-	public GateioOrderType getType() {
-		return orderStatusInfo.getType();
-	}
+  public String getStatus() {
 
-	public BigDecimal getRate() {
-		return orderStatusInfo.getRate();
-	}
+    return orderStatusInfo.getStatus();
+  }
 
-	public BigDecimal getAmount() {
-		return orderStatusInfo.getAmount();
-	}
+  public CurrencyPair getCurrencyPair() {
 
-	public BigDecimal getInitialRate() {
-		return orderStatusInfo.getInitialRate();
-	}
+    return orderStatusInfo.getCurrencyPair();
+  }
 
-	public BigDecimal getInitialAmount() {
-		return orderStatusInfo.getInitialAmount();
-	}
+  public GateioOrderType getType() {
 
-	public String toString() {
-		return orderStatusInfo.toString();
-	}
+    return orderStatusInfo.getType();
+  }
 
-	public static class BTEROrderStatusInfo {
+  public BigDecimal getRate() {
 
-		private final String orderNumber;
-		private final String status;
-		private final CurrencyPair currencyPair;
-		private final GateioOrderType type;
-		private final BigDecimal rate;
-		private final BigDecimal amount;
-		private final BigDecimal initialRate;
-		private final BigDecimal initialAmount;
+    return orderStatusInfo.getRate();
+  }
 
-		private BTEROrderStatusInfo(
-				@JsonProperty("orderNumber") String orderNumber,
-				@JsonProperty("status") String status,
-				@JsonProperty("currencyPair") String currencyPair,
-				@JsonProperty("type") GateioOrderType type,
-				@JsonProperty("rate") BigDecimal rate,
-				@JsonProperty("amount") BigDecimal amount,
-				@JsonProperty("initialRate") BigDecimal initialRate,
-				@JsonProperty("initialAmount") BigDecimal initialAmount) {
-			this.orderNumber = orderNumber;
-			this.status = status;
-			this.currencyPair = GateioAdapters.adaptCurrencyPair(currencyPair);
-			this.type = type;
-			this.rate = rate;
-			this.amount = amount;
-			this.initialRate = initialRate;
-			this.initialAmount = initialAmount;
-		}
+  public BigDecimal getAmount() {
 
-		public String getOrderNumber() {
-			return orderNumber;
-		}
+    return orderStatusInfo.getAmount();
+  }
 
-		public String getStatus() {
-			return status;
-		}
+  public BigDecimal getInitialRate() {
 
-		public CurrencyPair getCurrencyPair() {
-			return currencyPair;
-		}
+    return orderStatusInfo.getInitialRate();
+  }
 
-		public GateioOrderType getType() {
-			return type;
-		}
+  public BigDecimal getInitialAmount() {
 
-		public BigDecimal getRate() {
-			return rate;
-		}
+    return orderStatusInfo.getInitialAmount();
+  }
 
-		public BigDecimal getAmount() {
-			return amount;
-		}
+  public String toString() {
 
-		public BigDecimal getInitialRate() {
-			return initialRate;
-		}
+    return orderStatusInfo.toString();
+  }
 
-		public BigDecimal getInitialAmount() {
-			return initialAmount;
-		}
+  public static class BTEROrderStatusInfo {
 
-		@Override
-		public String toString() {
-			return "BTEROrderStatusInfo [id="
-					+ orderNumber
-					+ ", status="
-					+ status
-					+ ", currencyPair="
-					+ currencyPair
-					+ ", type="
-					+ type
-					+ ", rate="
-					+ rate
-					+ ", amount="
-					+ amount
-					+ ", initialRate="
-					+ initialRate
-					+ ", initialAmount="
-					+ initialAmount
-					+ "]";
-		}
-	}
+    private final String orderNumber;
+    private final String status;
+    private final CurrencyPair currencyPair;
+    private final GateioOrderType type;
+    private final BigDecimal rate;
+    private final BigDecimal amount;
+    private final BigDecimal initialRate;
+    private final BigDecimal initialAmount;
+
+    private BTEROrderStatusInfo(
+        @JsonProperty("orderNumber") String orderNumber,
+        @JsonProperty("status") String status,
+        @JsonProperty("currencyPair") String currencyPair,
+        @JsonProperty("type") GateioOrderType type,
+        @JsonProperty("rate") BigDecimal rate,
+        @JsonProperty("amount") BigDecimal amount,
+        @JsonProperty("initialRate") BigDecimal initialRate,
+        @JsonProperty("initialAmount") BigDecimal initialAmount) {
+
+      this.orderNumber = orderNumber;
+      this.status = status;
+      this.currencyPair = GateioAdapters.adaptCurrencyPair(currencyPair);
+      this.type = type;
+      this.rate = rate;
+      this.amount = amount;
+      this.initialRate = initialRate;
+      this.initialAmount = initialAmount;
+    }
+
+    public String getOrderNumber() {
+
+      return orderNumber;
+    }
+
+    public String getStatus() {
+
+      return status;
+    }
+
+    public CurrencyPair getCurrencyPair() {
+
+      return currencyPair;
+    }
+
+    public GateioOrderType getType() {
+
+      return type;
+    }
+
+    public BigDecimal getRate() {
+
+      return rate;
+    }
+
+    public BigDecimal getAmount() {
+
+      return amount;
+    }
+
+    public BigDecimal getInitialRate() {
+
+      return initialRate;
+    }
+
+    public BigDecimal getInitialAmount() {
+
+      return initialAmount;
+    }
+
+    @Override
+    public String toString() {
+
+      return "BTEROrderStatusInfo [id="
+          + orderNumber
+          + ", status="
+          + status
+          + ", currencyPair="
+          + currencyPair
+          + ", type="
+          + type
+          + ", rate="
+          + rate
+          + ", amount="
+          + amount
+          + ", initialRate="
+          + initialRate
+          + ", initialAmount="
+          + initialAmount
+          + "]";
+    }
+  }
 }

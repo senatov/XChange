@@ -1,5 +1,6 @@
 package org.knowm.xchange.coinbase.service;
 
+import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinbase.CoinbaseAdapters;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseTransfer;
@@ -19,88 +20,93 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamPaging;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 
-import java.io.IOException;
-
-/**
- * @author jamespedwards42
- */
+/** @author jamespedwards42 */
 public final class CoinbaseTradeService extends CoinbaseTradeServiceRaw implements TradeService {
 
-	/**
-	 * Constructor
-	 */
-	public CoinbaseTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public CoinbaseTradeService(Exchange exchange) {
 
-	@Override
-	public OpenOrders getOpenOrders() throws NotAvailableFromExchangeException, IOException {
-		return getOpenOrders(createOpenOrdersParams());
-	}
+    super(exchange);
+  }
 
-	@Override
-	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+  @Override
+  public OpenOrders getOpenOrders() throws NotAvailableFromExchangeException, IOException {
+    return getOpenOrders(createOpenOrdersParams());
+  }
 
-	@Override
-	public String placeMarketOrder(MarketOrder marketOrder) throws ExchangeException, IOException {
-		final CoinbaseTransfer transfer =
-				marketOrder.getType().equals(OrderType.BID)
-						? super.buy(marketOrder.getOriginalAmount())
-						: super.sell(marketOrder.getOriginalAmount());
-		return transfer.getId();
-	}
+  @Override
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+    throw new NotAvailableFromExchangeException();
+  }
 
-	@Override
-	public String placeStopOrder(StopOrder stopOrder) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+  @Override
+  public String placeMarketOrder(MarketOrder marketOrder) throws ExchangeException, IOException {
 
-	@Override
-	public String placeLimitOrder(LimitOrder limitOrder) throws NotAvailableFromExchangeException {
-		throw new NotAvailableFromExchangeException();
-	}
+    final CoinbaseTransfer transfer =
+        marketOrder.getType().equals(OrderType.BID)
+            ? super.buy(marketOrder.getOriginalAmount())
+            : super.sell(marketOrder.getOriginalAmount());
+    return transfer.getId();
+  }
 
-	@Override
-	public boolean cancelOrder(String orderId) throws NotAvailableFromExchangeException {
-		throw new NotAvailableFromExchangeException();
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder limitOrder) throws NotAvailableFromExchangeException {
 
-	@Override
-	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+    throw new NotAvailableFromExchangeException();
+  }
 
-	/**
-	 * Authenticated resource which returns the user’s Bitcoin purchases and sells. Sorted in
-	 * descending order by creation date.
-	 *
-	 * @see <a
-	 * href="https://coinbase.com/api/doc/1.0/transfers/index.html">coinbase.com/api/doc/1.0/transfers/index.html</a>
-	 */
-	@Override
-	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-		Integer page = null;
-		Integer limit = null;
-		if (params instanceof TradeHistoryParamPaging) {
-			page = ((TradeHistoryParamPaging) params).getPageNumber() + 1;
-			limit = ((TradeHistoryParamPaging) params).getPageLength();
-		}
-		final CoinbaseTransfers transfers = super.getCoinbaseTransfers(page, limit);
-		return CoinbaseAdapters.adaptTrades(transfers);
-	}
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    throw new NotAvailableFromExchangeException();
+  }
 
-	@Override
-	public TradeHistoryParams createTradeHistoryParams() {
-		DefaultTradeHistoryParamPaging params = new DefaultTradeHistoryParamPaging();
-		params.setPageNumber(0);
-		params.setPageLength(100);
-		return params;
-	}
+  @Override
+  public boolean cancelOrder(String orderId) throws NotAvailableFromExchangeException {
 
-	@Override
-	public OpenOrdersParams createOpenOrdersParams() {
-		return null;
-	}
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+    throw new NotAvailableFromExchangeException();
+  }
+
+  /**
+   * Authenticated resource which returns the user’s Bitcoin purchases and sells. Sorted in
+   * descending order by creation date.
+   *
+   * @see <a
+   *     href="https://coinbase.com/api/doc/1.0/transfers/index.html">coinbase.com/api/doc/1.0/transfers/index.html</a>
+   */
+  @Override
+  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+
+    Integer page = null;
+    Integer limit = null;
+    if (params instanceof TradeHistoryParamPaging) {
+      page = ((TradeHistoryParamPaging) params).getPageNumber() + 1;
+      limit = ((TradeHistoryParamPaging) params).getPageLength();
+    }
+
+    final CoinbaseTransfers transfers = super.getCoinbaseTransfers(page, limit);
+    return CoinbaseAdapters.adaptTrades(transfers);
+  }
+
+  @Override
+  public TradeHistoryParams createTradeHistoryParams() {
+
+    DefaultTradeHistoryParamPaging params = new DefaultTradeHistoryParamPaging();
+    params.setPageNumber(0);
+    params.setPageLength(100);
+    return params;
+  }
+
+  @Override
+  public OpenOrdersParams createOpenOrdersParams() {
+    return null;
+  }
 }

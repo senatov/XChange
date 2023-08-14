@@ -1,83 +1,80 @@
 package org.knowm.xchange.bibox.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class BiboxTradeCommandBody {
 
-	private final String pair;
+  private String pair;
 
-	@JsonProperty("account_type")
-	private int accountType;
+  @JsonProperty("account_type")
+  private int accountType;
 
-	@JsonProperty("order_type")
-	private int orderType;
+  @JsonProperty("order_type")
+  private int orderType;
 
-	@JsonProperty("order_side")
-	private int orderSide;
+  @JsonProperty("order_side")
+  private int orderSide;
 
-	@JsonProperty("pay_bix")
-	private boolean payBix;
+  @JsonProperty("pay_bix")
+  private boolean payBix;
 
-	private final BigDecimal price;
+  private BigDecimal price;
 
-	private final BigDecimal amount;
+  private BigDecimal amount;
 
-	/**
-	 * what?
-	 */
-	private final BigDecimal money;
+  /** what? */
+  private BigDecimal money;
 
-	public BiboxTradeCommandBody(
-			String pair,
-			int accountType,
-			int orderType,
-			int orderSide,
-			boolean payBix,
-			BigDecimal price,
-			BigDecimal amount,
-			BigDecimal money) {
-		super();
-		this.pair = pair;
-		this.accountType = accountType;
-		this.orderType = orderType;
-		this.orderSide = orderSide;
-		this.payBix = payBix;
-		this.price = price;
-		this.amount = amount;
-		this.money = money;
-	}
+  public BiboxTradeCommandBody(
+      String pair,
+      int accountType,
+      int orderType,
+      int orderSide,
+      boolean payBix,
+      BigDecimal price,
+      BigDecimal amount,
+      BigDecimal money) {
+    super();
+    this.pair = pair;
+    this.accountType = accountType;
+    this.orderType = orderType;
+    this.orderSide = orderSide;
+    this.payBix = payBix;
+    this.price = price;
+    this.amount = amount;
+    this.money = money;
+  }
 
-	public String getPair() {
-		return pair;
-	}
+  public String getPair() {
+    return pair;
+  }
 
-	public int getAccountType() {
-		return accountType;
-	}
+  public int getAccountType() {
+    return accountType;
+  }
 
-	public int getOrderType() {
-		return orderType;
-	}
+  public int getOrderType() {
+    return orderType;
+  }
 
-	public int getOrderSide() {
-		return orderSide;
-	}
+  public int getOrderSide() {
+    return orderSide;
+  }
 
-	public boolean isPayBix() {
-		return payBix;
-	}
+  public boolean isPayBix() {
+    return payBix;
+  }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	public BigDecimal getMoney() {
-		return money;
-	}
+  public BigDecimal getMoney() {
+    return money;
+  }
 }

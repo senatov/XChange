@@ -24,57 +24,55 @@
 package org.knowm.xchange.coinmate.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateTransactionsEntry {
 
-	private final long timestamp;
-	private final String transactionId;
-	private final BigDecimal price;
-	private final BigDecimal amount;
-	private final String currencyPair;
-	private final String type;
+  private final long timestamp;
+  private final String transactionId;
+  private final BigDecimal price;
+  private final BigDecimal amount;
+  private final String currencyPair;
+  private final String type;
 
-	public CoinmateTransactionsEntry(
-			@JsonProperty("timestamp") long timestamp,
-			@JsonProperty("transactionId") String transactionId,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("currencyPair") String currencyPair,
-			@JsonProperty("tradeType") String type) {
-		this.timestamp = timestamp;
-		this.transactionId = transactionId;
-		this.price = price;
-		this.amount = amount;
-		this.currencyPair = currencyPair;
-		this.type = type;
-	}
+  public CoinmateTransactionsEntry(
+      @JsonProperty("timestamp") long timestamp,
+      @JsonProperty("transactionId") String transactionId,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("currencyPair") String currencyPair,
+      @JsonProperty("tradeType") String type) {
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+    this.timestamp = timestamp;
+    this.transactionId = transactionId;
+    this.price = price;
+    this.amount = amount;
+    this.currencyPair = currencyPair;
+    this.type = type;
+  }
 
-	public String getTransactionId() {
-		return transactionId;
-	}
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public String getTransactionId() {
+    return transactionId;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	public String getCurrencyPair() {
-		return currencyPair;
-	}
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	public String getType() {
-		return type;
-	}
+  public String getCurrencyPair() {
+    return currencyPair;
+  }
+
+  public String getType() {
+    return type;
+  }
 }

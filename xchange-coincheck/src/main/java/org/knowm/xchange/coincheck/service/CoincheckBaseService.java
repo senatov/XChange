@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CoincheckBaseService extends BaseExchangeService implements BaseService {
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+  protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
-	public CoincheckBaseService(Exchange exchange) {
-		super(exchange);
-	}
+  public CoincheckBaseService(Exchange exchange) {
+    super(exchange);
+  }
 }

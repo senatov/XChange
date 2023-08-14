@@ -1,23 +1,23 @@
 package org.knowm.xchange.coinone.service;
 
+import java.util.Base64;
 import si.mazi.rescu.ParamsDigest;
 import si.mazi.rescu.RestInvocation;
 
-import java.util.Base64;
-
 public class CoinonePayloadDigest implements ParamsDigest {
 
-	private CoinonePayloadDigest() {
-	}
+  private CoinonePayloadDigest() {}
 
-	public static CoinonePayloadDigest createInstance() {
-		return new CoinonePayloadDigest();
-	}
+  public static CoinonePayloadDigest createInstance() {
 
-	@Override
-	public String digestParams(RestInvocation restInvocation) {
-		String postBody = restInvocation.getRequestBody();
-		String payload = Base64.getEncoder().encodeToString(postBody.getBytes());
-		return payload;
-	}
+    return new CoinonePayloadDigest();
+  }
+
+  @Override
+  public String digestParams(RestInvocation restInvocation) {
+
+    String postBody = restInvocation.getRequestBody();
+    String payload = Base64.getEncoder().encodeToString(postBody.getBytes());
+    return payload;
+  }
 }

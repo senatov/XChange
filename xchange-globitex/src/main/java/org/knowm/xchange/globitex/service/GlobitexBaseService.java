@@ -9,16 +9,18 @@ import si.mazi.rescu.ParamsDigest;
 
 public class GlobitexBaseService extends BaseExchangeService implements BaseService {
 
-	protected GlobitexAuthenticated globitex;
-	protected ParamsDigest signatureCreator;
+  protected GlobitexAuthenticated globitex;
+  protected ParamsDigest signatureCreator;
 
-	public GlobitexBaseService(Exchange exchange) {
-		super(exchange);
-		globitex =
-				ExchangeRestProxyBuilder.forInterface(
-								GlobitexAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-		signatureCreator =
-				GlobitexDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-	}
+  public GlobitexBaseService(Exchange exchange) {
+    super(exchange);
+
+    globitex =
+        ExchangeRestProxyBuilder.forInterface(
+                GlobitexAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+
+    signatureCreator =
+        GlobitexDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+  }
 }

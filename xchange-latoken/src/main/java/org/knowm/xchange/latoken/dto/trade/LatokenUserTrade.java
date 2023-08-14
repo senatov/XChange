@@ -1,12 +1,12 @@
 package org.knowm.xchange.latoken.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Response schema:
+ *
  * <pre>
  * {
  * 	"id": "1555492358.126073.126767@0502:2",
@@ -23,99 +23,122 @@ import java.util.Date;
  */
 public class LatokenUserTrade {
 
-	private final String id;
-	private final String orderId;
-	private final BigDecimal fee;
-	private final LatokenOrderSide side;
-	private final BigDecimal price;
-	private final BigDecimal amount;
-	private final Date time;
+  private final String id;
+  private final String orderId;
+  private final BigDecimal fee;
+  private final LatokenOrderSide side;
+  private final BigDecimal price;
+  private final BigDecimal amount;
+  private final Date time;
 
-	/**
-	 * C'tor
-	 */
-	public LatokenUserTrade(
-			@JsonProperty("id") String id,
-			@JsonProperty("orderId") String orderId,
-			@JsonProperty("commission") BigDecimal fee,
-			@JsonProperty("side") String side,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("low") BigDecimal amount,
-			@JsonProperty("time") long time) {
-		this.id = id;
-		this.orderId = orderId;
-		this.fee = fee;
-		this.side = LatokenOrderSide.parse(side);
-		this.price = price;
-		this.amount = amount;
-		this.time = new Date(time);
-	}
+  /**
+   * C'tor
+   *
+   * @param id
+   * @param orderId
+   * @param fee
+   * @param side
+   * @param price
+   * @param amount
+   * @param time
+   */
+  public LatokenUserTrade(
+      @JsonProperty("id") String id,
+      @JsonProperty("orderId") String orderId,
+      @JsonProperty("commission") BigDecimal fee,
+      @JsonProperty("side") String side,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("low") BigDecimal amount,
+      @JsonProperty("time") long time) {
 
-	/**
-	 * ID of trade
-	 */
-	public String getId() {
-		return id;
-	}
+    this.id = id;
+    this.orderId = orderId;
+    this.fee = fee;
+    this.side = LatokenOrderSide.parse(side);
+    this.price = price;
+    this.amount = amount;
+    this.time = new Date(time);
+  }
 
-	/**
-	 * Id of order
-	 */
-	public String getOrderId() {
-		return orderId;
-	}
+  /**
+   * ID of trade
+   *
+   * @return
+   */
+  public String getId() {
+    return id;
+  }
 
-	/**
-	 * Trade fee
-	 */
-	public BigDecimal getFee() {
-		return fee;
-	}
+  /**
+   * Id of order
+   *
+   * @return
+   */
+  public String getOrderId() {
+    return orderId;
+  }
 
-	/**
-	 * Order side
-	 */
-	public LatokenOrderSide getSide() {
-		return side;
-	}
+  /**
+   * Trade fee
+   *
+   * @return
+   */
+  public BigDecimal getFee() {
+    return fee;
+  }
 
-	/**
-	 * Price of trade
-	 */
-	public BigDecimal getPrice() {
-		return price;
-	}
+  /**
+   * Order side
+   *
+   * @return
+   */
+  public LatokenOrderSide getSide() {
+    return side;
+  }
 
-	/**
-	 * Amount of trade
-	 */
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  /**
+   * Price of trade
+   *
+   * @return
+   */
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	/**
-	 * Trade time
-	 */
-	public Date getTime() {
-		return time;
-	}
+  /**
+   * Amount of trade
+   *
+   * @return
+   */
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	@Override
-	public String toString() {
-		return "LatokenUserTrade [id = "
-				+ id
-				+ ", orderId = "
-				+ orderId
-				+ ", fee = "
-				+ fee
-				+ ", side = "
-				+ side
-				+ ", price = "
-				+ price
-				+ ", amount = "
-				+ amount
-				+ ", time = "
-				+ time
-				+ "]";
-	}
+  /**
+   * Trade time
+   *
+   * @return
+   */
+  public Date getTime() {
+    return time;
+  }
+
+  @Override
+  public String toString() {
+    return "LatokenUserTrade [id = "
+        + id
+        + ", orderId = "
+        + orderId
+        + ", fee = "
+        + fee
+        + ", side = "
+        + side
+        + ", price = "
+        + price
+        + ", amount = "
+        + amount
+        + ", time = "
+        + time
+        + "]";
+  }
 }

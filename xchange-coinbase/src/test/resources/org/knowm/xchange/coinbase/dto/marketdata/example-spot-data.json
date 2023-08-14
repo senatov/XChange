@@ -1,7 +1,7 @@
 {
-  "data": {
-    "base": "BTC",
-    "currency": "USD",
-    "amount": "755.96"
-  }
+    "data": {
+        "base": "BTC",
+        "currency": "USD",
+        "amount": "755.96"
+    }
 }

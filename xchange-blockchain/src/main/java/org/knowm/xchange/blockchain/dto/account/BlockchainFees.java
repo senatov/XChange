@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainFees {
-
-	private final BigDecimal makerRate;
-	private final BigDecimal takerRate;
-	private final BigDecimal volumeInUSD;
+    
+    private final BigDecimal makerRate;
+    private final BigDecimal takerRate;
+    private final BigDecimal volumeInUSD;
 }

@@ -2,45 +2,44 @@ package org.knowm.xchange.enigma.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 import org.knowm.xchange.enigma.dto.BaseResponse;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter
 public class EnigmaTransaction extends BaseResponse {
 
-	@JsonProperty("order_id")
-	private int orderId;
+  @JsonProperty("order_id")
+  private int orderId;
 
-	@JsonProperty("product_id")
-	private int productId;
+  @JsonProperty("product_id")
+  private int productId;
 
-	@JsonProperty("quantity")
-	private BigDecimal quantity;
+  @JsonProperty("quantity")
+  private BigDecimal quantity;
 
-	@JsonProperty("price")
-	private BigDecimal price;
+  @JsonProperty("price")
+  private BigDecimal price;
 
-	@JsonProperty("nominal")
-	private BigDecimal nominal;
+  @JsonProperty("nominal")
+  private BigDecimal nominal;
 
-	@JsonProperty("sent_at")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date sentAt;
+  @JsonProperty("sent_at")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date sentAt;
 
-	@JsonProperty("side")
-	private String side;
+  @JsonProperty("side")
+  private String side;
 
-	@JsonProperty("order_type")
-	private String orderType;
+  @JsonProperty("order_type")
+  private String orderType;
 
-	@JsonProperty("order_status")
-	private String orderStatus;
+  @JsonProperty("order_status")
+  private String orderStatus;
 
-	@JsonProperty("product_name")
-	private String productName;
+  @JsonProperty("product_name")
+  private String productName;
 }

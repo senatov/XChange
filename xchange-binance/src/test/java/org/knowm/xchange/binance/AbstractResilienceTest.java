@@ -8,40 +8,40 @@ import org.knowm.xchange.ExchangeSpecification;
 
 public class AbstractResilienceTest {
 
-	public static int READ_TIMEOUT_MS = 1000;
-	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+  @Rule public WireMockRule wireMockRule = new WireMockRule();
 
-	@Before
-	public void resertResilienceRegistries() {
-		BinanceExchange.resetResilienceRegistries();
-	}
+  public static int READ_TIMEOUT_MS = 1000;
 
-	protected BinanceExchange createExchangeWithRetryEnabled() {
-		return createExchange(true, false);
-	}
+  @Before
+  public void resertResilienceRegistries() {
+    BinanceExchange.resetResilienceRegistries();
+  }
 
-	protected BinanceExchange createExchange(boolean retryEnabled, boolean rateLimiterEnabled) {
-		BinanceExchange exchange =
-				(BinanceExchange)
-						ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(BinanceExchange.class);
-		ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
-		specification.setHost("localhost");
-		specification.setSslUri("http://localhost:" + wireMockRule.port() + "/");
-		specification.setPort(wireMockRule.port());
-		specification.setShouldLoadRemoteMetaData(false);
-		specification.setHttpReadTimeout(READ_TIMEOUT_MS);
-		specification.getResilience().setRetryEnabled(retryEnabled);
-		specification.getResilience().setRateLimiterEnabled(rateLimiterEnabled);
-		exchange.applySpecification(specification);
-		return exchange;
-	}
+  protected BinanceExchange createExchangeWithRetryEnabled() {
+    return createExchange(true, false);
+  }
 
-	protected BinanceExchange createExchangeWithRetryDisabled() {
-		return createExchange(false, false);
-	}
+  protected BinanceExchange createExchangeWithRetryDisabled() {
+    return createExchange(false, false);
+  }
 
-	protected BinanceExchange createExchangeWithRateLimiterEnabled() {
-		return createExchange(false, true);
-	}
+  protected BinanceExchange createExchangeWithRateLimiterEnabled() {
+    return createExchange(false, true);
+  }
+
+  protected BinanceExchange createExchange(boolean retryEnabled, boolean rateLimiterEnabled) {
+    BinanceExchange exchange =
+        (BinanceExchange)
+            ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(BinanceExchange.class);
+    ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
+    specification.setHost("localhost");
+    specification.setSslUri("http://localhost:" + wireMockRule.port() + "/");
+    specification.setPort(wireMockRule.port());
+    specification.setShouldLoadRemoteMetaData(false);
+    specification.setHttpReadTimeout(READ_TIMEOUT_MS);
+    specification.getResilience().setRetryEnabled(retryEnabled);
+    specification.getResilience().setRateLimiterEnabled(rateLimiterEnabled);
+    exchange.applySpecification(specification);
+    return exchange;
+  }
 }

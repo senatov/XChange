@@ -1,5 +1,7 @@
 package org.knowm.xchange.bankera.service;
 
+import java.io.IOException;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bankera.BankeraAdapters;
 import org.knowm.xchange.bankera.BankeraExchange;
@@ -18,128 +20,136 @@ import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamLimit;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamOffset;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 
-import java.io.IOException;
-import java.util.List;
-
 public class BankeraTradeServiceRaw extends BankeraBaseService {
 
-	public BankeraTradeServiceRaw(Exchange exchange) {
-		super(exchange);
-	}
+  public BankeraTradeServiceRaw(Exchange exchange) {
 
-	public BankeraOpenOrders getBankeraOpenOrders(OpenOrdersParams params) throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			String market = null;
-			Integer limit = 100;
-			Integer offset = 0;
-			if (params instanceof OpenOrdersParamCurrencyPair) {
-				CurrencyPair currencyPair = ((OpenOrdersParamCurrencyPair) params).getCurrencyPair();
-				market = getMarketNameFromPair(currencyPair);
-			}
-			if (params instanceof OpenOrdersParamLimit) {
-				limit = ((OpenOrdersParamLimit) params).getLimit();
-			}
-			if (params instanceof OpenOrdersParamOffset) {
-				offset = ((OpenOrdersParamOffset) params).getOffset();
-			}
-			return bankeraAuthenticated.getOpenOrders(auth, market, limit, offset);
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+    super(exchange);
+  }
 
-	private static String getMarketNameFromPair(CurrencyPair pair) {
-		return pair == null
-				? null
-				: pair.base.getCurrencyCode() +
-				"-" +
-				pair.counter.getCurrencyCode();
-	}
+  public BankeraOpenOrders getBankeraOpenOrders(OpenOrdersParams params) throws IOException {
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      String market = null;
+      Integer limit = 100;
+      Integer offset = 0;
+      if (params instanceof OpenOrdersParamCurrencyPair) {
+        CurrencyPair currencyPair = ((OpenOrdersParamCurrencyPair) params).getCurrencyPair();
+        market = getMarketNameFromPair(currencyPair);
+      }
+      if (params instanceof OpenOrdersParamLimit) {
+        limit = ((OpenOrdersParamLimit) params).getLimit();
+      }
+      if (params instanceof OpenOrdersParamOffset) {
+        offset = ((OpenOrdersParamOffset) params).getOffset();
+      }
+      return bankeraAuthenticated.getOpenOrders(auth, market, limit, offset);
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
 
-	public BankeraOrder placeBankeraLimitOrder(LimitOrder limitOrder) throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			String market = getMarketNameFromPair(limitOrder.getCurrencyPair());
-			return bankeraAuthenticated.placeOrder(
-					auth,
-					new CreateOrderRequest(
-							market,
-							(limitOrder.getType() == Order.OrderType.BID
-									? CreateOrderRequest.Side.BUY.getSide()
-									: CreateOrderRequest.Side.SELL.getSide()),
-							limitOrder.getOriginalAmount(),
-							limitOrder.getLimitPrice(),
-							limitOrder.getId(),
-							exchange.getNonceFactory().createValue()));
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+  public BankeraOrder placeBankeraLimitOrder(LimitOrder limitOrder) throws IOException {
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      String market = getMarketNameFromPair(limitOrder.getCurrencyPair());
 
-	public BankeraOrder placeBankeraMarketOrder(MarketOrder marketOrder) throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			String market = getMarketNameFromPair(marketOrder.getCurrencyPair());
-			return bankeraAuthenticated.placeOrder(
-					auth,
-					new CreateOrderRequest(
-							market,
-							(marketOrder.getType() == Order.OrderType.BID
-									? CreateOrderRequest.Side.BUY.getSide()
-									: CreateOrderRequest.Side.SELL.getSide()),
-							marketOrder.getOriginalAmount(),
-							marketOrder.getId(),
-							exchange.getNonceFactory().createValue()));
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+      return bankeraAuthenticated.placeOrder(
+          auth,
+          new CreateOrderRequest(
+              market,
+              (limitOrder.getType() == Order.OrderType.BID
+                  ? CreateOrderRequest.Side.BUY.getSide()
+                  : CreateOrderRequest.Side.SELL.getSide()),
+              limitOrder.getOriginalAmount(),
+              limitOrder.getLimitPrice(),
+              limitOrder.getId(),
+              exchange.getNonceFactory().createValue()));
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
 
-	public BankeraOrder cancelBankeraOrder(String orderId) throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			return bankeraAuthenticated.cancelOrder(
-					auth,
-					Long.valueOf(orderId),
-					new BaseBankeraRequest(exchange.getNonceFactory().createValue()));
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+  public BankeraOrder placeBankeraMarketOrder(MarketOrder marketOrder) throws IOException {
 
-	public List<BankeraOrder> cancelAllBankeraOrders() throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			return bankeraAuthenticated.cancelAllOrders(auth);
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      String market = getMarketNameFromPair(marketOrder.getCurrencyPair());
 
-	public BankeraUserTrades getUserTrades(CurrencyPair currencyPair) throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			String market = getMarketNameFromPair(currencyPair);
-			return bankeraAuthenticated.getUserTrades(auth, market);
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+      return bankeraAuthenticated.placeOrder(
+          auth,
+          new CreateOrderRequest(
+              market,
+              (marketOrder.getType() == Order.OrderType.BID
+                  ? CreateOrderRequest.Side.BUY.getSide()
+                  : CreateOrderRequest.Side.SELL.getSide()),
+              marketOrder.getOriginalAmount(),
+              marketOrder.getId(),
+              exchange.getNonceFactory().createValue()));
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
 
-	public BankeraOrder getUserOrder(String orderId) throws IOException {
-		try {
-			BankeraExchange bankeraExchange = (BankeraExchange) exchange;
-			String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
-			return bankeraAuthenticated.getUserOrder(auth, orderId);
-		} catch (BankeraException e) {
-			throw BankeraAdapters.adaptError(e);
-		}
-	}
+  public BankeraOrder cancelBankeraOrder(String orderId) throws IOException {
+
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      return bankeraAuthenticated.cancelOrder(
+          auth,
+          Long.valueOf(orderId),
+          new BaseBankeraRequest(exchange.getNonceFactory().createValue()));
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
+
+  public List<BankeraOrder> cancelAllBankeraOrders() throws IOException {
+
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      return bankeraAuthenticated.cancelAllOrders(auth);
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
+
+  public BankeraUserTrades getUserTrades(CurrencyPair currencyPair) throws IOException {
+
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      String market = getMarketNameFromPair(currencyPair);
+      return bankeraAuthenticated.getUserTrades(auth, market);
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
+
+  public BankeraOrder getUserOrder(String orderId) throws IOException {
+
+    try {
+      BankeraExchange bankeraExchange = (BankeraExchange) exchange;
+      String auth = "Bearer " + bankeraExchange.getToken().getAccessToken();
+      return bankeraAuthenticated.getUserOrder(auth, orderId);
+    } catch (BankeraException e) {
+      throw BankeraAdapters.adaptError(e);
+    }
+  }
+
+  private static String getMarketNameFromPair(CurrencyPair pair) {
+
+    return pair == null
+        ? null
+        : new StringBuilder()
+            .append(pair.base.getCurrencyCode())
+            .append("-")
+            .append(pair.counter.getCurrencyCode())
+            .toString();
+  }
 }

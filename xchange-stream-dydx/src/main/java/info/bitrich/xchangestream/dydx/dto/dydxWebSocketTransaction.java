@@ -5,25 +5,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Author: Max Gao (gaamox@tutanota.com) Created: 20-02-2021
- */
+/** Author: Max Gao (gaamox@tutanota.com) Created: 20-02-2021 */
 @NoArgsConstructor
 @Getter
 @Setter
 public abstract class dydxWebSocketTransaction {
-	@JsonProperty("type")
-	private String type;
+  @JsonProperty("type")
+  private String type;
 
-	@JsonProperty("connection_id")
-	private String connectionId;
+  @JsonProperty("connection_id")
+  private String connectionId;
 
-	@JsonProperty("message_id")
-	private String messageId;
+  @JsonProperty("message_id")
+  private String messageId;
 
-	@JsonProperty("channel")
-	private String channel;
+  @JsonProperty("channel")
+  private String channel;
 
-	@JsonProperty("id")
-	private String id;
+  @JsonProperty("id")
+  private String id;
 }

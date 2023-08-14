@@ -4,35 +4,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinoneTradeResponse {
 
-	private final String result;
-	private final String errorCode;
-	private final String orderId;
-	private final String errorMsg;
+  private final String result;
+  private final String errorCode;
+  private final String orderId;
+  private final String errorMsg;
 
-	public CoinoneTradeResponse(
-			@JsonProperty("result") String result,
-			@JsonProperty("errorCode") String errorCode,
-			@JsonProperty("orderId") String orderId,
-			@JsonProperty("errorMsg") String errorMsg) {
-		this.result = result;
-		this.errorCode = errorCode;
-		this.orderId = orderId;
-		this.errorMsg = errorMsg;
-	}
+  public CoinoneTradeResponse(
+      @JsonProperty("result") String result,
+      @JsonProperty("errorCode") String errorCode,
+      @JsonProperty("orderId") String orderId,
+      @JsonProperty("errorMsg") String errorMsg) {
 
-	public String getErrorMsg() {
-		return errorMsg;
-	}
+    this.result = result;
+    this.errorCode = errorCode;
+    this.orderId = orderId;
+    this.errorMsg = errorMsg;
+  }
 
-	public String getResult() {
-		return result;
-	}
+  public String getErrorMsg() {
+    return errorMsg;
+  }
 
-	public String getErrorCode() {
-		return errorCode;
-	}
+  public String getResult() {
+    return result;
+  }
 
-	public String getOrderId() {
-		return orderId;
-	}
+  public String getErrorCode() {
+    return errorCode;
+  }
+
+  public String getOrderId() {
+    return orderId;
+  }
 }

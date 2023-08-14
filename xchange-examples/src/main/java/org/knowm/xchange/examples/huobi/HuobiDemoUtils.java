@@ -5,8 +5,8 @@ import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.huobi.HuobiExchange;
 
 public class HuobiDemoUtils {
-	public static Exchange createExchange() {
-		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class);
-		return exchange;
-	}
+  public static Exchange createExchange() {
+    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(HuobiExchange.class);
+    return exchange;
+  }
 }

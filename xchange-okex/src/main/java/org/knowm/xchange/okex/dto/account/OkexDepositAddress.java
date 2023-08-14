@@ -7,30 +7,30 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class OkexDepositAddress {
-	@JsonProperty("addr")
-	String address;
+  @JsonProperty("addr")
+  String address;
 
-	@JsonProperty("tag")
-	String tag;
+  @JsonProperty("tag")
+  String tag;
 
-	@JsonProperty("memo")
-	String memo;
+  @JsonProperty("memo")
+  String memo;
 
-	@JsonProperty("pmtId")
-	String paymentId;
+  @JsonProperty("pmtId")
+  String paymentId;
 
-	@JsonProperty("pmtId")
-	String currency;
+  @JsonProperty("pmtId")
+  String currency;
 
-	@JsonProperty("chain")
-	String chain;
+  @JsonProperty("chain")
+  String chain;
 
-	@JsonProperty("to")
-	String to;
+  @JsonProperty("to")
+  String to;
 
-	@JsonProperty("selected")
-	String selected;
+  @JsonProperty("selected")
+  String selected;
 
-	@JsonProperty("ctAddr")
-	String contactAddress;
+  @JsonProperty("ctAddr")
+  String contactAddress;
 }

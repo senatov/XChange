@@ -12,42 +12,42 @@ import si.mazi.rescu.RestInvocation;
 
 public interface LgoSignatureService extends ParamsDigest {
 
-	static LgoSignatureService createInstance(ExchangeSpecification specification) {
-		LgoEnv.SignatureService implementation =
-				(SignatureService)
-						specification
-								.getExchangeSpecificParameters()
-								.getOrDefault(LgoEnv.SIGNATURE_SERVICE, SignatureService.LOCAL_RSA);
-		switch (implementation) {
-			case LOCAL_RSA:
-				return new LgoSignatureServiceLocalRsa(
-						specification.getApiKey(), specification.getSecretKey());
-			case PASSTHROUGHS:
-				return new LgoSignatureServicePassthroughs(
-						specification.getUserName(), specification.getApiKey(), specification.getSecretKey());
-			default:
-				throw new ExchangeException("Unknown signature service implementation " + implementation);
-		}
-	}
+  static LgoSignatureService createInstance(ExchangeSpecification specification) {
+    LgoEnv.SignatureService implementation =
+        (SignatureService)
+            specification
+                .getExchangeSpecificParameters()
+                .getOrDefault(LgoEnv.SIGNATURE_SERVICE, SignatureService.LOCAL_RSA);
+    switch (implementation) {
+      case LOCAL_RSA:
+        return new LgoSignatureServiceLocalRsa(
+            specification.getApiKey(), specification.getSecretKey());
+      case PASSTHROUGHS:
+        return new LgoSignatureServicePassthroughs(
+            specification.getUserName(), specification.getApiKey(), specification.getSecretKey());
+      default:
+        throw new ExchangeException("Unknown signature service implementation " + implementation);
+    }
+  }
 
-	@Override
-	default String digestParams(RestInvocation restInvocation) {
-		String rawUrl = restInvocation.getInvocationUrl();
-		String timestamp = restInvocation.getHttpHeadersFromParams().getOrDefault(Lgo.X_LGO_DATE, "");
-		if (needsBodySignature(restInvocation)) {
-			return digestSignedUrlAndBodyHeader(rawUrl, timestamp, restInvocation.getRequestBody());
-		}
-		return digestSignedUrlHeader(rawUrl, timestamp);
-	}
+  @Override
+  default String digestParams(RestInvocation restInvocation) {
+    String rawUrl = restInvocation.getInvocationUrl();
+    String timestamp = restInvocation.getHttpHeadersFromParams().getOrDefault(Lgo.X_LGO_DATE, "");
+    if (needsBodySignature(restInvocation)) {
+      return digestSignedUrlAndBodyHeader(rawUrl, timestamp, restInvocation.getRequestBody());
+    }
+    return digestSignedUrlHeader(rawUrl, timestamp);
+  }
 
-	default boolean needsBodySignature(RestInvocation restInvocation) {
-		return restInvocation.getPath().equals("/v1/live/orders")
-				&& restInvocation.getHttpMethod().equals(HttpMethod.POST.name());
-	}
+  default boolean needsBodySignature(RestInvocation restInvocation) {
+    return restInvocation.getPath().equals("/v1/live/orders")
+        && restInvocation.getHttpMethod().equals(HttpMethod.POST.name());
+  }
 
-	String digestSignedUrlHeader(String urlToSign, String timestamp);
+  String digestSignedUrlHeader(String urlToSign, String timestamp);
 
-	String digestSignedUrlAndBodyHeader(String urlToSign, String timestamp, String body);
+  String digestSignedUrlAndBodyHeader(String urlToSign, String timestamp, String body);
 
-	LgoOrderSignature signOrder(String encryptedOrder);
+  LgoOrderSignature signOrder(String encryptedOrder);
 }

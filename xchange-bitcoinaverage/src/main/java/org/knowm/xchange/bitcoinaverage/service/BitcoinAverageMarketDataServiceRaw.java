@@ -1,44 +1,51 @@
 package org.knowm.xchange.bitcoinaverage.service;
 
+import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitcoinaverage.BitcoinAverage;
 import org.knowm.xchange.bitcoinaverage.dto.marketdata.BitcoinAverageTicker;
 import org.knowm.xchange.bitcoinaverage.dto.marketdata.BitcoinAverageTickers;
 import org.knowm.xchange.client.ExchangeRestProxyBuilder;
 
-import java.io.IOException;
-
 /**
  * Implementation of the raw market data service for BitcoinAverage
+ *
  * <ul>
  *   <li>Provides access to various market data values
  * </ul>
  */
 public class BitcoinAverageMarketDataServiceRaw extends BitcoinAverageBaseService {
 
-	private final BitcoinAverage bitcoinAverage;
+  private final BitcoinAverage bitcoinAverage;
 
-	/**
-	 * Constructor
-	 */
-	public BitcoinAverageMarketDataServiceRaw(Exchange exchange) {
-		super(exchange);
-		this.bitcoinAverage =
-				ExchangeRestProxyBuilder.forInterface(
-								BitcoinAverage.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BitcoinAverageMarketDataServiceRaw(Exchange exchange) {
 
-	public BitcoinAverageTicker getBitcoinAverageTicker(String tradable, String currency)
-			throws IOException {
-		// Request data
-		BitcoinAverageTicker bitcoinAverageTicker = bitcoinAverage.getTicker(tradable + currency);
-		return bitcoinAverageTicker;
-	}
+    super(exchange);
+    this.bitcoinAverage =
+        ExchangeRestProxyBuilder.forInterface(
+                BitcoinAverage.class, exchange.getExchangeSpecification())
+            .build();
+  }
 
-	public BitcoinAverageTickers getBitcoinAverageShortTickers(String crypto) throws IOException {
-		// Request data
-		BitcoinAverageTickers bitcoinAverageTicker = bitcoinAverage.getShortTickers(crypto);
-		return bitcoinAverageTicker;
-	}
+  public BitcoinAverageTicker getBitcoinAverageTicker(String tradable, String currency)
+      throws IOException {
+
+    // Request data
+    BitcoinAverageTicker bitcoinAverageTicker = bitcoinAverage.getTicker(tradable + currency);
+
+    return bitcoinAverageTicker;
+  }
+
+  public BitcoinAverageTickers getBitcoinAverageShortTickers(String crypto) throws IOException {
+
+    // Request data
+    BitcoinAverageTickers bitcoinAverageTicker = bitcoinAverage.getShortTickers(crypto);
+
+    return bitcoinAverageTicker;
+  }
 }

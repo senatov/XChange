@@ -1,23 +1,21 @@
 package org.knowm.xchange.bibox.dto.marketdata;
 
-/**
- * @author odrotleff
- */
+/** @author odrotleff */
 public class BiboxOrderBookCommandBody {
-	private final String pair;
-	private final Integer size;
+  private String pair;
+  private Integer size;
 
-	public BiboxOrderBookCommandBody(String pair, Integer size) {
-		super();
-		this.pair = pair;
-		this.size = size;
-	}
+  public BiboxOrderBookCommandBody(String pair, Integer size) {
+    super();
+    this.pair = pair;
+    this.size = size;
+  }
 
-	public String getPair() {
-		return pair;
-	}
+  public String getPair() {
+    return pair;
+  }
 
-	public Integer getSize() {
-		return size;
-	}
+  public Integer getSize() {
+    return size;
+  }
 }

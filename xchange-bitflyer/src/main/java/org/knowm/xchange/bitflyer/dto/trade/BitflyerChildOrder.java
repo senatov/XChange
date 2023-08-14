@@ -2,184 +2,191 @@ package org.knowm.xchange.bitflyer.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.knowm.xchange.bitflyer.BitflyerUtils;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.dto.Order;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BitflyerChildOrder {
-	private static final int CURRENCY_SCALE = 2;
-	private static final int SIZE_SCALE = 8;
+  private static final int CURRENCY_SCALE = 2;
+  private static final int SIZE_SCALE = 8;
 
-	private String productCode;
-	private BitflyerChildOrderType childOrderType;
-	private BitflyerSide side;
-	private BigDecimal price;
-	private BigDecimal size;
-	private Long minuteToExpire;
-	private BitflyerTimeInForce timeInForce;
+  private String productCode;
+  private BitflyerChildOrderType childOrderType;
+  private BitflyerSide side;
+  private BigDecimal price;
+  private BigDecimal size;
+  private Long minuteToExpire;
+  private BitflyerTimeInForce timeInForce;
 
-	public BitflyerChildOrder(
-			String productCode,
-			BitflyerChildOrderType childOrderType,
-			BitflyerSide side,
-			BigDecimal price,
-			BigDecimal size,
-			Long minuteToExpire,
-			BitflyerTimeInForce timeInForce) {
-		this.productCode = productCode;
-		this.childOrderType = childOrderType;
-		this.side = side;
-		this.price = price != null ? price.setScale(CURRENCY_SCALE, RoundingMode.HALF_EVEN) : null;
-		this.size = size != null ? size.setScale(SIZE_SCALE, RoundingMode.HALF_EVEN) : null;
-		this.minuteToExpire = minuteToExpire;
-		this.timeInForce = timeInForce;
-	}
+  public BitflyerChildOrder(
+      String productCode,
+      BitflyerChildOrderType childOrderType,
+      BitflyerSide side,
+      BigDecimal price,
+      BigDecimal size,
+      Long minuteToExpire,
+      BitflyerTimeInForce timeInForce) {
 
-	public static BitflyerChildOrderBuilder getOrderBuilder() {
-		return new BitflyerChildOrderBuilder();
-	}
+    this.productCode = productCode;
+    this.childOrderType = childOrderType;
+    this.side = side;
+    this.price = price != null ? price.setScale(CURRENCY_SCALE, RoundingMode.HALF_EVEN) : null;
+    this.size = size != null ? size.setScale(SIZE_SCALE, RoundingMode.HALF_EVEN) : null;
+    this.minuteToExpire = minuteToExpire;
+    this.timeInForce = timeInForce;
+  }
 
-	@JsonProperty("product_code")
-	public String getProductCode() {
-		return productCode;
-	}
+  public static BitflyerChildOrderBuilder getOrderBuilder() {
+    return new BitflyerChildOrderBuilder();
+  }
 
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
-	}
+  @JsonProperty("product_code")
+  public String getProductCode() {
+    return productCode;
+  }
 
-	@JsonProperty("child_order_type")
-	public BitflyerChildOrderType getChildOrderType() {
-		return childOrderType;
-	}
+  public void setProductCode(String productCode) {
+    this.productCode = productCode;
+  }
 
-	public void setChildOrderType(BitflyerChildOrderType childOrderType) {
-		this.childOrderType = childOrderType;
-	}
+  @JsonProperty("child_order_type")
+  public BitflyerChildOrderType getChildOrderType() {
+    return childOrderType;
+  }
 
-	@JsonProperty("side")
-	public BitflyerSide getSide() {
-		return side;
-	}
+  public void setChildOrderType(BitflyerChildOrderType childOrderType) {
+    this.childOrderType = childOrderType;
+  }
 
-	public void setSide(BitflyerSide side) {
-		this.side = side;
-	}
+  @JsonProperty("side")
+  public BitflyerSide getSide() {
+    return side;
+  }
 
-	@JsonProperty("price")
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public void setSide(BitflyerSide side) {
+    this.side = side;
+  }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+  @JsonProperty("price")
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	@JsonProperty("size")
-	public BigDecimal getSize() {
-		return size;
-	}
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
 
-	public void setSize(BigDecimal size) {
-		this.size = size;
-	}
+  @JsonProperty("size")
+  public BigDecimal getSize() {
+    return size;
+  }
 
-	@JsonProperty("minute_to_expire")
-	public Long getMinuteToExpire() {
-		return minuteToExpire;
-	}
+  public void setSize(BigDecimal size) {
+    this.size = size;
+  }
 
-	public void setMinuteToExpire(Long minuteToExpire) {
-		this.minuteToExpire = minuteToExpire;
-	}
+  @JsonProperty("minute_to_expire")
+  public Long getMinuteToExpire() {
+    return minuteToExpire;
+  }
 
-	@JsonProperty("time_in_force")
-	public BitflyerTimeInForce getTimeInForce() {
-		return timeInForce;
-	}
+  public void setMinuteToExpire(Long minuteToExpire) {
+    this.minuteToExpire = minuteToExpire;
+  }
 
-	public void setTimeInForce(BitflyerTimeInForce timeInForce) {
-		this.timeInForce = timeInForce;
-	}
+  @JsonProperty("time_in_force")
+  public BitflyerTimeInForce getTimeInForce() {
+    return timeInForce;
+  }
 
-	@Override
-	public String toString() {
-		return "BitflyerChildOrder{"
-				+ "productCode='"
-				+ productCode
-				+ '\''
-				+ ", childOrderType="
-				+ childOrderType
-				+ ", side="
-				+ side
-				+ ", price="
-				+ price
-				+ ", size="
-				+ size
-				+ ", minuteToExpire="
-				+ minuteToExpire
-				+ ", timeInForce="
-				+ timeInForce
-				+ '}';
-	}
+  public void setTimeInForce(BitflyerTimeInForce timeInForce) {
+    this.timeInForce = timeInForce;
+  }
 
-	public static class BitflyerChildOrderBuilder {
-		private CurrencyPair currencyPair;
-		private BitflyerChildOrderType childOrderType;
-		private BitflyerSide side;
-		private BigDecimal price;
-		private BigDecimal size;
-		private Long minuteToExpire = null;
-		private BitflyerTimeInForce timeInForce = BitflyerTimeInForce.GTC;
+  @Override
+  public String toString() {
+    return "BitflyerChildOrder{"
+        + "productCode='"
+        + productCode
+        + '\''
+        + ", childOrderType="
+        + childOrderType
+        + ", side="
+        + side
+        + ", price="
+        + price
+        + ", size="
+        + size
+        + ", minuteToExpire="
+        + minuteToExpire
+        + ", timeInForce="
+        + timeInForce
+        + '}';
+  }
 
-		public BitflyerChildOrderBuilder withProductCode(CurrencyPair currencyPair) {
-			this.currencyPair = currencyPair;
-			return this;
-		}
+  public static class BitflyerChildOrderBuilder {
+    private CurrencyPair currencyPair;
+    private BitflyerChildOrderType childOrderType;
+    private BitflyerSide side;
+    private BigDecimal price;
+    private BigDecimal size;
+    private Long minuteToExpire = null;
+    private BitflyerTimeInForce timeInForce = BitflyerTimeInForce.GTC;
 
-		public BitflyerChildOrderBuilder withChildOrderType(BitflyerChildOrderType childOrderType) {
-			this.childOrderType = childOrderType;
-			return this;
-		}
+    public BitflyerChildOrderBuilder withProductCode(CurrencyPair currencyPair) {
+      this.currencyPair = currencyPair;
 
-		public BitflyerChildOrderBuilder withSide(Order.OrderType orderType) {
-			this.side = BitflyerSide.fromOrderType(orderType);
-			return this;
-		}
+      return this;
+    }
 
-		public BitflyerChildOrderBuilder withPrice(BigDecimal price) {
-			this.price = price;
-			return this;
-		}
+    public BitflyerChildOrderBuilder withChildOrderType(BitflyerChildOrderType childOrderType) {
+      this.childOrderType = childOrderType;
 
-		public BitflyerChildOrderBuilder withSize(BigDecimal size) {
-			this.size = size;
-			return this;
-		}
+      return this;
+    }
 
-		public BitflyerChildOrderBuilder withMinuteToExpire(Long minuteToExpire) {
-			this.minuteToExpire = minuteToExpire;
-			return this;
-		}
+    public BitflyerChildOrderBuilder withSide(Order.OrderType orderType) {
+      this.side = BitflyerSide.fromOrderType(orderType);
 
-		public BitflyerChildOrderBuilder withTimeInForce(BitflyerTimeInForce timeInForce) {
-			this.timeInForce = timeInForce;
-			return this;
-		}
+      return this;
+    }
 
-		public BitflyerChildOrder buildOrder() {
-			return new BitflyerChildOrder(
-					BitflyerUtils.bitflyerProductCode(currencyPair),
-					childOrderType,
-					side,
-					price,
-					size,
-					minuteToExpire,
-					timeInForce);
-		}
-	}
+    public BitflyerChildOrderBuilder withPrice(BigDecimal price) {
+      this.price = price;
+
+      return this;
+    }
+
+    public BitflyerChildOrderBuilder withSize(BigDecimal size) {
+      this.size = size;
+
+      return this;
+    }
+
+    public BitflyerChildOrderBuilder withMinuteToExpire(Long minuteToExpire) {
+      this.minuteToExpire = minuteToExpire;
+
+      return this;
+    }
+
+    public BitflyerChildOrderBuilder withTimeInForce(BitflyerTimeInForce timeInForce) {
+      this.timeInForce = timeInForce;
+
+      return this;
+    }
+
+    public BitflyerChildOrder buildOrder() {
+      return new BitflyerChildOrder(
+          BitflyerUtils.bitflyerProductCode(currencyPair),
+          childOrderType,
+          side,
+          price,
+          size,
+          minuteToExpire,
+          timeInForce);
+    }
+  }
 }

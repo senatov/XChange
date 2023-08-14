@@ -8,10 +8,8 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 @Data
 public class OkexTradeHistoryParams implements TradeHistoryParams, TradeHistoryParamCurrencyPair {
 
-	private CurrencyPair currencyPair;
+  private CurrencyPair currencyPair;
 
-	/**
-	 * provide an order id, so the result will contain only the orders which are newer
-	 */
-	private String sinceOrderId;
+  /** provide an order id, so the result will contain only the orders which are newer */
+  private String sinceOrderId;
 }

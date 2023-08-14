@@ -13,18 +13,20 @@ import si.mazi.rescu.ParamsDigest;
  */
 public class BTCTurkBaseService extends BaseExchangeService implements BaseService {
 
-	protected final BTCTurkAuthenticated btcTurk;
-	protected final ParamsDigest signatureCreator;
+  protected final BTCTurkAuthenticated btcTurk;
+  protected final ParamsDigest signatureCreator;
 
-	public BTCTurkBaseService(Exchange exchange) {
-		super(exchange);
-		btcTurk =
-				ExchangeRestProxyBuilder.forInterface(
-								BTCTurkAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-		signatureCreator =
-				BTCTurkDigest.createInstance(
-						exchange.getExchangeSpecification().getSecretKey(),
-						exchange.getExchangeSpecification().getApiKey());
-	}
+  public BTCTurkBaseService(Exchange exchange) {
+
+    super(exchange);
+
+    btcTurk =
+        ExchangeRestProxyBuilder.forInterface(
+                BTCTurkAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+    signatureCreator =
+        BTCTurkDigest.createInstance(
+            exchange.getExchangeSpecification().getSecretKey(),
+            exchange.getExchangeSpecification().getApiKey());
+  }
 }

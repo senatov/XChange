@@ -1,61 +1,66 @@
 package org.knowm.xchange.coinbase.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import org.knowm.xchange.coinbase.dto.CoinbaseBaseResponse;
 
-import java.util.List;
-
-/**
- * @author jamespedwards42
- */
+/** @author jamespedwards42 */
 public class CoinbaseToken extends CoinbaseBaseResponse {
 
-	private final CoinbaseTokenInfo token;
+  private final CoinbaseTokenInfo token;
 
-	private CoinbaseToken(
-			@JsonProperty("token") final CoinbaseTokenInfo token,
-			@JsonProperty("success") final boolean success,
-			@JsonProperty("errors") final List<String> errors) {
-		super(success, errors);
-		this.token = token;
-	}
+  private CoinbaseToken(
+      @JsonProperty("token") final CoinbaseTokenInfo token,
+      @JsonProperty("success") final boolean success,
+      @JsonProperty("errors") final List<String> errors) {
 
-	public String getTokenId() {
-		return token.getTokenId();
-	}
+    super(success, errors);
+    this.token = token;
+  }
 
-	public String getAddress() {
-		return token.getAddress();
-	}
+  public String getTokenId() {
 
-	@Override
-	public String toString() {
-		return "CoinbaseToken [token=" + token + "]";
-	}
+    return token.getTokenId();
+  }
 
-	private static class CoinbaseTokenInfo {
+  public String getAddress() {
 
-		private final String tokenId;
-		private final String address;
+    return token.getAddress();
+  }
 
-		private CoinbaseTokenInfo(
-				@JsonProperty("token_id") final String tokenId,
-				@JsonProperty("address") final String address) {
-			this.tokenId = tokenId;
-			this.address = address;
-		}
+  @Override
+  public String toString() {
 
-		private String getTokenId() {
-			return tokenId;
-		}
+    return "CoinbaseToken [token=" + token + "]";
+  }
 
-		private String getAddress() {
-			return address;
-		}
+  private static class CoinbaseTokenInfo {
 
-		@Override
-		public String toString() {
-			return "CoinbaseTokenInfo [tokenId=" + tokenId + ", address=" + address + "]";
-		}
-	}
+    private final String tokenId;
+    private final String address;
+
+    private CoinbaseTokenInfo(
+        @JsonProperty("token_id") final String tokenId,
+        @JsonProperty("address") final String address) {
+
+      this.tokenId = tokenId;
+      this.address = address;
+    }
+
+    private String getTokenId() {
+
+      return tokenId;
+    }
+
+    private String getAddress() {
+
+      return address;
+    }
+
+    @Override
+    public String toString() {
+
+      return "CoinbaseTokenInfo [tokenId=" + tokenId + ", address=" + address + "]";
+    }
+  }
 }

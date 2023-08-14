@@ -1,6 +1,4 @@
-/**
- * Copyright 2019 Mek Global Limited.
- */
+/** Copyright 2019 Mek Global Limited. */
 package org.knowm.xchange.kucoin.dto.request;
 
 import lombok.Data;
@@ -16,5 +14,5 @@ import lombok.ToString;
 @ToString
 public class OrderCancelAPIRequest {
 
-	private String symbol;
+  private String symbol;
 }

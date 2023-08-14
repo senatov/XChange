@@ -1,13 +1,13 @@
 package org.knowm.xchange.latoken.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.knowm.xchange.latoken.dto.trade.LatokenOrderSide;
-
 import java.math.BigDecimal;
 import java.util.Date;
+import org.knowm.xchange.latoken.dto.trade.LatokenOrderSide;
 
 /**
  * Response schema:
+ *
  * <pre>
  * {
  * 	"side": "sell",
@@ -21,60 +21,69 @@ import java.util.Date;
  */
 public class LatokenTrade {
 
-	private final LatokenOrderSide side;
-	private final BigDecimal price;
-	private final BigDecimal amount;
-	private final Date timestamp;
+  private final LatokenOrderSide side;
+  private final BigDecimal price;
+  private final BigDecimal amount;
+  private final Date timestamp;
 
-	public LatokenTrade(
-			@JsonProperty("side") String side,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("timestamp") long timestamp) {
-		this.side = LatokenOrderSide.parse(side);
-		this.price = price;
-		this.amount = amount;
-		this.timestamp = new Date(timestamp);
-	}
+  public LatokenTrade(
+      @JsonProperty("side") String side,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("timestamp") long timestamp) {
 
-	/**
-	 * {@link LatokenOrderSide Side} of trade
-	 */
-	public LatokenOrderSide getSide() {
-		return side;
-	}
+    this.side = LatokenOrderSide.parse(side);
+    this.price = price;
+    this.amount = amount;
+    this.timestamp = new Date(timestamp);
+  }
 
-	/**
-	 * Trade price
-	 */
-	public BigDecimal getPrice() {
-		return price;
-	}
+  /**
+   * {@link LatokenOrderSide Side} of trade
+   *
+   * @return
+   */
+  public LatokenOrderSide getSide() {
+    return side;
+  }
 
-	/**
-	 * Trade amount
-	 */
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  /**
+   * Trade price
+   *
+   * @return
+   */
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	/**
-	 * Trade time
-	 */
-	public Date getTimestamp() {
-		return timestamp;
-	}
+  /**
+   * Trade amount
+   *
+   * @return
+   */
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	@Override
-	public String toString() {
-		return "LatokenTrade [side = "
-				+ side
-				+ ", price = "
-				+ price
-				+ ", amount = "
-				+ amount
-				+ ", timestamp = "
-				+ timestamp
-				+ "]";
-	}
+  /**
+   * Trade time
+   *
+   * @return
+   */
+  public Date getTimestamp() {
+    return timestamp;
+  }
+
+  @Override
+  public String toString() {
+    return "LatokenTrade [side = "
+        + side
+        + ", price = "
+        + price
+        + ", amount = "
+        + amount
+        + ", timestamp = "
+        + timestamp
+        + "]";
+  }
 }

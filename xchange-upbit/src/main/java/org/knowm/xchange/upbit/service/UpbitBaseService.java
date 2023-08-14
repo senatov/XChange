@@ -9,24 +9,26 @@ import si.mazi.rescu.ParamsDigest;
 
 public class UpbitBaseService extends BaseExchangeService implements BaseService {
 
-	protected final UpbitAuthenticated upbit;
-	protected final String apiKey;
-	protected final String apiSecret;
-	protected final String url;
-	protected ParamsDigest signatureCreator;
+  protected final UpbitAuthenticated upbit;
+  protected final String apiKey;
+  protected final String apiSecret;
+  protected final String url;
+  protected ParamsDigest signatureCreator;
 
-	/**
-	 * Constructor
-	 */
-	public UpbitBaseService(Exchange exchange) {
-		super(exchange);
-		this.upbit =
-				ExchangeRestProxyBuilder.forInterface(
-								UpbitAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-		this.apiKey = exchange.getExchangeSpecification().getApiKey();
-		this.apiSecret = exchange.getExchangeSpecification().getSecretKey();
-		this.url = exchange.getExchangeSpecification().getSslUri();
-		this.signatureCreator = UpbitJWTDigest.createInstance(this.apiKey, this.apiSecret);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public UpbitBaseService(Exchange exchange) {
+    super(exchange);
+    this.upbit =
+        ExchangeRestProxyBuilder.forInterface(
+                UpbitAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+    this.apiKey = exchange.getExchangeSpecification().getApiKey();
+    this.apiSecret = exchange.getExchangeSpecification().getSecretKey();
+    this.url = exchange.getExchangeSpecification().getSslUri();
+    this.signatureCreator = UpbitJWTDigest.createInstance(this.apiKey, this.apiSecret);
+  }
 }

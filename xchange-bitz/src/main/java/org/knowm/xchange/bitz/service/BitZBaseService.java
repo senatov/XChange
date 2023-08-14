@@ -8,12 +8,12 @@ import org.knowm.xchange.service.BaseService;
 
 public class BitZBaseService extends BaseExchangeService implements BaseService {
 
-	protected BitZ bitz;
+  protected BitZ bitz;
 
-	public BitZBaseService(Exchange exchange) {
-		super(exchange);
-		this.bitz =
-				ExchangeRestProxyBuilder.forInterface(BitZ.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  public BitZBaseService(Exchange exchange) {
+    super(exchange);
+    this.bitz =
+        ExchangeRestProxyBuilder.forInterface(BitZ.class, exchange.getExchangeSpecification())
+            .build();
+  }
 }

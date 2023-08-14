@@ -4,57 +4,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinoneOrderInfoRequest {
 
-	@JsonProperty("access_token")
-	protected String accessTocken;
+  @JsonProperty("access_token")
+  protected String accessTocken;
 
-	@JsonProperty("nonce")
-	protected Long nonce;
+  @JsonProperty("nonce")
+  protected Long nonce;
 
-	@JsonProperty("order_id")
-	protected String orderId;
+  @JsonProperty("order_id")
+  protected String orderId;
 
-	@JsonProperty("currency")
-	protected String currency;
+  @JsonProperty("currency")
+  protected String currency;
 
-	/**
-	 * Constructor
-	 */
-	public CoinoneOrderInfoRequest(String accessTocken, Long nonce, String orderId, String currency) {
-		this.accessTocken = accessTocken;
-		this.nonce = nonce;
-		this.orderId = orderId;
-		this.currency = currency;
-	}
+  /**
+   * Constructor
+   *
+   * @param nonce
+   */
+  public CoinoneOrderInfoRequest(String accessTocken, Long nonce, String orderId, String currency) {
 
-	public String getAccessTocken() {
-		return accessTocken;
-	}
+    this.accessTocken = accessTocken;
+    this.nonce = nonce;
+    this.orderId = orderId;
+    this.currency = currency;
+  }
 
-	public void setAccessTocken(String accessTocken) {
-		this.accessTocken = accessTocken;
-	}
+  public String getAccessTocken() {
+    return accessTocken;
+  }
 
-	public Long getNonce() {
-		return nonce;
-	}
+  public void setAccessTocken(String accessTocken) {
+    this.accessTocken = accessTocken;
+  }
 
-	public void setNonce(Long nonce) {
-		this.nonce = nonce;
-	}
+  public Long getNonce() {
+    return nonce;
+  }
 
-	public String getOrderId() {
-		return orderId;
-	}
+  public void setNonce(Long nonce) {
+    this.nonce = nonce;
+  }
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
+  public String getOrderId() {
+    return orderId;
+  }
 
-	public String getCurrency() {
-		return currency;
-	}
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
 
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
+  public String getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
 }

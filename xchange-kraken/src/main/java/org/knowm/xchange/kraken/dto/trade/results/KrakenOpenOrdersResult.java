@@ -1,35 +1,42 @@
 package org.knowm.xchange.kraken.dto.trade.results;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 import org.knowm.xchange.kraken.dto.KrakenResult;
 import org.knowm.xchange.kraken.dto.trade.KrakenOrder;
 import org.knowm.xchange.kraken.dto.trade.results.KrakenOpenOrdersResult.KrakenOpenOrders;
 
-import java.util.Map;
-
 public class KrakenOpenOrdersResult extends KrakenResult<KrakenOpenOrders> {
 
-	/**
-	 * Constructor
-	 */
-	public KrakenOpenOrdersResult(
-			@JsonProperty("result") KrakenOpenOrders result, @JsonProperty("error") String[] error) {
-		super(result, error);
-	}
+  /**
+   * Constructor
+   *
+   * @param result
+   * @param error
+   */
+  public KrakenOpenOrdersResult(
+      @JsonProperty("result") KrakenOpenOrders result, @JsonProperty("error") String[] error) {
 
-	public static class KrakenOpenOrders {
+    super(result, error);
+  }
 
-		private final Map<String, KrakenOrder> orders;
+  public static class KrakenOpenOrders {
 
-		/**
-		 * Constructor
-		 */
-		public KrakenOpenOrders(@JsonProperty("open") Map<String, KrakenOrder> orders) {
-			this.orders = orders;
-		}
+    private final Map<String, KrakenOrder> orders;
 
-		public Map<String, KrakenOrder> getOrders() {
-			return orders;
-		}
-	}
+    /**
+     * Constructor
+     *
+     * @param orders
+     */
+    public KrakenOpenOrders(@JsonProperty("open") Map<String, KrakenOrder> orders) {
+
+      this.orders = orders;
+    }
+
+    public Map<String, KrakenOrder> getOrders() {
+
+      return orders;
+    }
+  }
 }

@@ -2,191 +2,198 @@ package org.knowm.xchange.btcmarkets.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.math.BigDecimal;
+import java.util.Date;
 import org.knowm.xchange.utils.jackson.MillisecTimestampDeserializer;
 import org.knowm.xchange.utils.jackson.SatoshiToBtc;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 public class BTCMarketsFundtransfer {
 
-	private String status;
-	@JsonDeserialize(using = MillisecTimestampDeserializer.class)
-	private Date lastUpdate;
-	@JsonDeserialize(using = SatoshiToBtc.class)
-	private BigDecimal fee;
-	private String description;
-	private String errorMessage;
-	@JsonDeserialize(using = MillisecTimestampDeserializer.class)
-	private Date creationTime;
-	private Long fundTransferId;
-	private CryptoPaymentDetail cryptoPaymentDetail;
-	private String currency;
-	@JsonDeserialize(using = SatoshiToBtc.class)
-	private BigDecimal amount;
-	private String transferType;
+  public static class CryptoPaymentDetail {
+    private String txId;
+    private String address;
 
-	public BTCMarketsFundtransfer(
-			@JsonProperty("status") String status,
-			@JsonProperty("lastUpdate") Date lastUpdate,
-			@JsonProperty("fee") BigDecimal fee,
-			@JsonProperty("description") String description,
-			@JsonProperty("errorMessage") String errorMessage,
-			@JsonProperty("creationTime") Date creationTime,
-			@JsonProperty("fundTransferId") Long fundTransferId,
-			@JsonProperty("cryptoPaymentDetail") CryptoPaymentDetail cryptoPaymentDetail,
-			@JsonProperty("currency") String currency,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("transferType") String transferType) {
-		this.status = status;
-		this.lastUpdate = lastUpdate;
-		this.fee = fee;
-		this.description = description;
-		this.errorMessage = errorMessage;
-		this.creationTime = creationTime;
-		this.fundTransferId = fundTransferId;
-		this.cryptoPaymentDetail = cryptoPaymentDetail;
-		this.currency = currency;
-		this.amount = amount;
-		this.transferType = transferType;
-	}
+    public CryptoPaymentDetail(
+        @JsonProperty("txId") String txId, @JsonProperty("address") String address) {
+      this.txId = txId;
+      this.address = address;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getTxId() {
+      return txId;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setTxId(String txId) {
+      this.txId = txId;
+    }
 
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
+    public String getAddress() {
+      return address;
+    }
 
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+    public void setAddress(String address) {
+      this.address = address;
+    }
 
-	public BigDecimal getFee() {
-		return fee;
-	}
+    @Override
+    public String toString() {
+      return String.format("CryptoPaymentDetail{txId=%s, address=%s}", txId, address);
+    }
+  }
 
-	public void setFee(BigDecimal fee) {
-		this.fee = fee;
-	}
+  private String status;
 
-	public String getDescription() {
-		return description;
-	}
+  @JsonDeserialize(using = MillisecTimestampDeserializer.class)
+  private Date lastUpdate;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+  @JsonDeserialize(using = SatoshiToBtc.class)
+  private BigDecimal fee;
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+  private String description;
+  private String errorMessage;
 
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
+  @JsonDeserialize(using = MillisecTimestampDeserializer.class)
+  private Date creationTime;
 
-	public Date getCreationTime() {
-		return creationTime;
-	}
+  private Long fundTransferId;
 
-	public void setCreationTime(Date creationTime) {
-		this.creationTime = creationTime;
-	}
+  private CryptoPaymentDetail cryptoPaymentDetail;
+  private String currency;
 
-	public Long getFundTransferId() {
-		return fundTransferId;
-	}
+  @JsonDeserialize(using = SatoshiToBtc.class)
+  private BigDecimal amount;
 
-	public void setFundTransferId(Long fundTransferId) {
-		this.fundTransferId = fundTransferId;
-	}
+  private String transferType;
 
-	public CryptoPaymentDetail getCryptoPaymentDetail() {
-		return cryptoPaymentDetail;
-	}
+  public String getStatus() {
+    return status;
+  }
 
-	public void setCryptoPaymentDetail(CryptoPaymentDetail cryptoPaymentDetail) {
-		this.cryptoPaymentDetail = cryptoPaymentDetail;
-	}
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-	public String getCurrency() {
-		return currency;
-	}
+  public Date getLastUpdate() {
+    return lastUpdate;
+  }
 
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
+  public void setLastUpdate(Date lastUpdate) {
+    this.lastUpdate = lastUpdate;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public BigDecimal getFee() {
+    return fee;
+  }
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+  public void setFee(BigDecimal fee) {
+    this.fee = fee;
+  }
 
-	public String getTransferType() {
-		return transferType;
-	}
+  public String getDescription() {
+    return description;
+  }
 
-	public void setTransferType(String transferType) {
-		this.transferType = transferType;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	@Override
-	public String toString() {
-		return String.format(
-				"BTCMarketsFundtransfer{status=%s, lastUpdate=%s, fee=%s, description=%s, "
-						+ "errorMessage=%s, creationTime=%s, fundTransferId=%s, cryptoPaymentDetail=%s, currency=%s"
-						+ "amount=%s, transferType=%s",
-				status,
-				lastUpdate,
-				fee,
-				description,
-				errorMessage,
-				creationTime,
-				fundTransferId,
-				cryptoPaymentDetail,
-				currency,
-				amount,
-				transferType);
-	}
+  public String getErrorMessage() {
+    return errorMessage;
+  }
 
-	public static class CryptoPaymentDetail {
-		private String txId;
-		private String address;
+  public void setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+  }
 
-		public CryptoPaymentDetail(
-				@JsonProperty("txId") String txId, @JsonProperty("address") String address) {
-			this.txId = txId;
-			this.address = address;
-		}
+  public Date getCreationTime() {
+    return creationTime;
+  }
 
-		public String getTxId() {
-			return txId;
-		}
+  public void setCreationTime(Date creationTime) {
+    this.creationTime = creationTime;
+  }
 
-		public void setTxId(String txId) {
-			this.txId = txId;
-		}
+  public Long getFundTransferId() {
+    return fundTransferId;
+  }
 
-		public String getAddress() {
-			return address;
-		}
+  public void setFundTransferId(Long fundTransferId) {
+    this.fundTransferId = fundTransferId;
+  }
 
-		public void setAddress(String address) {
-			this.address = address;
-		}
+  public CryptoPaymentDetail getCryptoPaymentDetail() {
+    return cryptoPaymentDetail;
+  }
 
-		@Override
-		public String toString() {
-			return String.format("CryptoPaymentDetail{txId=%s, address=%s}", txId, address);
-		}
-	}
+  public void setCryptoPaymentDetail(CryptoPaymentDetail cryptoPaymentDetail) {
+    this.cryptoPaymentDetail = cryptoPaymentDetail;
+  }
+
+  public String getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
+
+  public BigDecimal getAmount() {
+    return amount;
+  }
+
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
+  }
+
+  public String getTransferType() {
+    return transferType;
+  }
+
+  public void setTransferType(String transferType) {
+    this.transferType = transferType;
+  }
+
+  public BTCMarketsFundtransfer(
+      @JsonProperty("status") String status,
+      @JsonProperty("lastUpdate") Date lastUpdate,
+      @JsonProperty("fee") BigDecimal fee,
+      @JsonProperty("description") String description,
+      @JsonProperty("errorMessage") String errorMessage,
+      @JsonProperty("creationTime") Date creationTime,
+      @JsonProperty("fundTransferId") Long fundTransferId,
+      @JsonProperty("cryptoPaymentDetail") CryptoPaymentDetail cryptoPaymentDetail,
+      @JsonProperty("currency") String currency,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("transferType") String transferType) {
+    this.status = status;
+    this.lastUpdate = lastUpdate;
+    this.fee = fee;
+    this.description = description;
+    this.errorMessage = errorMessage;
+    this.creationTime = creationTime;
+    this.fundTransferId = fundTransferId;
+    this.cryptoPaymentDetail = cryptoPaymentDetail;
+    this.currency = currency;
+    this.amount = amount;
+    this.transferType = transferType;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "BTCMarketsFundtransfer{status=%s, lastUpdate=%s, fee=%s, description=%s, "
+            + "errorMessage=%s, creationTime=%s, fundTransferId=%s, cryptoPaymentDetail=%s, currency=%s"
+            + "amount=%s, transferType=%s",
+        status,
+        lastUpdate,
+        fee,
+        description,
+        errorMessage,
+        creationTime,
+        fundTransferId,
+        cryptoPaymentDetail,
+        currency,
+        amount,
+        transferType);
+  }
 }

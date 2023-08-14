@@ -1,35 +1,37 @@
 package org.knowm.xchange.itbit.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Arrays;
 
 public class ItBitTrades {
 
-	private final int count;
-	private final ItBitTrade[] trades;
+  private final int count;
+  private final ItBitTrade[] trades;
 
-	public ItBitTrades(
-			@JsonProperty("count") int count, @JsonProperty("recentTrades") ItBitTrade[] trades) {
-		this.count = count;
-		this.trades = trades;
-	}
+  public ItBitTrades(
+      @JsonProperty("count") int count, @JsonProperty("recentTrades") ItBitTrade[] trades) {
 
-	public int getCount() {
-		return count;
-	}
+    this.count = count;
+    this.trades = trades;
+  }
 
-	public ItBitTrade[] getTrades() {
-		return trades;
-	}
+  public int getCount() {
+    return count;
+  }
 
-	@Override
-	public String toString() {
-		String builder = "ItBitTrades [count=" +
-				count +
-				", trades=" +
-				Arrays.toString(trades) +
-				"]";
-		return builder;
-	}
+  public ItBitTrade[] getTrades() {
+    return trades;
+  }
+
+  @Override
+  public String toString() {
+
+    StringBuilder builder = new StringBuilder();
+    builder.append("ItBitTrades [count=");
+    builder.append(count);
+    builder.append(", trades=");
+    builder.append(Arrays.toString(trades));
+    builder.append("]");
+    return builder.toString();
+  }
 }

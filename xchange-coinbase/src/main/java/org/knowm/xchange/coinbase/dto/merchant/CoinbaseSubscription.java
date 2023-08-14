@@ -2,103 +2,115 @@ package org.knowm.xchange.coinbase.dto.merchant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.util.Date;
 import org.knowm.xchange.coinbase.dto.common.CoinbaseRecurringPaymentStatus;
 import org.knowm.xchange.coinbase.dto.merchant.CoinbaseButton.CoinbaseButtonInfo;
 import org.knowm.xchange.utils.jackson.ISO8601DateDeserializer;
 
-import java.util.Date;
-
-/**
- * @author jamespedwards42
- */
+/** @author jamespedwards42 */
 public class CoinbaseSubscription {
 
-	private final CoinbaseSubscriptionInfo subscription;
+  private final CoinbaseSubscriptionInfo subscription;
 
-	private CoinbaseSubscription(
-			@JsonProperty("recurring_payment") final CoinbaseSubscriptionInfo subscription) {
-		this.subscription = subscription;
-	}
+  private CoinbaseSubscription(
+      @JsonProperty("recurring_payment") final CoinbaseSubscriptionInfo subscription) {
 
-	public String getId() {
-		return subscription.getId();
-	}
+    this.subscription = subscription;
+  }
 
-	public Date getCreatedAt() {
-		return subscription.getCreatedAt();
-	}
+  public String getId() {
 
-	public CoinbaseRecurringPaymentStatus getStatus() {
-		return subscription.getStatus();
-	}
+    return subscription.getId();
+  }
 
-	public String getCustom() {
-		return subscription.getCustom();
-	}
+  public Date getCreatedAt() {
 
-	public CoinbaseButton getButton() {
-		return subscription.getButton();
-	}
+    return subscription.getCreatedAt();
+  }
 
-	@Override
-	public String toString() {
-		return "CoinbaseSubscription [subscription=" + subscription + "]";
-	}
+  public CoinbaseRecurringPaymentStatus getStatus() {
 
-	private static final class CoinbaseSubscriptionInfo {
+    return subscription.getStatus();
+  }
 
-		private final String id;
-		private final Date createdAt;
-		private final CoinbaseRecurringPaymentStatus status;
-		private final String custom;
-		private final CoinbaseButton button;
+  public String getCustom() {
 
-		private CoinbaseSubscriptionInfo(
-				@JsonProperty("id") final String id,
-				@JsonProperty("created_at") @JsonDeserialize(using = ISO8601DateDeserializer.class) final Date createdAt,
-				@JsonProperty("status") final CoinbaseRecurringPaymentStatus status,
-				@JsonProperty("custom") final String custom,
-				@JsonProperty("button") final CoinbaseButtonInfo button) {
-			this.id = id;
-			this.createdAt = createdAt;
-			this.status = status;
-			this.custom = custom;
-			this.button = new CoinbaseButton(button);
-		}
+    return subscription.getCustom();
+  }
 
-		public String getId() {
-			return id;
-		}
+  public CoinbaseButton getButton() {
 
-		public Date getCreatedAt() {
-			return createdAt;
-		}
+    return subscription.getButton();
+  }
 
-		public CoinbaseRecurringPaymentStatus getStatus() {
-			return status;
-		}
+  @Override
+  public String toString() {
 
-		public String getCustom() {
-			return custom;
-		}
+    return "CoinbaseSubscription [subscription=" + subscription + "]";
+  }
 
-		public CoinbaseButton getButton() {
-			return button;
-		}
+  private static final class CoinbaseSubscriptionInfo {
 
-		@Override
-		public String toString() {
-			return "CoinbaseSubscriptionInfo [id="
-					+ id
-					+ ", createdAt="
-					+ createdAt
-					+ ", status="
-					+ status
-					+ ", custom="
-					+ custom
-					+ ", button="
-					+ button
-					+ "]";
-		}
-	}
+    private final String id;
+    private final Date createdAt;
+    private final CoinbaseRecurringPaymentStatus status;
+    private final String custom;
+    private final CoinbaseButton button;
+
+    private CoinbaseSubscriptionInfo(
+        @JsonProperty("id") final String id,
+        @JsonProperty("created_at") @JsonDeserialize(using = ISO8601DateDeserializer.class)
+            final Date createdAt,
+        @JsonProperty("status") final CoinbaseRecurringPaymentStatus status,
+        @JsonProperty("custom") final String custom,
+        @JsonProperty("button") final CoinbaseButtonInfo button) {
+
+      this.id = id;
+      this.createdAt = createdAt;
+      this.status = status;
+      this.custom = custom;
+      this.button = new CoinbaseButton(button);
+    }
+
+    public String getId() {
+
+      return id;
+    }
+
+    public Date getCreatedAt() {
+
+      return createdAt;
+    }
+
+    public CoinbaseRecurringPaymentStatus getStatus() {
+
+      return status;
+    }
+
+    public String getCustom() {
+
+      return custom;
+    }
+
+    public CoinbaseButton getButton() {
+
+      return button;
+    }
+
+    @Override
+    public String toString() {
+
+      return "CoinbaseSubscriptionInfo [id="
+          + id
+          + ", createdAt="
+          + createdAt
+          + ", status="
+          + status
+          + ", custom="
+          + custom
+          + ", button="
+          + button
+          + "]";
+    }
+  }
 }

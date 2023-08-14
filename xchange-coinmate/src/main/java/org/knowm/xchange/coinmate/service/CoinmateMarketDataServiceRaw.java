@@ -34,51 +34,59 @@ import org.knowm.xchange.coinmate.dto.marketdata.CoinmateTransactions;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateMarketDataServiceRaw extends CoinmateBaseService {
 
-	private final Coinmate coinmate;
+  private final Coinmate coinmate;
 
-	public CoinmateMarketDataServiceRaw(Exchange exchange) {
-		super(exchange);
-		this.coinmate =
-				ExchangeRestProxyBuilder.forInterface(Coinmate.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  public CoinmateMarketDataServiceRaw(Exchange exchange) {
+    super(exchange);
+    this.coinmate =
+        ExchangeRestProxyBuilder.forInterface(Coinmate.class, exchange.getExchangeSpecification())
+            .build();
+  }
 
-	public CoinmateTicker getCoinmateTicker(String currencyPair) throws IOException {
-		CoinmateTicker ticker = coinmate.getTicker(currencyPair);
-		throwExceptionIfError(ticker);
-		return ticker;
-	}
+  public CoinmateTicker getCoinmateTicker(String currencyPair) throws IOException {
+    CoinmateTicker ticker = coinmate.getTicker(currencyPair);
 
-	public CoinmateOrderBook getCoinmateOrderBook(String currencyPair, boolean groupByPriceLimit)
-			throws IOException {
-		CoinmateOrderBook orderBook = coinmate.getOrderBook(currencyPair, groupByPriceLimit);
-		throwExceptionIfError(orderBook);
-		return orderBook;
-	}
+    throwExceptionIfError(ticker);
 
-	public CoinmateTransactions getCoinmateTransactions(int minutesIntoHistory, String currencyPair)
-			throws IOException {
-		CoinmateTransactions transactions = coinmate.getTransactions(minutesIntoHistory, currencyPair);
-		throwExceptionIfError(transactions);
-		return transactions;
-	}
+    return ticker;
+  }
 
-	public CoinmateQuickRate getCoinmateBuyQuickRate(BigDecimal total, String currencyPair)
-			throws IOException {
-		CoinmateQuickRate response = coinmate.getBuyQuickRate(total, currencyPair);
-		throwExceptionIfError(response);
-		return response;
-	}
+  public CoinmateOrderBook getCoinmateOrderBook(String currencyPair, boolean groupByPriceLimit)
+      throws IOException {
+    CoinmateOrderBook orderBook = coinmate.getOrderBook(currencyPair, groupByPriceLimit);
 
-	public CoinmateQuickRate getCoinmateSellQuickRate(BigDecimal amount, String currencyPair)
-			throws IOException {
-		CoinmateQuickRate response = coinmate.getSellQuickRate(amount, currencyPair);
-		throwExceptionIfError(response);
-		return response;
-	}
+    throwExceptionIfError(orderBook);
+
+    return orderBook;
+  }
+
+  public CoinmateTransactions getCoinmateTransactions(int minutesIntoHistory, String currencyPair)
+      throws IOException {
+    CoinmateTransactions transactions = coinmate.getTransactions(minutesIntoHistory, currencyPair);
+
+    throwExceptionIfError(transactions);
+
+    return transactions;
+  }
+
+  public CoinmateQuickRate getCoinmateBuyQuickRate(BigDecimal total, String currencyPair)
+    throws IOException {
+    CoinmateQuickRate response = coinmate.getBuyQuickRate(total, currencyPair);
+
+    throwExceptionIfError(response);
+
+    return response;
+  }
+
+  public CoinmateQuickRate getCoinmateSellQuickRate(BigDecimal amount, String currencyPair)
+    throws IOException {
+    CoinmateQuickRate response = coinmate.getSellQuickRate(amount, currencyPair);
+
+    throwExceptionIfError(response);
+
+    return response;
+  }
 }

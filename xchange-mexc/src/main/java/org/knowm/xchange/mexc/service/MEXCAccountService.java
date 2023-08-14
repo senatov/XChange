@@ -13,19 +13,19 @@ import java.util.Map;
 
 public class MEXCAccountService extends MEXCAccountServiceRaw implements AccountService {
 
-	public MEXCAccountService(Exchange exchange) {
-		super(exchange);
-	}
+  public MEXCAccountService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public AccountInfo getAccountInfo() throws IOException {
-		try {
-			MEXCResult<Map<String, MEXCBalance>> walletBalances = getWalletBalances();
-			Map<String, MEXCBalance> walletBalancesResult = walletBalances.getData();
-			return new AccountInfo(MEXCAdapters.adaptMEXCBalances(walletBalancesResult));
-		} catch (MEXCException e) {
-			throw new ExchangeException(e);
-		}
-	}
+  @Override
+  public AccountInfo getAccountInfo() throws IOException {
+    try {
+      MEXCResult<Map<String, MEXCBalance>> walletBalances = getWalletBalances();
+      Map<String, MEXCBalance> walletBalancesResult = walletBalances.getData();
+      return new AccountInfo(MEXCAdapters.adaptMEXCBalances(walletBalancesResult));
+    } catch (MEXCException e) {
+      throw new ExchangeException(e);
+    }
+  }
 
 }

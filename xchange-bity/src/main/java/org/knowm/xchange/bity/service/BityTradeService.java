@@ -12,61 +12,67 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 
 public final class BityTradeService extends BityTradeServiceRaw implements TradeService {
 
-	/**
-	 * Constructor
-	 */
-	public BityTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BityTradeService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public UserTrades getTradeHistory(TradeHistoryParams params) {
-		Integer limit = null;
-		Long offset = null;
-		if (params instanceof TradeHistoryParamLimit) {
-			limit = ((TradeHistoryParamLimit) params).getLimit();
-		}
-		if (params instanceof TradeHistoryParamOffset) {
-			offset = ((TradeHistoryParamOffset) params).getOffset();
-		}
-		// Integer offset, final Integer limit, Integer orderBy
-		final BityResponse<BityOrder> orders = super.getBityOrders(offset, limit, "timestamp_created");
-		return BityAdapters.adaptTrades(orders.getObjects());
-	}
+  public static class BityHistoryParams
+      implements TradeHistoryParams, TradeHistoryParamLimit, TradeHistoryParamOffset {
 
-	@Override
-	public TradeHistoryParams createTradeHistoryParams() {
-		BityHistoryParams params = new BityHistoryParams();
-		params.setLimit(50);
-		params.setOffset(0L);
-		return params;
-	}
+    private Integer limit;
 
-	public static class BityHistoryParams
-			implements TradeHistoryParams, TradeHistoryParamLimit, TradeHistoryParamOffset {
+    private Long offset;
 
-		private Integer limit;
+    @Override
+    public Integer getLimit() {
+      return limit;
+    }
 
-		private Long offset;
+    @Override
+    public void setLimit(Integer limit) {
+      this.limit = limit;
+    }
 
-		@Override
-		public Integer getLimit() {
-			return limit;
-		}
+    @Override
+    public Long getOffset() {
+      return offset;
+    }
 
-		@Override
-		public void setLimit(Integer limit) {
-			this.limit = limit;
-		}
+    @Override
+    public void setOffset(Long offset) {
+      this.offset = offset;
+    }
+  }
 
-		@Override
-		public Long getOffset() {
-			return offset;
-		}
+  @Override
+  public UserTrades getTradeHistory(TradeHistoryParams params) {
 
-		@Override
-		public void setOffset(Long offset) {
-			this.offset = offset;
-		}
-	}
+    Integer limit = null;
+    Long offset = null;
+
+    if (params instanceof TradeHistoryParamLimit) {
+      limit = ((TradeHistoryParamLimit) params).getLimit();
+    }
+
+    if (params instanceof TradeHistoryParamOffset) {
+      offset = ((TradeHistoryParamOffset) params).getOffset();
+    }
+
+    // Integer offset, final Integer limit, Integer orderBy
+    final BityResponse<BityOrder> orders = super.getBityOrders(offset, limit, "timestamp_created");
+    return BityAdapters.adaptTrades(orders.getObjects());
+  }
+
+  @Override
+  public TradeHistoryParams createTradeHistoryParams() {
+    BityHistoryParams params = new BityHistoryParams();
+    params.setLimit(50);
+    params.setOffset(0L);
+    return params;
+  }
 }

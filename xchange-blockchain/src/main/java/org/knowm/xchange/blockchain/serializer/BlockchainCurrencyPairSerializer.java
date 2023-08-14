@@ -8,10 +8,10 @@ import org.knowm.xchange.currency.CurrencyPair;
 
 import java.io.IOException;
 
-public class BlockchainCurrencyPairSerializer extends JsonSerializer<CurrencyPair> {
+public class BlockchainCurrencyPairSerializer extends JsonSerializer<CurrencyPair>  {
 
-	@Override
-	public void serialize(CurrencyPair currencyPair, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-		jsonGenerator.writeString(BlockchainAdapters.toSymbol(currencyPair));
-	}
+    @Override
+    public void serialize(CurrencyPair currencyPair, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        jsonGenerator.writeString(BlockchainAdapters.toSymbol(currencyPair));
+    }
 }

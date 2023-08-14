@@ -33,16 +33,16 @@ import org.knowm.xchange.instrument.Instrument;
  */
 public class CoinmateUtils {
 
-	public static String getPair(Instrument instrument) {
-		if (instrument == null) {
-			return null;
-		}
-		return instrument.getBase().getCurrencyCode().toUpperCase()
-				+ "_"
-				+ instrument.getCounter().getCurrencyCode().toUpperCase();
-	}
+  public static String getPair(Instrument instrument) {
+    if (instrument == null) {
+      return null;
+    }
+    return instrument.getBase().getCurrencyCode().toUpperCase()
+        + "_"
+        + instrument.getCounter().getCurrencyCode().toUpperCase();
+  }
 
-	public static CurrencyPair getPair(String currencyPair) {
-		return new CurrencyPair(currencyPair.replace("_", "/"));
-	}
+  public static CurrencyPair getPair(String currencyPair) {
+    return new CurrencyPair(currencyPair.replace("_", "/"));
+  }
 }

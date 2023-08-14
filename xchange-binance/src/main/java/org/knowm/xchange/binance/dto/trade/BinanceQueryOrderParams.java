@@ -4,34 +4,33 @@ import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.trade.params.orders.OrderQueryParamInstrument;
 
 public class BinanceQueryOrderParams implements OrderQueryParamInstrument {
-	private String orderId;
-	private Instrument instrument;
+  private String orderId;
+  private Instrument instrument;
 
-	public BinanceQueryOrderParams() {
-	}
+  public BinanceQueryOrderParams() {}
 
-	public BinanceQueryOrderParams(Instrument instrument, String orderId) {
-		this.instrument = instrument;
-		this.orderId = orderId;
-	}
+  public BinanceQueryOrderParams(Instrument instrument, String orderId) {
+    this.instrument = instrument;
+    this.orderId = orderId;
+  }
 
-	@Override
-	public Instrument getInstrument() {
-		return instrument;
-	}
+  @Override
+  public Instrument getInstrument() {
+    return instrument;
+  }
 
-	@Override
-	public void setInstrument(Instrument instrument) {
-		this.instrument = instrument;
-	}
+  @Override
+  public void setInstrument(Instrument instrument) {
+    this.instrument = instrument;
+  }
 
-	@Override
-	public String getOrderId() {
-		return orderId;
-	}
+  @Override
+  public String getOrderId() {
+    return orderId;
+  }
 
-	@Override
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
+  @Override
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
 }

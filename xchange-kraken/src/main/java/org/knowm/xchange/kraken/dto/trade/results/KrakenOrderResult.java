@@ -6,11 +6,15 @@ import org.knowm.xchange.kraken.dto.trade.KrakenOrderResponse;
 
 public class KrakenOrderResult extends KrakenResult<KrakenOrderResponse> {
 
-	/**
-	 * Constructor
-	 */
-	public KrakenOrderResult(
-			@JsonProperty("result") KrakenOrderResponse result, @JsonProperty("error") String[] error) {
-		super(result, error);
-	}
+  /**
+   * Constructor
+   *
+   * @param result
+   * @param error
+   */
+  public KrakenOrderResult(
+      @JsonProperty("result") KrakenOrderResponse result, @JsonProperty("error") String[] error) {
+
+    super(result, error);
+  }
 }

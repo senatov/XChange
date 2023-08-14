@@ -9,35 +9,42 @@ import java.util.List;
  */
 public final class OpenLoanOrders implements Serializable {
 
-	private static final long serialVersionUID = -8880758230367635109L;
+  private static final long serialVersionUID = -8880758230367635109L;
 
-	private final List<FixedRateLoanOrder> openFixedRateLoanOrders;
-	private final List<FloatingRateLoanOrder> openFloatingRateLoanOrders;
+  private final List<FixedRateLoanOrder> openFixedRateLoanOrders;
+  private final List<FloatingRateLoanOrder> openFloatingRateLoanOrders;
 
-	/**
-	 * Constructor
-	 */
-	public OpenLoanOrders(
-			List<FixedRateLoanOrder> openFixedRateLoanOrders,
-			List<FloatingRateLoanOrder> openFloatingRateLoanOrders) {
-		this.openFixedRateLoanOrders = openFixedRateLoanOrders;
-		this.openFloatingRateLoanOrders = openFloatingRateLoanOrders;
-	}
+  /**
+   * Constructor
+   *
+   * @param openFixedRateLoanOrders
+   * @param openFloatingRateLoanOrders
+   */
+  public OpenLoanOrders(
+      List<FixedRateLoanOrder> openFixedRateLoanOrders,
+      List<FloatingRateLoanOrder> openFloatingRateLoanOrders) {
 
-	public List<FixedRateLoanOrder> getOpenFixedRateLoanOrders() {
-		return openFixedRateLoanOrders;
-	}
+    this.openFixedRateLoanOrders = openFixedRateLoanOrders;
+    this.openFloatingRateLoanOrders = openFloatingRateLoanOrders;
+  }
 
-	public List<FloatingRateLoanOrder> getOpenFloatingRateLoanOrders() {
-		return openFloatingRateLoanOrders;
-	}
+  public List<FixedRateLoanOrder> getOpenFixedRateLoanOrders() {
 
-	@Override
-	public String toString() {
-		return "OpenLoanOrders [openFixedRateLoanOrders="
-				+ openFixedRateLoanOrders
-				+ ", openFloatingRateLoanOrders="
-				+ openFloatingRateLoanOrders
-				+ "]";
-	}
+    return openFixedRateLoanOrders;
+  }
+
+  public List<FloatingRateLoanOrder> getOpenFloatingRateLoanOrders() {
+
+    return openFloatingRateLoanOrders;
+  }
+
+  @Override
+  public String toString() {
+
+    return "OpenLoanOrders [openFixedRateLoanOrders="
+        + openFixedRateLoanOrders
+        + ", openFloatingRateLoanOrders="
+        + openFloatingRateLoanOrders
+        + "]";
+  }
 }

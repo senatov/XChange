@@ -1,6 +1,4 @@
-/**
- * Copyright 2019 Mek Global Limited.
- */
+/** Copyright 2019 Mek Global Limited. */
 package org.knowm.xchange.kucoin.dto.request;
 
 import lombok.Data;
@@ -9,7 +7,7 @@ import lombok.Data;
 @Data
 public class PageRequest {
 
-	private int currentPage = 1;
+  private int currentPage = 1;
 
-	private int pageSize = 10;
+  private int pageSize = 10;
 }

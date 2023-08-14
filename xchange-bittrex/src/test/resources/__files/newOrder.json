@@ -3,9 +3,9 @@
   "direction": "BUY",
   "type": "LIMIT",
   "quantity": "0.1",
-  "ceiling": null,
+  "ceiling" : null,
   "limit": "0.01",
-  "timeInForce": "GOOD_TIL_CANCELLED",
-  "clientOrderId": null,
-  "useAwards": null
+  "timeInForce" : "GOOD_TIL_CANCELLED",
+  "clientOrderId" : null,
+  "useAwards" : null
 }

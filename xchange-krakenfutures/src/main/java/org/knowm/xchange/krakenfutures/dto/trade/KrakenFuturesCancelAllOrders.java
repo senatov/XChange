@@ -13,36 +13,36 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class KrakenFuturesCancelAllOrders extends KrakenFuturesResult {
 
-	private final KrakenFuturesCancelStatus cancelStatus;
+    private final KrakenFuturesCancelStatus cancelStatus;
 
-	public KrakenFuturesCancelAllOrders(
-			@JsonProperty("result") String result,
-			@JsonProperty("error") String error,
-			@JsonProperty("cancelStatus") KrakenFuturesCancelStatus cancelStatus) {
-		super(result, error);
-		this.cancelStatus = cancelStatus;
-	}
+    public KrakenFuturesCancelAllOrders(
+            @JsonProperty("result") String result,
+            @JsonProperty("error") String error,
+            @JsonProperty("cancelStatus") KrakenFuturesCancelStatus cancelStatus) {
+        super(result, error);
+        this.cancelStatus = cancelStatus;
+    }
 
-	@Getter
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class KrakenFuturesCancelStatus {
+    @Getter
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class KrakenFuturesCancelStatus{
 
-		private final List<KrakenFuturesOrderId> orderIds;
+        private final List<KrakenFuturesOrderId> orderIds;
 
-		public KrakenFuturesCancelStatus(
-				@JsonProperty("cancelledOrders") List<KrakenFuturesOrderId> orderIds) {
-			this.orderIds = orderIds;
-		}
-	}
+        public KrakenFuturesCancelStatus(
+                @JsonProperty("cancelledOrders") List<KrakenFuturesOrderId> orderIds) {
+            this.orderIds = orderIds;
+        }
+    }
 
-	@Getter
-	public static class KrakenFuturesOrderId {
+    @Getter
+    public static class KrakenFuturesOrderId{
 
-		private final String orderId;
+        private final String orderId;
 
-		public KrakenFuturesOrderId(
-				@JsonProperty("order_id") String orderId) {
-			this.orderId = orderId;
-		}
-	}
+        public KrakenFuturesOrderId(
+                @JsonProperty("order_id") String orderId) {
+            this.orderId = orderId;
+        }
+    }
 }

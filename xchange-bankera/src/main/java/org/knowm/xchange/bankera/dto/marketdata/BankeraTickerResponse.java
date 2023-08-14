@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BankeraTickerResponse {
 
-	private final BankeraTicker ticker;
+  private final BankeraTicker ticker;
 
-	public BankeraTickerResponse(@JsonProperty("ticker") BankeraTicker ticker) {
-		this.ticker = ticker;
-	}
+  public BankeraTickerResponse(@JsonProperty("ticker") BankeraTicker ticker) {
+    this.ticker = ticker;
+  }
 
-	@JsonProperty("ticker")
-	public BankeraTicker getTicker() {
-		return ticker;
-	}
+  @JsonProperty("ticker")
+  public BankeraTicker getTicker() {
+    return ticker;
+  }
 }

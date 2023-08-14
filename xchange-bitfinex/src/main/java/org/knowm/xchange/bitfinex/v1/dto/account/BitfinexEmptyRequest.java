@@ -5,46 +5,55 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 
 public class BitfinexEmptyRequest {
 
-	@JsonProperty("request")
-	protected String request;
+  @JsonProperty("request")
+  protected String request;
 
-	@JsonProperty("nonce")
-	protected String nonce;
+  @JsonProperty("nonce")
+  protected String nonce;
 
-	@JsonProperty("options")
-	@JsonRawValue
-	protected String options;
+  @JsonProperty("options")
+  @JsonRawValue
+  protected String options;
 
-	/**
-	 * Constructor
-	 */
-	public BitfinexEmptyRequest(String nonce, String request) {
-		this.request = request;
-		this.nonce = String.valueOf(nonce);
-		this.options = "[]";
-	}
+  /**
+   * Constructor
+   *
+   * @param nonce
+   */
+  public BitfinexEmptyRequest(String nonce, String request) {
 
-	public String getRequest() {
-		return request;
-	}
+    this.request = request;
+    this.nonce = String.valueOf(nonce);
+    this.options = "[]";
+  }
 
-	public void setRequest(String request) {
-		this.request = request;
-	}
+  public String getRequest() {
 
-	public String getNonce() {
-		return nonce;
-	}
+    return request;
+  }
 
-	public void setNonce(String nonce) {
-		this.nonce = nonce;
-	}
+  public void setRequest(String request) {
 
-	public String getOptions() {
-		return options;
-	}
+    this.request = request;
+  }
 
-	public void setOptions(String options) {
-		this.options = options;
-	}
+  public String getNonce() {
+
+    return nonce;
+  }
+
+  public void setNonce(String nonce) {
+
+    this.nonce = nonce;
+  }
+
+  public String getOptions() {
+
+    return options;
+  }
+
+  public void setOptions(String options) {
+
+    this.options = options;
+  }
 }

@@ -4,17 +4,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BitfinexNonceOnlyRequest {
 
-	@JsonProperty("request")
-	protected String request;
+  @JsonProperty("request")
+  protected String request;
 
-	@JsonProperty("nonce")
-	protected String nonce;
+  @JsonProperty("nonce")
+  protected String nonce;
 
-	/**
-	 * Constructor
-	 */
-	public BitfinexNonceOnlyRequest(String request, String nonce) {
-		this.request = request;
-		this.nonce = nonce;
-	}
+  /**
+   * Constructor
+   *
+   * @param request
+   * @param nonce
+   */
+  public BitfinexNonceOnlyRequest(String request, String nonce) {
+
+    this.request = request;
+    this.nonce = nonce;
+  }
 }

@@ -10,26 +10,27 @@ import org.knowm.xchange.service.BaseService;
 
 public class OkexBaseService extends BaseExchangeService<OkexExchangeV3> implements BaseService {
 
-	protected final OkexV3 okex;
-	protected final String apikey;
-	protected final String passphrase;
-	protected final OkexDigestV3 digest;
+  protected final OkexV3 okex;
+  protected final String apikey;
+  protected final String passphrase;
+  protected final OkexDigestV3 digest;
 
-	protected final String tradepwd;
+  protected final String tradepwd;
 
-	public OkexBaseService(OkexExchangeV3 exchange) {
-		super(exchange);
-		final ExchangeSpecification spec = exchange.getExchangeSpecification();
-		okex = ExchangeRestProxyBuilder.forInterface(OkexV3.class, spec).build();
-		apikey = spec.getApiKey();
-		passphrase = (String) spec.getExchangeSpecificParametersItem("passphrase");
-		String secretKey = spec.getSecretKey();
-		digest = secretKey == null ? null : new OkexDigestV3(secretKey);
-		tradepwd = (String) spec.getExchangeSpecificParametersItem("tradepwd");
-	}
+  public OkexBaseService(OkexExchangeV3 exchange) {
+    super(exchange);
+    final ExchangeSpecification spec = exchange.getExchangeSpecification();
+    okex = ExchangeRestProxyBuilder.forInterface(OkexV3.class, spec).build();
+    apikey = spec.getApiKey();
+    passphrase = (String) spec.getExchangeSpecificParametersItem("passphrase");
 
-	protected static String timestamp() {
-		return System.currentTimeMillis() / 1000 + ".000"; //          <-- works as well
-		// return Instant.now().toString();
-	}
+    String secretKey = spec.getSecretKey();
+    digest = secretKey == null ? null : new OkexDigestV3(secretKey);
+    tradepwd = (String) spec.getExchangeSpecificParametersItem("tradepwd");
+  }
+
+  protected static String timestamp() {
+    return System.currentTimeMillis() / 1000 + ".000"; //          <-- works as well
+    // return Instant.now().toString();
+  }
 }

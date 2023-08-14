@@ -1,5 +1,8 @@
 package org.knowm.xchange.vaultoro.service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.account.AccountInfo;
@@ -10,42 +13,44 @@ import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 import org.knowm.xchange.vaultoro.VaultoroAdapters;
 import org.knowm.xchange.vaultoro.dto.account.VaultoroBalance;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
-
 public class VaultoroAccountService extends VaultoroAccountServiceRaw implements AccountService {
 
-	/**
-	 * Constructor
-	 */
-	public VaultoroAccountService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public VaultoroAccountService(Exchange exchange) {
 
-	@Override
-	public AccountInfo getAccountInfo() throws IOException {
-		List<VaultoroBalance> vaultoroBalances = super.getVaultoroBalances();
-		return VaultoroAdapters.adaptVaultoroBalances(vaultoroBalances);
-	}
+    super(exchange);
+  }
 
-	@Override
-	public String withdrawFunds(Currency arg0, BigDecimal arg1, String arg2) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+  @Override
+  public AccountInfo getAccountInfo() throws IOException {
 
-	@Override
-	public String withdrawFunds(WithdrawFundsParams params) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+    List<VaultoroBalance> vaultoroBalances = super.getVaultoroBalances();
+    return VaultoroAdapters.adaptVaultoroBalances(vaultoroBalances);
+  }
 
-	@Override
-	public String requestDepositAddress(Currency arg0, String... arg1) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+  @Override
+  public String requestDepositAddress(Currency arg0, String... arg1) throws IOException {
 
-	@Override
-	public TradeHistoryParams createFundingHistoryParams() {
-		throw new NotAvailableFromExchangeException();
-	}
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public String withdrawFunds(Currency arg0, BigDecimal arg1, String arg2) throws IOException {
+
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public String withdrawFunds(WithdrawFundsParams params) throws IOException {
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public TradeHistoryParams createFundingHistoryParams() {
+    throw new NotAvailableFromExchangeException();
+  }
 }

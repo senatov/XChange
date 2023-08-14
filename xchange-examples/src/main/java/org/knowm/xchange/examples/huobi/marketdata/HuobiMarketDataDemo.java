@@ -1,5 +1,10 @@
 package org.knowm.xchange.examples.huobi.marketdata;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
@@ -10,45 +15,41 @@ import org.knowm.xchange.huobi.service.HuobiMarketDataService;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 public class HuobiMarketDataDemo {
-	public static void main(String[] args) throws IOException {
-		Exchange exchange = HuobiDemoUtils.createExchange();
-		MarketDataService marketDataService = exchange.getMarketDataService();
-		generic(exchange, marketDataService);
-		raw((HuobiExchange) exchange, (HuobiMarketDataService) marketDataService);
-	}
+  public static void main(String[] args) throws IOException {
+    Exchange exchange = HuobiDemoUtils.createExchange();
+    MarketDataService marketDataService = exchange.getMarketDataService();
+    generic(exchange, marketDataService);
+    raw((HuobiExchange) exchange, (HuobiMarketDataService) marketDataService);
+  }
 
-	public static void generic(Exchange exchange, MarketDataService marketDataService)
-			throws IOException {
-	}
+  public static void generic(Exchange exchange, MarketDataService marketDataService)
+      throws IOException {}
 
-	public static void raw(HuobiExchange exchange, HuobiMarketDataService marketDataService)
-			throws IOException {
-		List<HuobiTicker> tickers = new ArrayList<>();
-		for (Instrument cp : exchange.getExchangeMetaData().getInstruments().keySet()) {
-			if (cp.getCounter() == Currency.USDT) {
-				tickers.add(marketDataService.getHuobiTicker((CurrencyPair) cp));
-			}
-		}
-		Collections.sort(
-				tickers,
-				new Comparator<HuobiTicker>() {
-					@Override
-					public int compare(HuobiTicker t1, HuobiTicker t2) {
-						return t2.getTs().compareTo(t1.getTs());
-					}
-				});
-		tickers.stream()
-				.forEach(
-						t -> {
-							System.out.println(t.getId() + " => " + String.format("%s", t));
-						});
-		System.out.println("raw out end");
-	}
+  public static void raw(HuobiExchange exchange, HuobiMarketDataService marketDataService)
+      throws IOException {
+
+    List<HuobiTicker> tickers = new ArrayList<>();
+    for (Instrument cp : exchange.getExchangeMetaData().getInstruments().keySet()) {
+      if (cp.getCounter() == Currency.USDT) {
+        tickers.add(marketDataService.getHuobiTicker((CurrencyPair) cp));
+      }
+    }
+
+    Collections.sort(
+        tickers,
+        new Comparator<HuobiTicker>() {
+          @Override
+          public int compare(HuobiTicker t1, HuobiTicker t2) {
+            return t2.getTs().compareTo(t1.getTs());
+          }
+        });
+
+    tickers.stream()
+        .forEach(
+            t -> {
+              System.out.println(t.getId() + " => " + String.format("%s", t.toString()));
+            });
+    System.out.println("raw out end");
+  }
 }

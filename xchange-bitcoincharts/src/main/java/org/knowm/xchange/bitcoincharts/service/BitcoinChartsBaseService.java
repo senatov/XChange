@@ -6,10 +6,13 @@ import org.knowm.xchange.service.BaseService;
 
 public class BitcoinChartsBaseService extends BaseExchangeService implements BaseService {
 
-	/**
-	 * Constructor
-	 */
-	public BitcoinChartsBaseService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BitcoinChartsBaseService(Exchange exchange) {
+
+    super(exchange);
+  }
 }

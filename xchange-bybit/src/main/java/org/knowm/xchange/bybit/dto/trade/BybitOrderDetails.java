@@ -10,67 +10,67 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 public class BybitOrderDetails {
 
-	@JsonProperty("accountId")
-	String accountId;
+  @JsonProperty("accountId")
+  String accountId;
 
-	@JsonProperty("exchangeId")
-	String exchangeId;
+  @JsonProperty("exchangeId")
+  String exchangeId;
 
-	@JsonProperty("symbol")
-	String symbol;
+  @JsonProperty("symbol")
+  String symbol;
 
-	@JsonProperty("symbolName")
-	String symbolName;
+  @JsonProperty("symbolName")
+  String symbolName;
 
-	@JsonProperty("orderLinkId")
-	String orderLinkId;
+  @JsonProperty("orderLinkId")
+  String orderLinkId;
 
-	@JsonProperty("orderId")
-	String orderId;
+  @JsonProperty("orderId")
+  String orderId;
 
-	@JsonProperty("price")
-	String price;
+  @JsonProperty("price")
+  String price;
 
-	@JsonProperty("origQty")
-	String origQty;
+  @JsonProperty("origQty")
+  String origQty;
 
-	@JsonProperty("executedQty")
-	String executedQty;
+  @JsonProperty("executedQty")
+  String executedQty;
 
-	@JsonProperty("cummulativeQuoteQty")
-	String cummulativeQuoteQty;
+  @JsonProperty("cummulativeQuoteQty")
+  String cummulativeQuoteQty;
 
-	@JsonProperty("avgPrice")
-	String avgPrice;
+  @JsonProperty("avgPrice")
+  String avgPrice;
 
-	@JsonProperty("status")
-	String status;
+  @JsonProperty("status")
+  String status;
 
-	@JsonProperty("timeInForce")
-	String timeInForce;
+  @JsonProperty("timeInForce")
+  String timeInForce;
 
-	@JsonProperty("type")
-	String type;
+  @JsonProperty("type")
+  String type;
 
-	@JsonProperty("side")
-	String side;
+  @JsonProperty("side")
+  String side;
 
-	@JsonProperty("stopPrice")
-	String stopPrice;
+  @JsonProperty("stopPrice")
+  String stopPrice;
 
-	@JsonProperty("icebergQty")
-	String icebergQty;
+  @JsonProperty("icebergQty")
+  String icebergQty;
 
-	@JsonProperty("time")
-	String time;
+  @JsonProperty("time")
+  String time;
 
-	@JsonProperty("updateTime")
-	String updateTime;
+  @JsonProperty("updateTime")
+  String updateTime;
 
-	@JsonProperty("isWorking")
-	boolean isWorking;
+  @JsonProperty("isWorking")
+  boolean isWorking;
 
-	@JsonProperty("locked")
-	String locked;
+  @JsonProperty("locked")
+  String locked;
 
 }

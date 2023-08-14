@@ -10,22 +10,26 @@ import si.mazi.rescu.ParamsDigest;
 
 public class BleutradeBaseService extends BaseExchangeService implements BaseService {
 
-	protected final String apiKey;
-	protected final BleutradeAuthenticated bleutrade;
-	protected final ParamsDigest signatureCreator;
+  protected final String apiKey;
+  protected final BleutradeAuthenticated bleutrade;
+  protected final ParamsDigest signatureCreator;
 
-	/**
-	 * Constructor
-	 */
-	public BleutradeBaseService(Exchange exchange, IRestProxyFactory restProxyFactory) {
-		super(exchange);
-		this.bleutrade =
-				ExchangeRestProxyBuilder.forInterface(
-								BleutradeAuthenticated.class, exchange.getExchangeSpecification())
-						.restProxyFactory(restProxyFactory)
-						.build();
-		this.apiKey = exchange.getExchangeSpecification().getApiKey();
-		this.signatureCreator =
-				BleutradeDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BleutradeBaseService(Exchange exchange, IRestProxyFactory restProxyFactory) {
+
+    super(exchange);
+
+    this.bleutrade =
+        ExchangeRestProxyBuilder.forInterface(
+                BleutradeAuthenticated.class, exchange.getExchangeSpecification())
+            .restProxyFactory(restProxyFactory)
+            .build();
+    this.apiKey = exchange.getExchangeSpecification().getApiKey();
+    this.signatureCreator =
+        BleutradeDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+  }
 }

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BiboxAllAssetsBody {
 
-	@JsonProperty
-	public final int select = 1;
+  @JsonProperty public final int select = 1;
 
-	public BiboxAllAssetsBody() {
-	}
+  public BiboxAllAssetsBody() {}
 }

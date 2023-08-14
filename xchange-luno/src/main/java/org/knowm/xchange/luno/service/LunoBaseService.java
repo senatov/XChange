@@ -8,10 +8,10 @@ import org.knowm.xchange.service.BaseService;
 
 public class LunoBaseService extends BaseExchangeService implements BaseService {
 
-	protected final LunoAPI lunoAPI;
+  protected final LunoAPI lunoAPI;
 
-	public LunoBaseService(Exchange exchange) {
-		super(exchange);
-		lunoAPI = new LunoAPIImpl(exchange.getExchangeSpecification());
-	}
+  public LunoBaseService(Exchange exchange) {
+    super(exchange);
+    lunoAPI = new LunoAPIImpl(exchange.getExchangeSpecification());
+  }
 }

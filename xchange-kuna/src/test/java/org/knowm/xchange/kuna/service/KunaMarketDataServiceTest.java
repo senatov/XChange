@@ -7,10 +7,10 @@ import org.knowm.xchange.kuna.KunaExchange;
 
 public class KunaMarketDataServiceTest {
 
-	private static Exchange exchange;
+  private static Exchange exchange;
 
-	@Before
-	public static void beforeClass() {
-		exchange = ExchangeFactory.INSTANCE.createExchange(KunaExchange.class);
-	}
+  @Before
+  public static void beforeClass() {
+    exchange = ExchangeFactory.INSTANCE.createExchange(KunaExchange.class);
+  }
 }

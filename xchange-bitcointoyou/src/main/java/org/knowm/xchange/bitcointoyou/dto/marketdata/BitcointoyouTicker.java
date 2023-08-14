@@ -8,21 +8,24 @@ import org.knowm.xchange.currency.CurrencyPair;
  */
 public class BitcointoyouTicker {
 
-	private final BitcointoyouMarketData bitcointoyouMarketData;
-	private final CurrencyPair currencyPair;
+  private final BitcointoyouMarketData bitcointoyouMarketData;
+  private final CurrencyPair currencyPair;
 
-	public BitcointoyouTicker(
-			BitcointoyouMarketData bitcointoyouMarketData, CurrencyPair currencyPair) {
-		super();
-		this.bitcointoyouMarketData = bitcointoyouMarketData;
-		this.currencyPair = currencyPair;
-	}
+  public BitcointoyouTicker(
+      BitcointoyouMarketData bitcointoyouMarketData, CurrencyPair currencyPair) {
 
-	public BitcointoyouMarketData getBitcointoyouMarketData() {
-		return bitcointoyouMarketData;
-	}
+    super();
+    this.bitcointoyouMarketData = bitcointoyouMarketData;
+    this.currencyPair = currencyPair;
+  }
 
-	public CurrencyPair getCurrencyPair() {
-		return currencyPair;
-	}
+  public BitcointoyouMarketData getBitcointoyouMarketData() {
+
+    return bitcointoyouMarketData;
+  }
+
+  public CurrencyPair getCurrencyPair() {
+
+    return currencyPair;
+  }
 }

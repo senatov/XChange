@@ -14,16 +14,16 @@ import org.knowm.xchange.bitcoinde.v4.dto.BitcoindeResponse;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindeIdResponse extends BitcoindeResponse {
 
-	String id;
+  String id;
 
-	@JsonCreator
-	public BitcoindeIdResponse(
-			@JsonProperty("order_id") String id,
-			@JsonProperty("credits") Integer credits,
-			@JsonProperty("errors") BitcoindeError[] errors,
-			@JsonProperty("maintenance") BitcoindeMaintenance maintenance,
-			@JsonProperty("nonce") Long nonce) {
-		super(credits, errors, maintenance, nonce);
-		this.id = id;
-	}
+  @JsonCreator
+  public BitcoindeIdResponse(
+      @JsonProperty("order_id") String id,
+      @JsonProperty("credits") Integer credits,
+      @JsonProperty("errors") BitcoindeError[] errors,
+      @JsonProperty("maintenance") BitcoindeMaintenance maintenance,
+      @JsonProperty("nonce") Long nonce) {
+    super(credits, errors, maintenance, nonce);
+    this.id = id;
+  }
 }

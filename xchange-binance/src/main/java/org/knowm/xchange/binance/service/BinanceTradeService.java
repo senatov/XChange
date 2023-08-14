@@ -1,14 +1,19 @@
 package org.knowm.xchange.binance.service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.Value;
 import org.knowm.xchange.binance.BinanceAdapters;
 import org.knowm.xchange.binance.BinanceErrorAdapter;
 import org.knowm.xchange.binance.BinanceExchange;
 import org.knowm.xchange.binance.dto.BinanceException;
-import org.knowm.xchange.binance.dto.trade.BinanceTrade;
-import org.knowm.xchange.binance.dto.trade.BinanceTradeHistoryParams;
-import org.knowm.xchange.binance.dto.trade.OrderType;
-import org.knowm.xchange.binance.dto.trade.TimeInForce;
+import org.knowm.xchange.binance.dto.trade.*;
 import org.knowm.xchange.client.ResilienceRegistries;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.derivative.FuturesContract;
@@ -24,354 +29,350 @@ import org.knowm.xchange.exceptions.ExchangeException;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.trade.TradeService;
-import org.knowm.xchange.service.trade.params.CancelAllOrders;
-import org.knowm.xchange.service.trade.params.CancelOrderByIdParams;
-import org.knowm.xchange.service.trade.params.CancelOrderByInstrument;
-import org.knowm.xchange.service.trade.params.CancelOrderParams;
-import org.knowm.xchange.service.trade.params.TradeHistoryParamInstrument;
-import org.knowm.xchange.service.trade.params.TradeHistoryParamLimit;
-import org.knowm.xchange.service.trade.params.TradeHistoryParams;
-import org.knowm.xchange.service.trade.params.TradeHistoryParamsIdSpan;
-import org.knowm.xchange.service.trade.params.TradeHistoryParamsTimeSpan;
-import org.knowm.xchange.service.trade.params.orders.DefaultOpenOrdersParam;
-import org.knowm.xchange.service.trade.params.orders.DefaultOpenOrdersParamCurrencyPair;
-import org.knowm.xchange.service.trade.params.orders.DefaultOpenOrdersParamInstrument;
-import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamCurrencyPair;
-import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamInstrument;
-import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
-import org.knowm.xchange.service.trade.params.orders.OrderQueryParamInstrument;
-import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
+import org.knowm.xchange.service.trade.params.*;
+import org.knowm.xchange.service.trade.params.orders.*;
 import org.knowm.xchange.utils.Assert;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class BinanceTradeService extends BinanceTradeServiceRaw implements TradeService {
 
-	public BinanceTradeService(
-			BinanceExchange exchange,
-			ResilienceRegistries resilienceRegistries) {
-		super(exchange, resilienceRegistries);
-	}
+  public BinanceTradeService(
+      BinanceExchange exchange,
+      ResilienceRegistries resilienceRegistries) {
+    super(exchange, resilienceRegistries);
+  }
 
-	@Override
-	public OpenOrders getOpenOrders() throws IOException {
-		return getOpenOrders(new DefaultOpenOrdersParam());
-	}
+  @Override
+  public OpenOrders getOpenOrders() throws IOException {
+    return getOpenOrders(new DefaultOpenOrdersParam());
+  }
 
-	@Override
-	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-		try {
-			Instrument pair = null;
-			if (params instanceof OpenOrdersParamInstrument) {
-				pair = ((OpenOrdersParamInstrument) params).getInstrument();
-			} else if (params instanceof OpenOrdersParamCurrencyPair) {
-				pair = ((OpenOrdersParamCurrencyPair) params).getCurrencyPair();
-			}
-			return BinanceAdapters.adaptOpenOrders(openOrdersAllProducts(pair), pair instanceof FuturesContract);
+  public OpenOrders getOpenOrders(CurrencyPair pair) throws IOException {
+    return getOpenOrders(new DefaultOpenOrdersParamCurrencyPair(pair));
+  }
 
-		} catch (BinanceException e) {
-			throw BinanceErrorAdapter.adapt(e);
-		}
-	}
+  @Override
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+    try {
+      Instrument pair = null;
+      if(params instanceof OpenOrdersParamInstrument){
+        pair = ((OpenOrdersParamInstrument) params).getInstrument();
+      } else if(params instanceof OpenOrdersParamCurrencyPair){
+        pair = ((OpenOrdersParamCurrencyPair) params).getCurrencyPair();
+      }
 
-	@Override
-	public Class[] getRequiredCancelOrderParamClasses() {
-		return new Class[]{CancelOrderByIdParams.class, CancelOrderByInstrument.class};
-	}
+      return BinanceAdapters.adaptOpenOrders(openOrdersAllProducts(pair), pair instanceof FuturesContract);
 
-	@Override
-	public OpenPositions getOpenPositions() throws IOException {
-		return new OpenPositions(BinanceAdapters.adaptOpenPositions(openPositions()));
-	}
+    } catch (BinanceException e) {
+      throw BinanceErrorAdapter.adapt(e);
+    }
+  }
 
-	@Override
-	public String placeMarketOrder(MarketOrder mo) throws IOException {
-		return placeOrderAllProducts(OrderType.MARKET, mo, null, null, null, null, null, null);
-	}
+  @Override
+  public String placeMarketOrder(MarketOrder mo) throws IOException {
+    return placeOrderAllProducts(OrderType.MARKET, mo, null, null, null, null, null,null);
+  }
 
-	@Override
-	public String placeStopOrder(StopOrder order) throws IOException {
-		// Time-in-force should not be provided for market orders but is required for
-		// limit orders, order we only default it for limit orders. If the caller
-		// specifies one for a market order, we don't remove it, since Binance might
-		// allow
-		// it at some point.
-		TimeInForce tif =
-				timeInForceFromOrder(order).orElse(order.getLimitPrice() != null ? TimeInForce.GTC : null);
-		OrderType orderType = BinanceAdapters.adaptOrderType(order);
-		return placeOrderAllProducts(
-				orderType, order, order.getLimitPrice(), order.getStopPrice(), null, null, order.getTrailValue(), tif);
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+    TimeInForce tif = timeInForceFromOrder(limitOrder).orElse(TimeInForce.GTC);
+    OrderType type;
+    if (limitOrder.hasFlag(org.knowm.xchange.binance.dto.trade.BinanceOrderFlags.LIMIT_MAKER)) {
+      type = OrderType.LIMIT_MAKER;
+      tif = null;
+    } else {
+      type = OrderType.LIMIT;
+    }
+    return placeOrderAllProducts(type, limitOrder, limitOrder.getLimitPrice(), null, null, null,null, tif);
+  }
 
-	@Override
-	public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
-		TimeInForce tif = timeInForceFromOrder(limitOrder).orElse(TimeInForce.GTC);
-		OrderType type;
-		if (limitOrder.hasFlag(org.knowm.xchange.binance.dto.trade.BinanceOrderFlags.LIMIT_MAKER)) {
-			type = OrderType.LIMIT_MAKER;
-			tif = null;
-		} else {
-			type = OrderType.LIMIT;
-		}
-		return placeOrderAllProducts(type, limitOrder, limitOrder.getLimitPrice(), null, null, null, null, tif);
-	}
+  @Override
+  public String placeStopOrder(StopOrder order) throws IOException {
+    // Time-in-force should not be provided for market orders but is required for
+    // limit orders, order we only default it for limit orders. If the caller
+    // specifies one for a market order, we don't remove it, since Binance might
+    // allow
+    // it at some point.
+    TimeInForce tif =
+        timeInForceFromOrder(order).orElse(order.getLimitPrice() != null ? TimeInForce.GTC : null);
 
-	private Optional<TimeInForce> timeInForceFromOrder(Order order) {
-		return order.getOrderFlags().stream()
-				.filter(flag -> flag instanceof TimeInForce)
-				.map(flag -> (TimeInForce) flag)
-				.findFirst();
-	}
+    OrderType orderType = BinanceAdapters.adaptOrderType(order);
 
-	@Override
-	public boolean cancelOrder(String orderId) {
-		throw new ExchangeException("You need to provide the currency pair to cancel an order.");
-	}
+    return placeOrderAllProducts(
+        orderType, order, order.getLimitPrice(), order.getStopPrice(), null, null, order.getTrailValue(), tif);
+  }
 
-	@Override
-	public boolean cancelOrder(CancelOrderParams params) throws IOException {
-		try {
-			if (!(params instanceof CancelOrderByInstrument)
-					&& !(params instanceof CancelOrderByIdParams)) {
-				throw new ExchangeException(
-						"You need to provide the currency pair and the order id to cancel an order.");
-			}
-			assert params instanceof CancelOrderByInstrument;
-			CancelOrderByInstrument paramInstrument = (CancelOrderByInstrument) params;
-			CancelOrderByIdParams paramId = (CancelOrderByIdParams) params;
-			cancelOrderAllProducts(
-					paramInstrument.getInstrument(),
-					BinanceAdapters.id(paramId.getOrderId()),
-					null,
-					null);
-			return true;
-		} catch (BinanceException e) {
-			throw BinanceErrorAdapter.adapt(e);
-		}
-	}
+  private Optional<TimeInForce> timeInForceFromOrder(Order order) {
+    return order.getOrderFlags().stream()
+        .filter(flag -> flag instanceof TimeInForce)
+        .map(flag -> (TimeInForce) flag)
+        .findFirst();
+  }
 
-	@Override
-	public Collection<String> cancelAllOrders(CancelAllOrders orderParams) throws IOException {
-		if (!(orderParams instanceof CancelOrderByInstrument)) {
-			throw new NotAvailableFromExchangeException("Parameters must be an instance of " + CancelOrderByInstrument.class.getSimpleName());
-		}
-		Instrument instrument = ((CancelOrderByInstrument) orderParams).getInstrument();
-		return cancelAllOpenOrdersAllProducts(instrument)
-				.stream()
-				.map(binanceCancelledOrder -> Long.toString(binanceCancelledOrder.orderId))
-				.collect(Collectors.toList());
-	}
+  private String placeOrderAllProducts(
+      OrderType type,
+      Order order,
+      BigDecimal limitPrice,
+      BigDecimal stopPrice,
+      BigDecimal quoteOrderQty,
+      Long trailingDelta,
+      BigDecimal callBackRate,
+      TimeInForce tif)
+      throws IOException {
+    try {
+      String orderId;
 
-	@Override
-	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-		try {
-			Assert.isTrue(
-					params instanceof TradeHistoryParamInstrument,
-					"You need to provide the instrument to get the user trades.");
-			TradeHistoryParamInstrument pairParams = (TradeHistoryParamInstrument) params;
-			Instrument pair = pairParams.getInstrument();
-			if (pair == null) {
-				throw new ExchangeException(
-						"You need to provide the instrument to get the user trades.");
-			}
-			Long orderId = null;
-			Long startTime = null;
-			Long endTime = null;
-			if (params instanceof TradeHistoryParamsTimeSpan) {
-				if (((TradeHistoryParamsTimeSpan) params).getStartTime() != null) {
-					startTime = ((TradeHistoryParamsTimeSpan) params).getStartTime().getTime();
-				}
-				if (((TradeHistoryParamsTimeSpan) params).getEndTime() != null) {
-					endTime = ((TradeHistoryParamsTimeSpan) params).getEndTime().getTime();
-				}
-			}
-			Long fromId = null;
-			if (params instanceof TradeHistoryParamsIdSpan idParams) {
-				try {
-					fromId = BinanceAdapters.id(idParams.getStartId());
-				} catch (Throwable ignored) {
-				}
-			}
-			if ((fromId != null) && (startTime != null || endTime != null)) {
-				throw new ExchangeException(
-						"You should either specify the id from which you get the user trades from or start and end times. If you specify both, Binance will only honour the fromId parameter.");
-			}
-			Integer limit = null;
-			if (params instanceof TradeHistoryParamLimit limitParams) {
-				limit = limitParams.getLimit();
-			}
-			List<BinanceTrade> binanceTrades = myTradesAllProducts(pair, orderId, startTime, endTime, fromId, limit);
-			return BinanceAdapters.adaptUserTrades(binanceTrades, pair instanceof FuturesContract);
-		} catch (BinanceException e) {
-			throw BinanceErrorAdapter.adapt(e);
-		}
-	}
+      if(order.getInstrument() instanceof FuturesContract){
+        orderId = newFutureOrder(
+                order.getInstrument(),
+                BinanceAdapters.convert(order.getType()),
+                type,
+                tif,
+                order.getOriginalAmount(),
+                order.hasFlag(org.knowm.xchange.binance.dto.trade.BinanceOrderFlags.REDUCE_ONLY),
+                limitPrice,
+                getClientOrderId(order),
+                stopPrice,
+                false,
+                null,
+                callBackRate,
+                null
+        ).getOrderId();
+      } else {
+        orderId = Long.toString(newOrder(
+                order.getInstrument(),
+                BinanceAdapters.convert(order.getType()),
+                type,
+                tif,
+                order.getOriginalAmount(),
+                quoteOrderQty, // TODO (BigDecimal)order.getExtraValue("quoteOrderQty")
+                limitPrice,
+                getClientOrderId(order),
+                stopPrice,
+                trailingDelta, // TODO (Long)order.getExtraValue("trailingDelta")
+                null,
+                null).orderId);
+      }
+      return orderId;
+    } catch (BinanceException e) {
+      throw BinanceErrorAdapter.adapt(e);
+    }
+  }
 
-	@Override
-	public TradeHistoryParams createTradeHistoryParams() {
-		return new BinanceTradeHistoryParams();
-	}
+  public void placeTestOrder(
+      OrderType type, Order order, BigDecimal limitPrice, BigDecimal stopPrice) throws IOException {
+    placeTestOrder(type, order, limitPrice, stopPrice, null, null);
+  }
 
-	@Override
-	public OpenOrdersParams createOpenOrdersParams() {
-		return new DefaultOpenOrdersParamInstrument();
-	}
+  public void placeTestOrder(
+      OrderType type,
+      Order order,
+      BigDecimal limitPrice,
+      BigDecimal stopPrice,
+      BigDecimal quoteOrderQty,
+      Long trailingDelta)
+      throws IOException {
+    try {
+      TimeInForce tif = timeInForceFromOrder(order).orElse(null);
+      testNewOrder(
+          order.getInstrument(),
+          BinanceAdapters.convert(order.getType()),
+          type,
+          tif,
+          order.getOriginalAmount(),
+          quoteOrderQty,
+          limitPrice,
+          getClientOrderId(order),
+          stopPrice,
+          trailingDelta,
+          null);
+    } catch (BinanceException e) {
+      throw BinanceErrorAdapter.adapt(e);
+    }
+  }
 
-	@Override
-	public Collection<Order> getOrder(String... orderIds) {
-		throw new NotAvailableFromExchangeException();
-	}
+  private String getClientOrderId(Order order) {
 
-	@Override
-	public Collection<Order> getOrder(OrderQueryParams... params) throws IOException {
-		try {
-			Collection<Order> orders = new ArrayList<>();
-			for (OrderQueryParams param : params) {
-				if (!(param instanceof OrderQueryParamInstrument orderQueryParamInstrument)) {
-					throw new ExchangeException(
-							"Parameters must be an instance of OrderQueryParamInstrument");
-				}
-				if (orderQueryParamInstrument.getInstrument() == null
-						|| orderQueryParamInstrument.getOrderId() == null) {
-					throw new ExchangeException(
-							"You need to provide the currency pair and the order id to query an order.");
-				}
-				orders.add(
-						BinanceAdapters.adaptOrder(
-								orderStatusAllProducts(
-										orderQueryParamInstrument.getInstrument(),
-										BinanceAdapters.id(orderQueryParamInstrument.getOrderId()),
-										null), orderQueryParamInstrument.getInstrument() instanceof FuturesContract));
-			}
-			return orders;
-		} catch (BinanceException e) {
-			throw BinanceErrorAdapter.adapt(e);
-		}
-	}
+    String clientOrderId = null;
+    for (IOrderFlags flags : order.getOrderFlags()) {
+      if (flags instanceof BinanceOrderFlags) {
+        BinanceOrderFlags bof = (BinanceOrderFlags) flags;
+        if (clientOrderId == null) {
+          clientOrderId = bof.getClientId();
+        }
+      }
+    }
+    return clientOrderId;
+  }
 
-	@Override
-	public Class getRequiredOrderQueryParamClass() {
-		return OrderQueryParamInstrument.class;
-	}
+  @Override
+  public boolean cancelOrder(CancelOrderParams params) throws IOException {
+    try {
+      if (!(params instanceof CancelOrderByInstrument)
+          && !(params instanceof CancelOrderByIdParams)) {
+        throw new ExchangeException(
+            "You need to provide the currency pair and the order id to cancel an order.");
+      }
+      assert params instanceof CancelOrderByInstrument;
+      CancelOrderByInstrument paramInstrument = (CancelOrderByInstrument) params;
+      CancelOrderByIdParams paramId = (CancelOrderByIdParams) params;
+      cancelOrderAllProducts(
+                paramInstrument.getInstrument(),
+                BinanceAdapters.id(paramId.getOrderId()),
+                null,
+                null);
 
-	private String placeOrderAllProducts(
-			OrderType type,
-			Order order,
-			BigDecimal limitPrice,
-			BigDecimal stopPrice,
-			BigDecimal quoteOrderQty,
-			Long trailingDelta,
-			BigDecimal callBackRate,
-			TimeInForce tif)
-			throws IOException {
-		try {
-			String orderId;
-			if (order.getInstrument() instanceof FuturesContract) {
-				orderId = newFutureOrder(
-						order.getInstrument(),
-						BinanceAdapters.convert(order.getType()),
-						type,
-						tif,
-						order.getOriginalAmount(),
-						order.hasFlag(org.knowm.xchange.binance.dto.trade.BinanceOrderFlags.REDUCE_ONLY),
-						limitPrice,
-						getClientOrderId(order),
-						stopPrice,
-						false,
-						null,
-						callBackRate,
-						null
-				).getOrderId();
-			} else {
-				orderId = Long.toString(newOrder(
-						order.getInstrument(),
-						BinanceAdapters.convert(order.getType()),
-						type,
-						tif,
-						order.getOriginalAmount(),
-						quoteOrderQty, // TODO (BigDecimal)order.getExtraValue("quoteOrderQty")
-						limitPrice,
-						getClientOrderId(order),
-						stopPrice,
-						trailingDelta, // TODO (Long)order.getExtraValue("trailingDelta")
-						null,
-						null).orderId);
-			}
-			return orderId;
-		} catch (BinanceException e) {
-			throw BinanceErrorAdapter.adapt(e);
-		}
-	}
+      return true;
+    } catch (BinanceException e) {
+      throw BinanceErrorAdapter.adapt(e);
+    }
+  }
 
-	private String getClientOrderId(Order order) {
-		String clientOrderId = null;
-		for (IOrderFlags flags : order.getOrderFlags()) {
-			if (flags instanceof BinanceOrderFlags bof) {
-				if (clientOrderId == null) {
-					clientOrderId = bof.getClientId();
-				}
-			}
-		}
-		return clientOrderId;
-	}
+  @Override
+  public boolean cancelOrder(String orderId) {
+    throw new ExchangeException("You need to provide the currency pair to cancel an order.");
+  }
 
-	public OpenOrders getOpenOrders(CurrencyPair pair) throws IOException {
-		return getOpenOrders(new DefaultOpenOrdersParamCurrencyPair(pair));
-	}
+  @Override
+  public Class[] getRequiredCancelOrderParamClasses() {
+    return new Class[] {CancelOrderByIdParams.class, CancelOrderByInstrument.class};
+  }
 
-	public void placeTestOrder(
-			OrderType type, Order order, BigDecimal limitPrice, BigDecimal stopPrice) throws IOException {
-		placeTestOrder(type, order, limitPrice, stopPrice, null, null);
-	}
+  @Override
+  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+    try {
+      Assert.isTrue(
+          params instanceof TradeHistoryParamInstrument,
+          "You need to provide the instrument to get the user trades.");
+      TradeHistoryParamInstrument pairParams = (TradeHistoryParamInstrument) params;
+      Instrument pair = pairParams.getInstrument();
+      if (pair == null) {
+        throw new ExchangeException(
+            "You need to provide the instrument to get the user trades.");
+      }
+      Long orderId = null;
+      Long startTime = null;
+      Long endTime = null;
+      if (params instanceof TradeHistoryParamsTimeSpan) {
+        if (((TradeHistoryParamsTimeSpan) params).getStartTime() != null) {
+          startTime = ((TradeHistoryParamsTimeSpan) params).getStartTime().getTime();
+        }
+        if (((TradeHistoryParamsTimeSpan) params).getEndTime() != null) {
+          endTime = ((TradeHistoryParamsTimeSpan) params).getEndTime().getTime();
+        }
+      }
+      Long fromId = null;
+      if (params instanceof TradeHistoryParamsIdSpan) {
+        TradeHistoryParamsIdSpan idParams = (TradeHistoryParamsIdSpan) params;
+        try {
+          fromId = BinanceAdapters.id(idParams.getStartId());
+        } catch (Throwable ignored) {
+        }
+      }
+      if ((fromId != null) && (startTime != null || endTime != null)) {
+        throw new ExchangeException(
+            "You should either specify the id from which you get the user trades from or start and end times. If you specify both, Binance will only honour the fromId parameter.");
+      }
 
-	public void placeTestOrder(
-			OrderType type,
-			Order order,
-			BigDecimal limitPrice,
-			BigDecimal stopPrice,
-			BigDecimal quoteOrderQty,
-			Long trailingDelta)
-			throws IOException {
-		try {
-			TimeInForce tif = timeInForceFromOrder(order).orElse(null);
-			testNewOrder(
-					order.getInstrument(),
-					BinanceAdapters.convert(order.getType()),
-					type,
-					tif,
-					order.getOriginalAmount(),
-					quoteOrderQty,
-					limitPrice,
-					getClientOrderId(order),
-					stopPrice,
-					trailingDelta,
-					null);
-		} catch (BinanceException e) {
-			throw BinanceErrorAdapter.adapt(e);
-		}
-	}
+      Integer limit = null;
+      if (params instanceof TradeHistoryParamLimit) {
+        TradeHistoryParamLimit limitParams = (TradeHistoryParamLimit) params;
+        limit = limitParams.getLimit();
+      }
 
-	public interface BinanceOrderFlags extends IOrderFlags {
+      List<BinanceTrade> binanceTrades = myTradesAllProducts(pair, orderId, startTime, endTime, fromId, limit);
 
-		static BinanceOrderFlags withClientId(String clientId) {
-			return new ClientIdFlag(clientId);
-		}
+      return BinanceAdapters.adaptUserTrades(binanceTrades, pair instanceof FuturesContract);
+    } catch (BinanceException e) {
+      throw BinanceErrorAdapter.adapt(e);
+    }
+  }
 
-		/**
-		 * Used in fields 'newClientOrderId'
-		 */
-		String getClientId();
-	}
+  @Override
+  public Collection<Order> getOrder(OrderQueryParams... params) throws IOException {
+    try {
+      Collection<Order> orders = new ArrayList<>();
+      for (OrderQueryParams param : params) {
+        if (!(param instanceof OrderQueryParamInstrument)) {
+          throw new ExchangeException(
+                  "Parameters must be an instance of OrderQueryParamInstrument");
+        }
+        OrderQueryParamInstrument orderQueryParamInstrument =
+                (OrderQueryParamInstrument) param;
+        if (orderQueryParamInstrument.getInstrument() == null
+                || orderQueryParamInstrument.getOrderId() == null) {
+          throw new ExchangeException(
+                  "You need to provide the currency pair and the order id to query an order.");
+        }
 
-	@Value
-	static final class ClientIdFlag implements BinanceOrderFlags {
+        orders.add(
+                BinanceAdapters.adaptOrder(
+                        orderStatusAllProducts(
+                                orderQueryParamInstrument.getInstrument(),
+                                BinanceAdapters.id(orderQueryParamInstrument.getOrderId()),
+                                null), orderQueryParamInstrument.getInstrument() instanceof FuturesContract));
+      }
+      return orders;
+    } catch (BinanceException e) {
+      throw BinanceErrorAdapter.adapt(e);
+    }
+  }
 
-		private final String clientId;
-	}
+  @Override
+  public OpenPositions getOpenPositions() throws IOException {
+    return new OpenPositions(BinanceAdapters.adaptOpenPositions(openPositions()));
+  }
+
+  @Override
+  public Collection<String> cancelAllOrders(CancelAllOrders orderParams) throws IOException {
+
+    if(!(orderParams instanceof CancelOrderByInstrument)){
+      throw new NotAvailableFromExchangeException("Parameters must be an instance of "+CancelOrderByInstrument.class.getSimpleName());
+    }
+
+    Instrument instrument = ((CancelOrderByInstrument) orderParams).getInstrument();
+
+    return cancelAllOpenOrdersAllProducts(instrument)
+            .stream()
+            .map(binanceCancelledOrder -> Long.toString(binanceCancelledOrder.orderId))
+            .collect(Collectors.toList());
+  }
+
+  @Override
+  public TradeHistoryParams createTradeHistoryParams() {
+
+    return new BinanceTradeHistoryParams();
+  }
+
+  @Override
+  public OpenOrdersParams createOpenOrdersParams() {
+
+    return new DefaultOpenOrdersParamInstrument();
+  }
+
+  @Override
+  public Collection<Order> getOrder(String... orderIds) {
+
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public Class getRequiredOrderQueryParamClass() {
+    return OrderQueryParamInstrument.class;
+  }
+
+  public interface BinanceOrderFlags extends IOrderFlags {
+
+    static BinanceOrderFlags withClientId(String clientId) {
+      return new ClientIdFlag(clientId);
+    }
+
+    /** Used in fields 'newClientOrderId' */
+    String getClientId();
+  }
+
+  @Value
+  static final class ClientIdFlag implements BinanceOrderFlags {
+
+    private final String clientId;
+  }
 }

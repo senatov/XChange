@@ -5,21 +5,21 @@ import org.knowm.xchange.currency.CurrencyPair;
 
 public class ZaifMarket {
 
-	@JsonProperty("name")
-	private CurrencyPair name;
+  @JsonProperty("name")
+  private CurrencyPair name;
 
-	@Override
-	public String toString() {
-		return "ZaifMarket [name = " + this.getName() + "]";
-	}
+  @JsonProperty("name")
+  public CurrencyPair getName() {
+    return name;
+  }
 
-	@JsonProperty("name")
-	public CurrencyPair getName() {
-		return name;
-	}
+  @JsonProperty("name")
+  public void setName(CurrencyPair name) {
+    this.name = name;
+  }
 
-	@JsonProperty("name")
-	public void setName(CurrencyPair name) {
-		this.name = name;
-	}
+  @Override
+  public String toString() {
+    return "ZaifMarket [name = " + this.getName() + "]";
+  }
 }

@@ -1,8 +1,7 @@
 package org.knowm.xchange.service.trade.params;
 
-import org.knowm.xchange.service.trade.TradeService;
-
 import java.util.Date;
+import org.knowm.xchange.service.trade.TradeService;
 
 /**
  * Parameters type for {@link TradeService#getTradeHistory(TradeHistoryParams)} with start and end
@@ -10,11 +9,11 @@ import java.util.Date;
  */
 public interface TradeHistoryParamsTimeSpan extends TradeHistoryParams {
 
-	Date getStartTime();
+  Date getStartTime();
 
-	void setStartTime(Date startTime);
+  void setStartTime(Date startTime);
 
-	Date getEndTime();
+  Date getEndTime();
 
-	void setEndTime(Date endTime);
+  void setEndTime(Date endTime);
 }

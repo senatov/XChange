@@ -5,7 +5,7 @@ import org.knowm.xchange.service.trade.params.CancelOrderParams;
 
 public interface BitcoindeCancelOrderByIdAndCurrencyPair extends CancelOrderParams {
 
-	CurrencyPair getCurrencyPair();
+  CurrencyPair getCurrencyPair();
 
-	String getId();
+  String getId();
 }

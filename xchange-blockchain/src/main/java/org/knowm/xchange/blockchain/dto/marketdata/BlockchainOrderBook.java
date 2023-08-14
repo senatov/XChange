@@ -16,8 +16,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockchainOrderBook {
 
-	@JsonDeserialize(using = CurrencyPairDeserializer.class)
-	private final CurrencyPair symbol;
-	private final List<BlockchainMarketDataOrder> bids;
-	private final List<BlockchainMarketDataOrder> asks;
+    @JsonDeserialize(using = CurrencyPairDeserializer.class)
+    private final CurrencyPair symbol;
+    private final List<BlockchainMarketDataOrder> bids;
+    private final List<BlockchainMarketDataOrder> asks;
 }

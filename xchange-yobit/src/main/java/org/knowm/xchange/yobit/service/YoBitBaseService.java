@@ -8,16 +8,17 @@ import org.knowm.xchange.yobit.YoBit;
 import org.knowm.xchange.yobit.YoBitDigest;
 
 public class YoBitBaseService<T extends YoBit> extends BaseExchangeService implements BaseService {
-	protected final T service;
-	protected final YoBitDigest signatureCreator;
+  protected final T service;
+  protected final YoBitDigest signatureCreator;
 
-	protected YoBitBaseService(Class<T> type, Exchange exchange) {
-		super(exchange);
-		this.signatureCreator =
-				YoBitDigest.createInstance(
-						exchange.getExchangeSpecification().getSecretKey(),
-						exchange.getExchangeSpecification().getApiKey());
-		this.service =
-				ExchangeRestProxyBuilder.forInterface(type, exchange.getExchangeSpecification()).build();
-	}
+  protected YoBitBaseService(Class<T> type, Exchange exchange) {
+    super(exchange);
+
+    this.signatureCreator =
+        YoBitDigest.createInstance(
+            exchange.getExchangeSpecification().getSecretKey(),
+            exchange.getExchangeSpecification().getApiKey());
+    this.service =
+        ExchangeRestProxyBuilder.forInterface(type, exchange.getExchangeSpecification()).build();
+  }
 }

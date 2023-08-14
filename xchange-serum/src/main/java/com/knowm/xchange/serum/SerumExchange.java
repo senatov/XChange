@@ -11,31 +11,33 @@ import org.slf4j.LoggerFactory;
 
 public class SerumExchange extends BaseExchange implements Exchange {
 
-	protected final Logger logger = LoggerFactory.getLogger(SerumExchange.class);
+  protected final Logger logger = LoggerFactory.getLogger(SerumExchange.class);
 
-	@Override
-	protected void initServices() {
-		this.marketDataService = new SerumMarketDataService(this);
-	}
+  @Override
+  protected void initServices() {
+    this.marketDataService = new SerumMarketDataService(this);
+  }
 
-	@Override
-	public void remoteInit() {
-		try {
-			SerumAdapters.loadMarkets((SerumMarketDataServiceRaw) this.marketDataService);
-		} catch (Exception e) {
-			logger.error("Unable to load markets", e);
-		}
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-		exchangeSpecification.setSslUri(Solana.MAINNET.restUrl());
-		exchangeSpecification.setHost("projectserum.com");
-		exchangeSpecification.setPort(80);
-		exchangeSpecification.setExchangeName("Serum");
-		exchangeSpecification.setExchangeDescription(
-				"Serum is a decentralized cryptocurrency exchange built on Solana.");
-		return exchangeSpecification;
-	}
+    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+    exchangeSpecification.setSslUri(Solana.MAINNET.restUrl());
+    exchangeSpecification.setHost("projectserum.com");
+    exchangeSpecification.setPort(80);
+    exchangeSpecification.setExchangeName("Serum");
+    exchangeSpecification.setExchangeDescription(
+        "Serum is a decentralized cryptocurrency exchange built on Solana.");
+
+    return exchangeSpecification;
+  }
+
+  @Override
+  public void remoteInit() {
+    try {
+      SerumAdapters.loadMarkets((SerumMarketDataServiceRaw) this.marketDataService);
+    } catch (Exception e) {
+      logger.error("Unable to load markets", e);
+    }
+  }
 }

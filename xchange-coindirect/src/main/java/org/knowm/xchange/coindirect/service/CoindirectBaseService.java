@@ -10,25 +10,27 @@ import org.slf4j.LoggerFactory;
 import si.mazi.rescu.ParamsDigest;
 
 public class CoindirectBaseService extends BaseExchangeService implements BaseService {
-	protected final Logger LOG = LoggerFactory.getLogger(getClass());
+  protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
-	protected final String apiKey;
-	protected final CoindirectAuthenticated coindirect;
-	protected final ParamsDigest signatureCreator;
+  protected final String apiKey;
+  protected final CoindirectAuthenticated coindirect;
+  protected final ParamsDigest signatureCreator;
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  protected CoindirectBaseService(Exchange exchange) {
+    super(exchange);
 
-	/**
-	 * Constructor
-	 */
-	protected CoindirectBaseService(Exchange exchange) {
-		super(exchange);
-		this.coindirect =
-				ExchangeRestProxyBuilder.forInterface(
-								CoindirectAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-		this.apiKey = exchange.getExchangeSpecification().getApiKey();
-		this.signatureCreator =
-				CoindirectHawkDigest.createInstance(
-						exchange.getExchangeSpecification().getApiKey(),
-						exchange.getExchangeSpecification().getSecretKey());
-	}
+    this.coindirect =
+        ExchangeRestProxyBuilder.forInterface(
+                CoindirectAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+    this.apiKey = exchange.getExchangeSpecification().getApiKey();
+    this.signatureCreator =
+        CoindirectHawkDigest.createInstance(
+            exchange.getExchangeSpecification().getApiKey(),
+            exchange.getExchangeSpecification().getSecretKey());
+  }
 }

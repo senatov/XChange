@@ -1,76 +1,78 @@
 package org.knowm.xchange.coinone.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.knowm.xchange.currency.Currency;
-
 import java.math.BigDecimal;
+import org.knowm.xchange.currency.Currency;
 
 public class CoinoneTradeRequest {
 
-	@JsonProperty("access_token")
-	protected String accessTocken;
+  @JsonProperty("access_token")
+  protected String accessTocken;
 
-	@JsonProperty("nonce")
-	protected Long nonce;
+  @JsonProperty("nonce")
+  protected Long nonce;
 
-	@JsonProperty("price")
-	protected BigDecimal price;
+  @JsonProperty("price")
+  protected BigDecimal price;
 
-	@JsonProperty("qty")
-	protected BigDecimal qty;
+  @JsonProperty("qty")
+  protected BigDecimal qty;
 
-	@JsonProperty("currency")
-	protected String currency;
+  @JsonProperty("currency")
+  protected String currency;
 
-	/**
-	 * Constructor
-	 */
-	public CoinoneTradeRequest(
-			String accessTocken, Long nonce, BigDecimal price, BigDecimal qty, Currency currency) {
-		this.accessTocken = accessTocken;
-		this.nonce = nonce;
-		this.price = price;
-		this.qty = qty;
-		this.currency = currency.getSymbol().toLowerCase();
-	}
+  /**
+   * Constructor
+   *
+   * @param nonce
+   */
+  public CoinoneTradeRequest(
+      String accessTocken, Long nonce, BigDecimal price, BigDecimal qty, Currency currency) {
 
-	public String getAccessTocken() {
-		return accessTocken;
-	}
+    this.accessTocken = accessTocken;
+    this.nonce = nonce;
+    this.price = price;
+    this.qty = qty;
+    this.currency = currency.getSymbol().toLowerCase();
+  }
 
-	public void setAccessTocken(String accessTocken) {
-		this.accessTocken = accessTocken;
-	}
+  public String getAccessTocken() {
+    return accessTocken;
+  }
 
-	public Long getNonce() {
-		return nonce;
-	}
+  public void setAccessTocken(String accessTocken) {
+    this.accessTocken = accessTocken;
+  }
 
-	public void setNonce(Long nonce) {
-		this.nonce = nonce;
-	}
+  public Long getNonce() {
+    return nonce;
+  }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public void setNonce(Long nonce) {
+    this.nonce = nonce;
+  }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	public BigDecimal getQty() {
-		return qty;
-	}
+  public void setPrice(BigDecimal price) {
+    this.price = price;
+  }
 
-	public void setQty(BigDecimal qty) {
-		this.qty = qty;
-	}
+  public BigDecimal getQty() {
+    return qty;
+  }
 
-	public String getCurrency() {
-		return currency;
-	}
+  public void setQty(BigDecimal qty) {
+    this.qty = qty;
+  }
 
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
+  public String getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
 }

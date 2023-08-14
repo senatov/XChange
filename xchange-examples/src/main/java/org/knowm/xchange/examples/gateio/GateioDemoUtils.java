@@ -7,10 +7,11 @@ import org.knowm.xchange.gateio.GateioExchange;
 
 public class GateioDemoUtils {
 
-	public static Exchange createExchange() {
-		ExchangeSpecification exSpec = new GateioExchange().getDefaultExchangeSpecification();
-		exSpec.setApiKey("");
-		exSpec.setSecretKey("");
-		return ExchangeFactory.INSTANCE.createExchange(exSpec);
-	}
+  public static Exchange createExchange() {
+
+    ExchangeSpecification exSpec = new GateioExchange().getDefaultExchangeSpecification();
+    exSpec.setApiKey("");
+    exSpec.setSecretKey("");
+    return ExchangeFactory.INSTANCE.createExchange(exSpec);
+  }
 }

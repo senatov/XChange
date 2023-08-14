@@ -25,79 +25,77 @@ package org.knowm.xchange.coinmate.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateTickerData {
 
-	private final BigDecimal last;
-	private final BigDecimal high;
-	private final BigDecimal low;
-	private final BigDecimal amount;
-	private final BigDecimal bid;
-	private final BigDecimal ask;
-	private final BigDecimal open;
-	private final BigDecimal change;
-	private final long timestamp;
+  private final BigDecimal last;
+  private final BigDecimal high;
+  private final BigDecimal low;
+  private final BigDecimal amount;
+  private final BigDecimal bid;
+  private final BigDecimal ask;
+  private final BigDecimal open;
+  private final BigDecimal change;
+  private final long timestamp;
 
-	@JsonCreator
-	public CoinmateTickerData(
-			@JsonProperty("last") BigDecimal last,
-			@JsonProperty("high") BigDecimal high,
-			@JsonProperty("low") BigDecimal low,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("bid") BigDecimal bid,
-			@JsonProperty("ask") BigDecimal ask,
-			@JsonProperty("open") BigDecimal open,
-			@JsonProperty("change") BigDecimal change,
-			@JsonProperty("timestamp") long timestamp) {
-		this.last = last;
-		this.high = high;
-		this.low = low;
-		this.amount = amount;
-		this.bid = bid;
-		this.ask = ask;
-		this.open = open;
-		this.change = change;
-		this.timestamp = timestamp;
-	}
+  @JsonCreator
+  public CoinmateTickerData(
+      @JsonProperty("last") BigDecimal last,
+      @JsonProperty("high") BigDecimal high,
+      @JsonProperty("low") BigDecimal low,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("bid") BigDecimal bid,
+      @JsonProperty("ask") BigDecimal ask,
+      @JsonProperty("open") BigDecimal open,
+      @JsonProperty("change") BigDecimal change,
+      @JsonProperty("timestamp") long timestamp) {
 
-	public BigDecimal getLast() {
-		return last;
-	}
+    this.last = last;
+    this.high = high;
+    this.low = low;
+    this.amount = amount;
+    this.bid = bid;
+    this.ask = ask;
+    this.open = open;
+    this.change = change;
+    this.timestamp = timestamp;
+  }
 
-	public BigDecimal getHigh() {
-		return high;
-	}
+  public BigDecimal getLast() {
+    return last;
+  }
 
-	public BigDecimal getLow() {
-		return low;
-	}
+  public BigDecimal getHigh() {
+    return high;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public BigDecimal getLow() {
+    return low;
+  }
 
-	public BigDecimal getBid() {
-		return bid;
-	}
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	public BigDecimal getAsk() {
-		return ask;
-	}
+  public BigDecimal getBid() {
+    return bid;
+  }
 
-	public BigDecimal getOpen() {
-		return open;
-	}
+  public BigDecimal getAsk() {
+    return ask;
+  }
 
-	public BigDecimal getChange() {
-		return change;
-	}
+  public BigDecimal getOpen() {
+    return open;
+  }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+  public BigDecimal getChange() {
+    return change;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
+  }
 }

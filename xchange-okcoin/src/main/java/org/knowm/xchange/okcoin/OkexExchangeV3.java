@@ -10,25 +10,25 @@ import si.mazi.rescu.SynchronizedValueFactory;
 
 public class OkexExchangeV3 extends BaseExchange {
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification spec = new ExchangeSpecification(this.getClass());
-		spec.setSslUri("https://www.okex.com");
-		spec.setHost("www.okex.com");
-		spec.setExchangeName("OKEx");
-		spec.setExchangeDescription("OKEx is a globally oriented crypto-currency trading platform.");
-		return spec;
-	}
+  @Override
+  protected void initServices() {
+    this.marketDataService = new OkexMarketDataService(this);
+    this.accountService = new OkexAccountService(this);
+    this.tradeService = new OkexTradeService(this);
+  }
 
-	@Override
-	public SynchronizedValueFactory<Long> getNonceFactory() {
-		throw new ExchangeException("Nonce value not supported at OKEx.");
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+    ExchangeSpecification spec = new ExchangeSpecification(this.getClass());
+    spec.setSslUri("https://www.okex.com");
+    spec.setHost("www.okex.com");
+    spec.setExchangeName("OKEx");
+    spec.setExchangeDescription("OKEx is a globally oriented crypto-currency trading platform.");
+    return spec;
+  }
 
-	@Override
-	protected void initServices() {
-		this.marketDataService = new OkexMarketDataService(this);
-		this.accountService = new OkexAccountService(this);
-		this.tradeService = new OkexTradeService(this);
-	}
+  @Override
+  public SynchronizedValueFactory<Long> getNonceFactory() {
+    throw new ExchangeException("Nonce value not supported at OKEx.");
+  }
 }

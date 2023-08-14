@@ -8,15 +8,17 @@ import org.knowm.xchange.zaif.Zaif;
 
 public class ZaifBaseService extends BaseExchangeService implements BaseService {
 
-	protected final Zaif zaif;
+  protected final Zaif zaif;
 
-	/**
-	 * Constructor
-	 */
-	protected ZaifBaseService(Exchange exchange) {
-		super(exchange);
-		this.zaif =
-				ExchangeRestProxyBuilder.forInterface(Zaif.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  protected ZaifBaseService(Exchange exchange) {
+    super(exchange);
+    this.zaif =
+        ExchangeRestProxyBuilder.forInterface(Zaif.class, exchange.getExchangeSpecification())
+            .build();
+  }
 }

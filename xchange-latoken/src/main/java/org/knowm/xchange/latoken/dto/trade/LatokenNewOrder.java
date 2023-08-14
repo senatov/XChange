@@ -1,11 +1,11 @@
 package org.knowm.xchange.latoken.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 /**
  * Response schema:
+ *
  * <pre>
  * {
  * 	"orderId": "1555492358.126073.126767@0502:2",
@@ -23,109 +23,135 @@ import java.math.BigDecimal;
  */
 public class LatokenNewOrder {
 
-	private final String orderId;
-	private final String clientOrderId;
-	private final long pairId;
-	private final String symbol;
-	private final LatokenOrderSide side;
-	private final OrderSubclass type;
-	private final BigDecimal price;
-	private final BigDecimal amount;
+  private final String orderId;
+  private final String clientOrderId;
+  private final long pairId;
+  private final String symbol;
+  private final LatokenOrderSide side;
+  private final OrderSubclass type;
+  private final BigDecimal price;
+  private final BigDecimal amount;
 
-	/**
-	 * C'tor
-	 */
-	public LatokenNewOrder(
-			@JsonProperty("orderId") String orderId,
-			@JsonProperty("clientOrderId") String clientOrderId,
-			@JsonProperty("pairId") long pairId,
-			@JsonProperty("symbol") String symbol,
-			@JsonProperty("side") String side,
-			@JsonProperty("orderType") String type,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("amount") BigDecimal amount) {
-		this.orderId = orderId;
-		this.clientOrderId = clientOrderId;
-		this.pairId = pairId;
-		this.symbol = symbol;
-		this.side = LatokenOrderSide.parse(side);
-		this.type = OrderSubclass.parse(type);
-		this.price = price;
-		this.amount = amount;
-	}
+  /**
+   * C'tor
+   *
+   * @param orderId
+   * @param clientOrderId
+   * @param pairId
+   * @param symbol
+   * @param side
+   * @param type
+   * @param price
+   * @param amount
+   */
+  public LatokenNewOrder(
+      @JsonProperty("orderId") String orderId,
+      @JsonProperty("clientOrderId") String clientOrderId,
+      @JsonProperty("pairId") long pairId,
+      @JsonProperty("symbol") String symbol,
+      @JsonProperty("side") String side,
+      @JsonProperty("orderType") String type,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("amount") BigDecimal amount) {
 
-	/**
-	 * Id of order
-	 */
-	public String getOrderId() {
-		return orderId;
-	}
+    this.orderId = orderId;
+    this.clientOrderId = clientOrderId;
+    this.pairId = pairId;
+    this.symbol = symbol;
+    this.side = LatokenOrderSide.parse(side);
+    this.type = OrderSubclass.parse(type);
+    this.price = price;
+    this.amount = amount;
+  }
 
-	/**
-	 * Id of order provided by client (optional)
-	 */
-	public String getClientOrderId() {
-		return clientOrderId;
-	}
+  /**
+   * Id of order
+   *
+   * @return
+   */
+  public String getOrderId() {
+    return orderId;
+  }
 
-	/**
-	 * ID of trading pair
-	 */
-	public long getPairId() {
-		return pairId;
-	}
+  /**
+   * Id of order provided by client (optional)
+   *
+   * @return
+   */
+  public String getClientOrderId() {
+    return clientOrderId;
+  }
 
-	/**
-	 * Trading pair symbol
-	 */
-	public String getSymbol() {
-		return symbol;
-	}
+  /**
+   * ID of trading pair
+   *
+   * @return
+   */
+  public long getPairId() {
+    return pairId;
+  }
 
-	/**
-	 * Order side
-	 */
-	public LatokenOrderSide getSide() {
-		return side;
-	}
+  /**
+   * Trading pair symbol
+   *
+   * @return
+   */
+  public String getSymbol() {
+    return symbol;
+  }
 
-	/**
-	 * Order type
-	 */
-	public OrderSubclass getType() {
-		return type;
-	}
+  /**
+   * Order side
+   *
+   * @return
+   */
+  public LatokenOrderSide getSide() {
+    return side;
+  }
 
-	/**
-	 * Order price
-	 */
-	public BigDecimal getPrice() {
-		return price;
-	}
+  /**
+   * Order type
+   *
+   * @return
+   */
+  public OrderSubclass getType() {
+    return type;
+  }
 
-	/**
-	 * Order amount
-	 */
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  /**
+   * Order price
+   *
+   * @return
+   */
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	@Override
-	public String toString() {
-		return "LatokenNewOrder [orderId = "
-				+ orderId
-				+ ", clientOrderId = "
-				+ clientOrderId
-				+ ", symbol = "
-				+ symbol
-				+ ", side = "
-				+ side
-				+ ", type = "
-				+ type
-				+ ", price = "
-				+ price
-				+ ", amount = "
-				+ amount
-				+ "]";
-	}
+  /**
+   * Order amount
+   *
+   * @return
+   */
+  public BigDecimal getAmount() {
+    return amount;
+  }
+
+  @Override
+  public String toString() {
+    return "LatokenNewOrder [orderId = "
+        + orderId
+        + ", clientOrderId = "
+        + clientOrderId
+        + ", symbol = "
+        + symbol
+        + ", side = "
+        + side
+        + ", type = "
+        + type
+        + ", price = "
+        + price
+        + ", amount = "
+        + amount
+        + "]";
+  }
 }

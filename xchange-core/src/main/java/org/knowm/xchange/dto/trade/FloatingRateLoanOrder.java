@@ -1,10 +1,9 @@
 package org.knowm.xchange.dto.trade;
 
-import org.knowm.xchange.dto.LoanOrder;
-import org.knowm.xchange.dto.Order;
-
 import java.math.BigDecimal;
 import java.util.Date;
+import org.knowm.xchange.dto.LoanOrder;
+import org.knowm.xchange.dto.Order;
 
 /**
  * DTO representing a floating rate loan order A floating rate loan order is a loan order whose rate
@@ -13,42 +12,46 @@ import java.util.Date;
  * another loan at a more favorable rate).
  */
 public final class FloatingRateLoanOrder extends LoanOrder
-		implements Comparable<FloatingRateLoanOrder> {
+    implements Comparable<FloatingRateLoanOrder> {
 
-	private static final long serialVersionUID = -1474202797547840095L;
+  private static final long serialVersionUID = -1474202797547840095L;
 
-	private BigDecimal rate;
+  private BigDecimal rate;
 
-	/**
-	 * @param type Either BID (debtor) or ASK (creditor)
-	 * @param currency The loan currency code
-	 * @param originalAmount Units of currency
-	 * @param dayPeriod Loan duration in days
-	 * @param id An id (usually provided by the exchange)
-	 * @param timestamp The absolute time for this order
-	 */
-	public FloatingRateLoanOrder(
-			Order.OrderType type,
-			String currency,
-			BigDecimal originalAmount,
-			int dayPeriod,
-			String id,
-			Date timestamp,
-			BigDecimal rate) {
-		super(type, currency, originalAmount, dayPeriod, id, timestamp);
-		this.rate = rate;
-	}
+  /**
+   * @param type Either BID (debtor) or ASK (creditor)
+   * @param currency The loan currency code
+   * @param originalAmount Units of currency
+   * @param dayPeriod Loan duration in days
+   * @param id An id (usually provided by the exchange)
+   * @param timestamp The absolute time for this order
+   */
+  public FloatingRateLoanOrder(
+      Order.OrderType type,
+      String currency,
+      BigDecimal originalAmount,
+      int dayPeriod,
+      String id,
+      Date timestamp,
+      BigDecimal rate) {
 
-	public BigDecimal getRate() {
-		return rate;
-	}
+    super(type, currency, originalAmount, dayPeriod, id, timestamp);
+    this.rate = rate;
+  }
 
-	public void setRate(BigDecimal rate) {
-		this.rate = rate;
-	}
+  public BigDecimal getRate() {
 
-	@Override
-	public int compareTo(FloatingRateLoanOrder order) {
-		return this.getDayPeriod() - order.getDayPeriod();
-	}
+    return rate;
+  }
+
+  public void setRate(BigDecimal rate) {
+
+    this.rate = rate;
+  }
+
+  @Override
+  public int compareTo(FloatingRateLoanOrder order) {
+
+    return this.getDayPeriod() - order.getDayPeriod();
+  }
 }

@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class OrderToCancel {
-	private String type;
-	private String id;
+  private String type;
+  private String id;
 }

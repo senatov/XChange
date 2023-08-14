@@ -18,7 +18,7 @@
     "BTC/PLN": {
       "price_scale": 2,
       "trading_fee": 0.004,
-      "min_amount": 0.00001
+      "min_amount":  0.00001
     },
     "BTC/RUB": {
       "price_scale": 2,

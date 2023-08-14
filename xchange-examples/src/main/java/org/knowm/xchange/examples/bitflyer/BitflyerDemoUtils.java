@@ -7,13 +7,18 @@ import org.knowm.xchange.bitflyer.BitflyerExchange;
 
 public class BitflyerDemoUtils {
 
-	public static Exchange createExchange() {
-		// Use the factory to get BitFlyer exchange API using default settings
-		Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitflyerExchange.class);
-		ExchangeSpecification bfxSpec = exchange.getDefaultExchangeSpecification();
-		bfxSpec.setApiKey("");
-		bfxSpec.setSecretKey("");
-		exchange.applySpecification(bfxSpec);
-		return exchange;
-	}
+  public static Exchange createExchange() {
+
+    // Use the factory to get BitFlyer exchange API using default settings
+    Exchange exchange = ExchangeFactory.INSTANCE.createExchange(BitflyerExchange.class);
+
+    ExchangeSpecification bfxSpec = exchange.getDefaultExchangeSpecification();
+
+    bfxSpec.setApiKey("");
+    bfxSpec.setSecretKey("");
+
+    exchange.applySpecification(bfxSpec);
+
+    return exchange;
+  }
 }

@@ -7,111 +7,104 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"success", "message", "result"})
 public class BleutradeCurrenciesReturn {
 
-	@JsonProperty("success")
-	private Boolean success;
+  @JsonProperty("success")
+  private Boolean success;
 
-	@JsonProperty("message")
-	private String message;
+  @JsonProperty("message")
+  private String message;
 
-	@JsonProperty("result")
-	private List<BleutradeCurrency> result = new ArrayList<BleutradeCurrency>();
+  @JsonProperty("result")
+  private List<BleutradeCurrency> result = new ArrayList<BleutradeCurrency>();
 
-	@JsonIgnore
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	@JsonCreator
-	public BleutradeCurrenciesReturn() {
-		// default c-tor for jackson
-	}
+  @JsonCreator
+  public BleutradeCurrenciesReturn() {
+    // default c-tor for jackson
+  }
 
-	/**
-	 * C-tor for testing
-	 */
-	public BleutradeCurrenciesReturn(List<BleutradeCurrency> currencies) {
-		result = currencies;
-		success = true;
-	}
+  /** C-tor for testing */
+  public BleutradeCurrenciesReturn(List<BleutradeCurrency> currencies) {
+    result = currencies;
+    success = true;
+  }
 
-	/**
-	 * @return The success
-	 */
-	@JsonProperty("success")
-	public Boolean getSuccess() {
-		return success;
-	}
+  /** @return The success */
+  @JsonProperty("success")
+  public Boolean getSuccess() {
 
-	/**
-	 * @param success The success
-	 */
-	@JsonProperty("success")
-	public void setSuccess(Boolean success) {
-		this.success = success;
-	}
+    return success;
+  }
 
-	/**
-	 * @return The message
-	 */
-	@JsonProperty("message")
-	public String getMessage() {
-		return message;
-	}
+  /** @param success The success */
+  @JsonProperty("success")
+  public void setSuccess(Boolean success) {
 
-	/**
-	 * @param message The message
-	 */
-	@JsonProperty("message")
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    this.success = success;
+  }
 
-	/**
-	 * @return The result
-	 */
-	@JsonProperty("result")
-	public List<BleutradeCurrency> getResult() {
-		return result;
-	}
+  /** @return The message */
+  @JsonProperty("message")
+  public String getMessage() {
 
-	/**
-	 * @param result The result
-	 */
-	@JsonProperty("result")
-	public void setResult(List<BleutradeCurrency> result) {
-		this.result = result;
-	}
+    return message;
+  }
 
-	@JsonAnyGetter
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
+  /** @param message The message */
+  @JsonProperty("message")
+  public void setMessage(String message) {
 
-	@JsonAnySetter
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
-	}
+    this.message = message;
+  }
 
-	@Override
-	public String toString() {
-		return "BleutradeCurrenciesReturn [success="
-				+ success
-				+ ", message="
-				+ message
-				+ ", result="
-				+ result
-				+ ", additionalProperties="
-				+ additionalProperties
-				+ "]";
-	}
+  /** @return The result */
+  @JsonProperty("result")
+  public List<BleutradeCurrency> getResult() {
+
+    return result;
+  }
+
+  /** @param result The result */
+  @JsonProperty("result")
+  public void setResult(List<BleutradeCurrency> result) {
+
+    this.result = result;
+  }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+
+    return this.additionalProperties;
+  }
+
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+
+    this.additionalProperties.put(name, value);
+  }
+
+  @Override
+  public String toString() {
+
+    return "BleutradeCurrenciesReturn [success="
+        + success
+        + ", message="
+        + message
+        + ", result="
+        + result
+        + ", additionalProperties="
+        + additionalProperties
+        + "]";
+  }
 }

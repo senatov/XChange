@@ -14,29 +14,29 @@ import static info.bitrich.xchangestream.binance.BinanceStreamingExchange.USE_RE
  */
 public class BinanceBookTickerRealtimeExample {
 
-	public static void main(String[] args) throws InterruptedException {
-		final ExchangeSpecification exchangeSpecification =
-				new ExchangeSpecification(BinanceStreamingExchange.class);
-		exchangeSpecification.setShouldLoadRemoteMetaData(true);
-		exchangeSpecification.setExchangeSpecificParametersItem(USE_REALTIME_BOOK_TICKER, true);
-		StreamingExchange exchange =
-				StreamingExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
-		ProductSubscription subscription =
-				exchange.getExchangeInstruments().stream()
-						.filter(instrument -> instrument instanceof CurrencyPair)
-						.limit(50)
-						.reduce(
-								ProductSubscription.create(),
-								ProductSubscription.ProductSubscriptionBuilder::addTicker,
-								(productSubscriptionBuilder, productSubscriptionBuilder2) -> {
-									throw new UnsupportedOperationException();
-								})
-						.build();
-		exchange.connect(subscription).blockingAwait();
-		exchange
-				.getStreamingMarketDataService()
-				.getTicker(subscription.getTicker().get(0))
-				.subscribe(System.out::println);
-		Thread.sleep(Long.MAX_VALUE);
-	}
+  public static void main(String[] args) throws InterruptedException {
+    final ExchangeSpecification exchangeSpecification =
+        new ExchangeSpecification(BinanceStreamingExchange.class);
+    exchangeSpecification.setShouldLoadRemoteMetaData(true);
+    exchangeSpecification.setExchangeSpecificParametersItem(USE_REALTIME_BOOK_TICKER, true);
+    StreamingExchange exchange =
+        StreamingExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
+    ProductSubscription subscription =
+        exchange.getExchangeInstruments().stream()
+            .filter(instrument -> instrument instanceof CurrencyPair)
+            .limit(50)
+            .reduce(
+                ProductSubscription.create(),
+                ProductSubscription.ProductSubscriptionBuilder::addTicker,
+                (productSubscriptionBuilder, productSubscriptionBuilder2) -> {
+                  throw new UnsupportedOperationException();
+                })
+            .build();
+    exchange.connect(subscription).blockingAwait();
+    exchange
+        .getStreamingMarketDataService()
+        .getTicker(subscription.getTicker().get(0))
+        .subscribe(System.out::println);
+    Thread.sleep(Long.MAX_VALUE);
+  }
 }

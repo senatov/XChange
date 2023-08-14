@@ -12,12 +12,8 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CoincheckPagination {
-	@JsonProperty
-	Integer limit;
-	@JsonProperty
-	String order;
-	@JsonProperty
-	Long startingAfter;
-	@JsonProperty
-	Long endingBefore;
+  @JsonProperty Integer limit;
+  @JsonProperty String order;
+  @JsonProperty Long startingAfter;
+  @JsonProperty Long endingBefore;
 }

@@ -18,28 +18,28 @@ import java.util.stream.Collectors;
 
 public class MEXCTradeService extends MEXCTradeServiceRaw implements TradeService {
 
-	public MEXCTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  public MEXCTradeService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
-		try {
-			MEXCOrderRequestPayload orderRequestPayload = MEXCAdapters.adaptOrder(limitOrder);
-			return placeOrder(orderRequestPayload).getData();
-		} catch (MEXCException e) {
-			throw new ExchangeException(e);
-		}
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+    try {
+      MEXCOrderRequestPayload orderRequestPayload = MEXCAdapters.adaptOrder(limitOrder);
+      return placeOrder(orderRequestPayload).getData();
+    } catch (MEXCException e) {
+      throw new ExchangeException(e);
+    }
+  }
 
-	@Override
-	public Collection<Order> getOrder(String... orderIds) throws IOException {
-		try {
-			MEXCResult<List<MEXCOrder>> ordersResult = getOrders(Arrays.asList(orderIds));
-			return ordersResult.getData().stream().map(MEXCAdapters::adaptOrder).collect(Collectors.toList());
-		} catch (MEXCException e) {
-			throw new ExchangeException(e);
-		}
-	}
+  @Override
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
+    try {
+      MEXCResult<List<MEXCOrder>> ordersResult = getOrders(Arrays.asList(orderIds));
+      return ordersResult.getData().stream().map(MEXCAdapters::adaptOrder).collect(Collectors.toList());
+    } catch (MEXCException e) {
+      throw new ExchangeException(e);
+    }
+  }
 
 }

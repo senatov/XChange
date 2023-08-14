@@ -1,7 +1,7 @@
 {
-  "currency_pairs": {},
-  "currencies": {},
-  "share_rate_limits": false,
+  "currency_pairs" : {},
+  "currencies" : {},
+  "share_rate_limits" : false,
   "public_rate_limits": [
     {
       "calls": 30,

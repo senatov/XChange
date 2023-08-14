@@ -1,5 +1,8 @@
 package org.knowm.xchange.exmo;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
@@ -11,45 +14,41 @@ import org.knowm.xchange.exmo.service.ExmoTradeService;
 import org.knowm.xchange.utils.nonce.CurrentTimeIncrementalNonceFactory;
 import si.mazi.rescu.SynchronizedValueFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
-
 public class ExmoExchange extends BaseExchange implements Exchange {
-	private final SynchronizedValueFactory<Long> nonceFactory =
-			new CurrentTimeIncrementalNonceFactory(TimeUnit.NANOSECONDS);
+  private final SynchronizedValueFactory<Long> nonceFactory =
+      new CurrentTimeIncrementalNonceFactory(TimeUnit.NANOSECONDS);
 
-	@Override
-	public SynchronizedValueFactory<Long> getNonceFactory() {
-		return nonceFactory;
-	}
+  @Override
+  protected void initServices() {
+    this.marketDataService = new ExmoMarketDataService(this);
+    this.accountService = new ExmoAccountService(this);
+    this.tradeService = new ExmoTradeService(this);
+  }
 
-	@Override
-	protected void initServices() {
-		this.marketDataService = new ExmoMarketDataService(this);
-		this.accountService = new ExmoAccountService(this);
-		this.tradeService = new ExmoTradeService(this);
-	}
+  @Override
+  public SynchronizedValueFactory<Long> getNonceFactory() {
+    return nonceFactory;
+  }
 
-	@Override
-	protected void loadExchangeMetaData(InputStream is) {
-		exchangeMetaData = loadMetaData(is, ExchangeMetaData.class);
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+    exchangeSpecification.setShouldLoadRemoteMetaData(false);
+    exchangeSpecification.setSslUri("https://api.exmo.com");
+    exchangeSpecification.setHost("exmo.com");
+    exchangeSpecification.setPort(80);
+    exchangeSpecification.setExchangeName("exmo");
+    exchangeSpecification.setExchangeDescription("exmo");
+    return exchangeSpecification;
+  }
 
-	@Override
-	public void remoteInit() throws IOException, ExchangeException {
-		((ExmoMarketDataService) marketDataService).updateMetadata(exchangeMetaData);
-	}
+  @Override
+  public void remoteInit() throws IOException, ExchangeException {
+    ((ExmoMarketDataService) marketDataService).updateMetadata(exchangeMetaData);
+  }
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-		exchangeSpecification.setShouldLoadRemoteMetaData(false);
-		exchangeSpecification.setSslUri("https://api.exmo.com");
-		exchangeSpecification.setHost("exmo.com");
-		exchangeSpecification.setPort(80);
-		exchangeSpecification.setExchangeName("exmo");
-		exchangeSpecification.setExchangeDescription("exmo");
-		return exchangeSpecification;
-	}
+  @Override
+  protected void loadExchangeMetaData(InputStream is) {
+    exchangeMetaData = loadMetaData(is, ExchangeMetaData.class);
+  }
 }

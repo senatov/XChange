@@ -5,17 +5,19 @@ import org.knowm.xchange.okcoin.dto.trade.OkCoinErrorResult;
 import org.knowm.xchange.okcoin.dto.trade.OkCoinFutureExplosiveData;
 
 public class OkCoinFutureExplosiveResult extends OkCoinErrorResult {
-	private final OkCoinFutureExplosiveData[] futureExplosive;
+  private final OkCoinFutureExplosiveData[] futureExplosive;
 
-	public OkCoinFutureExplosiveResult(
-			@JsonProperty("result") final boolean result,
-			@JsonProperty("error_code") final int errorCode,
-			@JsonProperty("") final OkCoinFutureExplosiveData[] futureExplosive) {
-		super(result, errorCode);
-		this.futureExplosive = futureExplosive;
-	}
+  public OkCoinFutureExplosiveResult(
+      @JsonProperty("result") final boolean result,
+      @JsonProperty("error_code") final int errorCode,
+      @JsonProperty("") final OkCoinFutureExplosiveData[] futureExplosive) {
 
-	public OkCoinFutureExplosiveData[] getFutureExplosive() {
-		return futureExplosive;
-	}
+    super(result, errorCode);
+    this.futureExplosive = futureExplosive;
+  }
+
+  public OkCoinFutureExplosiveData[] getFutureExplosive() {
+
+    return futureExplosive;
+  }
 }

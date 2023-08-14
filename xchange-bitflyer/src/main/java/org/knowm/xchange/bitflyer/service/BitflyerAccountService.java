@@ -1,5 +1,12 @@
 package org.knowm.xchange.bitflyer.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitflyer.BitflyerAdapters;
 import org.knowm.xchange.bitflyer.BitflyerUtils;
@@ -21,114 +28,115 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 public class BitflyerAccountService extends BitflyerAccountServiceRaw implements AccountService {
-	private static final Logger LOG = LoggerFactory.getLogger(BitflyerAccountService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(BitflyerAccountService.class);
 
-	/**
-	 * Constructor
-	 */
-	public BitflyerAccountService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BitflyerAccountService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public AccountInfo getAccountInfo() throws IOException {
-		return new AccountInfo(BitflyerAdapters.adaptAccountInfo(getBitflyerBalances()));
-	}
+  @Override
+  public Map<Instrument, Fee> getDynamicTradingFeesByInstrument() throws IOException {
+    Map<Instrument, Fee> tradingFees = new HashMap<>();
+    List<Instrument> pairs = exchange.getExchangeInstruments();
 
-	@Override
-	public String requestDepositAddress(Currency currency, String... args) throws IOException {
-		List<BitflyerAddress> addresses = getAddresses();
-		for (BitflyerAddress address : addresses) {
-			if (address.getCurrencyCode().equals(currency.getCurrencyCode()))
-				return address.getAddress();
-		}
-		throw new NotAvailableFromExchangeException();
-	}
+    pairs.forEach(
+            pair -> {
+              try {
+                BitflyerTradingCommission commission =
+                        getTradingCommission(BitflyerUtils.bitflyerProductCode((CurrencyPair) pair));
 
-	@Override
-	public TradeHistoryParams createFundingHistoryParams() {
-		return new BitflyerTradeHistoryParams();
-	}
+                tradingFees.put(pair, BitflyerAdapters.adaptTradingCommission(commission));
+              } catch (IOException | BitflyerException | ExchangeException e) {
+                LOG.trace("Exception fetching trade commission for {}", pair, e);
+              }
+            });
 
-	@Override
-	public List<FundingRecord> getFundingHistory(TradeHistoryParams param) throws IOException {
-		BitflyerTradeHistoryParams historyParms =
-				(BitflyerTradeHistoryParams)
-						(param instanceof BitflyerTradeHistoryParams ? createFundingHistoryParams() : param);
-		List<BitflyerCoinHistory> coinsIn = getCoinIns();
-		List<BitflyerCoinHistory> coinsOut = getCoinOuts();
-		List<BitflyerDepositOrWithdrawal> cashDeposits = getCashDeposits();
-		List<BitflyerDepositOrWithdrawal> withdrawals = getWithdrawals();
-		List<FundingRecord> retVal = new ArrayList<>();
-		List<FundingRecord> some;
-		some = BitflyerAdapters.adaptFundingRecordsFromCoinHistory(coinsIn, FundingRecord.Type.DEPOSIT);
-		cullNotWanted(some, historyParms);
-		retVal.addAll(some);
-		some =
-				BitflyerAdapters.adaptFundingRecordsFromCoinHistory(
-						coinsOut, FundingRecord.Type.WITHDRAWAL);
-		cullNotWanted(some, historyParms);
-		retVal.addAll(some);
-		some =
-				BitflyerAdapters.adaptFundingRecordsFromDepositHistory(
-						cashDeposits, FundingRecord.Type.DEPOSIT);
-		cullNotWanted(some, historyParms);
-		retVal.addAll(some);
-		some =
-				BitflyerAdapters.adaptFundingRecordsFromDepositHistory(
-						withdrawals, FundingRecord.Type.WITHDRAWAL);
-		cullNotWanted(some, historyParms);
-		retVal.addAll(some);
-		// interleave the records based on time, newest first
-		Collections.sort(
-				retVal,
-				(FundingRecord r1, FundingRecord r2) -> {
-					return r2.getDate().compareTo(r1.getDate());
-				});
-		return retVal;
-	}
+    return tradingFees;
+  }
 
-	@Override
-	public Map<Instrument, Fee> getDynamicTradingFeesByInstrument() throws IOException {
-		Map<Instrument, Fee> tradingFees = new HashMap<>();
-		List<Instrument> pairs = exchange.getExchangeInstruments();
-		pairs.forEach(
-				pair -> {
-					try {
-						BitflyerTradingCommission commission =
-								getTradingCommission(BitflyerUtils.bitflyerProductCode((CurrencyPair) pair));
-						tradingFees.put(pair, BitflyerAdapters.adaptTradingCommission(commission));
-					} catch (IOException | BitflyerException | ExchangeException e) {
-						LOG.trace("Exception fetching trade commission for {}", pair, e);
-					}
-				});
-		return tradingFees;
-	}
+  @Override
+  public AccountInfo getAccountInfo() throws IOException {
+    return new AccountInfo(BitflyerAdapters.adaptAccountInfo(getBitflyerBalances()));
+  }
 
-	private void cullNotWanted(List<FundingRecord> some, BitflyerTradeHistoryParams param) {
-		if (param != null && param.getCurrencies() != null) {
-			Iterator<FundingRecord> iter = some.iterator();
-			while (iter.hasNext()) {
-				FundingRecord record = iter.next();
-				if (!isIn(record.getCurrency(), param.getCurrencies()))
-					iter.remove();
-			}
-		}
-	}
+  @Override
+  public String requestDepositAddress(Currency currency, String... args) throws IOException {
+    List<BitflyerAddress> addresses = getAddresses();
+    for (BitflyerAddress address : addresses) {
+      if (address.getCurrencyCode().equals(currency.getCurrencyCode())) return address.getAddress();
+    }
 
-	private boolean isIn(Currency currency, Currency[] currencies) {
-		for (Currency cur : currencies)
-			if (cur.equals(currency))
-				return true;
-		return false;
-	}
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public TradeHistoryParams createFundingHistoryParams() {
+    return new BitflyerTradeHistoryParams();
+  }
+
+  @Override
+  public List<FundingRecord> getFundingHistory(TradeHistoryParams param) throws IOException {
+    BitflyerTradeHistoryParams historyParms =
+        (BitflyerTradeHistoryParams)
+            (param instanceof BitflyerTradeHistoryParams ? createFundingHistoryParams() : param);
+    List<BitflyerCoinHistory> coinsIn = getCoinIns();
+    List<BitflyerCoinHistory> coinsOut = getCoinOuts();
+    List<BitflyerDepositOrWithdrawal> cashDeposits = getCashDeposits();
+    List<BitflyerDepositOrWithdrawal> withdrawals = getWithdrawals();
+
+    List<FundingRecord> retVal = new ArrayList<>();
+    List<FundingRecord> some;
+    some = BitflyerAdapters.adaptFundingRecordsFromCoinHistory(coinsIn, FundingRecord.Type.DEPOSIT);
+    cullNotWanted(some, historyParms);
+    retVal.addAll(some);
+
+    some =
+        BitflyerAdapters.adaptFundingRecordsFromCoinHistory(
+            coinsOut, FundingRecord.Type.WITHDRAWAL);
+    cullNotWanted(some, historyParms);
+    retVal.addAll(some);
+
+    some =
+        BitflyerAdapters.adaptFundingRecordsFromDepositHistory(
+            cashDeposits, FundingRecord.Type.DEPOSIT);
+    cullNotWanted(some, historyParms);
+    retVal.addAll(some);
+
+    some =
+        BitflyerAdapters.adaptFundingRecordsFromDepositHistory(
+            withdrawals, FundingRecord.Type.WITHDRAWAL);
+    cullNotWanted(some, historyParms);
+    retVal.addAll(some);
+
+    // interleave the records based on time, newest first
+    Collections.sort(
+        retVal,
+        (FundingRecord r1, FundingRecord r2) -> {
+          return r2.getDate().compareTo(r1.getDate());
+        });
+
+    return retVal;
+  }
+
+  private void cullNotWanted(List<FundingRecord> some, BitflyerTradeHistoryParams param) {
+    if (param != null && param.getCurrencies() != null) {
+      Iterator<FundingRecord> iter = some.iterator();
+      while (iter.hasNext()) {
+        FundingRecord record = iter.next();
+        if (!isIn(record.getCurrency(), param.getCurrencies())) iter.remove();
+      }
+    }
+  }
+
+  private boolean isIn(Currency currency, Currency[] currencies) {
+    for (Currency cur : currencies) if (cur.equals(currency)) return true;
+
+    return false;
+  }
 }

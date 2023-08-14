@@ -1,5 +1,6 @@
 package org.knowm.xchange.bitcoincharts.service;
 
+import java.io.IOException;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitcoincharts.BitcoinCharts;
 import org.knowm.xchange.bitcoincharts.BitcoinChartsAdapters;
@@ -12,45 +13,47 @@ import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.exceptions.NotAvailableFromExchangeException;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-import java.io.IOException;
-
-/**
- * @author timmolter
- */
+/** @author timmolter */
 public class BitcoinChartsMarketDataService extends BitcoinChartsBaseService
-		implements MarketDataService {
+    implements MarketDataService {
 
-	private final BitcoinCharts bitcoinCharts;
+  private final BitcoinCharts bitcoinCharts;
 
-	/**
-	 * Constructor
-	 */
-	public BitcoinChartsMarketDataService(Exchange exchange) {
-		super(exchange);
-		this.bitcoinCharts =
-				ExchangeRestProxyBuilder.forInterface(
-								BitcoinCharts.class, exchange.getExchangeSpecification())
-						.build();
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BitcoinChartsMarketDataService(Exchange exchange) {
+    super(exchange);
+    this.bitcoinCharts =
+        ExchangeRestProxyBuilder.forInterface(
+                BitcoinCharts.class, exchange.getExchangeSpecification())
+            .build();
+  }
 
-	@Override
-	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
-		// Request data
-		BitcoinChartsTicker[] bitcoinChartsTickers = getBitcoinChartsTickers();
-		return BitcoinChartsAdapters.adaptTicker(bitcoinChartsTickers, currencyPair);
-	}
+  @Override
+  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
 
-	public BitcoinChartsTicker[] getBitcoinChartsTickers() throws IOException {
-		return bitcoinCharts.getMarketData();
-	}
+    // Request data
+    BitcoinChartsTicker[] bitcoinChartsTickers = getBitcoinChartsTickers();
 
-	@Override
-	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+    return BitcoinChartsAdapters.adaptTicker(bitcoinChartsTickers, currencyPair);
+  }
 
-	@Override
-	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
-		throw new NotAvailableFromExchangeException();
-	}
+  public BitcoinChartsTicker[] getBitcoinChartsTickers() throws IOException {
+    return bitcoinCharts.getMarketData();
+  }
+
+  @Override
+  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+
+    throw new NotAvailableFromExchangeException();
+  }
+
+  @Override
+  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+
+    throw new NotAvailableFromExchangeException();
+  }
 }

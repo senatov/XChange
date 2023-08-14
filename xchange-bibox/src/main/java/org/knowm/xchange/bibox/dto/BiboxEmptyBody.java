@@ -7,6 +7,5 @@ package org.knowm.xchange.bibox.dto;
  * @author odrotleff
  */
 public class BiboxEmptyBody {
-	public BiboxEmptyBody() {
-	}
+  public BiboxEmptyBody() {}
 }

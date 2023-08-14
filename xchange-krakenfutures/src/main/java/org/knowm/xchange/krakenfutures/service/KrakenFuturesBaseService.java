@@ -11,39 +11,40 @@ import si.mazi.rescu.ParamsDigest;
 
 import java.io.IOException;
 
-/**
- * @author Jean-Christophe Laruelle
- */
+/** @author Jean-Christophe Laruelle */
 public class KrakenFuturesBaseService extends BaseExchangeService implements BaseService {
 
-	protected KrakenFuturesAuthenticated krakenFuturesAuthenticated;
-	protected ParamsDigest signatureCreator;
+  protected KrakenFuturesAuthenticated krakenFuturesAuthenticated;
+  protected ParamsDigest signatureCreator;
 
-	/**
-	 * Constructor
-	 *
-	 * @param exchange of KrakenFutures
-	 */
-	public KrakenFuturesBaseService(Exchange exchange) {
-		super(exchange);
-		krakenFuturesAuthenticated =
-				ExchangeRestProxyBuilder.forInterface(
-								KrakenFuturesAuthenticated.class, exchange.getExchangeSpecification())
-						.build();
-		signatureCreator =
-				KrakenFuturesDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange of KrakenFutures
+   */
+  public KrakenFuturesBaseService(Exchange exchange) {
 
-	public KrakenFuturesOpenPositions getKrakenFuturesOpenPositions() throws IOException {
-		KrakenFuturesOpenPositions openPositions =
-				krakenFuturesAuthenticated.openPositions(
-						exchange.getExchangeSpecification().getApiKey(),
-						signatureCreator,
-						exchange.getNonceFactory());
-		if (openPositions.isSuccess()) {
-			return openPositions;
-		} else {
-			throw new ExchangeException("Error getting CF open positions: " + openPositions.getError());
-		}
-	}
+    super(exchange);
+
+    krakenFuturesAuthenticated =
+        ExchangeRestProxyBuilder.forInterface(
+                KrakenFuturesAuthenticated.class, exchange.getExchangeSpecification())
+            .build();
+    signatureCreator =
+        KrakenFuturesDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+  }
+
+  public KrakenFuturesOpenPositions getKrakenFuturesOpenPositions() throws IOException {
+    KrakenFuturesOpenPositions openPositions =
+            krakenFuturesAuthenticated.openPositions(
+                    exchange.getExchangeSpecification().getApiKey(),
+                    signatureCreator,
+                    exchange.getNonceFactory());
+
+    if (openPositions.isSuccess()) {
+      return openPositions;
+    } else {
+      throw new ExchangeException("Error getting CF open positions: " + openPositions.getError());
+    }
+  }
 }

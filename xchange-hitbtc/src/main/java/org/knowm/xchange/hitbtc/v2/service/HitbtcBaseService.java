@@ -10,18 +10,21 @@ import si.mazi.rescu.ClientConfigUtil;
 
 public class HitbtcBaseService extends BaseExchangeService implements BaseService {
 
-	protected final HitbtcAuthenticated hitbtc;
+  protected final HitbtcAuthenticated hitbtc;
 
-	protected HitbtcBaseService(Exchange exchange) {
-		super(exchange);
-		String apiKey = exchange.getExchangeSpecification().getApiKey();
-		String secretKey = exchange.getExchangeSpecification().getSecretKey();
-		ClientConfigCustomizer clientConfigCustomizer =
-				config -> ClientConfigUtil.addBasicAuthCredentials(config, apiKey, secretKey);
-		hitbtc =
-				ExchangeRestProxyBuilder.forInterface(
-								HitbtcAuthenticated.class, exchange.getExchangeSpecification())
-						.clientConfigCustomizer(clientConfigCustomizer)
-						.build();
-	}
+  protected HitbtcBaseService(Exchange exchange) {
+
+    super(exchange);
+
+    String apiKey = exchange.getExchangeSpecification().getApiKey();
+    String secretKey = exchange.getExchangeSpecification().getSecretKey();
+
+    ClientConfigCustomizer clientConfigCustomizer =
+        config -> ClientConfigUtil.addBasicAuthCredentials(config, apiKey, secretKey);
+    hitbtc =
+        ExchangeRestProxyBuilder.forInterface(
+                HitbtcAuthenticated.class, exchange.getExchangeSpecification())
+            .clientConfigCustomizer(clientConfigCustomizer)
+            .build();
+  }
 }

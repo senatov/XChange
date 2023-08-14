@@ -11,23 +11,23 @@ import org.knowm.xchange.ExchangeSpecification;
  */
 public class BinanceOrderbookHighVolumeExample {
 
-	public static void main(String[] args) throws InterruptedException {
-		final ExchangeSpecification exchangeSpecification =
-				new ExchangeSpecification(BinanceStreamingExchange.class);
-		exchangeSpecification.setShouldLoadRemoteMetaData(true);
-		StreamingExchange exchange =
-				StreamingExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
-		ProductSubscription subscription =
-				exchange.getExchangeInstruments().stream()
-						.limit(50)
-						.reduce(
-								ProductSubscription.create(),
-								ProductSubscription.ProductSubscriptionBuilder::addOrderbook,
-								(productSubscriptionBuilder, productSubscriptionBuilder2) -> {
-									throw new UnsupportedOperationException();
-								})
-						.build();
-		exchange.connect(subscription).blockingAwait();
-		Thread.sleep(Long.MAX_VALUE);
-	}
+  public static void main(String[] args) throws InterruptedException {
+    final ExchangeSpecification exchangeSpecification =
+        new ExchangeSpecification(BinanceStreamingExchange.class);
+    exchangeSpecification.setShouldLoadRemoteMetaData(true);
+    StreamingExchange exchange =
+        StreamingExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
+    ProductSubscription subscription =
+        exchange.getExchangeInstruments().stream()
+            .limit(50)
+            .reduce(
+                ProductSubscription.create(),
+                ProductSubscription.ProductSubscriptionBuilder::addOrderbook,
+                (productSubscriptionBuilder, productSubscriptionBuilder2) -> {
+                  throw new UnsupportedOperationException();
+                })
+            .build();
+    exchange.connect(subscription).blockingAwait();
+    Thread.sleep(Long.MAX_VALUE);
+  }
 }

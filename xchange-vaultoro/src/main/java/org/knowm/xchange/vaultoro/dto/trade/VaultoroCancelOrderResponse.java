@@ -6,64 +6,60 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import javax.annotation.Generated;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"status", "data"})
 public class VaultoroCancelOrderResponse {
 
-	@JsonProperty("status")
-	private String status;
+  @JsonProperty("status")
+  private String status;
 
-	@JsonProperty("data")
-	private VaultoroCancelOrderData data;
+  @JsonProperty("data")
+  private VaultoroCancelOrderData data;
 
-	@JsonIgnore
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	/**
-	 * @return The status
-	 */
-	@JsonProperty("status")
-	public String getStatus() {
-		return status;
-	}
+  /** @return The status */
+  @JsonProperty("status")
+  public String getStatus() {
 
-	/**
-	 * @param status The status
-	 */
-	@JsonProperty("status")
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    return status;
+  }
 
-	/**
-	 * @return The data
-	 */
-	@JsonProperty("data")
-	public VaultoroCancelOrderData getData() {
-		return data;
-	}
+  /** @param status The status */
+  @JsonProperty("status")
+  public void setStatus(String status) {
 
-	/**
-	 * @param data The data
-	 */
-	@JsonProperty("data")
-	public void setData(VaultoroCancelOrderData data) {
-		this.data = data;
-	}
+    this.status = status;
+  }
 
-	@JsonAnyGetter
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
+  /** @return The data */
+  @JsonProperty("data")
+  public VaultoroCancelOrderData getData() {
 
-	@JsonAnySetter
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
-	}
+    return data;
+  }
+
+  /** @param data The data */
+  @JsonProperty("data")
+  public void setData(VaultoroCancelOrderData data) {
+
+    this.data = data;
+  }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+
+    return this.additionalProperties;
+  }
+
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+
+    this.additionalProperties.put(name, value);
+  }
 }

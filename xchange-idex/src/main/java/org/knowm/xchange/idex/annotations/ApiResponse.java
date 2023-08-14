@@ -1,11 +1,11 @@
 package org.knowm.xchange.idex.annotations;
 
 public @interface ApiResponse {
-	int code();
+  int code();
 
-	String message();
+  String message();
 
-	Class response();
+  Class response();
 
-	String responseContainer() default "";
+  String responseContainer() default "";
 }

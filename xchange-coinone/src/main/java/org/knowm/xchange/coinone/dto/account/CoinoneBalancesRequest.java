@@ -4,33 +4,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinoneBalancesRequest {
 
-	@JsonProperty("access_token")
-	protected String accessTocken;
+  @JsonProperty("access_token")
+  protected String accessTocken;
 
-	@JsonProperty("nonce")
-	protected Long nonce;
+  @JsonProperty("nonce")
+  protected Long nonce;
 
-	/**
-	 * Constructor
-	 */
-	public CoinoneBalancesRequest(String accessTocken, Long nonce) {
-		this.accessTocken = accessTocken;
-		this.nonce = nonce;
-	}
+  /**
+   * Constructor
+   *
+   * @param nonce
+   */
+  public CoinoneBalancesRequest(String accessTocken, Long nonce) {
 
-	public String getAccessTocken() {
-		return accessTocken;
-	}
+    this.accessTocken = accessTocken;
+    this.nonce = nonce;
+  }
 
-	public void setAccessTocken(String accessTocken) {
-		this.accessTocken = accessTocken;
-	}
+  public String getAccessTocken() {
+    return accessTocken;
+  }
 
-	public Long getNonce() {
-		return nonce;
-	}
+  public void setAccessTocken(String accessTocken) {
+    this.accessTocken = accessTocken;
+  }
 
-	public void setNonce(Long nonce) {
-		this.nonce = nonce;
-	}
+  public Long getNonce() {
+    return nonce;
+  }
+
+  public void setNonce(Long nonce) {
+    this.nonce = nonce;
+  }
 }

@@ -13,16 +13,16 @@ import java.io.IOException;
 import static org.knowm.xchange.blockchain.BlockchainConstants.ENDPOINT_RATE_LIMIT;
 import static org.knowm.xchange.blockchain.BlockchainConstants.GET_ORDER_BOOK_L3;
 
-public class BlockchainMarketDataServiceRaw extends BlockchainBaseService {
+public class BlockchainMarketDataServiceRaw extends BlockchainBaseService{
 
-	protected BlockchainMarketDataServiceRaw(BlockchainExchange exchange, BlockchainAuthenticated blockchainApi, ResilienceRegistries resilienceRegistries) {
-		super(exchange, blockchainApi, resilienceRegistries);
-	}
+    protected BlockchainMarketDataServiceRaw(BlockchainExchange exchange, BlockchainAuthenticated blockchainApi, ResilienceRegistries resilienceRegistries) {
+        super(exchange, blockchainApi, resilienceRegistries);
+    }
 
-	protected BlockchainOrderBook getOrderBookL3(CurrencyPair currencyPair) throws IOException, BlockchainException {
-		return decorateApiCall(() -> this.blockchainApi.getOrderBookL3(BlockchainAdapters.toSymbol(currencyPair)))
-				.withRetry(retry(GET_ORDER_BOOK_L3))
-				.withRateLimiter(rateLimiter(ENDPOINT_RATE_LIMIT))
-				.call();
-	}
+    protected BlockchainOrderBook getOrderBookL3(CurrencyPair currencyPair) throws IOException, BlockchainException {
+        return decorateApiCall(() -> this.blockchainApi.getOrderBookL3(BlockchainAdapters.toSymbol(currencyPair)))
+                .withRetry(retry(GET_ORDER_BOOK_L3))
+                .withRateLimiter(rateLimiter(ENDPOINT_RATE_LIMIT))
+                .call();
+    }
 }

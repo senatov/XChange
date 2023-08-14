@@ -1,80 +1,88 @@
 package org.knowm.xchange.bitfinex.v1.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class BitfinexCreditResponse {
 
-	private final long id;
-	private final String currency;
-	private final String status;
-	private final BigDecimal rate;
-	private final int period;
-	private final BigDecimal amount;
-	private final BigDecimal timestamp;
+  private final long id;
+  private final String currency;
+  private final String status;
+  private final BigDecimal rate;
+  private final int period;
+  private final BigDecimal amount;
+  private final BigDecimal timestamp;
 
-	public BitfinexCreditResponse(
-			@JsonProperty("id") long id,
-			@JsonProperty("currency") String currency,
-			@JsonProperty("status") String status,
-			@JsonProperty("rate") BigDecimal rate,
-			@JsonProperty("period") int period,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("timestamp") BigDecimal timestamp) {
-		this.id = id;
-		this.currency = currency;
-		this.status = status;
-		this.rate = rate;
-		this.period = period;
-		this.amount = amount;
-		this.timestamp = timestamp;
-	}
+  public BitfinexCreditResponse(
+      @JsonProperty("id") long id,
+      @JsonProperty("currency") String currency,
+      @JsonProperty("status") String status,
+      @JsonProperty("rate") BigDecimal rate,
+      @JsonProperty("period") int period,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("timestamp") BigDecimal timestamp) {
 
-	public long getId() {
-		return id;
-	}
+    this.id = id;
+    this.currency = currency;
+    this.status = status;
+    this.rate = rate;
+    this.period = period;
+    this.amount = amount;
+    this.timestamp = timestamp;
+  }
 
-	public String getCurrency() {
-		return currency;
-	}
+  public long getId() {
 
-	public String getStatus() {
-		return status;
-	}
+    return id;
+  }
 
-	public BigDecimal getRate() {
-		return rate;
-	}
+  public String getCurrency() {
 
-	public int getPeriod() {
-		return period;
-	}
+    return currency;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public String getStatus() {
 
-	public BigDecimal getTimestamp() {
-		return timestamp;
-	}
+    return status;
+  }
 
-	@Override
-	public String toString() {
-		return "BitfinexCreditResponse [id="
-				+ id
-				+ ", currency="
-				+ currency
-				+ ", status="
-				+ status
-				+ ", rate="
-				+ rate
-				+ ", period="
-				+ period
-				+ ", amount="
-				+ amount
-				+ ", timestamp="
-				+ timestamp
-				+ "]";
-	}
+  public BigDecimal getRate() {
+
+    return rate;
+  }
+
+  public int getPeriod() {
+
+    return period;
+  }
+
+  public BigDecimal getAmount() {
+
+    return amount;
+  }
+
+  public BigDecimal getTimestamp() {
+
+    return timestamp;
+  }
+
+  @Override
+  public String toString() {
+
+    return "BitfinexCreditResponse [id="
+        + id
+        + ", currency="
+        + currency
+        + ", status="
+        + status
+        + ", rate="
+        + rate
+        + ", period="
+        + period
+        + ", amount="
+        + amount
+        + ", timestamp="
+        + timestamp
+        + "]";
+  }
 }

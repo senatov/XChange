@@ -1,63 +1,70 @@
 package org.knowm.xchange.itbit.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class ItBitWithdrawalResponse {
 
-	private final String id;
-	private final String currency;
-	private final BigDecimal amount;
-	private final String address;
-	private final String completionDate;
+  private final String id;
+  private final String currency;
+  private final BigDecimal amount;
+  private final String address;
+  private final String completionDate;
 
-	public ItBitWithdrawalResponse(
-			@JsonProperty("id") String id,
-			@JsonProperty("currency") String currency,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("address") String address,
-			@JsonProperty("completionDate") String completionDate) {
-		this.id = id;
-		this.currency = currency;
-		this.amount = amount;
-		this.address = address;
-		this.completionDate = completionDate;
-	}
+  public ItBitWithdrawalResponse(
+      @JsonProperty("id") String id,
+      @JsonProperty("currency") String currency,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("address") String address,
+      @JsonProperty("completionDate") String completionDate) {
 
-	public String getId() {
-		return id;
-	}
+    this.id = id;
+    this.currency = currency;
+    this.amount = amount;
+    this.address = address;
+    this.completionDate = completionDate;
+  }
 
-	public String getCurrency() {
-		return currency;
-	}
+  public String getId() {
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+    return id;
+  }
 
-	public String getAddress() {
-		return address;
-	}
+  public String getCurrency() {
 
-	public String getCompletionDate() {
-		return completionDate;
-	}
+    return currency;
+  }
 
-	@Override
-	public String toString() {
-		String builder = "ItBitWithdrawalResponse [id=" +
-				id +
-				", currency=" +
-				currency +
-				", amount=" +
-				amount +
-				", address=" +
-				address +
-				", completionDate=" +
-				completionDate +
-				"]";
-		return builder;
-	}
+  public BigDecimal getAmount() {
+
+    return amount;
+  }
+
+  public String getAddress() {
+
+    return address;
+  }
+
+  public String getCompletionDate() {
+
+    return completionDate;
+  }
+
+  @Override
+  public String toString() {
+
+    StringBuilder builder = new StringBuilder();
+    builder.append("ItBitWithdrawalResponse [id=");
+    builder.append(id);
+    builder.append(", currency=");
+    builder.append(currency);
+    builder.append(", amount=");
+    builder.append(amount);
+    builder.append(", address=");
+    builder.append(address);
+    builder.append(", completionDate=");
+    builder.append(completionDate);
+    builder.append("]");
+    return builder.toString();
+  }
 }

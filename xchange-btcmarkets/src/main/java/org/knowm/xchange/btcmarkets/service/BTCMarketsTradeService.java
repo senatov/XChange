@@ -1,6 +1,15 @@
 package org.knowm.xchange.btcmarkets.service;
 
+import static org.knowm.xchange.dto.Order.OrderType.BID;
+
 import com.google.common.collect.Sets;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.btcmarkets.BTCMarketsAdapters;
 import org.knowm.xchange.btcmarkets.dto.BTCMarketsException;
@@ -27,210 +36,204 @@ import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamCurrencyPair
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.knowm.xchange.dto.Order.OrderType.BID;
-
-/**
- * @author Matija Mazi
- */
+/** @author Matija Mazi */
 public class BTCMarketsTradeService extends BTCMarketsTradeServiceRaw implements TradeService {
 
-	public BTCMarketsTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  public BTCMarketsTradeService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public OpenOrders getOpenOrders() throws IOException, BTCMarketsException {
-		return getOpenOrders(createOpenOrdersParams());
-	}
+  @Override
+  public String placeMarketOrder(MarketOrder order) throws IOException, BTCMarketsException {
+    return placeOrder(
+        order.getCurrencyPair(),
+        order.getType(),
+        order.getOriginalAmount(),
+        BigDecimal.ZERO,
+        BTCMarketsOrder.Type.Market,
+        order.getOrderFlags(),
+        order.getUserReference());
+  }
 
-	@Override
-	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-		BTCMarketsOrders openOrders =
-				getBTCMarketsOpenOrders(((OpenOrdersParamCurrencyPair) params).getCurrencyPair(), 50, null);
-		return BTCMarketsAdapters.adaptOpenOrders(openOrders);
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder order) throws IOException, BTCMarketsException {
+    return placeOrder(
+        order.getCurrencyPair(),
+        order.getType(),
+        order.getOriginalAmount(),
+        order.getLimitPrice(),
+        BTCMarketsOrder.Type.Limit,
+        order.getOrderFlags(),
+        order.getUserReference());
+  }
 
-	@Override
-	public String placeMarketOrder(MarketOrder order) throws IOException, BTCMarketsException {
-		return placeOrder(
-				order.getCurrencyPair(),
-				order.getType(),
-				order.getOriginalAmount(),
-				BigDecimal.ZERO,
-				BTCMarketsOrder.Type.Market,
-				order.getOrderFlags(),
-				order.getUserReference());
-	}
+  private String placeOrder(
+      CurrencyPair currencyPair,
+      Order.OrderType orderSide,
+      BigDecimal amount,
+      BigDecimal price,
+      BTCMarketsOrder.Type orderType,
+      Set<Order.IOrderFlags> flags,
+      String clientOrderId)
+      throws IOException {
+    boolean postOnly = false;
+    if (flags.contains(BTCMarketsOrderFlags.POST_ONLY)) {
+      postOnly = true;
+      flags = Sets.filter(flags, flag -> flag != BTCMarketsOrderFlags.POST_ONLY);
+    }
 
-	@Override
-	public String placeLimitOrder(LimitOrder order) throws IOException, BTCMarketsException {
-		return placeOrder(
-				order.getCurrencyPair(),
-				order.getType(),
-				order.getOriginalAmount(),
-				order.getLimitPrice(),
-				BTCMarketsOrder.Type.Limit,
-				order.getOrderFlags(),
-				order.getUserReference());
-	}
+    BTCMarketsOrder.Side side =
+        orderSide == BID ? BTCMarketsOrder.Side.Bid : BTCMarketsOrder.Side.Ask;
+    final String marketId = currencyPair.base.toString() + "-" + currencyPair.counter.toString();
+    String timeInForce;
+    if (flags.contains(BTCMarketsOrderFlags.FOK)) {
+      timeInForce = "FOK";
+    } else if (flags.contains(BTCMarketsOrderFlags.IOC)) {
+      timeInForce = "IOC";
+    } else {
+      timeInForce = "GTC";
+    }
+    final BTCMarketsPlaceOrderResponse orderResponse =
+        placeBTCMarketsOrder(
+            marketId, amount, price, side, orderType, timeInForce, postOnly, clientOrderId);
+    return orderResponse.orderId;
+  }
 
-	@Override
-	public boolean cancelOrder(String orderId) throws IOException, BTCMarketsException {
-		return cancelBTCMarketsOrder(Long.parseLong(orderId)).getSuccess();
-	}
+  @Override
+  public OpenOrders getOpenOrders() throws IOException, BTCMarketsException {
+    return getOpenOrders(createOpenOrdersParams());
+  }
 
-	@Override
-	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-		if (orderParams instanceof CancelOrderByIdParams) {
-			return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
-		} else {
-			return false;
-		}
-	}
+  @Override
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+    BTCMarketsOrders openOrders =
+        getBTCMarketsOpenOrders(((OpenOrdersParamCurrencyPair) params).getCurrencyPair(), 50, null);
 
-	@Override
-	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-		Integer limit = 200;
-		if (params instanceof TradeHistoryParamPaging) {
-			limit = ((TradeHistoryParamPaging) params).getPageLength();
-		}
-		String after = null;
-		if (params instanceof TradeHistoryParamsIdSpan) {
-			TradeHistoryParamsIdSpan tradeHistoryParamsIdSpan = (TradeHistoryParamsIdSpan) params;
-			after = tradeHistoryParamsIdSpan.getStartId();
-		}
-		String before = null;
-		if (params instanceof TradeHistoryParamsIdSpan) {
-			TradeHistoryParamsIdSpan tradeHistoryParamsIdSpan = (TradeHistoryParamsIdSpan) params;
-			before = tradeHistoryParamsIdSpan.getEndId();
-		}
-		CurrencyPair cp = null;
-		if (params instanceof TradeHistoryParamCurrencyPair) {
-			CurrencyPair paramsCp = ((TradeHistoryParamCurrencyPair) params).getCurrencyPair();
-			if (paramsCp != null) {
-				cp = paramsCp;
-			}
-		}
-		List<BTCMarketsTradeHistoryResponse> response =
-				getBTCMarketsUserTransactions(cp, before, after, limit);
-		return BTCMarketsAdapters.adaptTradeHistory(response);
-	}
+    return BTCMarketsAdapters.adaptOpenOrders(openOrders);
+  }
 
-	@Override
-	public HistoryParams createTradeHistoryParams() {
-		return new HistoryParams();
-	}
+  @Override
+  public boolean cancelOrder(String orderId) throws IOException, BTCMarketsException {
+    return cancelBTCMarketsOrder(Long.parseLong(orderId)).getSuccess();
+  }
 
-	@Override
-	public OpenOrdersParams createOpenOrdersParams() {
-		return new DefaultOpenOrdersParamCurrencyPair();
-	}
+  @Override
+  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+    if (orderParams instanceof CancelOrderByIdParams) {
+      return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
+    } else {
+      return false;
+    }
+  }
 
-	@Override
-	public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
-		List<Long> orderIds =
-				Arrays.stream(orderQueryParams)
-						.map(orderQueryParams1 -> Long.valueOf(orderQueryParams1.getOrderId()))
-						.collect(Collectors.toList());
-		return getOrderDetails(orderIds).getOrders().stream()
-				.map(BTCMarketsAdapters::adaptOrder)
-				.collect(Collectors.toList());
-	}
+  @Override
+  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+    Integer limit = 200;
+    if (params instanceof TradeHistoryParamPaging) {
+      limit = ((TradeHistoryParamPaging) params).getPageLength();
+    }
 
-	private String placeOrder(
-			CurrencyPair currencyPair,
-			Order.OrderType orderSide,
-			BigDecimal amount,
-			BigDecimal price,
-			BTCMarketsOrder.Type orderType,
-			Set<Order.IOrderFlags> flags,
-			String clientOrderId)
-			throws IOException {
-		boolean postOnly = false;
-		if (flags.contains(BTCMarketsOrderFlags.POST_ONLY)) {
-			postOnly = true;
-			flags = Sets.filter(flags, flag -> flag != BTCMarketsOrderFlags.POST_ONLY);
-		}
-		BTCMarketsOrder.Side side =
-				orderSide == BID ? BTCMarketsOrder.Side.Bid : BTCMarketsOrder.Side.Ask;
-		final String marketId = currencyPair.base.toString() + "-" + currencyPair.counter.toString();
-		String timeInForce;
-		if (flags.contains(BTCMarketsOrderFlags.FOK)) {
-			timeInForce = "FOK";
-		} else if (flags.contains(BTCMarketsOrderFlags.IOC)) {
-			timeInForce = "IOC";
-		} else {
-			timeInForce = "GTC";
-		}
-		final BTCMarketsPlaceOrderResponse orderResponse =
-				placeBTCMarketsOrder(
-						marketId, amount, price, side, orderType, timeInForce, postOnly, clientOrderId);
-		return orderResponse.orderId;
-	}
+    String after = null;
+    if (params instanceof TradeHistoryParamsIdSpan) {
+      TradeHistoryParamsIdSpan tradeHistoryParamsIdSpan = (TradeHistoryParamsIdSpan) params;
+      after = tradeHistoryParamsIdSpan.getStartId();
+    }
 
-	public static class HistoryParams
-			implements TradeHistoryParamPaging, TradeHistoryParamCurrencyPair, TradeHistoryParamsIdSpan {
-		private Integer limit = 200;
-		private CurrencyPair currencyPair;
-		private String startId;
-		private String endId;
+    String before = null;
+    if (params instanceof TradeHistoryParamsIdSpan) {
+      TradeHistoryParamsIdSpan tradeHistoryParamsIdSpan = (TradeHistoryParamsIdSpan) params;
+      before = tradeHistoryParamsIdSpan.getEndId();
+    }
 
-		@Override
-		public String getStartId() {
-			return startId;
-		}
+    CurrencyPair cp = null;
+    if (params instanceof TradeHistoryParamCurrencyPair) {
+      CurrencyPair paramsCp = ((TradeHistoryParamCurrencyPair) params).getCurrencyPair();
+      if (paramsCp != null) {
+        cp = paramsCp;
+      }
+    }
 
-		@Override
-		public void setStartId(String startId) {
-			this.startId = startId;
-		}
+    List<BTCMarketsTradeHistoryResponse> response =
+        getBTCMarketsUserTransactions(cp, before, after, limit);
+    return BTCMarketsAdapters.adaptTradeHistory(response);
+  }
 
-		@Override
-		public String getEndId() {
-			return this.endId;
-		}
+  @Override
+  public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
+    List<Long> orderIds =
+        Arrays.stream(orderQueryParams)
+            .map(orderQueryParams1 -> Long.valueOf(orderQueryParams1.getOrderId()))
+            .collect(Collectors.toList());
+    return getOrderDetails(orderIds).getOrders().stream()
+        .map(BTCMarketsAdapters::adaptOrder)
+        .collect(Collectors.toList());
+  }
 
-		@Override
-		public void setEndId(String endId) {
-			this.endId = endId;
-		}
+  @Override
+  public HistoryParams createTradeHistoryParams() {
+    return new HistoryParams();
+  }
 
-		@Override
-		public Integer getPageLength() {
-			return limit;
-		}
+  @Override
+  public OpenOrdersParams createOpenOrdersParams() {
+    return new DefaultOpenOrdersParamCurrencyPair();
+  }
 
-		@Override
-		public void setPageLength(Integer pageLength) {
-			this.limit = pageLength;
-		}
+  public static class HistoryParams
+      implements TradeHistoryParamPaging, TradeHistoryParamCurrencyPair, TradeHistoryParamsIdSpan {
+    private Integer limit = 200;
+    private CurrencyPair currencyPair;
+    private String startId;
+    private String endId;
 
-		@Override
-		public Integer getPageNumber() {
-			throw new UnsupportedOperationException();
-		}
+    @Override
+    public String getStartId() {
+      return startId;
+    }
 
-		@Override
-		public void setPageNumber(Integer pageNumber) {
-			throw new UnsupportedOperationException();
-		}
+    @Override
+    public void setStartId(String startId) {
+      this.startId = startId;
+    }
 
-		@Override
-		public CurrencyPair getCurrencyPair() {
-			return currencyPair;
-		}
+    @Override
+    public String getEndId() {
+      return this.endId;
+    }
 
-		@Override
-		public void setCurrencyPair(CurrencyPair currencyPair) {
-			this.currencyPair = currencyPair;
-		}
-	}
+    @Override
+    public void setEndId(String endId) {
+      this.endId = endId;
+    }
+
+    @Override
+    public Integer getPageLength() {
+      return limit;
+    }
+
+    @Override
+    public void setPageLength(Integer pageLength) {
+      this.limit = pageLength;
+    }
+
+    @Override
+    public Integer getPageNumber() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setPageNumber(Integer pageNumber) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public CurrencyPair getCurrencyPair() {
+      return currencyPair;
+    }
+
+    @Override
+    public void setCurrencyPair(CurrencyPair currencyPair) {
+      this.currencyPair = currencyPair;
+    }
+  }
 }

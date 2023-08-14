@@ -1,42 +1,44 @@
 package org.knowm.xchange.okcoin.v3.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.util.Arrays;
+import lombok.Data;
 
 @Data
 public class OkexOrderBook {
 
-	@JsonProperty("timestamp")
-	private String timestamp;
+  @JsonProperty("timestamp")
+  private String timestamp;
 
-	@JsonProperty("bids")
-	private OkexOrderBookEntry[] bids;
+  @JsonProperty("bids")
+  private OkexOrderBookEntry[] bids;
 
-	@JsonProperty("asks")
-	private OkexOrderBookEntry[] asks;
+  @JsonProperty("asks")
+  private OkexOrderBookEntry[] asks;
 
-	public String getTimestamp() {
-		return timestamp;
-	}
+  public String getTimestamp() {
 
-	public OkexOrderBookEntry[] getBids() {
-		return bids;
-	}
+    return timestamp;
+  }
 
-	public OkexOrderBookEntry[] getAsks() {
-		return asks;
-	}
+  public OkexOrderBookEntry[] getBids() {
 
-	@Override
-	public String toString() {
-		return "OkexOrderBook [timestamp="
-				+ timestamp
-				+ ", bids="
-				+ Arrays.toString(bids)
-				+ ", asks="
-				+ Arrays.toString(asks)
-				+ "]";
-	}
+    return bids;
+  }
+
+  public OkexOrderBookEntry[] getAsks() {
+
+    return asks;
+  }
+
+  @Override
+  public String toString() {
+    return "OkexOrderBook [timestamp="
+        + timestamp
+        + ", bids="
+        + Arrays.toString(bids)
+        + ", asks="
+        + Arrays.toString(asks)
+        + "]";
+  }
 }

@@ -9,59 +9,60 @@ import org.knowm.xchange.coinjar.CoinjarExchange;
 
 public class CoinjarStreamingExchange extends CoinjarExchange implements StreamingExchange {
 
-	private static final String API_URI = "wss://feed.exchange.coinjar.com/socket/websocket";
+  private static final String API_URI = "wss://feed.exchange.coinjar.com/socket/websocket";
 
-	private CoinjarStreamingService streamingService;
-	private CoinjarStreamingMarketDataService streamingMarketDataService;
-	private CoinjarStreamingTradeService streamingTradeService;
+  private CoinjarStreamingService streamingService;
+  private CoinjarStreamingMarketDataService streamingMarketDataService;
+  private CoinjarStreamingTradeService streamingTradeService;
 
-	@Override
-	protected void initServices() {
-		super.initServices();
-		this.streamingService =
-				new CoinjarStreamingService(API_URI, this.exchangeSpecification.getApiKey());
-		applyStreamingSpecification(getExchangeSpecification(), streamingService);
-		this.streamingMarketDataService = new CoinjarStreamingMarketDataService(streamingService);
-		this.streamingTradeService = new CoinjarStreamingTradeService(streamingService);
-	}
+  @Override
+  protected void initServices() {
+    super.initServices();
 
-	@Override
-	public Completable connect(ProductSubscription... args) {
-		return streamingService.connect();
-	}
+    this.streamingService =
+        new CoinjarStreamingService(API_URI, this.exchangeSpecification.getApiKey());
+    applyStreamingSpecification(getExchangeSpecification(), streamingService);
+    this.streamingMarketDataService = new CoinjarStreamingMarketDataService(streamingService);
+    this.streamingTradeService = new CoinjarStreamingTradeService(streamingService);
+  }
 
-	@Override
-	public Completable disconnect() {
-		return streamingService.disconnect();
-	}
+  @Override
+  public Completable connect(ProductSubscription... args) {
+    return streamingService.connect();
+  }
 
-	@Override
-	public boolean isAlive() {
-		return streamingService.isSocketOpen();
-	}
+  @Override
+  public Completable disconnect() {
+    return streamingService.disconnect();
+  }
 
-	@Override
-	public Observable<Throwable> reconnectFailure() {
-		return streamingService.subscribeReconnectFailure();
-	}
+  @Override
+  public boolean isAlive() {
+    return streamingService.isSocketOpen();
+  }
 
-	@Override
-	public Observable<Object> connectionSuccess() {
-		return streamingService.subscribeConnectionSuccess();
-	}
+  @Override
+  public Observable<Throwable> reconnectFailure() {
+    return streamingService.subscribeReconnectFailure();
+  }
 
-	@Override
-	public CoinjarStreamingMarketDataService getStreamingMarketDataService() {
-		return streamingMarketDataService;
-	}
+  @Override
+  public Observable<Object> connectionSuccess() {
+    return streamingService.subscribeConnectionSuccess();
+  }
 
-	@Override
-	public StreamingTradeService getStreamingTradeService() {
-		return streamingTradeService;
-	}
+  @Override
+  public CoinjarStreamingMarketDataService getStreamingMarketDataService() {
+    return streamingMarketDataService;
+  }
 
-	@Override
-	public void useCompressedMessages(boolean compressedMessages) {
-		streamingService.useCompressedMessages(compressedMessages);
-	}
+  @Override
+  public StreamingTradeService getStreamingTradeService() {
+    return streamingTradeService;
+  }
+
+  @Override
+  public void useCompressedMessages(boolean compressedMessages) {
+    streamingService.useCompressedMessages(compressedMessages);
+  }
 }

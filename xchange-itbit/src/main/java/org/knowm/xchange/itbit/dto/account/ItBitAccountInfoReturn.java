@@ -1,54 +1,60 @@
 package org.knowm.xchange.itbit.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Arrays;
 
 public class ItBitAccountInfoReturn {
 
-	private final String id;
-	private final String userId;
-	private final String name;
-	private final ItBitAccountBalance[] balances;
+  private final String id;
+  private final String userId;
+  private final String name;
+  private final ItBitAccountBalance[] balances;
 
-	public ItBitAccountInfoReturn(
-			@JsonProperty("id") String id,
-			@JsonProperty("userId") String userId,
-			@JsonProperty("name") String name,
-			@JsonProperty("balances") ItBitAccountBalance[] balances) {
-		this.id = id;
-		this.userId = userId;
-		this.name = name;
-		this.balances = balances;
-	}
+  public ItBitAccountInfoReturn(
+      @JsonProperty("id") String id,
+      @JsonProperty("userId") String userId,
+      @JsonProperty("name") String name,
+      @JsonProperty("balances") ItBitAccountBalance[] balances) {
 
-	public String getId() {
-		return id;
-	}
+    this.id = id;
+    this.userId = userId;
+    this.name = name;
+    this.balances = balances;
+  }
 
-	public String getUserId() {
-		return userId;
-	}
+  public String getId() {
 
-	public String getName() {
-		return name;
-	}
+    return id;
+  }
 
-	public ItBitAccountBalance[] getBalances() {
-		return balances;
-	}
+  public String getUserId() {
 
-	@Override
-	public String toString() {
-		String builder = "ItBitAccountInfoReturn [id=" +
-				id +
-				", userId=" +
-				userId +
-				", name=" +
-				name +
-				", balances=" +
-				Arrays.toString(balances) +
-				"]";
-		return builder;
-	}
+    return userId;
+  }
+
+  public String getName() {
+
+    return name;
+  }
+
+  public ItBitAccountBalance[] getBalances() {
+
+    return balances;
+  }
+
+  @Override
+  public String toString() {
+
+    StringBuilder builder = new StringBuilder();
+    builder.append("ItBitAccountInfoReturn [id=");
+    builder.append(id);
+    builder.append(", userId=");
+    builder.append(userId);
+    builder.append(", name=");
+    builder.append(name);
+    builder.append(", balances=");
+    builder.append(Arrays.toString(balances));
+    builder.append("]");
+    return builder.toString();
+  }
 }

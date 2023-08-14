@@ -4,15 +4,16 @@ import org.knowm.xchange.Exchange;
 import org.knowm.xchange.service.BaseExchangeService;
 import org.knowm.xchange.service.BaseService;
 
-/**
- * @author ahmetoz
- */
+/** @author ahmetoz */
 public class KoinimBaseService extends BaseExchangeService implements BaseService {
 
-	/**
-	 * Constructor
-	 */
-	public KoinimBaseService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public KoinimBaseService(Exchange exchange) {
+
+    super(exchange);
+  }
 }

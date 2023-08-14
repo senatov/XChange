@@ -6,64 +6,65 @@ import info.bitrich.xchangestream.service.netty.JsonNettyStreamingService;
 import info.bitrich.xchangestream.service.netty.WebSocketClientCompressionAllowClientNoContextAndServerNoContextHandler;
 import io.netty.handler.codec.http.websocketx.extensions.WebSocketClientExtensionHandler;
 import io.reactivex.Observable;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BinanceUserDataStreamingService extends JsonNettyStreamingService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(BinanceUserDataStreamingService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(BinanceUserDataStreamingService.class);
 
-	private BinanceUserDataStreamingService(String url) {
-		super(url, Integer.MAX_VALUE);
-	}
+  public static BinanceUserDataStreamingService create(String baseUri, String listenKey) {
+    return new BinanceUserDataStreamingService(baseUri + "ws/" + listenKey);
+  }
 
-	public static BinanceUserDataStreamingService create(String baseUri, String listenKey) {
-		return new BinanceUserDataStreamingService(baseUri + "ws/" + listenKey);
-	}
+  private BinanceUserDataStreamingService(String url) {
+    super(url, Integer.MAX_VALUE);
+  }
 
-	public Observable<JsonNode> subscribeChannel(BinanceWebSocketTypes eventType) {
-		return super.subscribeChannel(eventType.getSerializedValue());
-	}
+  public Observable<JsonNode> subscribeChannel(BinanceWebSocketTypes eventType) {
+    return super.subscribeChannel(eventType.getSerializedValue());
+  }
 
-	@Override
-	public void messageHandler(String message) {
-		LOG.debug("Received message: {}", message);
-		super.messageHandler(message);
-	}
+  @Override
+  public void messageHandler(String message) {
+    LOG.debug("Received message: {}", message);
+    super.messageHandler(message);
+  }
 
-	@Override
-	protected String getChannelNameFromMessage(JsonNode message) {
-		return message.get("e").asText();
-	}
+  @Override
+  protected void handleMessage(JsonNode message) {
+    try {
+      super.handleMessage(message);
+    } catch (Exception e) {
+      LOG.error("Error handling message: " + message, e);
+    }
+  }
 
-	@Override
-	public String getSubscribeMessage(String channelName, Object... args) {
-		// No op. Disconnecting from the web socket will cancel subscriptions.
-		return null;
-	}
+  @Override
+  protected String getChannelNameFromMessage(JsonNode message) {
+    return message.get("e").asText();
+  }
 
-	@Override
-	public String getUnsubscribeMessage(String channelName, Object... args) {
-		// No op. Disconnecting from the web socket will cancel subscriptions.
-		return null;
-	}
+  @Override
+  public String getSubscribeMessage(String channelName, Object... args) {
+    // No op. Disconnecting from the web socket will cancel subscriptions.
+    return null;
+  }
 
-	@Override
-	public void sendMessage(String message) {
-		// Subscriptions are made upon connection - no messages are sent.
-	}
+  @Override
+  public String getUnsubscribeMessage(String channelName, Object... args) {
+    // No op. Disconnecting from the web socket will cancel subscriptions.
+    return null;
+  }
 
-	@Override
-	protected void handleMessage(JsonNode message) {
-		try {
-			super.handleMessage(message);
-		} catch (Exception e) {
-			LOG.error("Error handling message: " + message, e);
-		}
-	}
+  @Override
+  protected WebSocketClientExtensionHandler getWebSocketClientExtensionHandler() {
+    return WebSocketClientCompressionAllowClientNoContextAndServerNoContextHandler.INSTANCE;
+  }
 
-	@Override
-	protected WebSocketClientExtensionHandler getWebSocketClientExtensionHandler() {
-		return WebSocketClientCompressionAllowClientNoContextAndServerNoContextHandler.INSTANCE;
-	}
+  @Override
+  public void sendMessage(String message) {
+    // Subscriptions are made upon connection - no messages are sent.
+  }
 }

@@ -1,10 +1,9 @@
 package org.knowm.xchange.poloniex.dto.trade;
 
-import org.knowm.xchange.currency.CurrencyPair;
-import org.knowm.xchange.dto.trade.LimitOrder;
-
 import java.math.BigDecimal;
 import java.util.Date;
+import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.trade.LimitOrder;
 
 /**
  * Poloniex order response contains details of any trades that have just executed in the order entry
@@ -13,38 +12,38 @@ import java.util.Date;
  */
 public class PoloniexLimitOrder extends LimitOrder {
 
-	private PoloniexTradeResponse response = null;
+  private PoloniexTradeResponse response = null;
 
-	public PoloniexLimitOrder(
-			OrderType type,
-			BigDecimal originalAmount,
-			CurrencyPair currencyPair,
-			String id,
-			Date timestamp,
-			BigDecimal limitPrice) {
-		super(type, originalAmount, currencyPair, id, timestamp, limitPrice);
-	}
+  public PoloniexLimitOrder(
+      OrderType type,
+      BigDecimal originalAmount,
+      CurrencyPair currencyPair,
+      String id,
+      Date timestamp,
+      BigDecimal limitPrice) {
+    super(type, originalAmount, currencyPair, id, timestamp, limitPrice);
+  }
 
-	public PoloniexTradeResponse getResponse() {
-		return response;
-	}
+  public PoloniexTradeResponse getResponse() {
+    return response;
+  }
 
-	public void setResponse(PoloniexTradeResponse value) {
-		response = value;
-	}
+  public void setResponse(PoloniexTradeResponse value) {
+    response = value;
+  }
 
-	public static class Builder extends LimitOrder.Builder {
+  public static class Builder extends LimitOrder.Builder {
 
-		public Builder(OrderType orderType, CurrencyPair currencyPair) {
-			super(orderType, currencyPair);
-		}
+    public Builder(OrderType orderType, CurrencyPair currencyPair) {
+      super(orderType, currencyPair);
+    }
 
-		public PoloniexLimitOrder build() {
-			final PoloniexLimitOrder order =
-					new PoloniexLimitOrder(
-							orderType, originalAmount, (CurrencyPair) instrument, id, timestamp, limitPrice);
-			order.setOrderFlags(flags);
-			return order;
-		}
-	}
+    public PoloniexLimitOrder build() {
+      final PoloniexLimitOrder order =
+          new PoloniexLimitOrder(
+              orderType, originalAmount, (CurrencyPair) instrument, id, timestamp, limitPrice);
+      order.setOrderFlags(flags);
+      return order;
+    }
+  }
 }

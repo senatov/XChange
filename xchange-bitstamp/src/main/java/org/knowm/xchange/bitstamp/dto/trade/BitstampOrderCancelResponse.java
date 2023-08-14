@@ -1,65 +1,65 @@
 package org.knowm.xchange.bitstamp.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.knowm.xchange.currency.CurrencyPair;
-
 import java.math.BigDecimal;
+import org.knowm.xchange.currency.CurrencyPair;
 
 public class BitstampOrderCancelResponse {
 
-	private final String error;
-	private final long id;
-	/**
-	 * 0 - buy (bid); 1 - sell (ask)
-	 */
-	private final int type;
-	private final CurrencyPair currencyPair;
-	private final BigDecimal price;
-	private final BigDecimal amount;
+  private long id;
+  /** 0 - buy (bid); 1 - sell (ask) */
+  private int type;
 
-	/**
-	 * @param id Order id
-	 * @param amount Order amount
-	 * @param price Order price
-	 * @param type Order type
-	 * @param error Order error
-	 */
-	public BitstampOrderCancelResponse(
-			@JsonProperty("id") long id,
-			@JsonProperty("type") int type,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("currency_pair") CurrencyPair currencyPair,
-			@JsonProperty("error") String error) {
-		this.id = id;
-		this.type = type;
-		this.price = price;
-		this.amount = amount;
-		this.currencyPair = currencyPair;
-		this.error = error;
-	}
+  private CurrencyPair currencyPair;
+  private BigDecimal price;
+  private BigDecimal amount;
 
-	public long getId() {
-		return id;
-	}
+  private final String error;
 
-	public int getType() {
-		return type;
-	}
+  /**
+   * @param id Order id
+   * @param amount Order amount
+   * @param price Order price
+   * @param type Order type
+   * @param error Order error
+   */
+  public BitstampOrderCancelResponse(
+      @JsonProperty("id") long id,
+      @JsonProperty("type") int type,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("currency_pair") CurrencyPair currencyPair,
+      @JsonProperty("error") String error) {
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    this.id = id;
+    this.type = type;
+    this.price = price;
+    this.amount = amount;
+    this.currencyPair = currencyPair;
+    this.error = error;
+  }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public CurrencyPair getCurrencyPair() {
-		return currencyPair;
-	}
+  public int getType() {
+    return type;
+  }
 
-	public String getError() {
-		return error;
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public BigDecimal getAmount() {
+    return amount;
+  }
+
+  public CurrencyPair getCurrencyPair() {
+    return currencyPair;
+  }
+
+  public String getError() {
+    return error;
+  }
 }

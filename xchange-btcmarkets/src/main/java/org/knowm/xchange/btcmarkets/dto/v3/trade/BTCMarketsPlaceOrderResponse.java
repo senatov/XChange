@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BTCMarketsPlaceOrderResponse {
 
-	public final String orderId;
+  public final String orderId;
 
-	public BTCMarketsPlaceOrderResponse(@JsonProperty("orderId") String orderId) {
-		this.orderId = orderId;
-	}
+  public BTCMarketsPlaceOrderResponse(@JsonProperty("orderId") String orderId) {
+    this.orderId = orderId;
+  }
 }

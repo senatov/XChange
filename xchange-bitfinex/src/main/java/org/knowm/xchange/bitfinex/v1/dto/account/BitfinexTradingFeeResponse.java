@@ -2,56 +2,59 @@ package org.knowm.xchange.bitfinex.v1.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 @JsonIgnoreProperties({"maker_fees", "taker_fees"})
 public class BitfinexTradingFeeResponse {
-	private final BitfinexTradingFeeResponseRow[] tradingFeeResponseRows;
+  public static class BitfinexTradingFeeResponseRow {
+    private final String currency;
+    private final BigDecimal makerFee;
+    private final BigDecimal takerFee;
 
-	/**
-	 * Constructor
-	 */
-	public BitfinexTradingFeeResponse(
-			@JsonProperty("fees") BitfinexTradingFeeResponseRow[] tradingFeeResponseRows) {
-		this.tradingFeeResponseRows = tradingFeeResponseRows;
-	}
+    public BitfinexTradingFeeResponseRow(
+        @JsonProperty("pairs") String pairs,
+        @JsonProperty("maker_fees") BigDecimal makerFees,
+        @JsonProperty("taker_fees") BigDecimal takerFees) {
+      this.currency = pairs;
+      this.makerFee = makerFees;
+      this.takerFee = takerFees;
+    }
 
-	public BitfinexTradingFeeResponseRow[] getTradingFees() {
-		return tradingFeeResponseRows;
-	}
+    public String getCurrency() {
+      return currency;
+    }
 
-	@Override
-	public String toString() {
-		return "BitfinexTradingFeeResponseRow [tradingFeeResponseRows="
-				+ tradingFeeResponseRows.toString()
-				+ "]";
-	}
+    public BigDecimal getMakerFee() {
+      return makerFee;
+    }
 
-	public static class BitfinexTradingFeeResponseRow {
-		private final String currency;
-		private final BigDecimal makerFee;
-		private final BigDecimal takerFee;
+    public BigDecimal getTakerFee() {
+      return takerFee;
+    }
+  }
 
-		public BitfinexTradingFeeResponseRow(
-				@JsonProperty("pairs") String pairs,
-				@JsonProperty("maker_fees") BigDecimal makerFees,
-				@JsonProperty("taker_fees") BigDecimal takerFees) {
-			this.currency = pairs;
-			this.makerFee = makerFees;
-			this.takerFee = takerFees;
-		}
+  private final BitfinexTradingFeeResponseRow[] tradingFeeResponseRows;
+  /**
+   * Constructor
+   *
+   * @param type
+   * @param currency
+   * @param amount
+   * @param available
+   */
+  public BitfinexTradingFeeResponse(
+      @JsonProperty("fees") BitfinexTradingFeeResponseRow[] tradingFeeResponseRows) {
+    this.tradingFeeResponseRows = tradingFeeResponseRows;
+  }
 
-		public String getCurrency() {
-			return currency;
-		}
+  public BitfinexTradingFeeResponseRow[] getTradingFees() {
+    return tradingFeeResponseRows;
+  }
 
-		public BigDecimal getMakerFee() {
-			return makerFee;
-		}
-
-		public BigDecimal getTakerFee() {
-			return takerFee;
-		}
-	}
+  @Override
+  public String toString() {
+    return "BitfinexTradingFeeResponseRow [tradingFeeResponseRows="
+        + tradingFeeResponseRows.toString()
+        + "]";
+  }
 }

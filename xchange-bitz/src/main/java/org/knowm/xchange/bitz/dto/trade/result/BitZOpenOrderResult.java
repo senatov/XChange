@@ -6,10 +6,10 @@ import org.knowm.xchange.bitz.dto.trade.BitZOpenOrder;
 
 public class BitZOpenOrderResult extends BitZResult<BitZOpenOrder> {
 
-	public BitZOpenOrderResult(
-			@JsonProperty("code") int code,
-			@JsonProperty("msg") String message,
-			@JsonProperty("data") BitZOpenOrder data) {
-		super(code, message, data);
-	}
+  public BitZOpenOrderResult(
+      @JsonProperty("code") int code,
+      @JsonProperty("msg") String message,
+      @JsonProperty("data") BitZOpenOrder data) {
+    super(code, message, data);
+  }
 }

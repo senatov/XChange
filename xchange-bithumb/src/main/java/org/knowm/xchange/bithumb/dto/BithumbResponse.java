@@ -6,31 +6,32 @@ import si.mazi.rescu.ExceptionalReturnContentException;
 
 public class BithumbResponse<D> {
 
-	private final String status;
-	private final String message;
-	private final D data;
+  private final String status;
+  private final String message;
+  private final D data;
 
-	public BithumbResponse(
-			@JsonProperty("status") String status,
-			@JsonProperty("message") String message,
-			@JsonProperty("data") D data) {
-		if (!StringUtils.equals(status, "0000")) {
-			throw new ExceptionalReturnContentException(message);
-		}
-		this.status = status;
-		this.message = message;
-		this.data = data;
-	}
+  public BithumbResponse(
+      @JsonProperty("status") String status,
+      @JsonProperty("message") String message,
+      @JsonProperty("data") D data) {
 
-	public String getStatus() {
-		return status;
-	}
+    if (!StringUtils.equals(status, "0000")) {
+      throw new ExceptionalReturnContentException(message);
+    }
+    this.status = status;
+    this.message = message;
+    this.data = data;
+  }
 
-	public D getData() {
-		return data;
-	}
+  public String getStatus() {
+    return status;
+  }
 
-	public String getMessage() {
-		return message;
-	}
+  public D getData() {
+    return data;
+  }
+
+  public String getMessage() {
+    return message;
+  }
 }

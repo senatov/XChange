@@ -34,32 +34,32 @@ import org.knowm.xchange.exceptions.ExchangeException;
 
 import java.io.IOException;
 
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateExchange extends BaseExchange implements Exchange {
 
-	@Override
-	protected void initServices() {
-		this.marketDataService = new CoinmateMarketDataService(this);
-		this.accountService = new CoinmateAccountService(this);
-		this.tradeService = new CoinmateTradeService(this);
-	}
+  @Override
+  protected void initServices() {
+    this.marketDataService = new CoinmateMarketDataService(this);
+    this.accountService = new CoinmateAccountService(this);
+    this.tradeService = new CoinmateTradeService(this);
+  }
 
-	@Override
-	public void remoteInit() throws IOException, ExchangeException {
-		CoinmateMetadataServiceRaw metadataService = new CoinmateMetadataServiceRaw(this);
-		exchangeMetaData = metadataService.getMetadata();
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
-		exchangeSpecification.setSslUri("https://coinmate.io");
-		exchangeSpecification.setHost("coinmate.io");
-		exchangeSpecification.setPort(80);
-		exchangeSpecification.setExchangeName("CoinMate");
-		exchangeSpecification.setExchangeDescription("Bitcoin trading made simple.");
-		return exchangeSpecification;
-	}
+    ExchangeSpecification exchangeSpecification = new ExchangeSpecification(this.getClass());
+    exchangeSpecification.setSslUri("https://coinmate.io");
+    exchangeSpecification.setHost("coinmate.io");
+    exchangeSpecification.setPort(80);
+    exchangeSpecification.setExchangeName("CoinMate");
+    exchangeSpecification.setExchangeDescription("Bitcoin trading made simple.");
+
+    return exchangeSpecification;
+  }
+
+  @Override
+  public void remoteInit() throws IOException, ExchangeException {
+    CoinmateMetadataServiceRaw metadataService = new CoinmateMetadataServiceRaw(this);
+    exchangeMetaData = metadataService.getMetadata();
+  }
 }

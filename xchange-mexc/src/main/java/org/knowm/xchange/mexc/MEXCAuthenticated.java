@@ -8,13 +8,7 @@ import org.knowm.xchange.mexc.service.MEXCException;
 import si.mazi.rescu.ParamsDigest;
 import si.mazi.rescu.SynchronizedValueFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.List;
@@ -24,28 +18,28 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 public interface MEXCAuthenticated {
 
-	@GET
-	@Path("/account/info")
-	MEXCResult<Map<String, MEXCBalance>> getWalletBalances(
-			@HeaderParam("ApiKey") String apiKey,
-			@HeaderParam("Request-Time") SynchronizedValueFactory<Long> timestamp,
-			@HeaderParam("Signature") ParamsDigest signature
-	) throws IOException, MEXCException;
+  @GET
+  @Path("/account/info")
+  MEXCResult<Map<String, MEXCBalance>> getWalletBalances(
+          @HeaderParam("ApiKey") String apiKey,
+          @HeaderParam("Request-Time") SynchronizedValueFactory<Long> timestamp,
+          @HeaderParam("Signature") ParamsDigest signature
+  ) throws IOException, MEXCException;
 
-	@POST
-	@Path("/order/place")
-	@Consumes(MediaType.APPLICATION_JSON)
-	MEXCResult<String> placeOrder(@HeaderParam("ApiKey") String apiKey,
-	                              @HeaderParam("Request-Time") SynchronizedValueFactory<Long> timestamp,
-	                              @HeaderParam("Signature") ParamsDigest signature,
-	                              MEXCOrderRequestPayload orderRequestPayload) throws IOException, MEXCException;
+  @POST
+  @Path("/order/place")
+  @Consumes(MediaType.APPLICATION_JSON)
+  MEXCResult<String> placeOrder(@HeaderParam("ApiKey") String apiKey,
+                                @HeaderParam("Request-Time") SynchronizedValueFactory<Long> timestamp,
+                                @HeaderParam("Signature") ParamsDigest signature,
+                                MEXCOrderRequestPayload orderRequestPayload) throws IOException, MEXCException;
 
-	@GET
-	@Path("/order/query")
-	MEXCResult<List<MEXCOrder>> getOrders(
-			@HeaderParam("ApiKey") String apiKey,
-			@HeaderParam("Request-Time") SynchronizedValueFactory<Long> timestamp,
-			@HeaderParam("Signature") ParamsDigest signature,
-			@QueryParam("order_ids") List<String> orderIds) throws IOException, MEXCException;
+  @GET
+  @Path("/order/query")
+  MEXCResult<List<MEXCOrder>> getOrders(
+          @HeaderParam("ApiKey") String apiKey,
+          @HeaderParam("Request-Time") SynchronizedValueFactory<Long> timestamp,
+          @HeaderParam("Signature") ParamsDigest signature,
+          @QueryParam("order_ids") List<String> orderIds) throws IOException, MEXCException;
 
 }

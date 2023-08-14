@@ -4,33 +4,33 @@ import java.math.BigDecimal;
 
 public interface BitfinexTicker {
 
-	default boolean isFundingCurrency() {
-		return false;
-	}
+  default boolean isFundingCurrency() {
+    return false;
+  }
 
-	default boolean isTradingPair() {
-		return false;
-	}
+  default boolean isTradingPair() {
+    return false;
+  }
 
-	String getSymbol();
+  String getSymbol();
 
-	BigDecimal getBid();
+  BigDecimal getBid();
 
-	BigDecimal getBidSize();
+  BigDecimal getBidSize();
 
-	BigDecimal getAsk();
+  BigDecimal getAsk();
 
-	BigDecimal getAskSize();
+  BigDecimal getAskSize();
 
-	BigDecimal getDailyChange();
+  BigDecimal getDailyChange();
 
-	BigDecimal getDailyChangePerc();
+  BigDecimal getDailyChangePerc();
 
-	BigDecimal getLastPrice();
+  BigDecimal getLastPrice();
 
-	BigDecimal getVolume();
+  BigDecimal getVolume();
 
-	BigDecimal getHigh();
+  BigDecimal getHigh();
 
-	BigDecimal getLow();
+  BigDecimal getLow();
 }

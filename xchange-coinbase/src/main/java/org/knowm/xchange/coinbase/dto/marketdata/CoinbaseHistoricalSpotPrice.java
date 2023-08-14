@@ -3,34 +3,37 @@ package org.knowm.xchange.coinbase.dto.marketdata;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * @author jamespedwards42
- */
+/** @author jamespedwards42 */
 public class CoinbaseHistoricalSpotPrice implements Comparable<CoinbaseHistoricalSpotPrice> {
 
-	private final Date timestamp;
-	private final BigDecimal spotRate;
+  private final Date timestamp;
+  private final BigDecimal spotRate;
 
-	CoinbaseHistoricalSpotPrice(Date timestamp, final BigDecimal spotRate) {
-		this.timestamp = timestamp;
-		this.spotRate = spotRate;
-	}
+  CoinbaseHistoricalSpotPrice(Date timestamp, final BigDecimal spotRate) {
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    this.timestamp = timestamp;
+    this.spotRate = spotRate;
+  }
 
-	public BigDecimal getSpotRate() {
-		return spotRate;
-	}
+  public Date getTimestamp() {
 
-	@Override
-	public String toString() {
-		return "CoinbaseHistoricalPrice [timestamp=" + timestamp + ", spotRate=" + spotRate + "]";
-	}
+    return timestamp;
+  }
 
-	@Override
-	public int compareTo(CoinbaseHistoricalSpotPrice o) {
-		return this.timestamp.compareTo(o.timestamp);
-	}
+  public BigDecimal getSpotRate() {
+
+    return spotRate;
+  }
+
+  @Override
+  public String toString() {
+
+    return "CoinbaseHistoricalPrice [timestamp=" + timestamp + ", spotRate=" + spotRate + "]";
+  }
+
+  @Override
+  public int compareTo(CoinbaseHistoricalSpotPrice o) {
+
+    return this.timestamp.compareTo(o.timestamp);
+  }
 }

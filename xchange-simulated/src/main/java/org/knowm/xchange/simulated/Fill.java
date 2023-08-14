@@ -11,7 +11,7 @@ import org.knowm.xchange.dto.trade.UserTrade;
  */
 @Data
 final class Fill {
-	private final String apiKey;
-	private final UserTrade trade;
-	private final boolean taker;
+  private final String apiKey;
+  private final UserTrade trade;
+  private final boolean taker;
 }

@@ -6,40 +6,51 @@ import org.knowm.xchange.kraken.dto.trade.results.KrakenCancelOrderResult.Kraken
 
 public class KrakenCancelOrderResult extends KrakenResult<KrakenCancelOrderResponse> {
 
-	/**
-	 * Constructor
-	 */
-	public KrakenCancelOrderResult(
-			@JsonProperty("result") KrakenCancelOrderResponse result,
-			@JsonProperty("error") String[] error) {
-		super(result, error);
-	}
+  /**
+   * Constructor
+   *
+   * @param result
+   * @param error
+   */
+  public KrakenCancelOrderResult(
+      @JsonProperty("result") KrakenCancelOrderResponse result,
+      @JsonProperty("error") String[] error) {
 
-	public static class KrakenCancelOrderResponse {
+    super(result, error);
+  }
 
-		private final int count;
-		private final boolean pending;
+  public static class KrakenCancelOrderResponse {
 
-		/**
-		 * Constructor
-		 */
-		public KrakenCancelOrderResponse(
-				@JsonProperty("count") int count, @JsonProperty("pending") boolean pending) {
-			this.count = count;
-			this.pending = pending;
-		}
+    private final int count;
+    private final boolean pending;
 
-		public int getCount() {
-			return count;
-		}
+    /**
+     * Constructor
+     *
+     * @param count
+     * @param pending
+     */
+    public KrakenCancelOrderResponse(
+        @JsonProperty("count") int count, @JsonProperty("pending") boolean pending) {
 
-		public boolean isPending() {
-			return pending;
-		}
+      this.count = count;
+      this.pending = pending;
+    }
 
-		@Override
-		public String toString() {
-			return "KrakenCancelOrderResponse [count=" + count + ", pending=" + pending + "]";
-		}
-	}
+    public int getCount() {
+
+      return count;
+    }
+
+    public boolean isPending() {
+
+      return pending;
+    }
+
+    @Override
+    public String toString() {
+
+      return "KrakenCancelOrderResponse [count=" + count + ", pending=" + pending + "]";
+    }
+  }
 }

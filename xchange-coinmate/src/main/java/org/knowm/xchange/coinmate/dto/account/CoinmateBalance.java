@@ -24,19 +24,17 @@
 package org.knowm.xchange.coinmate.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 import org.knowm.xchange.coinmate.dto.CoinmateBaseResponse;
 
-import java.util.Map;
-
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateBalance extends CoinmateBaseResponse<Map<String, CoinmateBalanceDataEntry>> {
 
-	public CoinmateBalance(
-			@JsonProperty("error") boolean error,
-			@JsonProperty("errorMessage") String errorMessage,
-			@JsonProperty("data") Map<String, CoinmateBalanceDataEntry> data) {
-		super(error, errorMessage, data);
-	}
+  public CoinmateBalance(
+      @JsonProperty("error") boolean error,
+      @JsonProperty("errorMessage") String errorMessage,
+      @JsonProperty("data") Map<String, CoinmateBalanceDataEntry> data) {
+
+    super(error, errorMessage, data);
+  }
 }

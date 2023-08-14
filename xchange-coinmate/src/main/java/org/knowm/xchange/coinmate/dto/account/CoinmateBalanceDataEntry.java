@@ -24,55 +24,45 @@
 package org.knowm.xchange.coinmate.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class CoinmateBalanceDataEntry {
 
-	private final String currency;
-	private final BigDecimal balance;
-	private final BigDecimal reserved;
-	private final BigDecimal available;
+  private final String currency;
+  private final BigDecimal balance;
+  private final BigDecimal reserved;
+  private final BigDecimal available;
 
-	public CoinmateBalanceDataEntry(
-			@JsonProperty("currency") String currency,
-			@JsonProperty("balance") BigDecimal balance,
-			@JsonProperty("reserved") BigDecimal reserved,
-			@JsonProperty("available") BigDecimal available) {
-		this.currency = currency;
-		this.balance = balance;
-		this.reserved = reserved;
-		this.available = available;
-	}
+  public CoinmateBalanceDataEntry(
+      @JsonProperty("currency") String currency,
+      @JsonProperty("balance") BigDecimal balance,
+      @JsonProperty("reserved") BigDecimal reserved,
+      @JsonProperty("available") BigDecimal available) {
 
-	/**
-	 * @return the currency
-	 */
-	public String getCurrency() {
-		return currency;
-	}
+    this.currency = currency;
+    this.balance = balance;
+    this.reserved = reserved;
+    this.available = available;
+  }
 
-	/**
-	 * @return the balance
-	 */
-	public BigDecimal getBalance() {
-		return balance;
-	}
+  /** @return the currency */
+  public String getCurrency() {
+    return currency;
+  }
 
-	/**
-	 * @return the reserved
-	 */
-	public BigDecimal getReserved() {
-		return reserved;
-	}
+  /** @return the balance */
+  public BigDecimal getBalance() {
+    return balance;
+  }
 
-	/**
-	 * @return the available
-	 */
-	public BigDecimal getAvailable() {
-		return available;
-	}
+  /** @return the reserved */
+  public BigDecimal getReserved() {
+    return reserved;
+  }
+
+  /** @return the available */
+  public BigDecimal getAvailable() {
+    return available;
+  }
 }

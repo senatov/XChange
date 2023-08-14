@@ -1,58 +1,58 @@
 package org.knowm.xchange.coingi.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class CoingiBalance {
-	private final CoingiCurrency currency;
+  private CoingiCurrency currency;
 
-	private final BigDecimal available;
+  private BigDecimal available;
 
-	private final BigDecimal inOrders;
+  private BigDecimal inOrders;
 
-	private final BigDecimal deposited;
+  private BigDecimal deposited;
 
-	private final BigDecimal withdrawing;
+  private BigDecimal withdrawing;
 
-	private final BigDecimal blocked;
+  private BigDecimal blocked;
 
-	public CoingiBalance(
-			@JsonProperty("currency") CoingiCurrency currency,
-			@JsonProperty("available") BigDecimal available,
-			@JsonProperty("inOrders") BigDecimal inOrders,
-			@JsonProperty("deposited") BigDecimal deposited,
-			@JsonProperty("withdrawing") BigDecimal withdrawing,
-			@JsonProperty("blocked") BigDecimal blocked) {
-		this.currency = currency;
-		this.available = available;
-		this.inOrders = inOrders;
-		this.deposited = deposited;
-		this.withdrawing = withdrawing;
-		this.blocked = blocked;
-	}
+  public CoingiBalance(
+      @JsonProperty("currency") CoingiCurrency currency,
+      @JsonProperty("available") BigDecimal available,
+      @JsonProperty("inOrders") BigDecimal inOrders,
+      @JsonProperty("deposited") BigDecimal deposited,
+      @JsonProperty("withdrawing") BigDecimal withdrawing,
+      @JsonProperty("blocked") BigDecimal blocked) {
 
-	public CoingiCurrency getCurrency() {
-		return currency;
-	}
+    this.currency = currency;
+    this.available = available;
+    this.inOrders = inOrders;
+    this.deposited = deposited;
+    this.withdrawing = withdrawing;
+    this.blocked = blocked;
+  }
 
-	public BigDecimal getAvailable() {
-		return available;
-	}
+  public CoingiCurrency getCurrency() {
+    return currency;
+  }
 
-	public BigDecimal getInOrders() {
-		return inOrders;
-	}
+  public BigDecimal getAvailable() {
+    return available;
+  }
 
-	public BigDecimal getDeposited() {
-		return deposited;
-	}
+  public BigDecimal getInOrders() {
+    return inOrders;
+  }
 
-	public BigDecimal getWithdrawing() {
-		return withdrawing;
-	}
+  public BigDecimal getDeposited() {
+    return deposited;
+  }
 
-	public BigDecimal getBlocked() {
-		return blocked;
-	}
+  public BigDecimal getWithdrawing() {
+    return withdrawing;
+  }
+
+  public BigDecimal getBlocked() {
+    return blocked;
+  }
 }

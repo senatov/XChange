@@ -1,153 +1,153 @@
 package org.knowm.xchange.coinmate.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 public class CoinmateOrderHistoryEntry {
 
-	private final long id;
-	private final long timestamp;
-	private final String type;
-	private final BigDecimal price;
-	private final BigDecimal remainingAmount;
-	private final BigDecimal originalAmount;
-	private final BigDecimal cumulativeAmount;
-	private final String status;
-	private final String orderTradeType;
-	private final BigDecimal stopPrice;
-	private final boolean trailing;
-	private final Long trailingUpdatedTimestamp;
-	private final BigDecimal originalStopPrice;
-	private final BigDecimal marketPriceAtLastUpdate;
-	private final BigDecimal marketPriceAtOrderCreation;
-	private final boolean hidden;
-	private final BigDecimal avgPrice;
-	private final String stopLossOrderId;
-	private final String originalOrderId;
-	private final List<CoinmateTradeHistoryEntry> trades;
+  private final long id;
+  private final long timestamp;
+  private final String type;
+  private final BigDecimal price;
+  private final BigDecimal remainingAmount;
+  private final BigDecimal originalAmount;
+  private final BigDecimal cumulativeAmount;
+  private final String status;
+  private final String orderTradeType;
+  private final BigDecimal stopPrice;
+  private final boolean trailing;
+  private final Long trailingUpdatedTimestamp;
+  private final BigDecimal originalStopPrice;
+  private final BigDecimal marketPriceAtLastUpdate;
+  private final BigDecimal marketPriceAtOrderCreation;
+  private final boolean hidden;
+  private final BigDecimal avgPrice;
+  private final String stopLossOrderId;
+  private final String originalOrderId;
+  private final List<CoinmateTradeHistoryEntry> trades;
 
-	public CoinmateOrderHistoryEntry(
-			@JsonProperty("id") long id,
-			@JsonProperty("timestamp") long timestamp,
-			@JsonProperty("type") String type,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("remainingAmount") BigDecimal remainingAmount,
-			@JsonProperty("originalAmount") BigDecimal originalAmount,
-			@JsonProperty("cumulativeAmount") BigDecimal cumulativeAmount,
-			@JsonProperty("status") String status,
-			@JsonProperty("orderTradeType") String orderTradeType,
-			@JsonProperty("stopPrice") BigDecimal stopPrice,
-			@JsonProperty("trailing") boolean trailing,
-			@JsonProperty("trailingUpdatedTimestamp") Long trailingUpdatedTimestamp,
-			@JsonProperty("originalStopPrice") BigDecimal originalStopPrice,
-			@JsonProperty("marketPriceAtLastUpdate") BigDecimal marketPriceAtLastUpdate,
-			@JsonProperty("marketPriceAtOrderCreation") BigDecimal marketPriceAtOrderCreation,
-			@JsonProperty("hidden") boolean hidden,
-			@JsonProperty("avgPrice") BigDecimal avgPrice,
-			@JsonProperty("stopLossOrderId") String stopLossOrderId,
-			@JsonProperty("originalOrderId") String originalOrderId,
-			@JsonProperty("trades") List<CoinmateTradeHistoryEntry> trades) {
-		this.id = id;
-		this.timestamp = timestamp;
-		this.type = type;
-		this.price = price;
-		this.remainingAmount = remainingAmount;
-		this.originalAmount = originalAmount;
-		this.cumulativeAmount = cumulativeAmount;
-		this.status = status;
-		this.orderTradeType = orderTradeType;
-		this.stopPrice = stopPrice;
-		this.trailing = trailing;
-		this.trailingUpdatedTimestamp = trailingUpdatedTimestamp;
-		this.originalStopPrice = originalStopPrice;
-		this.marketPriceAtLastUpdate = marketPriceAtLastUpdate;
-		this.marketPriceAtOrderCreation = marketPriceAtOrderCreation;
-		this.hidden = hidden;
-		this.avgPrice = avgPrice;
-		this.stopLossOrderId = stopLossOrderId;
-		this.originalOrderId = originalOrderId;
-		this.trades = trades;
-	}
+  public CoinmateOrderHistoryEntry(
+      @JsonProperty("id") long id,
+      @JsonProperty("timestamp") long timestamp,
+      @JsonProperty("type") String type,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("remainingAmount") BigDecimal remainingAmount,
+      @JsonProperty("originalAmount") BigDecimal originalAmount,
+      @JsonProperty("cumulativeAmount") BigDecimal cumulativeAmount,
+      @JsonProperty("status") String status,
+      @JsonProperty("orderTradeType") String orderTradeType,
+      @JsonProperty("stopPrice") BigDecimal stopPrice,
+      @JsonProperty("trailing") boolean trailing,
+      @JsonProperty("trailingUpdatedTimestamp") Long trailingUpdatedTimestamp,
+      @JsonProperty("originalStopPrice") BigDecimal originalStopPrice,
+      @JsonProperty("marketPriceAtLastUpdate") BigDecimal marketPriceAtLastUpdate,
+      @JsonProperty("marketPriceAtOrderCreation") BigDecimal marketPriceAtOrderCreation,
+      @JsonProperty("hidden") boolean hidden,
+      @JsonProperty("avgPrice") BigDecimal avgPrice,
+      @JsonProperty("stopLossOrderId") String stopLossOrderId,
+      @JsonProperty("originalOrderId") String originalOrderId,
+      @JsonProperty("trades") List<CoinmateTradeHistoryEntry> trades) {
 
-	public long getId() {
-		return id;
-	}
+    this.id = id;
+    this.timestamp = timestamp;
+    this.type = type;
+    this.price = price;
+    this.remainingAmount = remainingAmount;
+    this.originalAmount = originalAmount;
+    this.cumulativeAmount = cumulativeAmount;
+    this.status = status;
+    this.orderTradeType = orderTradeType;
+    this.stopPrice = stopPrice;
+    this.trailing = trailing;
+    this.trailingUpdatedTimestamp = trailingUpdatedTimestamp;
+    this.originalStopPrice = originalStopPrice;
+    this.marketPriceAtLastUpdate = marketPriceAtLastUpdate;
+    this.marketPriceAtOrderCreation = marketPriceAtOrderCreation;
+    this.hidden = hidden;
+    this.avgPrice = avgPrice;
+    this.stopLossOrderId = stopLossOrderId;
+    this.originalOrderId = originalOrderId;
+    this.trades = trades;
+  }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public String getType() {
-		return type;
-	}
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public String getType() {
+    return type;
+  }
 
-	public BigDecimal getRemainingAmount() {
-		return remainingAmount;
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
 
-	public BigDecimal getOriginalAmount() {
-		return originalAmount;
-	}
+  public BigDecimal getRemainingAmount() {
+    return remainingAmount;
+  }
 
-	public String getStatus() {
-		return status;
-	}
+  public BigDecimal getOriginalAmount() {
+    return originalAmount;
+  }
 
-	public BigDecimal getStopPrice() {
-		return stopPrice;
-	}
+  public String getStatus() {
+    return status;
+  }
 
-	public boolean isTrailing() {
-		return trailing;
-	}
+  public BigDecimal getStopPrice() {
+    return stopPrice;
+  }
 
-	public Long getTrailingUpdatedTimestamp() {
-		return trailingUpdatedTimestamp;
-	}
+  public boolean isTrailing() {
+    return trailing;
+  }
 
-	public BigDecimal getOriginalStopPrice() {
-		return originalStopPrice;
-	}
+  public Long getTrailingUpdatedTimestamp() {
+    return trailingUpdatedTimestamp;
+  }
 
-	public BigDecimal getMarketPriceAtLastUpdate() {
-		return marketPriceAtLastUpdate;
-	}
+  public BigDecimal getOriginalStopPrice() {
+    return originalStopPrice;
+  }
 
-	public BigDecimal getMarketPriceAtOrderCreation() {
-		return marketPriceAtOrderCreation;
-	}
+  public BigDecimal getMarketPriceAtLastUpdate() {
+    return marketPriceAtLastUpdate;
+  }
 
-	public boolean isHidden() {
-		return hidden;
-	}
+  public BigDecimal getMarketPriceAtOrderCreation() {
+    return marketPriceAtOrderCreation;
+  }
 
-	public BigDecimal getAvgPrice() {
-		return avgPrice;
-	}
+  public boolean isHidden() {
+    return hidden;
+  }
 
-	public String getStopLossOrderId() {
-		return stopLossOrderId;
-	}
+  public BigDecimal getAvgPrice() {
+    return avgPrice;
+  }
 
-	public String getOriginalOrderId() {
-		return originalOrderId;
-	}
+  public String getStopLossOrderId() {
+    return stopLossOrderId;
+  }
 
-	public String getOrderTradeType() {
-		return orderTradeType;
-	}
+  public String getOriginalOrderId() {
+    return originalOrderId;
+  }
 
-	public BigDecimal getCumulativeAmount() {
-		return cumulativeAmount;
-	}
+  public String getOrderTradeType() {
+    return orderTradeType;
+  }
 
-	public List<CoinmateTradeHistoryEntry> getTrades() {
-		return trades;
-	}
+  public BigDecimal getCumulativeAmount() {
+    return cumulativeAmount;
+  }
+
+  public List<CoinmateTradeHistoryEntry> getTrades() {
+    return trades;
+  }
 }

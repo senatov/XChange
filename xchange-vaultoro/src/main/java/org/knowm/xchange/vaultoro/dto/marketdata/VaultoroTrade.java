@@ -6,97 +6,92 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import javax.annotation.Generated;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({"Time", "Gold_Price", "Gold_Amount"})
 public class VaultoroTrade {
 
-	@JsonProperty("Time")
-	private String Time;
+  @JsonProperty("Time")
+  private String Time;
 
-	@JsonProperty("Gold_Price")
-	private BigDecimal GoldPrice;
+  @JsonProperty("Gold_Price")
+  private BigDecimal GoldPrice;
 
-	@JsonProperty("Gold_Amount")
-	private BigDecimal GoldAmount;
+  @JsonProperty("Gold_Amount")
+  private BigDecimal GoldAmount;
 
-	@JsonIgnore
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  @JsonIgnore private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	/**
-	 * @return The Time
-	 */
-	@JsonProperty("Time")
-	public String getTime() {
-		return Time;
-	}
+  /** @return The Time */
+  @JsonProperty("Time")
+  public String getTime() {
 
-	/**
-	 * @param Time The Time
-	 */
-	@JsonProperty("Time")
-	public void setTime(String Time) {
-		this.Time = Time;
-	}
+    return Time;
+  }
 
-	/**
-	 * @return The GoldPrice
-	 */
-	@JsonProperty("Gold_Price")
-	public BigDecimal getGoldPrice() {
-		return GoldPrice;
-	}
+  /** @param Time The Time */
+  @JsonProperty("Time")
+  public void setTime(String Time) {
 
-	/**
-	 * @param GoldPrice The Gold_Price
-	 */
-	@JsonProperty("Gold_Price")
-	public void setGoldPrice(BigDecimal GoldPrice) {
-		this.GoldPrice = GoldPrice;
-	}
+    this.Time = Time;
+  }
 
-	/**
-	 * @return The GoldAmount
-	 */
-	@JsonProperty("Gold_Amount")
-	public BigDecimal getGoldAmount() {
-		return GoldAmount;
-	}
+  /** @return The GoldPrice */
+  @JsonProperty("Gold_Price")
+  public BigDecimal getGoldPrice() {
 
-	/**
-	 * @param GoldAmount The Gold_Amount
-	 */
-	@JsonProperty("Gold_Amount")
-	public void setGoldAmount(BigDecimal GoldAmount) {
-		this.GoldAmount = GoldAmount;
-	}
+    return GoldPrice;
+  }
 
-	@JsonAnyGetter
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
+  /** @param GoldPrice The Gold_Price */
+  @JsonProperty("Gold_Price")
+  public void setGoldPrice(BigDecimal GoldPrice) {
 
-	@JsonAnySetter
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
-	}
+    this.GoldPrice = GoldPrice;
+  }
 
-	@Override
-	public String toString() {
-		return "VaultoroTrade [Time="
-				+ Time
-				+ ", GoldPrice="
-				+ GoldPrice
-				+ ", GoldAmount="
-				+ GoldAmount
-				+ ", additionalProperties="
-				+ additionalProperties
-				+ "]";
-	}
+  /** @return The GoldAmount */
+  @JsonProperty("Gold_Amount")
+  public BigDecimal getGoldAmount() {
+
+    return GoldAmount;
+  }
+
+  /** @param GoldAmount The Gold_Amount */
+  @JsonProperty("Gold_Amount")
+  public void setGoldAmount(BigDecimal GoldAmount) {
+
+    this.GoldAmount = GoldAmount;
+  }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+
+    return this.additionalProperties;
+  }
+
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+
+    this.additionalProperties.put(name, value);
+  }
+
+  @Override
+  public String toString() {
+
+    return "VaultoroTrade [Time="
+        + Time
+        + ", GoldPrice="
+        + GoldPrice
+        + ", GoldAmount="
+        + GoldAmount
+        + ", additionalProperties="
+        + additionalProperties
+        + "]";
+  }
 }

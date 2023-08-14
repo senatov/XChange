@@ -9,14 +9,14 @@ import org.knowm.xchange.currency.CurrencyPair;
 @Setter
 /** Author: Max Gao (gaamox@tutanota.com) Created: 05-05-2021 */
 public abstract class GateioWebSocketTransaction {
-	@JsonProperty("time")
-	private int time;
+  @JsonProperty("time")
+  private int time;
 
-	@JsonProperty("channel")
-	private String channel;
+  @JsonProperty("channel")
+  private String channel;
 
-	@JsonProperty("event")
-	private String event;
+  @JsonProperty("event")
+  private String event;
 
-	public abstract CurrencyPair getCurrencyPair();
+  public abstract CurrencyPair getCurrencyPair();
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * *
+ *
  * <p>Data object representing a Exchange Rates from Open ExchangeRates Auto-generated using the
  * simplest types possible with conversion delegated to the adapter
  *
@@ -11,28 +12,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public final class OERTickers {
 
-	private final OERRates rates;
-	private final Long timestamp;
+  private final OERRates rates;
+  private final Long timestamp;
 
-	/**
-	 * Constructor
-	 */
-	public OERTickers(
-			@JsonProperty("rates") OERRates rates, @JsonProperty("timestamp") Long timestamp) {
-		this.rates = rates;
-		this.timestamp = timestamp;
-	}
+  /**
+   * Constructor
+   *
+   * @param rates
+   * @param timestamp
+   */
+  public OERTickers(
+      @JsonProperty("rates") OERRates rates, @JsonProperty("timestamp") Long timestamp) {
 
-	public OERRates getRates() {
-		return this.rates;
-	}
+    this.rates = rates;
+    this.timestamp = timestamp;
+  }
 
-	public Long getTimestamp() {
-		return this.timestamp;
-	}
+  public OERRates getRates() {
 
-	@Override
-	public String toString() {
-		return "OERTickers [rates=" + rates + ", timestamp=" + timestamp + "]";
-	}
+    return this.rates;
+  }
+
+  public Long getTimestamp() {
+
+    return this.timestamp;
+  }
+
+  @Override
+  public String toString() {
+
+    return "OERTickers [rates=" + rates + ", timestamp=" + timestamp + "]";
+  }
 }

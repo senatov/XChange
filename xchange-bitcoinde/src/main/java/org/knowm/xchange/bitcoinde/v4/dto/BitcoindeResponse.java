@@ -9,20 +9,20 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindeResponse {
 
-	private final Integer credits;
-	private final BitcoindeError[] errors;
-	private final BitcoindeMaintenance maintenance;
-	private final Long nonce;
+  private final Integer credits;
+  private final BitcoindeError[] errors;
+  private final BitcoindeMaintenance maintenance;
+  private final Long nonce;
 
-	@JsonCreator
-	public BitcoindeResponse(
-			@JsonProperty("credits") Integer credits,
-			@JsonProperty("errors") BitcoindeError[] errors,
-			@JsonProperty("maintenance") BitcoindeMaintenance maintenance,
-			@JsonProperty("nonce") Long nonce) {
-		this.credits = credits;
-		this.errors = errors;
-		this.maintenance = maintenance;
-		this.nonce = nonce;
-	}
+  @JsonCreator
+  public BitcoindeResponse(
+      @JsonProperty("credits") Integer credits,
+      @JsonProperty("errors") BitcoindeError[] errors,
+      @JsonProperty("maintenance") BitcoindeMaintenance maintenance,
+      @JsonProperty("nonce") Long nonce) {
+    this.credits = credits;
+    this.errors = errors;
+    this.maintenance = maintenance;
+    this.nonce = nonce;
+  }
 }

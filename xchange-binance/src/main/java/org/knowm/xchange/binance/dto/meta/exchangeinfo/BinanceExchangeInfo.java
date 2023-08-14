@@ -8,17 +8,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BinanceExchangeInfo {
-	private String timezone;
+  private String timezone;
 
-	private Symbol[] symbols;
+  private Symbol[] symbols;
 
-	private String serverTime;
+  private String serverTime;
 
-	private RateLimit[] rateLimits;
+  private RateLimit[] rateLimits;
 
-	private String[] exchangeFilters;
+  private String[] exchangeFilters;
 
-	private String[] permissions;
+  private String[] permissions;
 
 
 }

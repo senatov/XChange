@@ -6,7 +6,7 @@ import org.knowm.xchange.service.BaseService;
 
 public class TheRockBaseService extends BaseExchangeService implements BaseService {
 
-	public TheRockBaseService(Exchange exchange) {
-		super(exchange);
-	}
+  public TheRockBaseService(Exchange exchange) {
+    super(exchange);
+  }
 }

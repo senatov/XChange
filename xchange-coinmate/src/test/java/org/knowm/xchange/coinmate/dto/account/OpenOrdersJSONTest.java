@@ -23,35 +23,35 @@
  */
 package org.knowm.xchange.coinmate.dto.account;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
 import org.junit.Test;
 import org.knowm.xchange.coinmate.dto.marketdata.OrderBookJSONTest;
 import org.knowm.xchange.coinmate.dto.trade.CoinmateOpenOrders;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * @author Martin Stachon
- */
+/** @author Martin Stachon */
 public class OpenOrdersJSONTest {
 
-	@Test
-	public void testUnmarshall() throws IOException {
-		// Read in the JSON from the example resources
-		InputStream is =
-				OrderBookJSONTest.class.getResourceAsStream(
-						"/org/knowm/xchange/coinmate/dto/account/example-open-orders.json");
-		ObjectMapper mapper = new ObjectMapper();
-		CoinmateOpenOrders coinmateOrders = mapper.readValue(is, CoinmateOpenOrders.class);
-		// Verify that the example data was unmarshalled correctly
-		assertThat(coinmateOrders.getData().get(0).getId()).isEqualTo(32780L);
-		assertThat(coinmateOrders.getData().get(0).getTimestamp()).isEqualTo(1404383652640L);
-		assertThat(coinmateOrders.getData().get(0).getType()).isEqualTo("BUY");
-		assertThat(coinmateOrders.getData().get(0).getPrice()).isEqualTo(new BigDecimal("1"));
-		assertThat(coinmateOrders.getData().get(0).getAmount()).isEqualTo(new BigDecimal("1"));
-	}
+  @Test
+  public void testUnmarshall() throws IOException {
+
+    // Read in the JSON from the example resources
+    InputStream is =
+        OrderBookJSONTest.class.getResourceAsStream(
+            "/org/knowm/xchange/coinmate/dto/account/example-open-orders.json");
+
+    ObjectMapper mapper = new ObjectMapper();
+    CoinmateOpenOrders coinmateOrders = mapper.readValue(is, CoinmateOpenOrders.class);
+
+    // Verify that the example data was unmarshalled correctly
+    assertThat(coinmateOrders.getData().get(0).getId()).isEqualTo(32780L);
+    assertThat(coinmateOrders.getData().get(0).getTimestamp()).isEqualTo(1404383652640L);
+    assertThat(coinmateOrders.getData().get(0).getType()).isEqualTo("BUY");
+    assertThat(coinmateOrders.getData().get(0).getPrice()).isEqualTo(new BigDecimal("1"));
+    assertThat(coinmateOrders.getData().get(0).getAmount()).isEqualTo(new BigDecimal("1"));
+  }
 }

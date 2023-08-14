@@ -14,14 +14,14 @@ import java.util.List;
 @Getter
 public class BinanceFutureAccountInformation {
 
-	private final BigDecimal totalWalletBalance;
+    private final BigDecimal totalWalletBalance;
 
-	private final List<BinancePosition> positions;
+    private final List<BinancePosition> positions;
 
-	public BinanceFutureAccountInformation(
-			@JsonProperty("totalWalletBalance") BigDecimal totalWalletBalance,
-			@JsonProperty("positions") List<BinancePosition> positions) {
-		this.totalWalletBalance = totalWalletBalance;
-		this.positions = positions;
-	}
+    public BinanceFutureAccountInformation(
+            @JsonProperty("totalWalletBalance") BigDecimal totalWalletBalance,
+            @JsonProperty("positions") List<BinancePosition> positions) {
+        this.totalWalletBalance = totalWalletBalance;
+        this.positions = positions;
+    }
 }

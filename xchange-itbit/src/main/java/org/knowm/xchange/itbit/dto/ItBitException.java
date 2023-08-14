@@ -5,24 +5,24 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 public class ItBitException extends HttpStatusExceptionSupport {
 
-	private final String code;
+  private String code;
 
-	private final String requestId;
+  private String requestId;
 
-	public ItBitException(
-			@JsonProperty("code") String code,
-			@JsonProperty("description") String description,
-			@JsonProperty("requestId") String requestId) {
-		super(description);
-		this.code = code;
-		this.requestId = requestId;
-	}
+  public ItBitException(
+      @JsonProperty("code") String code,
+      @JsonProperty("description") String description,
+      @JsonProperty("requestId") String requestId) {
+    super(description);
+    this.code = code;
+    this.requestId = requestId;
+  }
 
-	public String getCode() {
-		return code;
-	}
+  public String getCode() {
+    return code;
+  }
 
-	public String getRequestId() {
-		return requestId;
-	}
+  public String getRequestId() {
+    return requestId;
+  }
 }

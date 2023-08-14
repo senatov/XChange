@@ -1,11 +1,11 @@
 {
   "code": 0,
   "data": {
-    "m": "depth-snapshot",
+    "m":      "depth-snapshot",
     "symbol": "BTMX/USDT",
     "data": {
-      "seqnum": 5068757,
-      "ts": 1573165838976,
+      "seqnum":  5068757,
+      "ts":      1573165838976,
       "asks": [
         [
           "0.06848",

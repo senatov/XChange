@@ -9,9 +9,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class EnigmaProduct {
-	@JsonProperty("product_id")
-	private int productId;
+  @JsonProperty("product_id")
+  private int productId;
 
-	@JsonProperty("product_name")
-	private String productName;
+  @JsonProperty("product_name")
+  private String productName;
 }

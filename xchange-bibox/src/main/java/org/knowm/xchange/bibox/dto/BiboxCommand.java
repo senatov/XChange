@@ -6,20 +6,20 @@ package org.knowm.xchange.bibox.dto;
  */
 public class BiboxCommand<B> {
 
-	private final String cmd;
-	private final B body;
+  private String cmd;
+  private B body;
 
-	public BiboxCommand(String cmd, B body) {
-		super();
-		this.cmd = cmd;
-		this.body = body;
-	}
+  public BiboxCommand(String cmd, B body) {
+    super();
+    this.cmd = cmd;
+    this.body = body;
+  }
 
-	public String getCmd() {
-		return cmd;
-	}
+  public String getCmd() {
+    return cmd;
+  }
 
-	public B getBody() {
-		return body;
-	}
+  public B getBody() {
+    return body;
+  }
 }

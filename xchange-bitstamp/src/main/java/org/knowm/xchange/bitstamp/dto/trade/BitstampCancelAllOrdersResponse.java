@@ -4,6 +4,6 @@ import java.util.List;
 
 public class BitstampCancelAllOrdersResponse {
 
-	public List<BitstampOrderCancelResponse> canceled;
-	public boolean success;
+  public List<BitstampOrderCancelResponse> canceled;
+  public boolean success;
 }

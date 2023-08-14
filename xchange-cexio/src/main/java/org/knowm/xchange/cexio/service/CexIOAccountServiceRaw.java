@@ -1,5 +1,9 @@
 package org.knowm.xchange.cexio.service;
 
+import static org.knowm.xchange.cexio.dto.account.CexIOFeeInfo.FeeDetails;
+
+import java.io.IOException;
+import java.util.Map;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.cexio.dto.CexIORequest;
 import org.knowm.xchange.cexio.dto.CexioCryptoAddressRequest;
@@ -11,44 +15,41 @@ import org.knowm.xchange.cexio.dto.account.GHashIOWorker;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.exceptions.ExchangeException;
 
-import java.io.IOException;
-import java.util.Map;
-
-import static org.knowm.xchange.cexio.dto.account.CexIOFeeInfo.FeeDetails;
-
 public class CexIOAccountServiceRaw extends CexIOBaseService {
 
-	public CexIOAccountServiceRaw(Exchange exchange) {
-		super(exchange);
-	}
+  public CexIOAccountServiceRaw(Exchange exchange) {
+    super(exchange);
+  }
 
-	public CexIOBalanceInfo getCexIOAccountInfo() throws IOException {
-		CexIOBalanceInfo info = cexIOAuthenticated.getBalance(signatureCreator, new CexIORequest());
-		if (info.getError() != null) {
-			throw new ExchangeException("Error getting balance. " + info.getError());
-		}
-		return info;
-	}
+  public CexIOBalanceInfo getCexIOAccountInfo() throws IOException {
+    CexIOBalanceInfo info = cexIOAuthenticated.getBalance(signatureCreator, new CexIORequest());
 
-	public CexIOCryptoAddress getCexIOCryptoAddress(String isoCode) throws IOException {
-		CexIOCryptoAddress cryptoAddress =
-				cexIOAuthenticated.getCryptoAddress(
-						signatureCreator, new CexioCryptoAddressRequest(isoCode));
-		if (cryptoAddress.getOk().equals("ok"))
-			return cryptoAddress;
-		throw new ExchangeException(cryptoAddress.getE() + ": " + cryptoAddress.getError());
-	}
+    if (info.getError() != null) {
+      throw new ExchangeException("Error getting balance. " + info.getError());
+    }
 
-	public GHashIOHashrate getHashrate() throws IOException {
-		return cexIOAuthenticated.getHashrate(signatureCreator);
-	}
+    return info;
+  }
 
-	public Map<String, GHashIOWorker> getWorkers() throws IOException {
-		return cexIOAuthenticated.getWorkers(signatureCreator).getWorkers();
-	}
+  public CexIOCryptoAddress getCexIOCryptoAddress(String isoCode) throws IOException {
+    CexIOCryptoAddress cryptoAddress =
+        cexIOAuthenticated.getCryptoAddress(
+            signatureCreator, new CexioCryptoAddressRequest(isoCode));
+    if (cryptoAddress.getOk().equals("ok")) return cryptoAddress;
 
-	public Map<CurrencyPair, FeeDetails> getMyFee() throws IOException {
-		CexIOFeeInfo feeInfo = cexIOAuthenticated.getMyFee(signatureCreator, new CexIORequest());
-		return feeInfo.getData();
-	}
+    throw new ExchangeException(cryptoAddress.getE() + ": " + cryptoAddress.getError());
+  }
+
+  public GHashIOHashrate getHashrate() throws IOException {
+    return cexIOAuthenticated.getHashrate(signatureCreator);
+  }
+
+  public Map<String, GHashIOWorker> getWorkers() throws IOException {
+    return cexIOAuthenticated.getWorkers(signatureCreator).getWorkers();
+  }
+
+  public Map<CurrencyPair, FeeDetails> getMyFee() throws IOException {
+    CexIOFeeInfo feeInfo = cexIOAuthenticated.getMyFee(signatureCreator, new CexIORequest());
+    return feeInfo.getData();
+  }
 }

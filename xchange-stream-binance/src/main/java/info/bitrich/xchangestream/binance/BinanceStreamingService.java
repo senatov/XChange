@@ -23,212 +23,217 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BinanceStreamingService extends JsonNettyStreamingService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BinanceStreamingService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(BinanceStreamingService.class);
 
-	private static final String RESULT = "result";
-	private static final String IDENTIFIER = "id";
+  private static final String RESULT = "result";
+  private static final String IDENTIFIER = "id";
 
-	private final ProductSubscription productSubscription;
-	private final KlineSubscription klineSubscription;
-	private final Map<Integer, BinanceWebSocketSubscriptionMessage> liveSubscriptionMessage =
-			new ConcurrentHashMap<>();
-	private boolean isLiveSubscriptionEnabled = false;
+  private final ProductSubscription productSubscription;
+  private final KlineSubscription klineSubscription;
 
-	public BinanceStreamingService(String baseUri, ProductSubscription productSubscription, KlineSubscription klineSubscription) {
-		super(baseUri, Integer.MAX_VALUE);
-		this.productSubscription = productSubscription;
-		this.klineSubscription = klineSubscription;
-	}
+  private boolean isLiveSubscriptionEnabled = false;
+  private final Map<Integer, BinanceWebSocketSubscriptionMessage> liveSubscriptionMessage =
+      new ConcurrentHashMap<>();
 
-	public BinanceStreamingService(
-			String baseUri,
-			ProductSubscription productSubscription,
-			KlineSubscription klineSubscription,
-			int maxFramePayloadLength,
-			Duration connectionTimeout,
-			Duration retryDuration,
-			int idleTimeoutSeconds) {
-		super(baseUri, maxFramePayloadLength, connectionTimeout, retryDuration, idleTimeoutSeconds);
-		this.productSubscription = productSubscription;
-		this.klineSubscription = klineSubscription;
-	}
+  public BinanceStreamingService(String baseUri, ProductSubscription productSubscription, KlineSubscription klineSubscription) {
+    super(baseUri, Integer.MAX_VALUE);
+    this.productSubscription = productSubscription;
+    this.klineSubscription = klineSubscription;
+  }
 
-	@Override
-	protected String getChannelNameFromMessage(JsonNode message) {
-		return message.get("stream").asText();
-	}
+  public BinanceStreamingService(
+      String baseUri,
+      ProductSubscription productSubscription,
+      KlineSubscription klineSubscription,
+      int maxFramePayloadLength,
+      Duration connectionTimeout,
+      Duration retryDuration,
+      int idleTimeoutSeconds) {
+    super(baseUri, maxFramePayloadLength, connectionTimeout, retryDuration, idleTimeoutSeconds);
+    this.productSubscription = productSubscription;
+    this.klineSubscription = klineSubscription;
+  }
 
-	/**
-	 * Get the live subscription message
-	 */
-	@Override
-	public String getSubscribeMessage(String channelName, Object... args) throws IOException {
-		if (isLiveSubscriptionEnabled) {
-			updateConnectionUri(channelName, BinanceWebSocketSubscriptionMessage.MethodType.SUBSCRIBE);
-			return generateMessage(BinanceWebSocketSubscriptionMessage.MethodType.SUBSCRIBE, channelName);
-		}
-		// No subscribe message required if Live Subscription is disabled
-		return null;
-	}
+  @Override
+  protected String getChannelNameFromMessage(JsonNode message) {
+    return message.get("stream").asText();
+  }
 
-	/**
-	 * Get the live unsubscription message
-	 */
-	@Override
-	public String getUnsubscribeMessage(String channelName, Object... args) throws IOException {
-		if (isLiveSubscriptionEnabled) {
-			updateConnectionUri(channelName, BinanceWebSocketSubscriptionMessage.MethodType.UNSUBSCRIBE);
-			return generateMessage(
-					BinanceWebSocketSubscriptionMessage.MethodType.UNSUBSCRIBE, channelName);
-		}
-		// No unsubscribe message required if Live Unsubscription is disabled
-		return null;
-	}
+  @Override
+  protected void handleMessage(JsonNode message) {
 
-	@Override
-	public void sendMessage(String message) {
-		if (isLiveSubscriptionEnabled) {
-			super.sendMessage(message);
-		}
-		// If Live Subscription is disabled, Subscriptions are made upon connection - no messages are
-		// sent.
-	}
+    final JsonNode result = message.get(RESULT);
+    final JsonNode identifier = message.get(IDENTIFIER);
 
-	/**
-	 * We override this method because we must not use Live Subscription in case of reconnection. The
-	 * reason is that Binance has a Websocket limits to 5 incoming messages per second. If we pass
-	 * this limit the socket is closed automatically by Binance. See
-	 * <a href="https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#websocket-limits">...</a>
-	 * for more details. All the channels will be resubscribed at connection time.
-	 */
-	@Override
-	public void resubscribeChannels() {
-		// Nothing to do, Subscriptions are made upon connection - no messages to sent
-	}
+    // If there is a result field (with null as value) and there is an id field with value != null,
+    // it's the response
+    // from Live Subscribing/Unsubscribing stream
+    // See
+    // https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#live-subscribingunsubscribing-to-streams
+    if (result instanceof NullNode && identifier != null) {
+      try {
+        final Integer id = Integer.parseInt(identifier.asText());
+        final BinanceWebSocketSubscriptionMessage subscriptionMessage =
+            this.liveSubscriptionMessage.get(id);
+        if (subscriptionMessage != null) {
+          final String streamName = subscriptionMessage.getParams().get(0);
+          switch (subscriptionMessage.getMethod()) {
+            case SUBSCRIBE:
+              LOGGER.info("Stream {} has been successfully subscribed", streamName);
+              break;
+            case UNSUBSCRIBE:
+              LOGGER.info("Stream {} has been successfully unsubscribed", streamName);
+              break;
+          }
+          this.liveSubscriptionMessage.remove(id);
+        }
+      } catch (final NumberFormatException exception) {
+        // Nothing to do
+      }
+    } else {
+      super.handleMessage(message);
+    }
+  }
 
-	@Override
-	protected void handleMessage(JsonNode message) {
-		final JsonNode result = message.get(RESULT);
-		final JsonNode identifier = message.get(IDENTIFIER);
-		// If there is a result field (with null as value) and there is an id field with value != null,
-		// it's the response
-		// from Live Subscribing/Unsubscribing stream
-		// See
-		// https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#live-subscribingunsubscribing-to-streams
-		if (result instanceof NullNode && identifier != null) {
-			try {
-				final Integer id = Integer.parseInt(identifier.asText());
-				final BinanceWebSocketSubscriptionMessage subscriptionMessage =
-						this.liveSubscriptionMessage.get(id);
-				if (subscriptionMessage != null) {
-					final String streamName = subscriptionMessage.getParams().get(0);
-					switch (subscriptionMessage.getMethod()) {
-						case SUBSCRIBE:
-							LOGGER.info("Stream {} has been successfully subscribed", streamName);
-							break;
-						case UNSUBSCRIBE:
-							LOGGER.info("Stream {} has been successfully unsubscribed", streamName);
-							break;
-					}
-					this.liveSubscriptionMessage.remove(id);
-				}
-			} catch (final NumberFormatException exception) {
-				// Nothing to do
-			}
-		} else {
-			super.handleMessage(message);
-		}
-	}
+  /**
+   * We override this method because we must not use Live Subscription in case of reconnection. The
+   * reason is that Binance has a Websocket limits to 5 incoming messages per second. If we pass
+   * this limit the socket is closed automatically by Binance. See
+   * <a href="https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#websocket-limits">...</a>
+   * for more details. All the channels will be resubscribed at connection time.
+   */
+  @Override
+  public void resubscribeChannels() {
+    // Nothing to do, Subscriptions are made upon connection - no messages to sent
+  }
 
-	@Override
-	protected WebSocketClientExtensionHandler getWebSocketClientExtensionHandler() {
-		return WebSocketClientCompressionAllowClientNoContextAndServerNoContextHandler.INSTANCE;
-	}
+  /** Get the live subscription message */
+  @Override
+  public String getSubscribeMessage(String channelName, Object... args) throws IOException {
 
-	/**
-	 * This method is used to update the connection uri after we live subscribe to a stream or
-	 * unsubscribe from a stream. It is used if we need to reconnect to existing channels (we want to
-	 * connect to all streams once at connection time because Binance has a Websocket Limits of 5
-	 * incoming messages per second).
-	 */
-	private void updateConnectionUri(
-			String channelName, final BinanceWebSocketSubscriptionMessage.MethodType methodType) {
-		final String baseConnectionUrl = uri.toString().substring(0, uri.toString().indexOf("=") + 1);
-		final String subscribedChannels = uri.toString().substring(uri.toString().indexOf("=") + 1);
-		final Set<String> channels =
-				subscribedChannels.isEmpty()
-						? new HashSet<>()
-						: Sets.newHashSet(subscribedChannels.split("/"));
-		switch (methodType) {
-			case SUBSCRIBE:
-				channels.add(channelName);
-				break;
-			case UNSUBSCRIBE:
-				channels.remove(channelName);
-				break;
-		}
-		final String newConnectionUrl = baseConnectionUrl + String.join("/", channels);
-		try {
-			uri = new URI(newConnectionUrl);
-		} catch (URISyntaxException exception) {
-			throw new IllegalArgumentException("Error parsing URI " + newConnectionUrl, exception);
-		}
-	}
+    if (isLiveSubscriptionEnabled) {
+      updateConnectionUri(channelName, BinanceWebSocketSubscriptionMessage.MethodType.SUBSCRIBE);
+      return generateMessage(BinanceWebSocketSubscriptionMessage.MethodType.SUBSCRIBE, channelName);
+    }
+    // No subscribe message required if Live Subscription is disabled
+    return null;
+  }
 
-	private String generateMessage(
-			final BinanceWebSocketSubscriptionMessage.MethodType methodType, final String channelName)
-			throws IOException {
-		final int identifier = ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE);
-		final BinanceWebSocketSubscriptionMessage message =
-				new BinanceWebSocketSubscriptionMessage(methodType, channelName, identifier);
-		this.liveSubscriptionMessage.put(identifier, message);
-		return objectMapper.writeValueAsString(message);
-	}
+  /** Get the live unsubscription message */
+  @Override
+  public String getUnsubscribeMessage(String channelName, Object... args) throws IOException {
 
-	/**
-	 * The available subscriptions for this streaming service.
-	 *
-	 * @return The subscriptions for the currently open connection.
-	 */
-	public ProductSubscription getProductSubscription() {
-		return productSubscription;
-	}
+    if (isLiveSubscriptionEnabled) {
+      updateConnectionUri(channelName, BinanceWebSocketSubscriptionMessage.MethodType.UNSUBSCRIBE);
+      return generateMessage(
+          BinanceWebSocketSubscriptionMessage.MethodType.UNSUBSCRIBE, channelName);
+    }
+    // No unsubscribe message required if Live Unsubscription is disabled
+    return null;
+  }
 
-	public KlineSubscription getKlineSubscription() {
-		return klineSubscription;
-	}
+  /**
+   * This method is used to update the connection uri after we live subscribe to a stream or
+   * unsubscribe from a stream. It is used if we need to reconnect to existing channels (we want to
+   * connect to all streams once at connection time because Binance has a Websocket Limits of 5
+   * incoming messages per second).
+   */
+  private void updateConnectionUri(
+      String channelName, final BinanceWebSocketSubscriptionMessage.MethodType methodType) {
 
-	public void enableLiveSubscription() {
-		isLiveSubscriptionEnabled = true;
-	}
+    final String baseConnectionUrl = uri.toString().substring(0, uri.toString().indexOf("=") + 1);
+    final String subscribedChannels = uri.toString().substring(uri.toString().indexOf("=") + 1);
+    final Set<String> channels =
+        subscribedChannels.isEmpty()
+            ? new HashSet<>()
+            : Sets.newHashSet(subscribedChannels.split("/"));
+    switch (methodType) {
+      case SUBSCRIBE:
+        channels.add(channelName);
+        break;
+      case UNSUBSCRIBE:
+        channels.remove(channelName);
+        break;
+    }
+    final String newConnectionUrl = baseConnectionUrl + String.join("/", channels);
+    try {
+      uri = new URI(newConnectionUrl);
+    } catch (URISyntaxException exception) {
+      throw new IllegalArgumentException("Error parsing URI " + newConnectionUrl, exception);
+    }
+  }
 
-	public void disableLiveSubscription() {
-		isLiveSubscriptionEnabled = false;
-	}
+  private String generateMessage(
+      final BinanceWebSocketSubscriptionMessage.MethodType methodType, final String channelName)
+      throws IOException {
 
-	public boolean isLiveSubscriptionEnabled() {
-		return isLiveSubscriptionEnabled;
-	}
+    final int identifier = ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE);
+    final BinanceWebSocketSubscriptionMessage message =
+        new BinanceWebSocketSubscriptionMessage(methodType, channelName, identifier);
+    this.liveSubscriptionMessage.put(identifier, message);
+    return objectMapper.writeValueAsString(message);
+  }
 
-	/**
-	 * Live Unsubscription from stream. This send a message through the websocket to Binance with
-	 * method UNSUBSCRIBE. (see
-	 * <a href="https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#unsubscribe-to-a-stream">...</a>
-	 * for more details) This is the only way to really stop receiving data from the stream
-	 * (Disposable.dispose() dispose the resource but don't stop the data to be received from
-	 * Binance).
-	 *
-	 * @param channelId e.g. btcusdt@depth, btcusdt@trade
-	 */
-	public void unsubscribeChannel(final String channelId) {
-		if (channels.remove(channelId) != null) {
-			try {
-				sendMessage(getUnsubscribeMessage(channelId));
-			} catch (IOException e) {
-				LOGGER.debug("Failed to unsubscribe channel: {} {}", channelId, e.toString());
-			} catch (Exception e) {
-				LOGGER.warn("Failed to unsubscribe channel: {}", channelId, e);
-			}
-		}
-	}
+  @Override
+  public void sendMessage(String message) {
+
+    if (isLiveSubscriptionEnabled) {
+      super.sendMessage(message);
+    }
+    // If Live Subscription is disabled, Subscriptions are made upon connection - no messages are
+    // sent.
+  }
+
+  @Override
+  protected WebSocketClientExtensionHandler getWebSocketClientExtensionHandler() {
+    return WebSocketClientCompressionAllowClientNoContextAndServerNoContextHandler.INSTANCE;
+  }
+
+  /**
+   * The available subscriptions for this streaming service.
+   *
+   * @return The subscriptions for the currently open connection.
+   */
+  public ProductSubscription getProductSubscription() {
+    return productSubscription;
+  }
+
+  public KlineSubscription getKlineSubscription() {
+    return klineSubscription;
+  }
+
+  public void enableLiveSubscription() {
+    isLiveSubscriptionEnabled = true;
+  }
+
+  public void disableLiveSubscription() {
+    isLiveSubscriptionEnabled = false;
+  }
+
+  public boolean isLiveSubscriptionEnabled() {
+    return isLiveSubscriptionEnabled;
+  }
+
+  /**
+   * Live Unsubscription from stream. This send a message through the websocket to Binance with
+   * method UNSUBSCRIBE. (see
+   * <a href="https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md#unsubscribe-to-a-stream">...</a>
+   * for more details) This is the only way to really stop receiving data from the stream
+   * (Disposable.dispose() dispose the resource but don't stop the data to be received from
+   * Binance).
+   *
+   * @param channelId e.g. btcusdt@depth, btcusdt@trade
+   */
+  public void unsubscribeChannel(final String channelId) {
+
+    if (channels.remove(channelId) != null) {
+      try {
+        sendMessage(getUnsubscribeMessage(channelId));
+      } catch (IOException e) {
+        LOGGER.debug("Failed to unsubscribe channel: {} {}", channelId, e.toString());
+      } catch (Exception e) {
+        LOGGER.warn("Failed to unsubscribe channel: {}", channelId, e);
+      }
+    }
+  }
 }

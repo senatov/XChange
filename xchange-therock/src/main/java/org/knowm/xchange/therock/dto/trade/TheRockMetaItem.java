@@ -3,20 +3,18 @@ package org.knowm.xchange.therock.dto.trade;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-/**
- * @author Pnk
- */
+/** @author Pnk */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class TheRockMetaItem {
 
-	private int page;
-	private String href;
+  private int page;
+  private String href;
 
-	public int getPage() {
-		return page;
-	}
+  public int getPage() {
+    return page;
+  }
 
-	public String getHref() {
-		return href;
-	}
+  public String getHref() {
+    return href;
+  }
 }

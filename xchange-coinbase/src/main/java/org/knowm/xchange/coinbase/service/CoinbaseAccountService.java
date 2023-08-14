@@ -1,5 +1,7 @@
 package org.knowm.xchange.coinbase.service;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinbase.CoinbaseAdapters;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAddress;
@@ -14,60 +16,62 @@ import org.knowm.xchange.service.trade.params.DefaultWithdrawFundsParams;
 import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 import org.knowm.xchange.service.trade.params.WithdrawFundsParams;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-
-/**
- * @author jamespedwards42
- */
+/** @author jamespedwards42 */
 public final class CoinbaseAccountService extends CoinbaseAccountServiceRaw
-		implements AccountService {
+    implements AccountService {
 
-	/**
-	 * Constructor
-	 */
-	public CoinbaseAccountService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public CoinbaseAccountService(Exchange exchange) {
 
-	@Override
-	public AccountInfo getAccountInfo() throws IOException {
-		final CoinbaseUsers users = super.getCoinbaseUsers();
-		return CoinbaseAdapters.adaptAccountInfo(users.getUsers().get(0));
-	}
+    super(exchange);
+  }
 
-	/**
-	 * @return The Coinbase transaction id for the newly created withdrawal. See {@link
-	 * CoinbaseAccountServiceRaw#getCoinbaseTransaction(String transactionIdOrIdemField)} to
-	 * retrieve more information about the transaction, including the blockchain transaction hash.
-	 */
-	@Override
-	public String withdrawFunds(Currency currency, BigDecimal amount, String address)
-			throws IOException {
-		final CoinbaseSendMoneyRequest sendMoneyRequest =
-				CoinbaseTransaction.createSendMoneyRequest(address, currency.toString(), amount);
-		final CoinbaseTransaction sendMoneyTransaction =
-				super.sendMoneyCoinbaseRequest(sendMoneyRequest);
-		return sendMoneyTransaction.getId();
-	}
+  @Override
+  public AccountInfo getAccountInfo() throws IOException {
 
-	@Override
-	public String withdrawFunds(WithdrawFundsParams params) throws IOException {
-		if (params instanceof DefaultWithdrawFundsParams defaultParams) {
-			return withdrawFunds(
-					defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
-		}
-		throw new IllegalStateException("Don't know how to withdraw: " + params);
-	}
+    final CoinbaseUsers users = super.getCoinbaseUsers();
+    return CoinbaseAdapters.adaptAccountInfo(users.getUsers().get(0));
+  }
 
-	@Override
-	public String requestDepositAddress(Currency currency, String... arguments) throws IOException {
-		final CoinbaseAddress receiveAddress = super.getCoinbaseReceiveAddress();
-		return receiveAddress.getAddress();
-	}
+  /**
+   * @return The Coinbase transaction id for the newly created withdrawal. See {@link
+   *     CoinbaseAccountServiceRaw#getCoinbaseTransaction(String transactionIdOrIdemField)} to
+   *     retrieve more information about the transaction, including the blockchain transaction hash.
+   */
+  @Override
+  public String withdrawFunds(Currency currency, BigDecimal amount, String address)
+      throws IOException {
 
-	@Override
-	public TradeHistoryParams createFundingHistoryParams() {
-		throw new NotAvailableFromExchangeException();
-	}
+    final CoinbaseSendMoneyRequest sendMoneyRequest =
+        CoinbaseTransaction.createSendMoneyRequest(address, currency.toString(), amount);
+    final CoinbaseTransaction sendMoneyTransaction =
+        super.sendMoneyCoinbaseRequest(sendMoneyRequest);
+    return sendMoneyTransaction.getId();
+  }
+
+  @Override
+  public String withdrawFunds(WithdrawFundsParams params) throws IOException {
+    if (params instanceof DefaultWithdrawFundsParams) {
+      DefaultWithdrawFundsParams defaultParams = (DefaultWithdrawFundsParams) params;
+      return withdrawFunds(
+          defaultParams.getCurrency(), defaultParams.getAmount(), defaultParams.getAddress());
+    }
+    throw new IllegalStateException("Don't know how to withdraw: " + params);
+  }
+
+  @Override
+  public String requestDepositAddress(Currency currency, String... arguments) throws IOException {
+
+    final CoinbaseAddress receiveAddress = super.getCoinbaseReceiveAddress();
+    return receiveAddress.getAddress();
+  }
+
+  @Override
+  public TradeHistoryParams createFundingHistoryParams() {
+    throw new NotAvailableFromExchangeException();
+  }
 }

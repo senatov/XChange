@@ -9,17 +9,19 @@ import org.knowm.xchange.zaif.service.ZaifMarketDataServiceRaw;
 
 public class ZaifExchangeIntegration {
 
-	@Test
-	public void shouldBeInstantiatedWithoutAnExceptionWhenUsingDefaultSpecification() {
-		ExchangeFactory.INSTANCE.createExchange(ZaifExchange.class.getCanonicalName());
-	}
+  @Test
+  public void shouldBeInstantiatedWithoutAnExceptionWhenUsingDefaultSpecification() {
+    ExchangeFactory.INSTANCE.createExchange(ZaifExchange.class.getCanonicalName());
+  }
 
-	@Test
-	public void shouldSupportBitCrystalOnlyByRemoteInit() {
-		Exchange ex = ExchangeFactory.INSTANCE.createExchange(ZaifExchange.class.getCanonicalName());
-		// ex.remoteInit();
-		Assert.assertTrue(
-				((ZaifMarketDataServiceRaw) ex.getMarketDataService())
-						.checkProductExists(new CurrencyPair("BITCRYSTALS/JPY")));
-	}
+  @Test
+  public void shouldSupportBitCrystalOnlyByRemoteInit() {
+
+    Exchange ex = ExchangeFactory.INSTANCE.createExchange(ZaifExchange.class.getCanonicalName());
+    // ex.remoteInit();
+
+    Assert.assertTrue(
+        ((ZaifMarketDataServiceRaw) ex.getMarketDataService())
+            .checkProductExists(new CurrencyPair("BITCRYSTALS/JPY")));
+  }
 }

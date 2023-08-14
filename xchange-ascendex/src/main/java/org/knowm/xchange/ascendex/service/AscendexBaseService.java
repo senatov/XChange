@@ -20,43 +20,44 @@ import si.mazi.rescu.ParamsDigest;
  */
 public class AscendexBaseService extends BaseExchangeService implements BaseService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AscendexBaseService.class);
-	protected IAscendex ascendex;
-	protected IAscendexAuthenticated ascendexAuthenticated;
-	protected ParamsDigest signatureCreator;
+  protected IAscendex ascendex;
+  protected IAscendexAuthenticated ascendexAuthenticated;
+  protected ParamsDigest signatureCreator;
 
-	public AscendexBaseService(Exchange exchange) {
-		super(exchange);
-		ascendex =
-				ExchangeRestProxyBuilder.forInterface(IAscendex.class, exchange.getExchangeSpecification())
-						.build();
-		if (exchange
-				.getExchangeSpecification()
-				.getExchangeSpecificParameters()
-				.containsKey("account-group")) {
-			ExchangeSpecification specWithAccountGroup = exchange.getDefaultExchangeSpecification();
-			specWithAccountGroup.setSslUri(
-					exchange.getExchangeSpecification().getSslUri()
-							+ exchange
-							.getExchangeSpecification()
-							.getExchangeSpecificParametersItem("account-group")
-							+ "/");
-			ascendexAuthenticated =
-					ExchangeRestProxyBuilder.forInterface(IAscendexAuthenticated.class, specWithAccountGroup)
-							.build();
-		} else {
-			LOG.warn(
-					"Authenticated endpoints will not work because no 'account-group' specificParameter has been found.");
-		}
-		signatureCreator =
-				AscendexDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
-	}
+  private static final Logger LOG = LoggerFactory.getLogger(AscendexBaseService.class);
 
-	public <R> R checkResult(AscendexResponse<R> response) throws AscendexException {
-		if (response.getCode() == 0) {
-			return response.getData();
-		} else {
-			throw new AscendexException(response.getCode(), response.getMessage());
-		}
-	}
+  public AscendexBaseService(Exchange exchange) {
+    super(exchange);
+    ascendex =
+        ExchangeRestProxyBuilder.forInterface(IAscendex.class, exchange.getExchangeSpecification())
+            .build();
+    if (exchange
+        .getExchangeSpecification()
+        .getExchangeSpecificParameters()
+        .containsKey("account-group")) {
+      ExchangeSpecification specWithAccountGroup = exchange.getDefaultExchangeSpecification();
+      specWithAccountGroup.setSslUri(
+          exchange.getExchangeSpecification().getSslUri()
+              + exchange
+                  .getExchangeSpecification()
+                  .getExchangeSpecificParametersItem("account-group")
+              + "/");
+      ascendexAuthenticated =
+          ExchangeRestProxyBuilder.forInterface(IAscendexAuthenticated.class, specWithAccountGroup)
+              .build();
+    } else {
+      LOG.warn(
+          "Authenticated endpoints will not work because no 'account-group' specificParameter has been found.");
+    }
+    signatureCreator =
+        AscendexDigest.createInstance(exchange.getExchangeSpecification().getSecretKey());
+  }
+
+  public <R> R checkResult(AscendexResponse<R> response) throws AscendexException {
+    if (response.getCode() == 0) {
+      return response.getData();
+    } else {
+      throw new AscendexException(response.getCode(), response.getMessage());
+    }
+  }
 }

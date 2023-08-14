@@ -1,5 +1,9 @@
 package org.knowm.xchange.cexio.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.cexio.CexIOAdapters;
 import org.knowm.xchange.cexio.dto.trade.CexIOArchivedOrder;
@@ -24,41 +28,39 @@ import org.knowm.xchange.service.trade.params.orders.OpenOrdersParamCurrencyPair
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-/**
- * Author: brox Since: 2/6/14
- */
+/** Author: brox Since: 2/6/14 */
 public class CexIOTradeService extends CexIOTradeServiceRaw implements TradeService {
 
-	/**
-	 * Constructor
-	 */
-	public CexIOTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public CexIOTradeService(Exchange exchange) {
 
-	@Override
-	public OpenOrders getOpenOrders() throws IOException {
-		return getOpenOrders(createOpenOrdersParams());
-	}
+    super(exchange);
+  }
 
-	@Override
-	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-		List<CexIOOrder> cexIOOrderList;
-		if (params instanceof OpenOrdersParamCurrencyPair) {
-			cexIOOrderList = getCexIOOpenOrders(((OpenOrdersParamCurrencyPair) params).getCurrencyPair());
-		} else {
-			cexIOOrderList = getCexIOOpenOrders();
-		}
-		return CexIOAdapters.adaptOpenOrders(cexIOOrderList);
-	}
+  @Override
+  public OpenOrders getOpenOrders() throws IOException {
+    return getOpenOrders(createOpenOrdersParams());
+  }
 
-	@Override
-	public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
+  @Override
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+
+    List<CexIOOrder> cexIOOrderList;
+    if (params instanceof OpenOrdersParamCurrencyPair) {
+      cexIOOrderList = getCexIOOpenOrders(((OpenOrdersParamCurrencyPair) params).getCurrencyPair());
+    } else {
+      cexIOOrderList = getCexIOOpenOrders();
+    }
+
+    return CexIOAdapters.adaptOpenOrders(cexIOOrderList);
+  }
+
+  @Override
+  public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
     /*
     Only in market order!
     Presently, the exchange is designed in such way that, depending on the BID/ASK the currency changes
@@ -67,76 +69,77 @@ public class CexIOTradeService extends CexIOTradeServiceRaw implements TradeServ
     Example: CurrencyPair.BCH_USD, Order.OrderType.BID, Amount = 20 (USD)
     Сurrently cannot be implemented!
     */
-		throw new NotYetImplementedForExchangeException();
-	}
 
-	@Override
-	public String changeOrder(LimitOrder limitOrder) throws IOException {
-		CexIOCancelReplaceOrderResponse response =
-				cancelReplaceCexIOOrder(
-						limitOrder.getCurrencyPair(),
-						limitOrder.getType(),
-						limitOrder.getId(),
-						limitOrder.getOriginalAmount(),
-						limitOrder.getLimitPrice());
-		return response.getId();
-	}
+    throw new NotYetImplementedForExchangeException();
+  }
 
-	@Override
-	public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
-		CexIOOrder order = placeCexIOLimitOrder(limitOrder);
-		return Long.toString(order.getId());
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+    CexIOOrder order = placeCexIOLimitOrder(limitOrder);
+    return Long.toString(order.getId());
+  }
 
-	@Override
-	public boolean cancelOrder(String orderId) throws IOException {
-		return cancelCexIOOrder(orderId);
-	}
+  @Override
+  public boolean cancelOrder(String orderId) throws IOException {
+    return cancelCexIOOrder(orderId);
+  }
 
-	@Override
-	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-		if (orderParams instanceof CancelOrderByIdParams) {
-			return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
-		} else if (orderParams instanceof CancelOrderByCurrencyPair) {
-			cancelCexIOOrders(((CancelOrderByCurrencyPair) orderParams).getCurrencyPair());
-			return true;
-		} else {
-			throw new IllegalArgumentException(
-					String.format("Unknown parameter type: %s", orderParams.getClass()));
-		}
-	}
+  @Override
+  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+    if (orderParams instanceof CancelOrderByIdParams) {
+      return cancelOrder(((CancelOrderByIdParams) orderParams).getOrderId());
+    } else if (orderParams instanceof CancelOrderByCurrencyPair) {
+      cancelCexIOOrders(((CancelOrderByCurrencyPair) orderParams).getCurrencyPair());
+      return true;
+    } else {
+      throw new IllegalArgumentException(
+          String.format("Unknown parameter type: %s", orderParams.getClass()));
+    }
+  }
 
-	@Override
-	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-		List<UserTrade> trades = new ArrayList<>();
-		for (CexIOArchivedOrder cexIOArchivedOrder : archivedOrders(params)) {
-			if (cexIOArchivedOrder.status.equals(
-					"c")) // "d" — done (fully executed), "c" — canceled (not executed), "cd" — cancel-done//
-				// (partially executed)
-				continue;
-			trades.add(CexIOAdapters.adaptArchivedOrder(cexIOArchivedOrder));
-		}
-		return new UserTrades(trades, Trades.TradeSortType.SortByTimestamp);
-	}
+  @Override
+  public String changeOrder(LimitOrder limitOrder) throws IOException {
+    CexIOCancelReplaceOrderResponse response =
+        cancelReplaceCexIOOrder(
+            limitOrder.getCurrencyPair(),
+            limitOrder.getType(),
+            limitOrder.getId(),
+            limitOrder.getOriginalAmount(),
+            limitOrder.getLimitPrice());
+    return response.getId();
+  }
 
-	@Override
-	public TradeHistoryParams createTradeHistoryParams() {
-		throw new NotAvailableFromExchangeException();
-	}
+  @Override
+  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+    List<UserTrade> trades = new ArrayList<>();
+    for (CexIOArchivedOrder cexIOArchivedOrder : archivedOrders(params)) {
+      if (cexIOArchivedOrder.status.equals(
+          "c")) // "d" — done (fully executed), "c" — canceled (not executed), "cd" — cancel-done//
+        // (partially executed)
+        continue;
+      trades.add(CexIOAdapters.adaptArchivedOrder(cexIOArchivedOrder));
+    }
+    return new UserTrades(trades, Trades.TradeSortType.SortByTimestamp);
+  }
 
-	@Override
-	public OpenOrdersParams createOpenOrdersParams() {
-		return null;
-		// TODO: return new DefaultOpenOrdersParamCurrencyPair();
-	}
+  @Override
+  public TradeHistoryParams createTradeHistoryParams() {
+    throw new NotAvailableFromExchangeException();
+  }
 
-	@Override
-	public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
-		List<Order> orders = new ArrayList<>(orderQueryParams.length);
-		for (OrderQueryParams params : orderQueryParams) {
-			CexIOOpenOrder cexIOOrder = getOrderDetail(params.getOrderId());
-			orders.add(CexIOAdapters.adaptOrder(cexIOOrder));
-		}
-		return orders;
-	}
+  @Override
+  public OpenOrdersParams createOpenOrdersParams() {
+    return null;
+    // TODO: return new DefaultOpenOrdersParamCurrencyPair();
+  }
+
+  @Override
+  public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
+    List<Order> orders = new ArrayList<>(orderQueryParams.length);
+    for (OrderQueryParams params : orderQueryParams) {
+      CexIOOpenOrder cexIOOrder = getOrderDetail(params.getOrderId());
+      orders.add(CexIOAdapters.adaptOrder(cexIOOrder));
+    }
+    return orders;
+  }
 }

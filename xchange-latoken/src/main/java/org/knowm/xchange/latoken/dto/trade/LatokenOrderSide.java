@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import org.knowm.xchange.exceptions.ExchangeException;
 
 public enum LatokenOrderSide {
-	sell,
-	buy;
+  sell,
+  buy;
 
-	@JsonCreator
-	public static LatokenOrderSide parse(String s) {
-		try {
-			return LatokenOrderSide.valueOf(s);
-		} catch (Exception e) {
-			throw new ExchangeException("Unknown LatokenOrderSide " + s + ".");
-		}
-	}
+  @JsonCreator
+  public static LatokenOrderSide parse(String s) {
+    try {
+      return LatokenOrderSide.valueOf(s);
+    } catch (Exception e) {
+      throw new ExchangeException("Unknown LatokenOrderSide " + s + ".");
+    }
+  }
 }

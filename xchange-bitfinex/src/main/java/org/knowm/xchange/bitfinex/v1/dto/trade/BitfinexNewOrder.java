@@ -1,89 +1,101 @@
 package org.knowm.xchange.bitfinex.v1.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class BitfinexNewOrder {
 
-	@JsonProperty("symbol")
-	protected String symbol;
+  @JsonProperty("symbol")
+  protected String symbol;
 
-	@JsonProperty("exchange")
-	protected String exchange;
+  @JsonProperty("exchange")
+  protected String exchange;
 
-	@JsonProperty("side")
-	protected String side;
+  @JsonProperty("side")
+  protected String side;
 
-	@JsonProperty("type")
-	protected String type;
+  @JsonProperty("type")
+  protected String type;
 
-	@JsonProperty("amount")
-	protected BigDecimal amount;
+  @JsonProperty("amount")
+  protected BigDecimal amount;
 
-	@JsonProperty("price")
-	protected BigDecimal price;
+  @JsonProperty("price")
+  protected BigDecimal price;
 
-	public BitfinexNewOrder(
-			String symbol,
-			String exchange,
-			String side,
-			String type,
-			BigDecimal amount,
-			BigDecimal price) {
-		this.symbol = symbol;
-		this.exchange = exchange;
-		this.side = side;
-		this.type = type;
-		this.amount = amount;
-		this.price = price;
-	}
+  public BitfinexNewOrder(
+      String symbol,
+      String exchange,
+      String side,
+      String type,
+      BigDecimal amount,
+      BigDecimal price) {
 
-	public String getSymbol() {
-		return symbol;
-	}
+    this.symbol = symbol;
+    this.exchange = exchange;
+    this.side = side;
+    this.type = type;
+    this.amount = amount;
+    this.price = price;
+  }
 
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
+  public String getSymbol() {
 
-	public String getExchange() {
-		return exchange;
-	}
+    return symbol;
+  }
 
-	public void setExchange(String exchange) {
-		this.exchange = exchange;
-	}
+  public void setSymbol(String symbol) {
 
-	public String getSide() {
-		return side;
-	}
+    this.symbol = symbol;
+  }
 
-	public void setSide(String side) {
-		this.side = side;
-	}
+  public String getExchange() {
 
-	public String getType() {
-		return type;
-	}
+    return exchange;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public void setExchange(String exchange) {
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+    this.exchange = exchange;
+  }
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+  public String getSide() {
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    return side;
+  }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+  public void setSide(String side) {
+
+    this.side = side;
+  }
+
+  public String getType() {
+
+    return type;
+  }
+
+  public void setType(String type) {
+
+    this.type = type;
+  }
+
+  public BigDecimal getAmount() {
+
+    return amount;
+  }
+
+  public void setAmount(BigDecimal amount) {
+
+    this.amount = amount;
+  }
+
+  public BigDecimal getPrice() {
+
+    return price;
+  }
+
+  public void setPrice(BigDecimal price) {
+
+    this.price = price;
+  }
 }

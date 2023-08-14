@@ -4,51 +4,62 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BitmexAsset {
 
-	private final String altName;
-	private final String assetClass;
-	private final int scale;
-	private final int displayScale;
+  private final String altName;
+  private final String assetClass;
+  private final int scale;
+  private final int displayScale;
 
-	/**
-	 * Constructor
-	 */
-	public BitmexAsset(
-			@JsonProperty("altname") String altName,
-			@JsonProperty("aclass") String assetClass,
-			@JsonProperty("decimals") int scale,
-			@JsonProperty("display_decimals") int displayScale) {
-		this.altName = altName;
-		this.assetClass = assetClass;
-		this.scale = scale;
-		this.displayScale = displayScale;
-	}
+  /**
+   * Constructor
+   *
+   * @param altName
+   * @param assetClass
+   * @param scale
+   * @param displayScale
+   */
+  public BitmexAsset(
+      @JsonProperty("altname") String altName,
+      @JsonProperty("aclass") String assetClass,
+      @JsonProperty("decimals") int scale,
+      @JsonProperty("display_decimals") int displayScale) {
 
-	public String getAltName() {
-		return altName;
-	}
+    this.altName = altName;
+    this.assetClass = assetClass;
+    this.scale = scale;
+    this.displayScale = displayScale;
+  }
 
-	public String getAssetClass() {
-		return assetClass;
-	}
+  public String getAltName() {
 
-	public int getScale() {
-		return scale;
-	}
+    return altName;
+  }
 
-	public int getDisplayScale() {
-		return displayScale;
-	}
+  public String getAssetClass() {
 
-	@Override
-	public String toString() {
-		return "KrakenAssetInfo [altName="
-				+ altName
-				+ ", assetClass="
-				+ assetClass
-				+ ", scale="
-				+ scale
-				+ ", displayScale="
-				+ displayScale
-				+ "]";
-	}
+    return assetClass;
+  }
+
+  public int getScale() {
+
+    return scale;
+  }
+
+  public int getDisplayScale() {
+
+    return displayScale;
+  }
+
+  @Override
+  public String toString() {
+
+    return "KrakenAssetInfo [altName="
+        + altName
+        + ", assetClass="
+        + assetClass
+        + ", scale="
+        + scale
+        + ", displayScale="
+        + displayScale
+        + "]";
+  }
 }

@@ -1,5 +1,9 @@
 package org.knowm.xchange.ftx.service;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.account.OpenPositions;
@@ -11,114 +15,106 @@ import org.knowm.xchange.dto.trade.UserTrades;
 import org.knowm.xchange.ftx.FtxAdapters;
 import org.knowm.xchange.ftx.dto.trade.CancelAllFtxOrdersParams;
 import org.knowm.xchange.service.trade.TradeService;
-import org.knowm.xchange.service.trade.params.CancelAllOrders;
-import org.knowm.xchange.service.trade.params.CancelOrderByCurrencyPair;
-import org.knowm.xchange.service.trade.params.CancelOrderByUserReferenceParams;
-import org.knowm.xchange.service.trade.params.CancelOrderParams;
-import org.knowm.xchange.service.trade.params.TradeHistoryParams;
+import org.knowm.xchange.service.trade.params.*;
 import org.knowm.xchange.service.trade.params.orders.OpenOrdersParams;
 import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-
 public class FtxTradeService extends FtxTradeServiceRaw implements TradeService {
 
-	public FtxTradeService(Exchange exchange) {
-		super(exchange);
-	}
+  public FtxTradeService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public OpenOrders getOpenOrders() throws IOException {
-		return getOpenOrdersForSubaccount(exchange.getExchangeSpecification().getUserName());
-	}
+  @Override
+  public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
+    return placeMarketOrderForSubaccount(
+        exchange.getExchangeSpecification().getUserName(), marketOrder);
+  }
 
-	@Override
-	public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
-		return getOpenOrdersForSubaccount(exchange.getExchangeSpecification().getUserName(), params);
-	}
+  @Override
+  public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
+    return placeLimitOrderForSubaccount(
+        exchange.getExchangeSpecification().getUserName(), limitOrder);
+  }
 
-	@Override
-	public Class[] getRequiredCancelOrderParamClasses() {
-		return new Class[]{CancelOrderByCurrencyPair.class, CancelOrderByUserReferenceParams.class};
-	}
+  @Override
+  public String placeStopOrder(StopOrder stopOrder) throws IOException {
+    return placeStopOrderForSubAccount(exchange.getExchangeSpecification().getUserName(), stopOrder);
+  }
 
-	@Override
-	public OpenPositions getOpenPositions() throws IOException {
-		return getOpenPositionsForSubaccount(exchange.getExchangeSpecification().getUserName());
-	}
+  @Override
+  public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
+    return getTradeHistoryForSubaccount(exchange.getExchangeSpecification().getUserName(), params);
+  }
 
-	@Override
-	public String placeMarketOrder(MarketOrder marketOrder) throws IOException {
-		return placeMarketOrderForSubaccount(
-				exchange.getExchangeSpecification().getUserName(), marketOrder);
-	}
+  @Override
+  public Collection<String> cancelAllOrders(CancelAllOrders orderParams) throws IOException {
+    if(orderParams instanceof CancelAllFtxOrdersParams){
+      cancelAllFtxOrders(exchange.getExchangeSpecification().getUserName(), (CancelAllFtxOrdersParams) orderParams);
+      return Collections.singletonList("");
+    } else {
+      throw new IOException("Cancel all orders supports only "+ CancelAllFtxOrdersParams.class.getSimpleName());
+    }
+  }
 
-	@Override
-	public String placeLimitOrder(LimitOrder limitOrder) throws IOException {
-		return placeLimitOrderForSubaccount(
-				exchange.getExchangeSpecification().getUserName(), limitOrder);
-	}
+  @Override
+  public boolean cancelOrder(String orderId) throws IOException {
+    return cancelOrderForSubaccount(exchange.getExchangeSpecification().getUserName(), orderId);
+  }
 
-	@Override
-	public String placeStopOrder(StopOrder stopOrder) throws IOException {
-		return placeStopOrderForSubAccount(exchange.getExchangeSpecification().getUserName(), stopOrder);
-	}
+  @Override
+  public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
+    return cancelOrderForSubaccount(exchange.getExchangeSpecification().getUserName(), orderParams);
+  }
 
-	@Override
-	public String changeOrder(LimitOrder limitOrder) throws IOException {
-		if (limitOrder.getUserReference() != null) {
-			return modifyFtxOrderByClientId(
-					exchange.getExchangeSpecification().getUserName(),
-					limitOrder.getId(),
-					FtxAdapters.adaptModifyOrderToFtxOrderPayload(limitOrder))
-					.getResult()
-					.getClientId();
-		} else {
-			return modifyFtxOrder(
-					exchange.getExchangeSpecification().getUserName(),
-					limitOrder.getId(),
-					FtxAdapters.adaptModifyOrderToFtxOrderPayload(limitOrder))
-					.getResult()
-					.getId();
-		}
-	}
+  @Override
+  public Class[] getRequiredCancelOrderParamClasses() {
+    return new Class[] {CancelOrderByCurrencyPair.class, CancelOrderByUserReferenceParams.class};
+  }
 
-	@Override
-	public boolean cancelOrder(String orderId) throws IOException {
-		return cancelOrderForSubaccount(exchange.getExchangeSpecification().getUserName(), orderId);
-	}
+  @Override
+  public Collection<Order> getOrder(String... orderIds) throws IOException {
+    return getOrderFromSubaccount(exchange.getExchangeSpecification().getUserName(), orderIds);
+  }
 
-	@Override
-	public boolean cancelOrder(CancelOrderParams orderParams) throws IOException {
-		return cancelOrderForSubaccount(exchange.getExchangeSpecification().getUserName(), orderParams);
-	}
+  @Override
+  public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
+    return getOrderFromSubaccount(
+        exchange.getExchangeSpecification().getUserName(),
+        TradeService.toOrderIds(orderQueryParams));
+  }
 
-	@Override
-	public Collection<String> cancelAllOrders(CancelAllOrders orderParams) throws IOException {
-		if (orderParams instanceof CancelAllFtxOrdersParams) {
-			cancelAllFtxOrders(exchange.getExchangeSpecification().getUserName(), (CancelAllFtxOrdersParams) orderParams);
-			return Collections.singletonList("");
-		} else {
-			throw new IOException("Cancel all orders supports only " + CancelAllFtxOrdersParams.class.getSimpleName());
-		}
-	}
+  @Override
+  public OpenOrders getOpenOrders(OpenOrdersParams params) throws IOException {
+    return getOpenOrdersForSubaccount(exchange.getExchangeSpecification().getUserName(), params);
+  }
 
-	@Override
-	public UserTrades getTradeHistory(TradeHistoryParams params) throws IOException {
-		return getTradeHistoryForSubaccount(exchange.getExchangeSpecification().getUserName(), params);
-	}
+  @Override
+  public OpenOrders getOpenOrders() throws IOException {
+    return getOpenOrdersForSubaccount(exchange.getExchangeSpecification().getUserName());
+  }
 
-	@Override
-	public Collection<Order> getOrder(String... orderIds) throws IOException {
-		return getOrderFromSubaccount(exchange.getExchangeSpecification().getUserName(), orderIds);
-	}
+  @Override
+  public OpenPositions getOpenPositions() throws IOException {
+    return getOpenPositionsForSubaccount(exchange.getExchangeSpecification().getUserName());
+  }
 
-	@Override
-	public Collection<Order> getOrder(OrderQueryParams... orderQueryParams) throws IOException {
-		return getOrderFromSubaccount(
-				exchange.getExchangeSpecification().getUserName(),
-				TradeService.toOrderIds(orderQueryParams));
-	}
+  @Override
+  public String changeOrder(LimitOrder limitOrder) throws IOException {
+    if (limitOrder.getUserReference() != null) {
+      return modifyFtxOrderByClientId(
+              exchange.getExchangeSpecification().getUserName(),
+              limitOrder.getId(),
+              FtxAdapters.adaptModifyOrderToFtxOrderPayload(limitOrder))
+          .getResult()
+          .getClientId();
+    } else {
+      return modifyFtxOrder(
+              exchange.getExchangeSpecification().getUserName(),
+              limitOrder.getId(),
+              FtxAdapters.adaptModifyOrderToFtxOrderPayload(limitOrder))
+          .getResult()
+          .getId();
+    }
+  }
 }

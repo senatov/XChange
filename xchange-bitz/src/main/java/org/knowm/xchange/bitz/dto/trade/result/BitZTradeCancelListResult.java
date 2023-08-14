@@ -6,13 +6,13 @@ import org.knowm.xchange.bitz.dto.trade.BitZTradeCancelList;
 
 public class BitZTradeCancelListResult extends BitZResult<BitZTradeCancelList> {
 
-	public BitZTradeCancelListResult(
-			@JsonProperty("status") int status,
-			@JsonProperty("msg") String message,
-			@JsonProperty("data") BitZTradeCancelList data,
-			@JsonProperty("time") String time,
-			@JsonProperty("microtime") String microtime,
-			@JsonProperty("source") String source) {
-		super(status, message, data);
-	}
+  public BitZTradeCancelListResult(
+      @JsonProperty("status") int status,
+      @JsonProperty("msg") String message,
+      @JsonProperty("data") BitZTradeCancelList data,
+      @JsonProperty("time") String time,
+      @JsonProperty("microtime") String microtime,
+      @JsonProperty("source") String source) {
+    super(status, message, data);
+  }
 }

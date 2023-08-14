@@ -9,14 +9,14 @@ import lombok.Value;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BitcoindeCompactOrders {
 
-	BitcoindeCompactOrder[] bids;
-	BitcoindeCompactOrder[] asks;
+  BitcoindeCompactOrder[] bids;
+  BitcoindeCompactOrder[] asks;
 
-	@JsonCreator
-	public BitcoindeCompactOrders(
-			@JsonProperty("bids") BitcoindeCompactOrder[] bids,
-			@JsonProperty("asks") BitcoindeCompactOrder[] asks) {
-		this.bids = bids;
-		this.asks = asks;
-	}
+  @JsonCreator
+  public BitcoindeCompactOrders(
+      @JsonProperty("bids") BitcoindeCompactOrder[] bids,
+      @JsonProperty("asks") BitcoindeCompactOrder[] asks) {
+    this.bids = bids;
+    this.asks = asks;
+  }
 }

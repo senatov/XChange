@@ -6,30 +6,30 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({"secret", "order"})
 public class RippleOrderEntryRequest {
 
-	@JsonProperty("secret")
-	private String secret;
+  @JsonProperty("secret")
+  private String secret;
 
-	@JsonProperty("order")
-	private RippleOrderEntryRequestBody order = new RippleOrderEntryRequestBody();
+  @JsonProperty("order")
+  private RippleOrderEntryRequestBody order = new RippleOrderEntryRequestBody();
 
-	public String getSecret() {
-		return secret;
-	}
+  public String getSecret() {
+    return secret;
+  }
 
-	public void setSecret(final String value) {
-		secret = value;
-	}
+  public void setSecret(final String value) {
+    secret = value;
+  }
 
-	public RippleOrderEntryRequestBody getOrder() {
-		return order;
-	}
+  public RippleOrderEntryRequestBody getOrder() {
+    return order;
+  }
 
-	public void setOrder(final RippleOrderEntryRequestBody value) {
-		order = value;
-	}
+  public void setOrder(final RippleOrderEntryRequestBody value) {
+    order = value;
+  }
 
-	@Override
-	public String toString() {
-		return order.toString(); // do not log secret
-	}
+  @Override
+  public String toString() {
+    return order.toString(); // do not log secret
+  }
 }

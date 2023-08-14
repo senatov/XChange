@@ -6,11 +6,15 @@ import org.knowm.xchange.kraken.dto.account.KrakenTradeVolume;
 
 public class KrakenTradeVolumeResult extends KrakenResult<KrakenTradeVolume> {
 
-	/**
-	 * Constructor
-	 */
-	public KrakenTradeVolumeResult(
-			@JsonProperty("result") KrakenTradeVolume result, @JsonProperty("error") String[] error) {
-		super(result, error);
-	}
+  /**
+   * Constructor
+   *
+   * @param result
+   * @param error
+   */
+  public KrakenTradeVolumeResult(
+      @JsonProperty("result") KrakenTradeVolume result, @JsonProperty("error") String[] error) {
+
+    super(result, error);
+  }
 }

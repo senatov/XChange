@@ -1,11 +1,11 @@
 package org.knowm.xchange.latoken.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 /**
  * Response schema:
+ *
  * <pre>
  * {
  * 	"currencyId": 102,
@@ -22,93 +22,106 @@ import java.math.BigDecimal;
  */
 public final class LatokenBalance {
 
-	private final String currencyId;
-	private final String symbol;
-	private final String name;
-	private final BigDecimal amount;
-	private final BigDecimal available;
-	private final BigDecimal frozen;
-	private final BigDecimal pending;
+  private final String currencyId;
+  private final String symbol;
+  private final String name;
+  private final BigDecimal amount;
+  private final BigDecimal available;
+  private final BigDecimal frozen;
+  private final BigDecimal pending;
 
-	public LatokenBalance(
-			@JsonProperty("currencyId") String currencyId,
-			@JsonProperty("symbol") String symbol,
-			@JsonProperty("name") String name,
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("available") BigDecimal available,
-			@JsonProperty("frozen") BigDecimal frozen,
-			@JsonProperty("pending") BigDecimal pending) {
-		this.currencyId = currencyId;
-		this.symbol = symbol;
-		this.name = name;
-		this.amount = amount;
-		this.available = available;
-		this.frozen = frozen;
-		this.pending = pending;
-	}
+  public LatokenBalance(
+      @JsonProperty("currencyId") String currencyId,
+      @JsonProperty("symbol") String symbol,
+      @JsonProperty("name") String name,
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("available") BigDecimal available,
+      @JsonProperty("frozen") BigDecimal frozen,
+      @JsonProperty("pending") BigDecimal pending) {
 
-	/**
-	 * Id of currency
-	 */
-	public String getCurrencyId() {
-		return currencyId;
-	}
+    this.currencyId = currencyId;
+    this.symbol = symbol;
+    this.name = name;
+    this.amount = amount;
+    this.available = available;
+    this.frozen = frozen;
+    this.pending = pending;
+  }
 
-	/**
-	 * Symbol of currency
-	 */
-	public String getSymbol() {
-		return symbol;
-	}
+  /**
+   * Id of currency
+   *
+   * @return
+   */
+  public String getCurrencyId() {
+    return currencyId;
+  }
 
-	/**
-	 * Name of currency
-	 */
-	public String getName() {
-		return name;
-	}
+  /**
+   * Symbol of currency
+   *
+   * @return
+   */
+  public String getSymbol() {
+    return symbol;
+  }
 
-	/**
-	 * Total amount of balance
-	 */
-	public BigDecimal getAmount() {
-		return amount;
-	}
+  /**
+   * Name of currency
+   *
+   * @return
+   */
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * Available amount of balance
-	 */
-	public BigDecimal getAvailable() {
-		return available;
-	}
+  /**
+   * Total amount of balance
+   *
+   * @return
+   */
+  public BigDecimal getAmount() {
+    return amount;
+  }
 
-	/**
-	 * Amount frozen by orders or transactions amount
-	 */
-	public BigDecimal getFrozen() {
-		return frozen;
-	}
+  /**
+   * Available amount of balance
+   *
+   * @return
+   */
+  public BigDecimal getAvailable() {
+    return available;
+  }
 
-	public BigDecimal getPending() {
-		return pending;
-	}
+  /**
+   * Amount frozen by orders or transactions amount
+   *
+   * @return
+   */
+  public BigDecimal getFrozen() {
+    return frozen;
+  }
 
-	@Override
-	public String toString() {
-		return "LatokenOrderbook [currencyId = "
-				+ currencyId
-				+ ", symbol = "
-				+ symbol
-				+ ", name = "
-				+ name
-				+ ", amount = "
-				+ amount
-				+ ", available = "
-				+ available
-				+ ", frozen = "
-				+ frozen
-				+ ", pending = "
-				+ pending
-				+ "]";
-	}
+  public BigDecimal getPending() {
+    return pending;
+  }
+
+  @Override
+  public String toString() {
+    return "LatokenOrderbook [currencyId = "
+        + currencyId
+        + ", symbol = "
+        + symbol
+        + ", name = "
+        + name
+        + ", amount = "
+        + amount
+        + ", available = "
+        + available
+        + ", frozen = "
+        + frozen
+        + ", pending = "
+        + pending
+        + "]";
+  }
 }

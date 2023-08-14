@@ -14,75 +14,74 @@ import org.knowm.xchange.lgo.service.LgoSignatureService;
 
 public class LgoStreamingExchange extends LgoExchange implements StreamingExchange {
 
-	private LgoStreamingService streamingService;
-	private LgoStreamingMarketDataService marketDataService;
-	private LgoStreamingAccountService accountService;
-	private LgoStreamingTradeService tradeService;
+  private LgoStreamingService streamingService;
+  private LgoStreamingMarketDataService marketDataService;
+  private LgoStreamingAccountService accountService;
+  private LgoStreamingTradeService tradeService;
 
-	@Override
-	public void applySpecification(ExchangeSpecification exchangeSpecification) {
-		super.applySpecification(exchangeSpecification);
-		initServices();
-	}
+  @Override
+  protected void initServices() {
+    super.initServices();
+    streamingService = createStreamingService();
+    marketDataService = new LgoStreamingMarketDataService(streamingService);
+    accountService = new LgoStreamingAccountService(streamingService);
+    tradeService =
+        new LgoStreamingTradeService(
+            streamingService,
+            new LgoKeyService(getExchangeSpecification()),
+            LgoSignatureService.createInstance(getExchangeSpecification()),
+            getNonceFactory());
+  }
 
-	@Override
-	protected void initServices() {
-		super.initServices();
-		streamingService = createStreamingService();
-		marketDataService = new LgoStreamingMarketDataService(streamingService);
-		accountService = new LgoStreamingAccountService(streamingService);
-		tradeService =
-				new LgoStreamingTradeService(
-						streamingService,
-						new LgoKeyService(getExchangeSpecification()),
-						LgoSignatureService.createInstance(getExchangeSpecification()),
-						getNonceFactory());
-	}
+  private LgoStreamingService createStreamingService() {
+    String apiUrl =
+        getExchangeSpecification().getExchangeSpecificParameters().get(LgoEnv.WS_URL).toString();
+    LgoStreamingService streamingService = new LgoStreamingService(this.getSignatureService(), apiUrl);
+    applyStreamingSpecification(getExchangeSpecification(), streamingService);
+    return streamingService;
+  }
 
-	private LgoStreamingService createStreamingService() {
-		String apiUrl =
-				getExchangeSpecification().getExchangeSpecificParameters().get(LgoEnv.WS_URL).toString();
-		LgoStreamingService streamingService = new LgoStreamingService(this.getSignatureService(), apiUrl);
-		applyStreamingSpecification(getExchangeSpecification(), streamingService);
-		return streamingService;
-	}
+  @Override
+  public void applySpecification(ExchangeSpecification exchangeSpecification) {
+    super.applySpecification(exchangeSpecification);
+    initServices();
+  }
 
-	@Override
-	public Completable connect(ProductSubscription... args) {
-		return streamingService.connect();
-	}
+  @Override
+  public Completable connect(ProductSubscription... args) {
+    return streamingService.connect();
+  }
 
-	@Override
-	public Completable disconnect() {
-		return streamingService.disconnect();
-	}
+  @Override
+  public Completable disconnect() {
+    return streamingService.disconnect();
+  }
 
-	@Override
-	public boolean isAlive() {
-		return streamingService.isSocketOpen();
-	}
+  @Override
+  public boolean isAlive() {
+    return streamingService.isSocketOpen();
+  }
 
-	@Override
-	public Observable<State> connectionStateObservable() {
-		return streamingService.subscribeConnectionState();
-	}
+  @Override
+  public StreamingMarketDataService getStreamingMarketDataService() {
+    return marketDataService;
+  }
 
-	@Override
-	public StreamingMarketDataService getStreamingMarketDataService() {
-		return marketDataService;
-	}
+  @Override
+  public LgoStreamingAccountService getStreamingAccountService() {
+    return accountService;
+  }
 
-	@Override
-	public LgoStreamingAccountService getStreamingAccountService() {
-		return accountService;
-	}
+  @Override
+  public LgoStreamingTradeService getStreamingTradeService() {
+    return tradeService;
+  }
 
-	@Override
-	public LgoStreamingTradeService getStreamingTradeService() {
-		return tradeService;
-	}
+  @Override
+  public Observable<State> connectionStateObservable() {
+    return streamingService.subscribeConnectionState();
+  }
 
-	@Override
-	public void useCompressedMessages(boolean compressedMessages) {
-	}
+  @Override
+  public void useCompressedMessages(boolean compressedMessages) {}
 }

@@ -6,7 +6,7 @@ import org.knowm.xchange.service.BaseService;
 
 public class BitsoBaseService extends BaseExchangeService implements BaseService {
 
-	public BitsoBaseService(Exchange exchange) {
-		super(exchange);
-	}
+  public BitsoBaseService(Exchange exchange) {
+    super(exchange);
+  }
 }

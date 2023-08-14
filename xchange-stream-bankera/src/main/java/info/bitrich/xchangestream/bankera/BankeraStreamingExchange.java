@@ -12,66 +12,67 @@ import org.knowm.xchange.bankera.service.BankeraMarketDataService;
 
 public class BankeraStreamingExchange extends BankeraExchange implements StreamingExchange {
 
-	private static final String WS_URI = "wss://api-exchange.bankera.com/ws";
-	private final BankeraStreamingService streamingService;
-	private BankeraStreamingMarketDataService streamingMarketDataService;
+  private static final String WS_URI = "wss://api-exchange.bankera.com/ws";
+  private final BankeraStreamingService streamingService;
+  private BankeraStreamingMarketDataService streamingMarketDataService;
 
-	public BankeraStreamingExchange() {
-		this.streamingService = new BankeraStreamingService(WS_URI);
-	}
+  public BankeraStreamingExchange() {
+    this.streamingService = new BankeraStreamingService(WS_URI);
+  }
 
-	@Override
-	public Completable connect(ProductSubscription... args) {
-		return streamingService.connect();
-	}
+  @Override
+  protected void initServices() {
+    super.initServices();
+    streamingMarketDataService =
+        new BankeraStreamingMarketDataService(
+            streamingService, (BankeraMarketDataService) marketDataService);
+  }
 
-	@Override
-	public Completable disconnect() {
-		return streamingService.disconnect();
-	}
+  @Override
+  public Completable connect(ProductSubscription... args) {
+    return streamingService.connect();
+  }
 
-	@Override
-	public boolean isAlive() {
-		return streamingService.isSocketOpen();
-	}
+  @Override
+  public Completable disconnect() {
+    return streamingService.disconnect();
+  }
 
-	@Override
-	public Observable<Throwable> reconnectFailure() {
-		return streamingService.subscribeReconnectFailure();
-	}
+  @Override
+  public boolean isAlive() {
+    return streamingService.isSocketOpen();
+  }
 
-	@Override
-	public Observable<Object> connectionSuccess() {
-		return streamingService.subscribeConnectionSuccess();
-	}
+  @Override
+  public Observable<Throwable> reconnectFailure() {
+    return streamingService.subscribeReconnectFailure();
+  }
 
-	@Override
-	public Observable<State> connectionStateObservable() {
-		return streamingService.subscribeConnectionState();
-	}
+  @Override
+  public Observable<Object> connectionSuccess() {
+    return streamingService.subscribeConnectionSuccess();
+  }
 
-	@Override
-	public StreamingMarketDataService getStreamingMarketDataService() {
-		return streamingMarketDataService;
-	}
+  @Override
+  public Observable<State> connectionStateObservable() {
+    return streamingService.subscribeConnectionState();
+  }
 
-	@Override
-	public void useCompressedMessages(boolean compressedMessages) {
-		streamingService.useCompressedMessages(compressedMessages);
-	}
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+    ExchangeSpecification spec = super.getDefaultExchangeSpecification();
+    spec.setShouldLoadRemoteMetaData(false);
 
-	@Override
-	public ExchangeSpecification getDefaultExchangeSpecification() {
-		ExchangeSpecification spec = super.getDefaultExchangeSpecification();
-		spec.setShouldLoadRemoteMetaData(false);
-		return spec;
-	}
+    return spec;
+  }
 
-	@Override
-	protected void initServices() {
-		super.initServices();
-		streamingMarketDataService =
-				new BankeraStreamingMarketDataService(
-						streamingService, (BankeraMarketDataService) marketDataService);
-	}
+  @Override
+  public StreamingMarketDataService getStreamingMarketDataService() {
+    return streamingMarketDataService;
+  }
+
+  @Override
+  public void useCompressedMessages(boolean compressedMessages) {
+    streamingService.useCompressedMessages(compressedMessages);
+  }
 }

@@ -1,110 +1,110 @@
 package org.knowm.xchange.hitbtc.v2.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class HitbtcTicker {
 
-	private final BigDecimal ask;
-	private final BigDecimal bid;
-	private final BigDecimal last;
-	private final BigDecimal low;
-	private final BigDecimal high;
-	private final BigDecimal open;
-	private final String symbol;
-	private final Date timestamp;
-	private final BigDecimal volume;
-	private final BigDecimal volumeQuote;
+  private final BigDecimal ask;
+  private final BigDecimal bid;
+  private final BigDecimal last;
+  private final BigDecimal low;
+  private final BigDecimal high;
+  private final BigDecimal open;
+  private final String symbol;
+  private final Date timestamp;
+  private final BigDecimal volume;
+  private final BigDecimal volumeQuote;
 
-	public HitbtcTicker(
-			@JsonProperty("ask") BigDecimal ask,
-			@JsonProperty("bid") BigDecimal bid,
-			@JsonProperty("last") BigDecimal last,
-			@JsonProperty("low") BigDecimal low,
-			@JsonProperty("high") BigDecimal high,
-			@JsonProperty("open") BigDecimal open,
-			@JsonProperty("symbol") String symbol,
-			@JsonProperty("timestamp") Date timestamp,
-			@JsonProperty("volume") BigDecimal volume,
-			@JsonProperty("volumeQuote") BigDecimal volumeQuote) {
-		this.ask = ask;
-		this.bid = bid;
-		this.last = last;
-		this.low = low;
-		this.high = high;
-		this.open = open;
-		this.volume = volume;
-		this.volumeQuote = volumeQuote;
-		this.timestamp = timestamp;
-		this.symbol = symbol;
-	}
+  public HitbtcTicker(
+      @JsonProperty("ask") BigDecimal ask,
+      @JsonProperty("bid") BigDecimal bid,
+      @JsonProperty("last") BigDecimal last,
+      @JsonProperty("low") BigDecimal low,
+      @JsonProperty("high") BigDecimal high,
+      @JsonProperty("open") BigDecimal open,
+      @JsonProperty("symbol") String symbol,
+      @JsonProperty("timestamp") Date timestamp,
+      @JsonProperty("volume") BigDecimal volume,
+      @JsonProperty("volumeQuote") BigDecimal volumeQuote) {
 
-	public BigDecimal getAsk() {
-		return ask;
-	}
+    this.ask = ask;
+    this.bid = bid;
+    this.last = last;
+    this.low = low;
+    this.high = high;
+    this.open = open;
+    this.volume = volume;
+    this.volumeQuote = volumeQuote;
+    this.timestamp = timestamp;
+    this.symbol = symbol;
+  }
 
-	public BigDecimal getBid() {
-		return bid;
-	}
+  public BigDecimal getAsk() {
+    return ask;
+  }
 
-	public BigDecimal getLast() {
-		return last;
-	}
+  public BigDecimal getBid() {
+    return bid;
+  }
 
-	public BigDecimal getLow() {
-		return low;
-	}
+  public BigDecimal getLast() {
+    return last;
+  }
 
-	public BigDecimal getHigh() {
-		return high;
-	}
+  public BigDecimal getLow() {
+    return low;
+  }
 
-	public BigDecimal getOpen() {
-		return open;
-	}
+  public BigDecimal getHigh() {
+    return high;
+  }
 
-	public String getSymbol() {
-		return symbol;
-	}
+  public BigDecimal getOpen() {
+    return open;
+  }
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+  public String getSymbol() {
+    return symbol;
+  }
 
-	public BigDecimal getVolume() {
-		return volume;
-	}
+  public Date getTimestamp() {
+    return timestamp;
+  }
 
-	public BigDecimal getVolumeQuote() {
-		return volumeQuote;
-	}
+  public BigDecimal getVolume() {
+    return volume;
+  }
 
-	@Override
-	public String toString() {
-		return "HitbtcTicker{"
-				+ "ask="
-				+ ask
-				+ ", bid="
-				+ bid
-				+ ", last="
-				+ last
-				+ ", low="
-				+ low
-				+ ", high="
-				+ high
-				+ ", open="
-				+ open
-				+ ", symbol='"
-				+ symbol
-				+ '\''
-				+ ", timestamp="
-				+ timestamp
-				+ ", volume="
-				+ volume
-				+ ", volumeQuote="
-				+ volumeQuote
-				+ '}';
-	}
+  public BigDecimal getVolumeQuote() {
+    return volumeQuote;
+  }
+
+  @Override
+  public String toString() {
+    return "HitbtcTicker{"
+        + "ask="
+        + ask
+        + ", bid="
+        + bid
+        + ", last="
+        + last
+        + ", low="
+        + low
+        + ", high="
+        + high
+        + ", open="
+        + open
+        + ", symbol='"
+        + symbol
+        + '\''
+        + ", timestamp="
+        + timestamp
+        + ", volume="
+        + volume
+        + ", volumeQuote="
+        + volumeQuote
+        + '}';
+  }
 }

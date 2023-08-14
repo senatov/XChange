@@ -9,21 +9,21 @@ import java.io.IOException;
 import java.util.List;
 
 public class MEXCTradeServiceRaw extends MEXCBaseService {
-	public MEXCTradeServiceRaw(Exchange exchange) {
-		super(exchange);
-	}
+  public MEXCTradeServiceRaw(Exchange exchange) {
+    super(exchange);
+  }
 
-	public MEXCResult<String> placeOrder(MEXCOrderRequestPayload orderRequestPayload) throws IOException {
-		return mexcAuthenticated.placeOrder(
-				apiKey,
-				nonceFactory,
-				signatureCreator,
-				orderRequestPayload
-		);
-	}
+  public MEXCResult<String> placeOrder(MEXCOrderRequestPayload orderRequestPayload) throws IOException {
+    return mexcAuthenticated.placeOrder(
+            apiKey,
+            nonceFactory,
+            signatureCreator,
+            orderRequestPayload
+    );
+  }
 
-	public MEXCResult<List<MEXCOrder>> getOrders(List<String> orderIds) throws IOException {
-		return mexcAuthenticated.getOrders(apiKey, nonceFactory, signatureCreator, orderIds);
-	}
+  public MEXCResult<List<MEXCOrder>> getOrders(List<String> orderIds) throws IOException {
+    return mexcAuthenticated.getOrders(apiKey, nonceFactory, signatureCreator, orderIds);
+  }
 
 }

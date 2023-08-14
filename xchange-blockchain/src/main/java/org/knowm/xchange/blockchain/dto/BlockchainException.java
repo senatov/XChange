@@ -9,26 +9,26 @@ import java.util.Map;
 
 public class BlockchainException extends HttpStatusExceptionSupport implements HttpResponseAware {
 
-	private final int status;
+  private final int status;
 
-	private Map<String, List<String>> headers;
+  private Map<String, List<String>> headers;
 
-	public BlockchainException(@JsonProperty("status") int status, @JsonProperty("message") String message) {
-		super(message);
-		this.status = status;
-	}
+  public BlockchainException(@JsonProperty("status") int status, @JsonProperty("message") String message) {
+    super(message);
+    this.status = status;
+  }
 
-	public int getStatus() {
-		return status;
-	}
+  public int getStatus() {
+    return status;
+  }
 
-	@Override
-	public void setResponseHeaders(Map<String, List<String>> headers) {
-		this.headers = headers;
-	}
+  @Override
+  public void setResponseHeaders(Map<String, List<String>> headers) {
+    this.headers = headers;
+  }
 
-	@Override
-	public Map<String, List<String>> getResponseHeaders() {
-		return headers;
-	}
+  @Override
+  public Map<String, List<String>> getResponseHeaders() {
+    return headers;
+  }
 }

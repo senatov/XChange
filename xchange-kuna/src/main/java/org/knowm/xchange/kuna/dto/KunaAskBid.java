@@ -1,7 +1,6 @@
 package org.knowm.xchange.kuna.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import java.util.Arrays;
 
 /**
@@ -12,58 +11,55 @@ import java.util.Arrays;
  */
 @JsonDeserialize(builder = KunaAskBid.Builder.class)
 public class KunaAskBid {
-	private KunaOrder[] asks;
-	private KunaOrder[] bids;
+  private KunaOrder[] asks;
+  private KunaOrder[] bids;
 
-	/**
-	 * Hide default constructor.
-	 */
-	private KunaAskBid() {
-	}
+  /** Hide default constructor. */
+  private KunaAskBid() {}
 
-	/**
-	 * Creates new builder.
-	 *
-	 * @return builder
-	 */
-	public static Builder builder() {
-		return new Builder();
-	}
+  /**
+   * Creates new builder.
+   *
+   * @return builder
+   */
+  public static Builder builder() {
+    return new Builder();
+  }
 
-	public KunaOrder[] getAsks() {
-		return asks;
-	}
+  public KunaOrder[] getAsks() {
+    return asks;
+  }
 
-	public KunaOrder[] getBids() {
-		return bids;
-	}
+  public KunaOrder[] getBids() {
+    return bids;
+  }
 
-	@Override
-	public String toString() {
-		return "KunaAskBid{"
-				+ "asks="
-				+ Arrays.toString(asks)
-				+ ", bids="
-				+ Arrays.toString(bids)
-				+ '}';
-	}
+  @Override
+  public String toString() {
+    return "KunaAskBid{"
+        + "asks="
+        + Arrays.toString(asks)
+        + ", bids="
+        + Arrays.toString(bids)
+        + '}';
+  }
 
-	public static class Builder {
+  public static class Builder {
 
-		private final KunaAskBid target = new KunaAskBid();
+    private KunaAskBid target = new KunaAskBid();
 
-		public Builder withAsks(KunaOrder[] asks) {
-			target.asks = asks;
-			return this;
-		}
+    public Builder withAsks(KunaOrder[] asks) {
+      target.asks = asks;
+      return this;
+    }
 
-		public Builder withBids(KunaOrder[] bids) {
-			target.bids = bids;
-			return this;
-		}
+    public Builder withBids(KunaOrder[] bids) {
+      target.bids = bids;
+      return this;
+    }
 
-		public KunaAskBid build() {
-			return this.target;
-		}
-	}
+    public KunaAskBid build() {
+      return this.target;
+    }
+  }
 }

@@ -1,5 +1,8 @@
 package org.knowm.xchange.bibox.service;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bibox.dto.BiboxAdapters;
 import org.knowm.xchange.bibox.dto.marketdata.BiboxMarket;
@@ -13,12 +16,9 @@ import org.knowm.xchange.dto.meta.ExchangeMetaData;
 import org.knowm.xchange.instrument.Instrument;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
-
 /**
  * Implementation of the market data service for Bibox
+ *
  * <ul>
  *   <li>Provides access to various market data values
  * </ul>
@@ -27,54 +27,59 @@ import java.util.List;
  */
 public class BiboxMarketDataService extends BiboxMarketDataServiceRaw implements MarketDataService {
 
-	/**
-	 * Constructor
-	 */
-	public BiboxMarketDataService(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange
+   */
+  public BiboxMarketDataService(Exchange exchange) {
 
-	@Override
-	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
-		return BiboxAdapters.adaptTicker(getBiboxTicker(currencyPair), currencyPair);
-	}
+    super(exchange);
+  }
 
-	@Override
-	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-		Integer depth = 16; // default on website
-		if (args != null && args.length > 0) {
-			if (args[0] instanceof Integer && (Integer) args[0] > 0) {
-				depth = (Integer) args[0];
-			}
-		}
-		BiboxOrderBook biboxOrderBook = getBiboxOrderBook(currencyPair, depth);
-		return BiboxAdapters.adaptOrderBook(biboxOrderBook, currencyPair);
-	}
+  @Override
+  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
+    return BiboxAdapters.adaptTicker(getBiboxTicker(currencyPair), currencyPair);
+  }
 
-	@Override
-	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
-		Integer depth = 200;
-		if (args != null && args.length > 0 && args[0] instanceof Integer && (Integer) args[0] > 0) {
-			depth = (Integer) args[0];
-		}
-		List<BiboxDeals> biboxDeals = getBiboxDeals(currencyPair, depth);
-		return BiboxAdapters.adaptDeals(biboxDeals, currencyPair);
-	}
+  @Override
+  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+    Integer depth = 16; // default on website
 
-	public List<OrderBook> getAllOrderBooks(Integer depth) {
-		return getOrderBooks(depth, exchange.getExchangeInstruments());
-	}
+    if (args != null && args.length > 0) {
+      if (args[0] instanceof Integer && (Integer) args[0] > 0) {
+        depth = (Integer) args[0];
+      }
+    }
+    BiboxOrderBook biboxOrderBook = getBiboxOrderBook(currencyPair, depth);
+    return BiboxAdapters.adaptOrderBook(biboxOrderBook, currencyPair);
+  }
 
-	public List<OrderBook> getOrderBooks(Integer depth, Collection<Instrument> currencyPairs) {
-		if (depth == null) {
-			depth = 200;
-		}
-		List<BiboxOrderBook> biboxOrderBooks = getBiboxOrderBooks(depth, currencyPairs);
-		return BiboxAdapters.adaptAllOrderBooks(biboxOrderBooks);
-	}
+  public List<OrderBook> getAllOrderBooks(Integer depth) {
+    return getOrderBooks(depth, exchange.getExchangeInstruments());
+  }
 
-	public ExchangeMetaData getMetadata() throws IOException {
-		List<BiboxMarket> markets = getAllBiboxMarkets();
-		return BiboxAdapters.adaptMetadata(markets);
-	}
+  public List<OrderBook> getOrderBooks(Integer depth, Collection<Instrument> currencyPairs) {
+
+    if (depth == null) {
+      depth = 200;
+    }
+    List<BiboxOrderBook> biboxOrderBooks = getBiboxOrderBooks(depth, currencyPairs);
+    return BiboxAdapters.adaptAllOrderBooks(biboxOrderBooks);
+  }
+
+  @Override
+  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+    Integer depth = 200;
+    if (args != null && args.length > 0 && args[0] instanceof Integer && (Integer) args[0] > 0) {
+      depth = (Integer) args[0];
+    }
+    List<BiboxDeals> biboxDeals = getBiboxDeals(currencyPair, depth);
+    return BiboxAdapters.adaptDeals(biboxDeals, currencyPair);
+  }
+
+  public ExchangeMetaData getMetadata() throws IOException {
+    List<BiboxMarket> markets = getAllBiboxMarkets();
+    return BiboxAdapters.adaptMetadata(markets);
+  }
 }

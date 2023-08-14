@@ -1,19 +1,18 @@
 package org.knowm.xchange.ripple.dto.trade;
 
-import org.knowm.xchange.ripple.dto.RippleAmount;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import org.knowm.xchange.ripple.dto.RippleAmount;
 
 public interface IRippleTradeTransaction {
-	List<RippleAmount> getBalanceChanges();
+  List<RippleAmount> getBalanceChanges();
 
-	BigDecimal getFee();
+  BigDecimal getFee();
 
-	long getOrderId();
+  long getOrderId();
 
-	String getHash();
+  String getHash();
 
-	Date getTimestamp();
+  Date getTimestamp();
 }

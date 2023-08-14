@@ -9,7 +9,6 @@ import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamCurrencyPair;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamLimit;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamsTimeSpan;
-
 import java.util.Date;
 
 @Data
@@ -18,10 +17,10 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BlockchainTradeHistoryParams
-		implements TradeHistoryParamCurrencyPair, TradeHistoryParamLimit, TradeHistoryParamsTimeSpan {
+        implements TradeHistoryParamCurrencyPair, TradeHistoryParamLimit, TradeHistoryParamsTimeSpan {
 
-	private CurrencyPair currencyPair;
-	private Integer limit;
-	private Date startTime;
-	private Date endTime;
+    private CurrencyPair currencyPair;
+    private Integer limit;
+    private Date startTime;
+    private Date endTime;
 }

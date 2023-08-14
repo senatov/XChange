@@ -1,5 +1,1 @@
-{
-  "leverage": "10",
-  "margin_mode": "crossed",
-  "currency": "BTC"
-}
+{"leverage":"10","margin_mode":"crossed","currency":"BTC"}

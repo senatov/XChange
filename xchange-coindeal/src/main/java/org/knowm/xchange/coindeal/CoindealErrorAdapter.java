@@ -6,18 +6,17 @@ import org.knowm.xchange.exceptions.ExchangeException;
 
 public final class CoindealErrorAdapter {
 
-	private static final String INVALID_CURRENCY_PAIR_MESSAGE = "invalid currency pair";
+  private static final String INVALID_CURRENCY_PAIR_MESSAGE = "invalid currency pair";
 
-	private CoindealErrorAdapter() {
-	}
+  private CoindealErrorAdapter() {}
 
-	public static ExchangeException adapt(CoindealException e) {
-		if (e.getHttpStatusCode() == 422 && e.getErrors() != null) {
-			String errorsStr = e.getErrors().toString().toLowerCase();
-			if (errorsStr.contains(INVALID_CURRENCY_PAIR_MESSAGE)) {
-				throw new CurrencyPairNotValidException();
-			}
-		}
-		return new ExchangeException(e.getMessage());
-	}
+  public static ExchangeException adapt(CoindealException e) {
+    if (e.getHttpStatusCode() == 422 && e.getErrors() != null) {
+      String errorsStr = e.getErrors().toString().toLowerCase();
+      if (errorsStr.contains(INVALID_CURRENCY_PAIR_MESSAGE)) {
+        throw new CurrencyPairNotValidException();
+      }
+    }
+    return new ExchangeException(e.getMessage());
+  }
 }

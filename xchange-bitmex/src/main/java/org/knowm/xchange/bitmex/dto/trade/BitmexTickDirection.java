@@ -7,43 +7,45 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.knowm.xchange.bitmex.dto.trade.BitmexTickDirection.BitmexTickDirectionDeserializer;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.knowm.xchange.bitmex.dto.trade.BitmexTickDirection.BitmexTickDirectionDeserializer;
 
 @JsonDeserialize(using = BitmexTickDirectionDeserializer.class)
 public enum BitmexTickDirection {
-	MINUSTICK,
-	PLUSTICK,
-	ZEROPLUSTICK;
+  MINUSTICK,
+  PLUSTICK,
+  ZEROPLUSTICK;
 
-	private static final Map<String, BitmexTickDirection> fromString = new HashMap<>();
+  private static final Map<String, BitmexTickDirection> fromString = new HashMap<>();
 
-	static {
-		for (BitmexTickDirection tickDirection : values())
-			fromString.put(tickDirection.toString(), tickDirection);
-	}
+  static {
+    for (BitmexTickDirection tickDirection : values())
+      fromString.put(tickDirection.toString(), tickDirection);
+  }
 
-	public static BitmexTickDirection fromString(String tickDirectionString) {
-		return fromString.get(tickDirectionString.toLowerCase());
-	}
+  public static BitmexTickDirection fromString(String tickDirectionString) {
 
-	@Override
-	public String toString() {
-		return super.toString().toLowerCase();
-	}
+    return fromString.get(tickDirectionString.toLowerCase());
+  }
 
-	static class BitmexTickDirectionDeserializer extends JsonDeserializer<BitmexTickDirection> {
+  @Override
+  public String toString() {
 
-		@Override
-		public BitmexTickDirection deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-				throws IOException {
-			ObjectCodec oc = jsonParser.getCodec();
-			JsonNode node = oc.readTree(jsonParser);
-			String tickDirectionString = node.textValue();
-			return fromString(tickDirectionString);
-		}
-	}
+    return super.toString().toLowerCase();
+  }
+
+  static class BitmexTickDirectionDeserializer extends JsonDeserializer<BitmexTickDirection> {
+
+    @Override
+    public BitmexTickDirection deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException, JsonProcessingException {
+
+      ObjectCodec oc = jsonParser.getCodec();
+      JsonNode node = oc.readTree(jsonParser);
+      String tickDirectionString = node.textValue();
+      return fromString(tickDirectionString);
+    }
+  }
 }

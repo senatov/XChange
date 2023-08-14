@@ -4,21 +4,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BitfinexCancelOrderMultiResponse {
 
-	private final String result;
+  private final String result;
 
-	/**
-	 * Constructor
-	 */
-	public BitfinexCancelOrderMultiResponse(@JsonProperty("result") String result) {
-		this.result = result;
-	}
+  /**
+   * Constructor
+   *
+   * @param result
+   */
+  public BitfinexCancelOrderMultiResponse(@JsonProperty("result") String result) {
 
-	public String getResult() {
-		return result;
-	}
+    this.result = result;
+  }
 
-	@Override
-	public String toString() {
-		return "BitfinexCancelOrderMultiResponse [result=" + result + "]";
-	}
+  public String getResult() {
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "BitfinexCancelOrderMultiResponse [result=" + result + "]";
+  }
 }

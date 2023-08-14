@@ -1,69 +1,79 @@
 package org.knowm.xchange.cexio.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
-/**
- * Author: brox Since: 2/5/14
- */
+/** Author: brox Since: 2/5/14 */
 public class CexIOTrade {
 
-	private final BigDecimal amount;
-	private final BigDecimal price;
-	private final long date;
-	private final long tid;
-	private final String type;
+  private final BigDecimal amount;
+  private final BigDecimal price;
+  private final long date;
+  private final long tid;
+  private final String type;
 
-	/**
-	 * Constructor
-	 */
-	public CexIOTrade(
-			@JsonProperty("amount") BigDecimal amount,
-			@JsonProperty("price") BigDecimal price,
-			@JsonProperty("date") long date,
-			@JsonProperty("tid") long tid,
-			@JsonProperty("type") String type) {
-		this.price = price;
-		this.amount = amount;
-		this.tid = tid;
-		this.date = date;
-		this.type = type;
-	}
+  /**
+   * Constructor
+   *
+   * @param amount
+   * @param price
+   * @param date
+   * @param tid
+   */
+  public CexIOTrade(
+      @JsonProperty("amount") BigDecimal amount,
+      @JsonProperty("price") BigDecimal price,
+      @JsonProperty("date") long date,
+      @JsonProperty("tid") long tid,
+      @JsonProperty("type") String type) {
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+    this.price = price;
+    this.amount = amount;
+    this.tid = tid;
+    this.date = date;
+    this.type = type;
+  }
 
-	public long getDate() {
-		return date;
-	}
+  public BigDecimal getAmount() {
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    return amount;
+  }
 
-	public long getTid() {
-		return tid;
-	}
+  public long getDate() {
 
-	public String getType() {
-		return type;
-	}
+    return date;
+  }
 
-	@Override
-	public String toString() {
-		String builder = "CexIOTrade [amount=" +
-				amount +
-				", price=" +
-				price +
-				", date=" +
-				date +
-				", tid=" +
-				tid +
-				", type=" +
-				type +
-				"]";
-		return builder;
-	}
+  public BigDecimal getPrice() {
+
+    return price;
+  }
+
+  public long getTid() {
+
+    return tid;
+  }
+
+  public String getType() {
+
+    return type;
+  }
+
+  @Override
+  public String toString() {
+
+    StringBuilder builder = new StringBuilder();
+    builder.append("CexIOTrade [amount=");
+    builder.append(amount);
+    builder.append(", price=");
+    builder.append(price);
+    builder.append(", date=");
+    builder.append(date);
+    builder.append(", tid=");
+    builder.append(tid);
+    builder.append(", type=");
+    builder.append(type);
+    builder.append("]");
+    return builder.toString();
+  }
 }

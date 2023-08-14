@@ -6,10 +6,13 @@ import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.bankera.BankeraExchange;
 
 public class BankeraDemoUtils {
-	public static Exchange createExchange() {
-		ExchangeSpecification exSpec = new ExchangeSpecification(BankeraExchange.class);
-		exSpec.setExchangeSpecificParametersItem("clientId", "");
-		exSpec.setExchangeSpecificParametersItem("clientSecret", "");
-		return ExchangeFactory.INSTANCE.createExchange(exSpec);
-	}
+  public static Exchange createExchange() {
+
+    ExchangeSpecification exSpec = new ExchangeSpecification(BankeraExchange.class);
+
+    exSpec.setExchangeSpecificParametersItem("clientId", "");
+    exSpec.setExchangeSpecificParametersItem("clientSecret", "");
+
+    return ExchangeFactory.INSTANCE.createExchange(exSpec);
+  }
 }

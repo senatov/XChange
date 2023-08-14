@@ -9,35 +9,32 @@ import org.knowm.xchange.coinmarketcap.pro.v1.dto.marketdata.CmcStatus;
  */
 public class CmcResult<V> {
 
-	/**
-	 * "data" contains result of the queried endpoint
-	 */
-	private final V data;
+  /** "data" contains result of the queried endpoint */
+  private final V data;
 
-	/**
-	 * "status" is always present and contains status info about the returned call
-	 */
-	private final CmcStatus status;
+  /** "status" is always present and contains status info about the returned call */
+  private final CmcStatus status;
 
-	public CmcResult(@JsonProperty("data") V data, @JsonProperty("status") CmcStatus status) {
-		this.data = data;
-		this.status = status;
-	}
+  public CmcResult(@JsonProperty("data") V data, @JsonProperty("status") CmcStatus status) {
 
-	public boolean isSuccess() {
-		return status.getErrorCode() == 0;
-	}
+    this.data = data;
+    this.status = status;
+  }
 
-	public V getData() {
-		return data;
-	}
+  public boolean isSuccess() {
+    return status.getErrorCode() == 0;
+  }
 
-	public CmcStatus getStatus() {
-		return status;
-	}
+  public V getData() {
+    return data;
+  }
 
-	@Override
-	public String toString() {
-		return "CmcResult{" + "data=" + data + ", status=" + status + '}';
-	}
+  public CmcStatus getStatus() {
+    return status;
+  }
+
+  @Override
+  public String toString() {
+    return "CmcResult{" + "data=" + data + ", status=" + status + '}';
+  }
 }

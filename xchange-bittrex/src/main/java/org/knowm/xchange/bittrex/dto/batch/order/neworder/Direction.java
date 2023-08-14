@@ -7,8 +7,8 @@ import org.knowm.xchange.bittrex.BittrexConstants;
 @AllArgsConstructor
 @Getter
 public enum Direction {
-	BUY(BittrexConstants.BUY),
-	SELL(BittrexConstants.SELL);
+  BUY(BittrexConstants.BUY),
+  SELL(BittrexConstants.SELL);
 
-	private final String direction;
+  private final String direction;
 }

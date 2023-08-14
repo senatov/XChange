@@ -2,25 +2,24 @@ package org.knowm.xchange.bitcoinde.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * @author kaiserfr
- */
+/** @author kaiserfr */
 public class BitcoindeIdResponse {
-	private final String id;
+  private final String id;
 
-	public BitcoindeIdResponse(@JsonProperty("order_id") String id) {
-		this.id = id;
-	}
+  public BitcoindeIdResponse(@JsonProperty("order_id") String id) {
+    this.id = id;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public String getId() {
+    return id;
+  }
 
-	@Override
-	public String toString() {
-		String builder = "CoinbaseExIdResponse [id=" +
-				id +
-				"]";
-		return builder;
-	}
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("CoinbaseExIdResponse [id=");
+    builder.append(id);
+    builder.append("]");
+    return builder.toString();
+  }
 }

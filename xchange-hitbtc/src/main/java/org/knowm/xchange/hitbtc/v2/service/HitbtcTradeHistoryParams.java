@@ -6,45 +6,45 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParamLimit;
 import org.knowm.xchange.service.trade.params.TradeHistoryParamOffset;
 
 public class HitbtcTradeHistoryParams
-		implements TradeHistoryParamLimit, TradeHistoryParamOffset, TradeHistoryParamCurrencyPair {
+    implements TradeHistoryParamLimit, TradeHistoryParamOffset, TradeHistoryParamCurrencyPair {
 
-	private CurrencyPair pair;
-	private Integer limit;
-	private Long offset;
+  private CurrencyPair pair;
+  private Integer limit;
+  private Long offset;
 
-	public HitbtcTradeHistoryParams(CurrencyPair pair, Integer limit, Long offset) {
-		this.pair = pair;
-		this.limit = limit;
-		this.offset = offset;
-	}
+  public HitbtcTradeHistoryParams(CurrencyPair pair, Integer limit, Long offset) {
+    this.pair = pair;
+    this.limit = limit;
+    this.offset = offset;
+  }
 
-	@Override
-	public CurrencyPair getCurrencyPair() {
-		return pair;
-	}
+  @Override
+  public CurrencyPair getCurrencyPair() {
+    return pair;
+  }
 
-	@Override
-	public void setCurrencyPair(CurrencyPair pair) {
-		this.pair = pair;
-	}
+  @Override
+  public void setCurrencyPair(CurrencyPair pair) {
+    this.pair = pair;
+  }
 
-	@Override
-	public Integer getLimit() {
-		return limit;
-	}
+  @Override
+  public Integer getLimit() {
+    return limit;
+  }
 
-	@Override
-	public void setLimit(Integer limit) {
-		this.limit = limit;
-	}
+  @Override
+  public void setLimit(Integer limit) {
+    this.limit = limit;
+  }
 
-	@Override
-	public Long getOffset() {
-		return offset;
-	}
+  @Override
+  public Long getOffset() {
+    return offset;
+  }
 
-	@Override
-	public void setOffset(Long offset) {
-		this.offset = offset;
-	}
+  @Override
+  public void setOffset(Long offset) {
+    this.offset = offset;
+  }
 }

@@ -1,94 +1,104 @@
 package org.knowm.xchange.gateio.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
+import java.util.List;
 import org.knowm.xchange.gateio.dto.GateioBaseResponse;
 import org.knowm.xchange.gateio.dto.GateioOrderType;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 public class GateioTradeHistory extends GateioBaseResponse {
 
-	private final List<GateioPublicTrade> trades;
-	private final String elapsed;
+  private final List<GateioPublicTrade> trades;
+  private final String elapsed;
 
-	private GateioTradeHistory(
-			@JsonProperty("data") List<GateioPublicTrade> trades,
-			@JsonProperty("result") boolean result,
-			@JsonProperty("elapsed") String elapsed) {
-		super(result, null);
-		this.trades = trades;
-		this.elapsed = elapsed;
-	}
+  private GateioTradeHistory(
+      @JsonProperty("data") List<GateioPublicTrade> trades,
+      @JsonProperty("result") boolean result,
+      @JsonProperty("elapsed") String elapsed) {
 
-	public List<GateioPublicTrade> getTrades() {
-		return trades;
-	}
+    super(result, null);
+    this.trades = trades;
+    this.elapsed = elapsed;
+  }
 
-	public String getElapsed() {
-		return elapsed;
-	}
+  public List<GateioPublicTrade> getTrades() {
 
-	@Override
-	public String toString() {
-		return "BTERPublicTrades [trades=" + trades + ", elapsed=" + elapsed + "]";
-	}
+    return trades;
+  }
 
-	public static class GateioPublicTrade {
+  public String getElapsed() {
 
-		private final long date;
-		private final BigDecimal price;
-		private final BigDecimal amount;
-		private final String tradeId;
-		private final GateioOrderType type;
+    return elapsed;
+  }
 
-		private GateioPublicTrade(
-				@JsonProperty("date") String date,
-				@JsonProperty("rate") BigDecimal price,
-				@JsonProperty("amount") BigDecimal amount,
-				@JsonProperty("tradeID") String tradeId,
-				@JsonProperty("timestamp") long timestamp,
-				@JsonProperty("type") GateioOrderType type) {
-			this.date = timestamp;
-			this.price = price;
-			this.amount = amount;
-			this.tradeId = tradeId;
-			this.type = type;
-		}
+  @Override
+  public String toString() {
 
-		public long getDate() {
-			return date;
-		}
+    return "BTERPublicTrades [trades=" + trades + ", elapsed=" + elapsed + "]";
+  }
 
-		public BigDecimal getPrice() {
-			return price;
-		}
+  public static class GateioPublicTrade {
 
-		public BigDecimal getAmount() {
-			return amount;
-		}
+    private final long date;
+    private final BigDecimal price;
+    private final BigDecimal amount;
+    private final String tradeId;
+    private final GateioOrderType type;
 
-		public String getTradeId() {
-			return tradeId;
-		}
+    private GateioPublicTrade(
+        @JsonProperty("date") String date,
+        @JsonProperty("rate") BigDecimal price,
+        @JsonProperty("amount") BigDecimal amount,
+        @JsonProperty("tradeID") String tradeId,
+        @JsonProperty("timestamp") long timestamp,
+        @JsonProperty("type") GateioOrderType type) {
 
-		public GateioOrderType getType() {
-			return type;
-		}
+      this.date = timestamp;
+      this.price = price;
+      this.amount = amount;
+      this.tradeId = tradeId;
+      this.type = type;
+    }
 
-		@Override
-		public String toString() {
-			return "BTERPublicTrade [date="
-					+ date
-					+ ", price="
-					+ price
-					+ ", amount="
-					+ amount
-					+ ", tradeId="
-					+ tradeId
-					+ ", type="
-					+ type
-					+ "]";
-		}
-	}
+    public long getDate() {
+
+      return date;
+    }
+
+    public BigDecimal getPrice() {
+
+      return price;
+    }
+
+    public BigDecimal getAmount() {
+
+      return amount;
+    }
+
+    public String getTradeId() {
+
+      return tradeId;
+    }
+
+    public GateioOrderType getType() {
+
+      return type;
+    }
+
+    @Override
+    public String toString() {
+
+      return "BTERPublicTrade [date="
+          + date
+          + ", price="
+          + price
+          + ", amount="
+          + amount
+          + ", tradeId="
+          + tradeId
+          + ", type="
+          + type
+          + "]";
+    }
+  }
 }

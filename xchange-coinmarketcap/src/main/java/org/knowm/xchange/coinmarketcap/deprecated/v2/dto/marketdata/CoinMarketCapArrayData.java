@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,37 +16,41 @@ import java.util.List;
 @JsonDeserialize(using = CoinMarketCapArrayData.CoinMarketCapTickersDeserializer.class)
 public class CoinMarketCapArrayData<T> {
 
-	private final List<T> data;
+  private List<T> data;
 
-	private CoinMarketCapArrayData(List<T> data) {
-		this.data = data;
-	}
+  private CoinMarketCapArrayData(List<T> data) {
 
-	public List<T> getData() {
-		return data;
-	}
+    this.data = data;
+  }
 
-	static class CoinMarketCapTickersDeserializer<T>
-			extends JsonDeserializer<CoinMarketCapArrayData<CoinMarketCapTicker>> {
+  public List<T> getData() {
+    return data;
+  }
 
-		@Override
-		public CoinMarketCapArrayData<CoinMarketCapTicker> deserialize(
-				JsonParser jp, DeserializationContext ctxt) throws IOException {
-			ObjectCodec oc = jp.getCodec();
-			JsonNode node = oc.readTree(jp);
-			if (node.isObject()) {
-				List<CoinMarketCapTicker> tickers = new LinkedList<>();
-				ObjectMapper mapper = new ObjectMapper();
-				SimpleModule module = new SimpleModule();
-				module.addDeserializer(
-						CoinMarketCapTicker.class, new CoinMarketCapTicker.CoinMarketCapTickerDeserializer());
-				mapper.registerModule(module);
-				for (JsonNode child : node.get("data")) {
-					tickers.add(mapper.treeToValue(child, CoinMarketCapTicker.class));
-				}
-				return new CoinMarketCapArrayData<>(tickers);
-			}
-			return null;
-		}
-	}
+  static class CoinMarketCapTickersDeserializer<T>
+      extends JsonDeserializer<CoinMarketCapArrayData<CoinMarketCapTicker>> {
+
+    @Override
+    public CoinMarketCapArrayData<CoinMarketCapTicker> deserialize(
+        JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+
+      ObjectCodec oc = jp.getCodec();
+      JsonNode node = oc.readTree(jp);
+
+      if (node.isObject()) {
+        List<CoinMarketCapTicker> tickers = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(
+            CoinMarketCapTicker.class, new CoinMarketCapTicker.CoinMarketCapTickerDeserializer());
+        mapper.registerModule(module);
+        for (JsonNode child : node.get("data")) {
+          tickers.add(mapper.treeToValue(child, CoinMarketCapTicker.class));
+        }
+
+        return new CoinMarketCapArrayData<>(tickers);
+      }
+      return null;
+    }
+  }
 }

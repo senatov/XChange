@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.util.Map;
 
 public class MEXCAccountServiceRaw extends MEXCBaseService {
-	public MEXCAccountServiceRaw(Exchange exchange) {
-		super(exchange);
-	}
+  public MEXCAccountServiceRaw(Exchange exchange) {
+    super(exchange);
+  }
 
-	public MEXCResult<Map<String, MEXCBalance>> getWalletBalances() throws IOException {
-		return mexcAuthenticated.getWalletBalances(apiKey, nonceFactory, signatureCreator);
-	}
+  public MEXCResult<Map<String, MEXCBalance>> getWalletBalances() throws IOException {
+    return mexcAuthenticated.getWalletBalances(apiKey, nonceFactory, signatureCreator);
+  }
 
 }

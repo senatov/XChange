@@ -5,23 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-/**
- * https://www.okx.com/docs-v5/en/#rest-api-account-set-leverage
- */
+/** https://www.okx.com/docs-v5/en/#rest-api-account-set-leverage */
 @Getter
 @NoArgsConstructor
 @ToString
 public class OkexSetLeverageResponse {
 
-	@JsonProperty("mgnMode")
-	private String marginMode;
+  @JsonProperty("mgnMode")
+  private String marginMode;
 
-	@JsonProperty("posSide")
-	private String positionSide;
+  @JsonProperty("posSide")
+  private String positionSide;
 
-	@JsonProperty("instId")
-	private String instrumentId;
+  @JsonProperty("instId")
+  private String instrumentId;
 
-	@JsonProperty("lever")
-	private String leverage;
+  @JsonProperty("lever")
+  private String leverage;
 }

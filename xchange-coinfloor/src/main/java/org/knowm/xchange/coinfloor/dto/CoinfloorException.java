@@ -5,15 +5,15 @@ import si.mazi.rescu.HttpStatusExceptionSupport;
 
 public class CoinfloorException extends HttpStatusExceptionSupport {
 
-	private final int errorCode;
+  private final int errorCode;
 
-	public CoinfloorException(
-			@JsonProperty("error_code") int errorCode, @JsonProperty("error_msg") String reason) {
-		super(reason);
-		this.errorCode = errorCode;
-	}
+  public CoinfloorException(
+      @JsonProperty("error_code") int errorCode, @JsonProperty("error_msg") String reason) {
+    super(reason);
+    this.errorCode = errorCode;
+  }
 
-	public int getErrorCode() {
-		return errorCode;
-	}
+  public int getErrorCode() {
+    return errorCode;
+  }
 }

@@ -7,41 +7,44 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import java.io.IOException;
 import org.knowm.xchange.bitso.dto.BitsoBaseResponse;
 import org.knowm.xchange.bitso.dto.account.BitsoDepositAddress.BitsoDepositAddressDeserializer;
-
-import java.io.IOException;
 
 @JsonDeserialize(using = BitsoDepositAddressDeserializer.class)
 public class BitsoDepositAddress extends BitsoBaseResponse {
 
-	private final String depositAddress;
+  private final String depositAddress;
 
-	protected BitsoDepositAddress(String error, String depositAddress) {
-		super(error);
-		this.depositAddress = depositAddress;
-	}
+  protected BitsoDepositAddress(String error, String depositAddress) {
 
-	public String getDepositAddress() {
-		return depositAddress;
-	}
+    super(error);
+    this.depositAddress = depositAddress;
+  }
 
-	@Override
-	public String toString() {
-		return "BitsoDepositAddress [depositAddress=" + depositAddress + "]";
-	}
+  public String getDepositAddress() {
 
-	static class BitsoDepositAddressDeserializer extends JsonDeserializer<BitsoDepositAddress> {
+    return depositAddress;
+  }
 
-		@Override
-		public BitsoDepositAddress deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-				throws IOException {
-			ObjectCodec oc = jsonParser.getCodec();
-			JsonNode node = oc.readTree(jsonParser);
-			if (node.get("error") != null) {
-				return new BitsoDepositAddress(node.path("error").asText(), "");
-			}
-			return new BitsoDepositAddress(null, node.asText());
-		}
-	}
+  @Override
+  public String toString() {
+
+    return "BitsoDepositAddress [depositAddress=" + depositAddress + "]";
+  }
+
+  static class BitsoDepositAddressDeserializer extends JsonDeserializer<BitsoDepositAddress> {
+
+    @Override
+    public BitsoDepositAddress deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException, JsonProcessingException {
+
+      ObjectCodec oc = jsonParser.getCodec();
+      JsonNode node = oc.readTree(jsonParser);
+      if (node.get("error") != null) {
+        return new BitsoDepositAddress(node.path("error").asText(), "");
+      }
+      return new BitsoDepositAddress(null, node.asText());
+    }
+  }
 }

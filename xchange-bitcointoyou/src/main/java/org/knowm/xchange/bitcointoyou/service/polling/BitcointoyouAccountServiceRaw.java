@@ -1,13 +1,12 @@
 package org.knowm.xchange.bitcointoyou.service.polling;
 
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitcointoyou.BitcointoyouAdapters;
 import org.knowm.xchange.bitcointoyou.BitcointoyouException;
 import org.knowm.xchange.bitcointoyou.dto.account.BitcointoyouBalance;
 import org.knowm.xchange.dto.account.Balance;
 import org.knowm.xchange.exceptions.ExchangeException;
-
-import java.util.List;
 
 /**
  * AccountService raw implementation for Bitcointoyou Exchange.
@@ -17,23 +16,25 @@ import java.util.List;
  */
 class BitcointoyouAccountServiceRaw extends BitcointoyouBasePollingService {
 
-	/**
-	 * Constructor
-	 *
-	 * @param exchange the Bitcointoyou Exchange
-	 */
-	BitcointoyouAccountServiceRaw(Exchange exchange) {
-		super(exchange);
-	}
+  /**
+   * Constructor
+   *
+   * @param exchange the Bitcointoyou Exchange
+   */
+  BitcointoyouAccountServiceRaw(Exchange exchange) {
 
-	List<Balance> getWallets() {
-		try {
-			BitcointoyouBalance response =
-					bitcointoyouAuthenticated.returnBalances(
-							apiKey, exchange.getNonceFactory(), signatureCreator);
-			return BitcointoyouAdapters.adaptBitcointoyouBalances(response);
-		} catch (BitcointoyouException e) {
-			throw new ExchangeException(e.getError());
-		}
-	}
+    super(exchange);
+  }
+
+  List<Balance> getWallets() {
+
+    try {
+      BitcointoyouBalance response =
+          bitcointoyouAuthenticated.returnBalances(
+              apiKey, exchange.getNonceFactory(), signatureCreator);
+      return BitcointoyouAdapters.adaptBitcointoyouBalances(response);
+    } catch (BitcointoyouException e) {
+      throw new ExchangeException(e.getError());
+    }
+  }
 }

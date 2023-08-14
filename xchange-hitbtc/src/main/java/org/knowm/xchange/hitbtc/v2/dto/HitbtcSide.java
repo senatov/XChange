@@ -3,22 +3,24 @@ package org.knowm.xchange.hitbtc.v2.dto;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum HitbtcSide {
-	BUY("buy"),
-	SELL("sell");
+  BUY("buy"),
+  SELL("sell");
 
-	private final String value;
+  private final String value;
 
-	HitbtcSide(String value) {
-		this.value = value;
-	}
+  HitbtcSide(String value) {
 
-	public String getValue() {
-		return value;
-	}
+    this.value = value;
+  }
 
-	@Override
-	@JsonValue
-	public String toString() {
-		return value;
-	}
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  @JsonValue
+  public String toString() {
+
+    return value;
+  }
 }

@@ -4,30 +4,35 @@ import java.math.BigDecimal;
 
 public class KrakenSpread {
 
-	private final long time;
-	private final BigDecimal bid;
-	private final BigDecimal ask;
+  private final long time;
+  private final BigDecimal bid;
+  private final BigDecimal ask;
 
-	public KrakenSpread(long time, BigDecimal bid, BigDecimal ask) {
-		this.time = time;
-		this.bid = bid;
-		this.ask = ask;
-	}
+  public KrakenSpread(long time, BigDecimal bid, BigDecimal ask) {
 
-	public long getTime() {
-		return time;
-	}
+    this.time = time;
+    this.bid = bid;
+    this.ask = ask;
+  }
 
-	public BigDecimal getBid() {
-		return bid;
-	}
+  public long getTime() {
 
-	public BigDecimal getAsk() {
-		return ask;
-	}
+    return time;
+  }
 
-	@Override
-	public String toString() {
-		return "KrakenSpread [time=" + time + ", bid=" + bid + ", ask=" + ask + "]";
-	}
+  public BigDecimal getBid() {
+
+    return bid;
+  }
+
+  public BigDecimal getAsk() {
+
+    return ask;
+  }
+
+  @Override
+  public String toString() {
+
+    return "KrakenSpread [time=" + time + ", bid=" + bid + ", ask=" + ask + "]";
+  }
 }

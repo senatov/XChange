@@ -46,7 +46,7 @@
       "scale": "",
       "withdrawal_fee": ""
     }
-  },
+},
   "public_rate_limits": [
     {
       "calls": 150,

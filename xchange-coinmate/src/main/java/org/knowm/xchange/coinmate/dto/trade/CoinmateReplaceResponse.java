@@ -5,10 +5,11 @@ import org.knowm.xchange.coinmate.dto.CoinmateBaseResponse;
 
 public class CoinmateReplaceResponse extends CoinmateBaseResponse<CoinmateReplaceResponseData> {
 
-	public CoinmateReplaceResponse(
-			@JsonProperty("error") boolean error,
-			@JsonProperty("errorMessage") String errorMessage,
-			@JsonProperty("data") CoinmateReplaceResponseData data) {
-		super(error, errorMessage, data);
-	}
+  public CoinmateReplaceResponse(
+      @JsonProperty("error") boolean error,
+      @JsonProperty("errorMessage") String errorMessage,
+      @JsonProperty("data") CoinmateReplaceResponseData data) {
+
+    super(error, errorMessage, data);
+  }
 }

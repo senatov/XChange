@@ -4,45 +4,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinoneAuthRequest {
 
-	@JsonProperty("access_token")
-	protected String accessTocken;
+  @JsonProperty("access_token")
+  protected String accessTocken;
 
-	@JsonProperty("nonce")
-	protected Long nonce;
+  @JsonProperty("nonce")
+  protected Long nonce;
 
-	@JsonProperty("type")
-	protected String type;
+  @JsonProperty("type")
+  protected String type;
 
-	/**
-	 * Constructor
-	 */
-	public CoinoneAuthRequest(String accessTocken, Long nonce, String type) {
-		this.accessTocken = accessTocken;
-		this.nonce = nonce;
-		this.type = type;
-	}
+  /**
+   * Constructor
+   *
+   * @param nonce
+   */
+  public CoinoneAuthRequest(String accessTocken, Long nonce, String type) {
 
-	public String getAccessTocken() {
-		return accessTocken;
-	}
+    this.accessTocken = accessTocken;
+    this.nonce = nonce;
+    this.type = type;
+  }
 
-	public void setAccessTocken(String accessTocken) {
-		this.accessTocken = accessTocken;
-	}
+  public String getAccessTocken() {
+    return accessTocken;
+  }
 
-	public Long getNonce() {
-		return nonce;
-	}
+  public void setAccessTocken(String accessTocken) {
+    this.accessTocken = accessTocken;
+  }
 
-	public void setNonce(Long nonce) {
-		this.nonce = nonce;
-	}
+  public Long getNonce() {
+    return nonce;
+  }
 
-	public String getType() {
-		return type;
-	}
+  public void setNonce(Long nonce) {
+    this.nonce = nonce;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
 }

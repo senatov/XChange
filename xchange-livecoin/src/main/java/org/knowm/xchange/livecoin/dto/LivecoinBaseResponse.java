@@ -6,6 +6,7 @@ import si.mazi.rescu.ExceptionalReturnContentException;
 
 /**
  * Base of all Livecoin responses
+ *
  * <p>Livecoin doesn't signal most errors via HTTP status. In their documentation they say that they
  * set the success flag to true or false. But in some cases a successful response will not have the
  * "success" property at all.
@@ -15,9 +16,9 @@ import si.mazi.rescu.ExceptionalReturnContentException;
 @JsonIgnoreProperties({"errorCode", "errorMessage"})
 public class LivecoinBaseResponse {
 
-	public LivecoinBaseResponse(@JsonProperty("success") Boolean success) {
-		if (success != null && !success) {
-			throw new ExceptionalReturnContentException("Success set to false in response");
-		}
-	}
+  public LivecoinBaseResponse(@JsonProperty("success") Boolean success) {
+    if (success != null && !success) {
+      throw new ExceptionalReturnContentException("Success set to false in response");
+    }
+  }
 }

@@ -1,5 +1,7 @@
 package org.knowm.xchange.bitz.service;
 
+import java.io.IOException;
+import java.util.List;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.bitz.BitZAdapters;
 import org.knowm.xchange.bitz.BitZUtils;
@@ -10,40 +12,39 @@ import org.knowm.xchange.dto.marketdata.Ticker;
 import org.knowm.xchange.dto.marketdata.Trades;
 import org.knowm.xchange.service.marketdata.MarketDataService;
 
-import java.io.IOException;
-import java.util.List;
-
 public class BitZMarketDataService extends BitZMarketDataServiceRaw implements MarketDataService {
 
-	public BitZMarketDataService(Exchange exchange) {
-		super(exchange);
-	}
-	// X-Change Generic Services
+  public BitZMarketDataService(Exchange exchange) {
+    super(exchange);
+  }
 
-	@Override
-	public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
-		return BitZAdapters.adaptTicker(
-				getBitZTicker(BitZUtils.toPairString(currencyPair)), currencyPair);
-	}
+  // X-Change Generic Services
 
-	@Override
-	public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
-		return BitZAdapters.adaptOrders(
-				getBitZOrders(BitZUtils.toPairString(currencyPair)), currencyPair);
-	}
+  @Override
+  public Ticker getTicker(CurrencyPair currencyPair, Object... args) throws IOException {
+    return BitZAdapters.adaptTicker(
+        getBitZTicker(BitZUtils.toPairString(currencyPair)), currencyPair);
+  }
 
-	@Override
-	public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
-		return BitZAdapters.adaptTrades(
-				getBitZTrades(BitZUtils.toPairString(currencyPair)), currencyPair);
-	}
-	// Exchange Specific Services
+  @Override
+  public OrderBook getOrderBook(CurrencyPair currencyPair, Object... args) throws IOException {
+    return BitZAdapters.adaptOrders(
+        getBitZOrders(BitZUtils.toPairString(currencyPair)), currencyPair);
+  }
 
-	public List<Ticker> getTickers(Object... args) throws IOException {
-		return BitZAdapters.adaptTickers(getBitZTickerAll());
-	}
+  @Override
+  public Trades getTrades(CurrencyPair currencyPair, Object... args) throws IOException {
+    return BitZAdapters.adaptTrades(
+        getBitZTrades(BitZUtils.toPairString(currencyPair)), currencyPair);
+  }
 
-	public BitZKline getKline(CurrencyPair currencyPair, String timescale) throws IOException {
-		return this.getBitZKline(BitZUtils.toPairString(currencyPair), timescale);
-	}
+  // Exchange Specific Services
+
+  public List<Ticker> getTickers(Object... args) throws IOException {
+    return BitZAdapters.adaptTickers(getBitZTickerAll());
+  }
+
+  public BitZKline getKline(CurrencyPair currencyPair, String timescale) throws IOException {
+    return this.getBitZKline(BitZUtils.toPairString(currencyPair), timescale);
+  }
 }

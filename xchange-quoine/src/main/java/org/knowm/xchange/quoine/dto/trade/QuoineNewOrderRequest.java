@@ -1,69 +1,69 @@
 package org.knowm.xchange.quoine.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 
 public class QuoineNewOrderRequest {
 
-	@JsonProperty("order_type")
-	private final String orderType; //  Values: limit, market or market_with_range
+  @JsonProperty("order_type")
+  private final String orderType; //  Values: limit, market or market_with_range
 
-	@JsonProperty("product_id")
-	private final int productId;
+  @JsonProperty("product_id")
+  private final int productId;
 
-	@JsonProperty("side")
-	private final String side; // buy or sell
+  @JsonProperty("side")
+  private final String side; // buy or sell
 
-	@JsonProperty("quantity")
-	private final BigDecimal quantity; //  Amount of BTC you want to trade.
+  @JsonProperty("quantity")
+  private final BigDecimal quantity; //  Amount of BTC you want to trade.
 
-	@JsonProperty("price")
-	private final BigDecimal price; //  Price of BTC you want to trade.
-	//  @JsonProperty("price_range")
-	//  private final boolean priceRange;
+  @JsonProperty("price")
+  private final BigDecimal price; //  Price of BTC you want to trade.
 
-	public QuoineNewOrderRequest(
-			String orderType, int productId, String side, BigDecimal quantity, BigDecimal price) {
-		this.orderType = orderType;
-		this.productId = productId;
-		this.side = side;
-		this.quantity = quantity;
-		this.price = price;
-	}
+  //  @JsonProperty("price_range")
+  //  private final boolean priceRange;
 
-	public String getOrderType() {
-		return orderType;
-	}
+  public QuoineNewOrderRequest(
+      String orderType, int productId, String side, BigDecimal quantity, BigDecimal price) {
+    this.orderType = orderType;
+    this.productId = productId;
+    this.side = side;
+    this.quantity = quantity;
+    this.price = price;
+  }
 
-	public int getProductId() {
-		return productId;
-	}
+  public String getOrderType() {
+    return orderType;
+  }
 
-	public String getSide() {
-		return side;
-	}
+  public int getProductId() {
+    return productId;
+  }
 
-	public BigDecimal getQuantity() {
-		return quantity;
-	}
+  public String getSide() {
+    return side;
+  }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+  public BigDecimal getQuantity() {
+    return quantity;
+  }
 
-	@Override
-	public String toString() {
-		return "QuoineNewOrderRequest [orderType="
-				+ orderType
-				+ ", productId="
-				+ productId
-				+ ", side="
-				+ side
-				+ ", quantity="
-				+ quantity
-				+ ", price="
-				+ price
-				+ "]";
-	}
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  @Override
+  public String toString() {
+    return "QuoineNewOrderRequest [orderType="
+        + orderType
+        + ", productId="
+        + productId
+        + ", side="
+        + side
+        + ", quantity="
+        + quantity
+        + ", price="
+        + price
+        + "]";
+  }
 }

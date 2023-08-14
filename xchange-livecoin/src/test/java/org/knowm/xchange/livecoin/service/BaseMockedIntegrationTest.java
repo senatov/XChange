@@ -7,23 +7,20 @@ import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.livecoin.LivecoinExchange;
 
-/**
- * @author walec51
- */
+/** @author walec51 */
 public class BaseMockedIntegrationTest {
 
-	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+  @Rule public WireMockRule wireMockRule = new WireMockRule();
 
-	public Exchange createExchange() {
-		Exchange exchange =
-				ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(LivecoinExchange.class);
-		ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
-		specification.setHost("localhost");
-		specification.setSslUri("http://localhost:" + wireMockRule.port());
-		specification.setPort(wireMockRule.port());
-		specification.setShouldLoadRemoteMetaData(false);
-		exchange.applySpecification(specification);
-		return exchange;
-	}
+  public Exchange createExchange() {
+    Exchange exchange =
+        ExchangeFactory.INSTANCE.createExchangeWithoutSpecification(LivecoinExchange.class);
+    ExchangeSpecification specification = exchange.getDefaultExchangeSpecification();
+    specification.setHost("localhost");
+    specification.setSslUri("http://localhost:" + wireMockRule.port());
+    specification.setPort(wireMockRule.port());
+    specification.setShouldLoadRemoteMetaData(false);
+    exchange.applySpecification(specification);
+    return exchange;
+  }
 }
