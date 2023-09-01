@@ -2,6 +2,8 @@ package org.knowm.xchange.dto.trade;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,7 @@ import org.knowm.xchange.dto.Order;
  */
 public final class OpenOrders implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6641558609478576563L;
 
   private final List<LimitOrder> openOrders;

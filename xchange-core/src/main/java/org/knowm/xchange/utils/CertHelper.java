@@ -139,11 +139,11 @@ public class CertHelper {
               "No supported SSL attributed enabled.  "
                   + Arrays.toString(original)
                   + " provided, "
-                  + disabled.toString()
+                  + disabled
                   + " disabled, "
                   + Arrays.toString(supported)
                   + " supported, result: "
-                  + filtered.toString());
+                  + filtered);
 
         return filtered.toArray(new String[filtered.size()]);
       }
@@ -232,7 +232,7 @@ public class CertHelper {
           if (hostname.equals(requestHostname) && principalName.equals(certPrincipalName))
             return true;
 
-        } catch (SSLPeerUnverifiedException e) {
+        } catch (SSLPeerUnverifiedException ignored) {
         }
 
         return HttpsURLConnection.getDefaultHostnameVerifier().verify(hostname, session);

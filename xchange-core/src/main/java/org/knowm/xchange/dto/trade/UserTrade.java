@@ -2,6 +2,8 @@ package org.knowm.xchange.dto.trade;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -17,6 +19,7 @@ import org.knowm.xchange.service.trade.params.TradeHistoryParams;
 @JsonDeserialize(builder = UserTrade.Builder.class)
 public class UserTrade extends Trade {
 
+  @Serial
   private static final long serialVersionUID = -3021617981214969292L;
 
   /** The id of the order responsible for execution of this trade */

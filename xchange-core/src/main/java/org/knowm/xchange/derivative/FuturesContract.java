@@ -2,6 +2,8 @@ package org.knowm.xchange.derivative;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
@@ -13,6 +15,7 @@ import org.knowm.xchange.instrument.Instrument;
 public class FuturesContract extends Instrument
     implements Derivative, Comparable<FuturesContract>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 6876906648149216819L;
 
   private static final Comparator<FuturesContract> COMPARATOR =

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,6 +27,7 @@ import org.knowm.xchange.instrument.Instrument;
 })
 public abstract class Order implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -8132103343647993249L;
   private static final Random random = new Random();
 
@@ -390,18 +393,13 @@ public abstract class Order implements Serializable {
     EXIT_BID;
 
     public OrderType getOpposite() {
-      switch (this) {
-        case BID:
-          return ASK;
-        case ASK:
-          return BID;
-        case EXIT_ASK:
-          return EXIT_BID;
-        case EXIT_BID:
-          return EXIT_ASK;
-        default:
-          return null;
-      }
+	    return switch (this) {
+		    case BID -> ASK;
+		    case ASK -> BID;
+		    case EXIT_ASK -> EXIT_BID;
+		    case EXIT_BID -> EXIT_ASK;
+		    default -> null;
+	    };
     }
   }
 
@@ -443,32 +441,19 @@ public abstract class Order implements Serializable {
 
     /** Returns true for final {@link OrderStatus} */
     public boolean isFinal() {
-      switch (this) {
-        case FILLED:
-        case PARTIALLY_CANCELED: // Cancelled, partially-executed order is final status.
-        case CANCELED:
-        case REPLACED:
-        case STOPPED:
-        case REJECTED:
-        case EXPIRED:
-        case CLOSED: // Filled or Cancelled
-          return true;
-        default:
-          return false;
-      }
+	    return switch (this) { // Cancelled, partially-executed order is final status.
+		    case FILLED, PARTIALLY_CANCELED, CANCELED, REPLACED, STOPPED, REJECTED, EXPIRED, CLOSED -> // Filled or Cancelled
+				    true;
+		    default -> false;
+	    };
     }
 
     /** Returns true when open {@link OrderStatus} */
     public boolean isOpen() {
-      switch (this) {
-        case PENDING_NEW:
-        case NEW:
-        case PARTIALLY_FILLED:
-        case OPEN:
-          return true;
-        default:
-          return false;
-      }
+	    return switch (this) {
+		    case PENDING_NEW, NEW, PARTIALLY_FILLED, OPEN -> true;
+		    default -> false;
+	    };
     }
   }
 

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -22,6 +24,7 @@ import org.knowm.xchange.instrument.Instrument;
 @JsonDeserialize(builder = LimitOrder.Builder.class)
 public class LimitOrder extends Order implements Comparable<LimitOrder> {
 
+  @Serial
   private static final long serialVersionUID = -5166848178471347540L;
 
   /** The limit price */

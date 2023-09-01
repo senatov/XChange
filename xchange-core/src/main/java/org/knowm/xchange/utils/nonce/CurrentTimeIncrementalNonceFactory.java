@@ -22,22 +22,13 @@ public class CurrentTimeIncrementalNonceFactory implements SynchronizedValueFact
   private final Supplier<Long> timeFn;
 
   public CurrentTimeIncrementalNonceFactory(final TimeUnit timeUnit) {
-    switch (timeUnit) {
-      case SECONDS:
-        timeFn = () -> System.currentTimeMillis() / 1000;
-        break;
-      case MILLISECONDS:
-        timeFn = System::currentTimeMillis;
-        break;
-      case MICROSECONDS:
-        timeFn = () -> System.nanoTime() / 1000;
-        break;
-      case NANOSECONDS:
-        timeFn = System::nanoTime;
-        break;
-      default:
-        throw new IllegalArgumentException(String.format("TimeUnit %s not supported", timeUnit));
-    }
+	  switch (timeUnit) {
+		  case SECONDS -> timeFn = () -> System.currentTimeMillis() / 1000;
+		  case MILLISECONDS -> timeFn = System::currentTimeMillis;
+		  case MICROSECONDS -> timeFn = () -> System.nanoTime() / 1000;
+		  case NANOSECONDS -> timeFn = System::nanoTime;
+		  default -> throw new IllegalArgumentException(String.format("TimeUnit %s not supported", timeUnit));
+	  }
   }
 
   @Override

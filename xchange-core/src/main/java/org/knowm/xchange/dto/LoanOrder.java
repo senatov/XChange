@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -8,6 +9,7 @@ import org.knowm.xchange.dto.Order.OrderType;
 /** Data object representing an order for a loan */
 public class LoanOrder implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -8311018082902024121L;
 
   /** Order type i.e. bid or ask */

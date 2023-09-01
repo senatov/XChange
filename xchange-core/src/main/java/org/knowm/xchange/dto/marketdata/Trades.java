@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static org.knowm.xchange.dto.marketdata.Trades.TradeSortType.SortByID;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 /** DTO representing a collection of trades */
 public class Trades implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 5790082783307641329L;
 
   private static final TradeIDComparator TRADE_ID_COMPARATOR = new TradeIDComparator();
@@ -76,18 +78,12 @@ public class Trades implements Serializable {
     this.lastID = lastID;
     this.tradeSortType = tradeSortType;
     this.nextPageCursor = nextPageCursor;
-
-    switch (tradeSortType) {
-      case SortByTimestamp:
-        Collections.sort(this.trades, TRADE_TIMESTAMP_COMPARATOR);
-        break;
-      case SortByID:
-        Collections.sort(this.trades, TRADE_ID_COMPARATOR);
-        break;
-
-      default:
-        break;
-    }
+	  switch (tradeSortType) {
+		  case SortByTimestamp -> Collections.sort(this.trades, TRADE_TIMESTAMP_COMPARATOR);
+		  case SortByID -> Collections.sort(this.trades, TRADE_ID_COMPARATOR);
+		  default -> {
+		  }
+	  }
   }
 
   /** @return A list of trades ordered by id */

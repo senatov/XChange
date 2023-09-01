@@ -7,12 +7,14 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /** Describe a call rate limit as a number of calls per some time span. */
 public class RateLimit implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 90431040086828390L;
 
   @JsonProperty("calls")
@@ -31,9 +33,6 @@ public class RateLimit implements Serializable {
   /**
    * Constructor
    *
-   * @param calls
-   * @param timeSpan
-   * @param timeUnit
    */
   public RateLimit(
       @JsonProperty("calls") int calls,

@@ -2,6 +2,8 @@ package org.knowm.xchange.dto.meta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ import org.knowm.xchange.utils.jackson.InstrumentMapDeserializer;
 @ToString
 public class ExchangeMetaData implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -1495610469981534977L;
 
   @JsonProperty("currency_pairs")

@@ -1,11 +1,14 @@
 package org.knowm.xchange.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 public final class Fee implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -6235230375777573680L;
 
   @JsonProperty("maker_fee")

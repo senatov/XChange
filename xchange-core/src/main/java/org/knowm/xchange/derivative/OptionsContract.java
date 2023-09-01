@@ -2,6 +2,8 @@ package org.knowm.xchange.derivative;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -18,6 +20,7 @@ import org.knowm.xchange.instrument.Instrument;
 public class OptionsContract extends Instrument
     implements Derivative, Comparable<OptionsContract>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 4546376909031640294L;
 
   public enum OptionType {

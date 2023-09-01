@@ -2,6 +2,8 @@ package org.knowm.xchange.currency;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import java.util.TreeSet;
  */
 public class Currency implements Comparable<Currency>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = -7340731832345284129L;
   private static final Map<String, Currency> currencies = new HashMap<>();
 
@@ -662,6 +665,7 @@ public class Currency implements Comparable<Currency>, Serializable {
 
   private static class CurrencyAttributes implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5575649542242146958L;
 
     public final Set<String> codes;

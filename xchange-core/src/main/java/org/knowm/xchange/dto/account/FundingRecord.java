@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.account;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +16,7 @@ import org.knowm.xchange.currency.Currency;
  */
 public final class FundingRecord implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 3788398035845873448L;
 
   /** Crypto currency address for deposit/withdrawal */

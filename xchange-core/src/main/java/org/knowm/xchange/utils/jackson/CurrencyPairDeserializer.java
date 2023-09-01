@@ -29,7 +29,7 @@ public class CurrencyPairDeserializer extends JsonDeserializer<CurrencyPair> {
     /*
      * Assume all symbols are alphanumeric; anything else is a separator
      */
-    final String symbols[] = currencyPairString.split("[^a-zA-Z0-9]");
+    final String[] symbols = currencyPairString.split("[^a-zA-Z0-9]");
     if (symbols.length == 2) {
       return new CurrencyPair(symbols[0], symbols[1]);
     }

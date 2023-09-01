@@ -105,7 +105,6 @@ public interface TradeService extends BaseService {
    * then the exchange will reject your order. Use {@link org.knowm.xchange.utils.OrderValuesHelper}
    * to validate and / or adjust it while you'r building an order.
    *
-   * @param marketOrder
    * @return the order ID
    * @throws ExchangeException - Indication that the exchange reported some kind of error with the
    *     request or response
@@ -128,7 +127,6 @@ public interface TradeService extends BaseService {
    * org.knowm.xchange.utils.OrderValuesHelper} to validate and / or adjust those values while you'r
    * building an order.
    *
-   * @param limitOrder
    * @return the order ID
    * @throws ExchangeException - Indication that the exchange reported some kind of error with the
    *     request or response
@@ -151,7 +149,6 @@ public interface TradeService extends BaseService {
    * org.knowm.xchange.utils.OrderValuesHelper} to validate and / or adjust those values while you'r
    * building an order.
    *
-   * @param stopOrder
    * @return the order ID
    * @throws ExchangeException - Indication that the exchange reported some kind of error with the
    *     request or response
@@ -200,7 +197,6 @@ public interface TradeService extends BaseService {
    * cancels order with matching orderId (conveniance method, typical just delegate to
    * cancelOrder(CancelOrderByIdParams))
    *
-   * @param orderId
    * @return true if order was successfully cancelled, false otherwise.
    * @throws ExchangeException - Indication that the exchange reported some kind of error with the
    *     request or response
@@ -217,7 +213,6 @@ public interface TradeService extends BaseService {
   /**
    * cancels order with matching orderParams
    *
-   * @param orderParams
    * @return true if order was successfully cancelled, false otherwise.
    * @throws ExchangeException - Indication that the exchange reported some kind of error with the
    *     request or response

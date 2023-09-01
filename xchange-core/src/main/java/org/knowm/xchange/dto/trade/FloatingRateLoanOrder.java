@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.trade;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.knowm.xchange.dto.LoanOrder;
@@ -14,6 +15,7 @@ import org.knowm.xchange.dto.Order;
 public final class FloatingRateLoanOrder extends LoanOrder
     implements Comparable<FloatingRateLoanOrder> {
 
+  @Serial
   private static final long serialVersionUID = -1474202797547840095L;
 
   private BigDecimal rate;

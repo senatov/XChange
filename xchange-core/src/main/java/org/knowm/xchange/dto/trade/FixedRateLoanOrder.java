@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.trade;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.knowm.xchange.dto.LoanOrder;
@@ -13,6 +14,7 @@ import org.knowm.xchange.dto.Order.OrderType;
  */
 public final class FixedRateLoanOrder extends LoanOrder implements Comparable<FixedRateLoanOrder> {
 
+  @Serial
   private static final long serialVersionUID = 2627042395091155053L;
 
   /** The fixed rate of return for a day */

@@ -4,5 +4,5 @@ import org.knowm.xchange.instrument.Instrument;
 
 public interface CancelOrderByInstrument extends CancelOrderParams {
 
-  public Instrument getInstrument();
+  Instrument getInstrument();
 }

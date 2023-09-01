@@ -1,8 +1,11 @@
 package org.knowm.xchange.exceptions;
 
+import java.io.Serial;
+
 /** An exception indicating that the server is not available, possibly due to downtime */
 public class ExchangeUnavailableException extends ExchangeException {
 
+  @Serial
   private static final long serialVersionUID = -194770176188883080L;
 
   public ExchangeUnavailableException(String message) {

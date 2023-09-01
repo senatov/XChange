@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.marketdata;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.knowm.xchange.dto.trade.FloatingRateLoanOrder;
 /** DTO representing the exchange loan order book */
 public final class LoanOrderBook implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -2894416631375841830L;
 
   private final List<FixedRateLoanOrder> fixedRateAsks;
@@ -22,11 +24,6 @@ public final class LoanOrderBook implements Serializable {
   /**
    * Constructor
    *
-   * @param timestamp
-   * @param fixedRateAsks
-   * @param fixedRateBids
-   * @param floatingRateAsks
-   * @param floatingRateBids
    */
   public LoanOrderBook(
       Date timestamp,
@@ -70,37 +67,36 @@ public final class LoanOrderBook implements Serializable {
   public void update(FixedRateLoanOrder updatedLoanOrder) {
 
     Iterator<FixedRateLoanOrder> it;
-
-    switch (updatedLoanOrder.getType()) {
-      case ASK:
-        it = fixedRateAsks.iterator();
-        while (it.hasNext()) {
-          FixedRateLoanOrder order = it.next();
-          if (order.getRate().equals(updatedLoanOrder.getRate())
-              && order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
-            it.remove();
-            break;
-          }
-        }
-        fixedRateAsks.add(updatedLoanOrder);
-        Collections.sort(fixedRateAsks);
-        break;
-      case BID:
-        it = fixedRateBids.iterator();
-        while (it.hasNext()) {
-          FixedRateLoanOrder order = it.next();
-          if (order.getRate().equals(updatedLoanOrder.getRate())
-              && order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
-            it.remove();
-            break;
-          }
-        }
-        fixedRateBids.add(updatedLoanOrder);
-        Collections.sort(fixedRateBids);
-        break;
-      default:
-        break;
-    }
+	  switch (updatedLoanOrder.getType()) {
+		  case ASK -> {
+			  it = fixedRateAsks.iterator();
+			  while (it.hasNext()) {
+				  FixedRateLoanOrder order = it.next();
+				  if (order.getRate().equals(updatedLoanOrder.getRate())
+						  && order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
+					  it.remove();
+					  break;
+				  }
+			  }
+			  fixedRateAsks.add(updatedLoanOrder);
+			  Collections.sort(fixedRateAsks);
+		  }
+		  case BID -> {
+			  it = fixedRateBids.iterator();
+			  while (it.hasNext()) {
+				  FixedRateLoanOrder order = it.next();
+				  if (order.getRate().equals(updatedLoanOrder.getRate())
+						  && order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
+					  it.remove();
+					  break;
+				  }
+			  }
+			  fixedRateBids.add(updatedLoanOrder);
+			  Collections.sort(fixedRateBids);
+		  }
+		  default -> {
+		  }
+	  }
 
     updateTimestamp(updatedLoanOrder.getTimestamp());
   }
@@ -109,45 +105,42 @@ public final class LoanOrderBook implements Serializable {
 
     Iterator<FloatingRateLoanOrder> it;
     boolean rateChanged = false;
-
-    switch (updatedLoanOrder.getType()) {
-      case ASK:
-        it = floatingRateAsks.iterator();
-        while (it.hasNext()) {
-          FloatingRateLoanOrder order = it.next();
-          if (order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
-            it.remove();
-          }
-          // check if the rate has changed and whether we know if it has changed
-          if (!order.getRate().equals(updatedLoanOrder.getRate()) && !rateChanged) {
-            rateChanged = true;
-          }
-          break;
-        }
-
-        floatingRateAsks.add(updatedLoanOrder);
-        Collections.sort(floatingRateAsks);
-        break;
-      case BID:
-        it = floatingRateBids.iterator();
-        while (it.hasNext()) {
-          FloatingRateLoanOrder order = it.next();
-          if (order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
-            it.remove();
-          }
-          // check if the rate has changed and whether we know if it has changed
-          if (!order.getRate().equals(updatedLoanOrder.getRate()) && !rateChanged) {
-            rateChanged = true;
-          }
-          break;
-        }
-
-        floatingRateBids.add(updatedLoanOrder);
-        Collections.sort(fixedRateBids);
-        break;
-      default:
-        break;
-    }
+	  switch (updatedLoanOrder.getType()) {
+		  case ASK -> {
+			  it = floatingRateAsks.iterator();
+			  while (it.hasNext()) {
+				  FloatingRateLoanOrder order = it.next();
+				  if (order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
+					  it.remove();
+				  }
+				  // check if the rate has changed and whether we know if it has changed
+				  if (!order.getRate().equals(updatedLoanOrder.getRate()) && !rateChanged) {
+					  rateChanged = true;
+				  }
+				  break;
+			  }
+			  floatingRateAsks.add(updatedLoanOrder);
+			  Collections.sort(floatingRateAsks);
+		  }
+		  case BID -> {
+			  it = floatingRateBids.iterator();
+			  while (it.hasNext()) {
+				  FloatingRateLoanOrder order = it.next();
+				  if (order.getDayPeriod() == updatedLoanOrder.getDayPeriod()) {
+					  it.remove();
+				  }
+				  // check if the rate has changed and whether we know if it has changed
+				  if (!order.getRate().equals(updatedLoanOrder.getRate()) && !rateChanged) {
+					  rateChanged = true;
+				  }
+				  break;
+			  }
+			  floatingRateBids.add(updatedLoanOrder);
+			  Collections.sort(fixedRateBids);
+		  }
+		  default -> {
+		  }
+	  }
 
     if (rateChanged) {
       for (FloatingRateLoanOrder order : floatingRateAsks) {

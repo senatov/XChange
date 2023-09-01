@@ -257,7 +257,7 @@ public class ExchangeSpecification {
 
   /**
    * Get the URI to reach the <b>root</b> of the exchange API for SSL queries (e.g. use
-   * "https://example.com:8443/exchange", not "https://example.com:8443/exchange/api/v3/trades").
+   * "<a href="https://example.com:8443/exchang<a href="e">...</a>",">not "https://example.com:8443/exch</a>ange/api/v3/trades").
    *
    * @return the SSL URI
    */
@@ -268,7 +268,7 @@ public class ExchangeSpecification {
 
   /**
    * Set the URI to reach the <b>root</b> of the exchange API for SSL queries (e.g. use
-   * "https://example.com:8443/exchange", not "https://example.com:8443/exchange/api/v3/trades").
+   * "<a href="https://example.com:8443/exchang<a href="e">...</a>",">not "https://example.com:8443/exch</a>ange/api/v3/trades").
    *
    * @param uri the SSL URI
    */
@@ -279,7 +279,7 @@ public class ExchangeSpecification {
 
   /**
    * Get the URI to reach the <b>root</b> of the exchange API for plaintext (non-SSL) queries (e.g.
-   * use "http://example.com:8080/exchange", not "http://example.com:8080/exchange/api/v3/trades")
+   * use "<a href="http://example.com:8080/exchang<a href="e">...</a>",">not "http://example.com:8080/exch</a>ange/api/v3/trades")
    *
    * @return the plain text URI
    */
@@ -290,7 +290,7 @@ public class ExchangeSpecification {
 
   /**
    * Set the URI to reach the <b>root</b> of the exchange API for plaintext (non-SSL) queries (e.g.
-   * use "http://example.com:8080/exchange", not "http://example.com:8080/exchange/api/v3/trades")
+   * use "<a href="http://example.com:8080/exchang<a href="e">...</a>",">not "http://example.com:8080/exch</a>ange/api/v3/trades")
    *
    * @param plainTextUri the plain text URI
    */
@@ -434,7 +434,6 @@ public class ExchangeSpecification {
    * defined in {@link ExchangeSpecification}. With this parameter, you can override that file with
    * a file of your choice located outside of the classpath.
    *
-   * @return
    */
   public String getMetaDataJsonFileOverride() {
 
@@ -448,7 +447,6 @@ public class ExchangeSpecification {
    * defined in {@link ExchangeSpecification}. With this parameter, you can override that file with
    * a file of your choice located outside of the classpath.
    *
-   * @return
    */
   public void setMetaDataJsonFileOverride(String metaDataJsonFileOverride) {
 
@@ -458,7 +456,6 @@ public class ExchangeSpecification {
   /**
    * By default, some meta data from the exchange is remotely loaded (if implemented).
    *
-   * @return
    */
   public boolean isShouldLoadRemoteMetaData() {
 
@@ -469,7 +466,6 @@ public class ExchangeSpecification {
    * By default, some meta data from the exchange is remotely loaded (if implemented). Here you can
    * set this default behavior.
    *
-   * @param shouldLoadRemoteMetaData
    */
   public void setShouldLoadRemoteMetaData(boolean shouldLoadRemoteMetaData) {
 

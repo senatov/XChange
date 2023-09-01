@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
@@ -23,6 +25,7 @@ import org.knowm.xchange.instrument.Instrument;
 @JsonDeserialize(builder = StopOrder.Builder.class)
 public class StopOrder extends Order implements Comparable<StopOrder> {
 
+  @Serial
   private static final long serialVersionUID = -7341286101341375106L;
 
   public enum Intention {

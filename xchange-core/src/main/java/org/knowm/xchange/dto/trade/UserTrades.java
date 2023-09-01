@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.trade;
 
+import java.io.Serial;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,6 +8,7 @@ import org.knowm.xchange.dto.marketdata.Trades;
 
 public class UserTrades extends Trades {
 
+  @Serial
   private static final long serialVersionUID = 1647451200702821967L;
 
   public UserTrades(

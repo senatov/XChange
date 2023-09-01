@@ -3,6 +3,8 @@ package org.knowm.xchange.dto.marketdata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +18,7 @@ import org.knowm.xchange.service.marketdata.MarketDataService;
 @JsonDeserialize(builder = Trade.Builder.class)
 public class Trade implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -4078893146776655648L;
 
   /** Did this trade result from the execution of a bid or a ask? */

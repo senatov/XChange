@@ -2,6 +2,8 @@ package org.knowm.xchange.currency;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.io.Serial;
 import java.io.Serializable;
 import org.knowm.xchange.instrument.Instrument;
 
@@ -18,6 +20,7 @@ import org.knowm.xchange.instrument.Instrument;
  */
 public class CurrencyPair extends Instrument implements Comparable<CurrencyPair>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 414711266389792746L;
 
   // Provide some standard major symbols

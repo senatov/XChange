@@ -3,6 +3,8 @@ package org.knowm.xchange.dto.account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 @JsonDeserialize(builder = Balance.Builder.class)
 public final class Balance implements Comparable<Balance>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = -1460694403597268635L;
   private static final Logger log = LoggerFactory.getLogger(Balance.class);
 

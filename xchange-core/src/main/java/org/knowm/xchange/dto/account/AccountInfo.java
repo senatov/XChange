@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.account;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import javax.annotation.Nullable;
  */
 public final class AccountInfo implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -3572240060624800060L;
 
   /** The name on the account */
@@ -122,7 +124,7 @@ public final class AccountInfo implements Serializable {
     this.timestamp = timestamp;
     this.openPositions = openPositions;
 
-    if (wallets.size() == 0) {
+    if (wallets.isEmpty()) {
       this.wallets = Collections.emptyMap();
     } else if (wallets.size() == 1) {
       Wallet wallet = wallets.iterator().next();
@@ -187,7 +189,7 @@ public final class AccountInfo implements Serializable {
 
     if (walletWithFeatures.size() > 1) {
       throw new UnsupportedOperationException("More than one wallet offer this feature.");
-    } else if (walletWithFeatures.size() == 0) {
+    } else if (walletWithFeatures.isEmpty()) {
       return null;
     }
     return walletWithFeatures.get(0);

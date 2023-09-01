@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.trade;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  */
 public final class OpenLoanOrders implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -8880758230367635109L;
 
   private final List<FixedRateLoanOrder> openFixedRateLoanOrders;
@@ -17,8 +19,6 @@ public final class OpenLoanOrders implements Serializable {
   /**
    * Constructor
    *
-   * @param openFixedRateLoanOrders
-   * @param openFloatingRateLoanOrders
    */
   public OpenLoanOrders(
       List<FixedRateLoanOrder> openFixedRateLoanOrders,

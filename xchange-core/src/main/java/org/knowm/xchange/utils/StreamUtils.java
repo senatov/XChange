@@ -15,7 +15,7 @@ public final class StreamUtils {
           if (list.size() > 1) {
             throw new IllegalStateException("List contains more than one element: " + list);
           }
-          return list.size() > 0 ? list.get(0) : null;
+          return !list.isEmpty() ? list.get(0) : null;
         });
   }
 }

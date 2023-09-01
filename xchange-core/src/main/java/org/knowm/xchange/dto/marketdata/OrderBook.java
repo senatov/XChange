@@ -2,6 +2,8 @@ package org.knowm.xchange.dto.marketdata;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import org.knowm.xchange.instrument.Instrument;
 /** DTO representing the exchange order book */
 public final class OrderBook implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -7788306758114464314L;
 
   /** the asks */
@@ -248,8 +251,6 @@ public final class OrderBook implements Serializable {
    * OrderBooks are equal but their timestamps are unequal. It returns false if any order between
    * the two are different.
    *
-   * @param ob
-   * @return
    */
   public boolean ordersEqual(OrderBook ob) {
 

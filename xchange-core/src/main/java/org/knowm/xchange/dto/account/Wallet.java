@@ -1,5 +1,6 @@
 package org.knowm.xchange.dto.account;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -21,6 +22,7 @@ import org.knowm.xchange.currency.Currency;
  */
 public final class Wallet implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -4136681413143690633L;
 
   public enum WalletFeature {
@@ -75,7 +77,7 @@ public final class Wallet implements Serializable {
       this.name = name;
     }
     this.balanceCollection = balances;
-    if (balances.size() == 0) {
+    if (balances.isEmpty()) {
       this.balances = Collections.emptyMap();
     } else if (balances.size() == 1) {
       Balance balance = balances.iterator().next();
