@@ -2,46 +2,42 @@ package org.knowm.xchange.kraken.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.ToString;
 
-/** @author Raphael Voellmy */
+/**
+ * @author Raphael Voellmy
+ */
+@ToString
 public class KrakenResult<V> {
 
-  private final V result;
-  private final String[] error;
+	private final V result;
+	private final String[] error;
 
-  /**
-   * Constructor
-   *
-   * @param result
-   * @param error
-   */
-  @JsonCreator
-  public KrakenResult(@JsonProperty("return") V result, @JsonProperty("error") String[] error) {
+	/**
+	 * Constructor
+	 */
+	@JsonCreator
+	public KrakenResult(@JsonProperty("return") V result, @JsonProperty("error") String[] error) {
+		this.result = result;
+		this.error = error;
+	}
 
-    this.result = result;
-    this.error = error;
-  }
+	public boolean isSuccess() {
+		return error.length == 0;
+	}
 
-  public boolean isSuccess() {
+	public V getResult() {
+		return result;
+	}
 
-    return error.length == 0;
-  }
+	public String[] getError() {
+		return error;
+	}
 
-  public V getResult() {
-
-    return result;
-  }
-
-  public String[] getError() {
-
-    return error;
-  }
-
-  @Override
-  public String toString() {
-
-    return String.format(
-        "KrakenResult[%s: %s]",
-        isSuccess() ? "OK" : "error", isSuccess() ? result.toString() : error);
-  }
+	@Override
+	public String toString() {
+		return String.format(
+				"KrakenResult[%s: %s]",
+				isSuccess() ? "OK" : "error", isSuccess() ? result.toString() : error);
+	}
 }

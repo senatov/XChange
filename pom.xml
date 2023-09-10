@@ -18,12 +18,12 @@
         a diverse set of cryptocurrency exchanges.
     </description>
 
-    <url>http://knowm.org/open-source/xchange</url>
+    <url>https://knowm.org/open-source/xchange</url>
     <inceptionYear>2012</inceptionYear>
 
     <organization>
         <name>Knowm Inc.</name>
-        <url>http://knowm.org/open-source/xchange/</url>
+        <url>https://knowm.org/open-source/xchange/</url>
     </organization>
 
     <properties>
@@ -410,22 +410,20 @@
             <artifactId>slf4j-api</artifactId>
             <version>${ver.slf4j}</version>
         </dependency>
-
-        <!-- javax APIs -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
         </dependency>
-
-        <!-- SLF4J implementation for use in examples -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <!-- JUnit for testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -443,7 +441,6 @@
             <artifactId>truth</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <profiles>
